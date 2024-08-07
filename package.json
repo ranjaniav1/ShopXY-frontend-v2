@@ -14,10 +14,12 @@
     "@mui/icons-material": "^5.16.6",
     "@mui/material": "^5.16.6",
     "@mui/styled-engine-sc": "^6.0.0-alpha.18",
+    "axios": "^1.7.3",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18",
-    "styled-components": "^6.1.12"
+    "styled-components": "^6.1.12",
+    "swiper": "^11.1.9"
   },
   "devDependencies": {
     "eslint": "^8",

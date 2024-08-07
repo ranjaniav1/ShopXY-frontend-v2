@@ -27,7 +27,7 @@ const Navigation = () => {
     ];
 
     return (
-        <AppBar position="static" className='bg-white'>
+        <AppBar position="static" >
             <Container
                 maxWidth="xl"   > <Toolbar >
                     {/* Logo */}
