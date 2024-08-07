@@ -15,8 +15,16 @@
     --background-end-rgb: 0, 0, 0;
   }
 }
+@font-face {
+  font-family: 'Circular Std';
+  src: url('/fonts/circular-std.woff2') format('woff2'),
+       url('/fonts/circular-std.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
 
 body {
+  font-family: 'Courier New','sans-serif';
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
