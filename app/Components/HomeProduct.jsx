@@ -6,6 +6,7 @@ import { GetCategories } from '../Service/GetCategory';
 import ProductCard from './ProductCard';
 import Brands from '../Common/Brands';
 import Heading from '../Common/Heading';
+import Link from 'next/link';
 
 const HomeProduct = () => {
     const [products, setProducts] = useState([]);
@@ -16,7 +17,7 @@ const HomeProduct = () => {
         try {
             const result = await GetCategories();
             setProducts(result.product);
-            setFilteredProducts(result.product); 
+            setFilteredProducts(result.product);
         } catch (error) {
             console.log("Failed to fetch products", error);
         }
@@ -47,7 +48,7 @@ const HomeProduct = () => {
     };
 
     return (
-        <Container maxWidth="xl" sx={{ my: 4 }}>
+        <>
             <Heading text="Products for you" />
             <Grid container spacing={4}>
                 <Grid item xs={12} md={3}>
@@ -58,6 +59,7 @@ const HomeProduct = () => {
                         {filteredProducts.length > 0 ? (
                             filteredProducts.map((product) => (
                                 <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
+                                    <Link href={`/category/${product.name}`}>
                                     <ProductCard
                                         imgSrc={product.image}
                                         title={product.name}
@@ -66,7 +68,7 @@ const HomeProduct = () => {
                                         rating={product.ratings}
                                         description={product.description}
                                         offer={product.offer}
-                                    />
+                                    /></Link>
                                 </Grid>
                             ))
                         ) : (
@@ -77,7 +79,7 @@ const HomeProduct = () => {
                     </Grid>
                 </Grid>
             </Grid>
-        </Container>
+        </>
     );
 };
 

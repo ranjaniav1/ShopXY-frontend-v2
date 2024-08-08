@@ -3,9 +3,10 @@ import React, { useEffect, useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
-import { Navigation } from 'swiper/modules';
+import 'swiper/css/scrollbar';
+
+import { Navigation, A11y, Scrollbar } from 'swiper/modules';
 import { GetCategories } from '../Service/GetCategory';
-import { Container } from '@mui/material';
 import '../style.css'
 const Slider = () => {
     const [slider, setSlider] = useState([])
@@ -25,8 +26,9 @@ const Slider = () => {
     return (
         <div className='my-4'>
 
-            <Container maxWidth="xl">
-                <Swiper navigation={true} modules={[Navigation]} style={{ height: '400px' }}>
+                <Swiper navigation={true} modules={[A11y, Scrollbar, Navigation]}
+                    slidesPerView={1}
+                    scrollbar={{ draggable: true }} style={{ height: '400px' }}>
                     {slider && slider.length > 0 ? (
                         slider.map((slide) => (
                             <SwiperSlide key={slide.id} >
@@ -36,7 +38,7 @@ const Slider = () => {
                                     style={{
                                         width: '100%',
                                         height: 'auto',
-                                        objectFit: 'cover',
+                                        objectFit: 'contain',
                                         borderRadius: '5px'
                                     }}
                                 />
@@ -46,7 +48,7 @@ const Slider = () => {
                         <SwiperSlide>No slides available</SwiperSlide>
                     )}
                 </Swiper>
-            </Container ></div>
+           </div>
     )
 }
 

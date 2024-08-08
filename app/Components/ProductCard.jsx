@@ -9,13 +9,12 @@ const ProductCard = ({ imgSrc, title, price, discountPrice, rating, description,
                 className="w-full h-60 object-contain"
             />
             <div className="p-4 ">
-                <h3 className="text-xl font-semibold mb-2">{title}</h3>
+                <h3 className="text-xl font-semibold mb-2 truncate">{title}</h3>
                 <div className="mb-2">
                     {discountPrice ? (
                         <div className="flex items-baseline">
-                            <p className="text-green-500 font-bold text-lg">₹₹{price}</p>
-                            <p className="text-red-500 font-bold text-lg mr-2 line-through">₹{discountPrice}</p><p className="text-blue-500 text-sm mb-2">{offer}</p>
-
+                            <p className="text-green-500 font-bold text-lg">₹{discountPrice}</p>
+                            <p className="text-red-500 font-bold text-lg mr-2 line-through">₹{price}</p><p className="text-blue-500 text-sm mb-2">{offer}%off</p>
                         </div>
                     ) : (
                         <p className="text-green-500 font-bold text-lg">{price}</p>

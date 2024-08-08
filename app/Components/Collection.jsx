@@ -1,5 +1,4 @@
 'use client'
-import { Container } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { GetCategories } from '../Service/GetCategory'
 
@@ -20,8 +19,7 @@ const Collection = () => {
         GetCollection()
     }, [])
     return (
-        <div className='my-4'>
-            <Container maxWidth="xl" className="bg-white">
+        <div className='my-4 bg-white'>
                 {collection && collection.length > 0 ? (
                     <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-9  px-10 py-4">
                         {collection.slice(9, 27).map((category) => (
@@ -42,7 +40,6 @@ const Collection = () => {
                     <p>No collection found</p>
                 )
                 }
-            </Container >
         </div >
     )
 }
