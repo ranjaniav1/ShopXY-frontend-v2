@@ -1,20 +1,22 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { Container, Grid } from '@mui/material';
 import { GetCategories } from '../Service/GetCategory';
 import ProductCard from './ProductCard';
-import { Container } from '@mui/material';
 import Brands from '../Common/Brands';
 import Heading from '../Common/Heading';
 
 const HomeProduct = () => {
     const [products, setProducts] = useState([]);
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [sortOption, setSortOption] = useState('');
 
     async function fetchCategories() {
         try {
             const result = await GetCategories();
-            console.log("products", result.product);
             setProducts(result.product);
+            setFilteredProducts(result.product); 
         } catch (error) {
             console.log("Failed to fetch products", error);
         }
@@ -24,20 +26,39 @@ const HomeProduct = () => {
         fetchCategories();
     }, []);
 
+    useEffect(() => {
+        let sortedProducts = [...products];
+
+        // Apply sorting
+        if (sortOption === 'Price: Low to High') {
+            sortedProducts.sort((a, b) => a.actual_price - b.actual_price);
+        } else if (sortOption === 'Price: High to Low') {
+            sortedProducts.sort((a, b) => b.actual_price - a.actual_price);
+        } else if (sortOption === 'Newest Arrivals') {
+            // Assume you have a date property to sort by newest arrivals
+            sortedProducts.sort((a, b) => new Date(b.date) - new Date(a.date));
+        }
+
+        setFilteredProducts(sortedProducts);
+    }, [sortOption, products]);
+
+    const handleSortChange = (option) => {
+        setSortOption(option);
+    };
+
     return (
-        <div className='my-4'>
-            <Container maxWidth="xl" >
-                <Heading text="Products for you" />
-                <div className="flex">
-                    <div className="w-1/4 p-4 border-r border-gray-200">
-                        <Brands />
-                    </div>
-                    <div className="w-3/4 p-4">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                            {products.length > 0 ? (
-                                products.map((product) => (
+        <Container maxWidth="xl" sx={{ my: 4 }}>
+            <Heading text="Products for you" />
+            <Grid container spacing={4}>
+                <Grid item xs={12} md={3}>
+                    <Brands onSortChange={handleSortChange} />
+                </Grid>
+                <Grid item xs={12} md={9}>
+                    <Grid container spacing={4}>
+                        {filteredProducts.length > 0 ? (
+                            filteredProducts.map((product) => (
+                                <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
                                     <ProductCard
-                                        key={product.id}
                                         imgSrc={product.image}
                                         title={product.name}
                                         price={product.actual_price}
@@ -46,14 +67,17 @@ const HomeProduct = () => {
                                         description={product.description}
                                         offer={product.offer}
                                     />
-                                ))
-                            ) : (
+                                </Grid>
+                            ))
+                        ) : (
+                            <Grid item xs={12}>
                                 <p className="text-center text-gray-500">No products found</p>
-                            )}
-                        </div>
-                    </div>
-                </div>
-            </Container></div>
+                            </Grid>
+                        )}
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Container>
     );
 };
 

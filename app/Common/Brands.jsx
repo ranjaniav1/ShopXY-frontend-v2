@@ -1,14 +1,12 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Divider, TextField, Checkbox, FormControlLabel, Button } from '@mui/material';
+import { Box, Typography, Divider } from '@mui/material';
 import CustomMenu from './CustomMenu';
 import ArrowDropDownSharpIcon from '@mui/icons-material/ArrowDropDownSharp';
 import { GetCategories } from '../Service/GetCategory';
 
-const FilterSidebar = () => {
-    const [brands, setBrands] = useState([]);
-    const [categories, setCategories] = useState([]);
+const Brands = ({ onSortChange }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [open, setOpen] = useState(false);
     const [filterType, setFilterType] = useState('');
@@ -16,10 +14,7 @@ const FilterSidebar = () => {
     async function fetchCategories() {
         try {
             const result = await GetCategories();
-            console.log("brands", result.brands);
-            console.log("categories", result.category);
-            setBrands(result.brands || []);
-            setCategories(result.category || []);
+            // Categories and brands are not needed anymore
         } catch (error) {
             console.log("Failed to fetch data", error);
         }
@@ -40,21 +35,21 @@ const FilterSidebar = () => {
         setOpen(false);
     };
 
-    const createMenuItems = (items) => items.map((item) => ({
+    const handleSortSelect = (sortOption) => {
+        onSortChange(sortOption);
+        handleMenuClose();
+    };
+
+    const createMenuItems = (items, onSelect) => items.map((item) => ({
         title: item.name || item.color,
-        onClick: () => {
-            console.log('Selected:', item.name || item.color);
-            handleMenuClose();
-        },
+        onClick: () => onSelect(item.name || item.color),
     }));
 
     const sortMenuItems = createMenuItems([
         { name: 'Price: Low to High' },
         { name: 'Price: High to Low' },
         { name: 'Newest Arrivals' },
-    ]);
-
-    const brandMenuItems = createMenuItems(brands);
+    ], handleSortSelect);
 
     return (
         <Box
@@ -69,7 +64,7 @@ const FilterSidebar = () => {
             }}
         >
             <Typography variant="h6" gutterBottom>
-                FILTERS (20 Products)
+                FILTERS
             </Typography>
             <Divider sx={{ mb: 2 }} />
             
@@ -84,41 +79,8 @@ const FilterSidebar = () => {
                     onOpen={(event) => handleMenuOpen(event, 'sort')}
                 />
             </Box>
-
-            <Typography variant="subtitle1" gutterBottom>
-                Categories
-            </Typography>
-            <TextField
-                fullWidth
-                variant="outlined"
-                size="small"
-                placeholder="Search categories"
-                sx={{ mb: 2 }}
-            />
-            <Box sx={{ mb: 2 }}>
-                {categories.map((category) => (
-                    <FormControlLabel
-                        key={category.id}
-                        control={<Checkbox />}
-                        label={category.title}
-                    />
-                ))}
-            </Box>
-
-            <Typography variant="subtitle1" gutterBottom>
-                Brands
-            </Typography>
-            <Box>
-                {brands.map((brand) => (
-                    <FormControlLabel
-                        key={brand.id}
-                        control={<Checkbox />}
-                        label={brand.title}
-                    />
-                ))}
-            </Box>
         </Box>
     );
 };
 
-export default FilterSidebar;
+export default Brands;
