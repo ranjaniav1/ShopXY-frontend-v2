@@ -6,7 +6,7 @@ import 'swiper/css/navigation';
 import { Navigation } from 'swiper/modules';
 import { GetCategories } from '../Service/GetCategory';
 import { Container } from '@mui/material';
-
+import '../style.css'
 const Slider = () => {
     const [slider, setSlider] = useState([])
 

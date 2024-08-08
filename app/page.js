@@ -1,5 +1,6 @@
 import Categoy from "./Components/Categoy";
 import Collection from "./Components/Collection";
+import HomeProduct from "./Components/HomeProduct";
 import Slider from "./Components/Slider";
 export default function Home() {
   return (
@@ -7,6 +8,7 @@ export default function Home() {
       <Categoy />
       <Slider />
       <Collection />
+      <HomeProduct />
     </>
   );
 }
