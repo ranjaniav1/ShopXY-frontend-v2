@@ -1,14 +1,15 @@
 import React from 'react';
 
-const ProductCard = ({ imgSrc, title, price, discountPrice, rating, description, offer }) => {
+const ProductCard = ({ imgSrc, title, price, discountPrice, rating, description, offer, className,onClick }) => {
     return (
-        <div className="border bg-white border-gray-200 rounded-lg overflow-hidden shadow-md">
+        <div className="border bg-white border-gray-200 rounded-lg overflow-hidden shadow-md" onClick={onClick}>
             <img
                 src={imgSrc}
                 alt={title}
-                className="w-full h-60 object-contain"
+                // className="w-full h-60 object-contain" 
+                className={className}
             />
-            <div className="p-4 ">
+            <div >
                 <h3 className="text-xl font-semibold mb-2 truncate">{title}</h3>
                 <div className="mb-2">
                     {discountPrice ? (

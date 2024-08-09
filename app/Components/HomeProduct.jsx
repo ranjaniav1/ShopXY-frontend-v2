@@ -30,13 +30,12 @@ const HomeProduct = () => {
     useEffect(() => {
         let sortedProducts = [...products];
 
-        // Apply sorting
         if (sortOption === 'Price: Low to High') {
             sortedProducts.sort((a, b) => a.actual_price - b.actual_price);
         } else if (sortOption === 'Price: High to Low') {
             sortedProducts.sort((a, b) => b.actual_price - a.actual_price);
         } else if (sortOption === 'Newest Arrivals') {
-            // Assume you have a date property to sort by newest arrivals
+            // Assuming a date property to sort by newest arrivals
             sortedProducts.sort((a, b) => new Date(b.date) - new Date(a.date));
         }
 
@@ -59,16 +58,18 @@ const HomeProduct = () => {
                         {filteredProducts.length > 0 ? (
                             filteredProducts.map((product) => (
                                 <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
-                                    <Link href={`/category/${product.name}`}>
-                                    <ProductCard
-                                        imgSrc={product.image}
-                                        title={product.name}
-                                        price={product.actual_price}
-                                        discountPrice={product.discounted_price}
-                                        rating={product.ratings}
-                                        description={product.description}
-                                        offer={product.offer}
-                                    /></Link>
+                                    <Link href={`/category/${encodeURIComponent(product.slug)}`}>
+                                        <ProductCard
+                                            className="w-full h-60 object-contain"
+                                            imgSrc={product.image}
+                                            title={product.name}
+                                            price={product.actual_price}
+                                            discountPrice={product.discounted_price}
+                                            rating={product.ratings}
+                                            description={product.description}
+                                            offer={product.offer}
+                                        />
+                                    </Link>
                                 </Grid>
                             ))
                         ) : (

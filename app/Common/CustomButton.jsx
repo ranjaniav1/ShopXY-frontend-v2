@@ -6,10 +6,10 @@ const CustomButton = ({
     endIcon,
     onClick,
     className,
-    variant = 'contained',
-    color = 'primary',
-    size = 'medium',
-    children,
+    variant ,
+    color ,
+    size ,
+    title,
     ...props
 }) => {
     return (
@@ -20,10 +20,10 @@ const CustomButton = ({
             className={className}
             variant={variant}
             color={color}
-            size={size}
+            size={size} 
             {...props}
         >
-            {children}
+            {title}
         </Button>
     );
 };
