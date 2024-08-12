@@ -1,47 +1,52 @@
-'use client'
-import React, { useEffect, useState } from 'react'
-import { GetCategories } from '../Service/GetCategory'
+'use client';
+import React, { useEffect, useState } from 'react';
+import { GetCategories } from '../Service/GetCategory';
+import Heading from '../Common/Heading';
 
 const Collection = () => {
-    const [collection, setcollection] = useState([])
+    const [collection, setcollection] = useState([]);
+    
     async function GetCollection() {
         try {
-
             const result = await GetCategories();
-            console.log("catcollectione", result.collection)
-            setcollection(result.collection)
+            console.log("catcollectione", result.collection);
+            setcollection(result.collection);
         } catch (error) {
-            console.log("failed to fetch collection", error)
+            console.log("failed to fetch collection", error);
         }
     }
 
     useEffect(() => {
-        GetCollection()
-    }, [])
-    return (
-        <div className='my-4 bg-white'>
-                {collection && collection.length > 0 ? (
-                    <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-9  px-10 py-4">
-                        {collection.slice(9, 27).map((category) => (
-                            < div
-                                key={category.id}
+        GetCollection();
+    }, []);
 
+    return (
+        <>
+            <Heading text="Best Deals on Electronics" />
+            <div className='my-4 '>
+                {collection && collection.length > 0 ? (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 px-4 py-4 gap-6">
+                        {collection.slice(1, 7).map((category) => (
+                            <div
+                                key={category.id}
+                                className="flex flex-col items-center border border-btn rounded-md overflow-hidden shadow-lg bg-white"
                             >
                                 <img
                                     src={category.collection_image}
                                     alt={category.title}
-                                    className="w-24 h-24  object-cover"
+                                    className="w-full h-56 object-cover"
                                 />
-                                <p className="text-lg font-semibold">{category.title}</p>
+                                <p className="text-lg font-semibold text-center p-4">{category.title}</p>
+                               
                             </div>
                         ))}
                     </div>
                 ) : (
                     <p>No collection found</p>
-                )
-                }
-        </div >
-    )
-}
+                )}
+            </div>
+        </>
+    );
+};
 
-export default Collection
+export default Collection;

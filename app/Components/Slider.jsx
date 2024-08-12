@@ -7,7 +7,6 @@ import 'swiper/css/scrollbar';
 
 import { Navigation, A11y, Scrollbar } from 'swiper/modules';
 import { GetCategories } from '../Service/GetCategory';
-import '../style.css'
 const Slider = () => {
     const [slider, setSlider] = useState([])
 
@@ -24,11 +23,11 @@ const Slider = () => {
     useEffect(() => { GetCategory() }, [])
 
     return (
-        <div className='my-4'>
+        <div className='my-7 '>
 
                 <Swiper navigation={true} modules={[A11y, Scrollbar, Navigation]}
                     slidesPerView={1}
-                    scrollbar={{ draggable: true }} style={{ height: '400px' }}>
+                    scrollbar={{ draggable: true }} style={{ height: '400px' ,borderRadius:'5px'}}>
                     {slider && slider.length > 0 ? (
                         slider.map((slide) => (
                             <SwiperSlide key={slide.id} >
@@ -39,7 +38,6 @@ const Slider = () => {
                                         width: '100%',
                                         height: 'auto',
                                         objectFit: 'contain',
-                                        borderRadius: '5px'
                                     }}
                                 />
                             </SwiperSlide>

@@ -17,26 +17,24 @@ const CustomInput = ({
       placeholder={placeholder}
       value={value}
       onChange={onChange}
-      className={className}
+      className={`border-btn custom-input ${className}`} // Apply custom and border styles
       {...props}
       startAdornment={startIcon && (
         <InputAdornment position="start">
-          <IconButton onClick={onClickStartIcon}>
+          <IconButton onClick={onClickStartIcon} className='btn rounded-none -ml-1'>
             {startIcon}
           </IconButton>
         </InputAdornment>
       )}
       endAdornment={endIcon && (
         <InputAdornment position="end">
-          <IconButton onClick={onClickEndIcon}>
+          <IconButton onClick={onClickEndIcon} className='btn'>
             {endIcon}
           </IconButton>
         </InputAdornment>
       )}
-      style={{ padding: '8px', borderRadius: '4px', backgroundColor: '#f0f5ff', width: '100%' }}
     />
   );
 };
-
 
 export default CustomInput;

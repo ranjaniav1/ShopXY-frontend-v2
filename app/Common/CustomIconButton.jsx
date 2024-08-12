@@ -7,21 +7,13 @@ const CustomIconButton = ({
     endIcon,
     onClick,
     className,
-    ariaLabel,
-    color = 'inherit',
-    size = 'medium',
     badgeContent,
-    badgeColor = 'error',
-    ...props
+    badgeColor,
 }) => {
     return (
         <IconButton
             onClick={onClick}
-            className={className}
-            aria-label={ariaLabel}
-            color={color}
-            size={size}
-            {...props}
+            className={`border border-primary-color p-2 rounded-md  mx-2${className}`}
         >
             {badgeContent ? (
                 <Badge badgeContent={badgeContent} color={badgeColor}>

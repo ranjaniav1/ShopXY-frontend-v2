@@ -1,15 +1,24 @@
-'use client'
-import React from 'react';
-import { AppBar, Toolbar, Typography, Container } from '@mui/material';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+'use client';
+import React, { useState } from 'react';
 import CustomInput from '../Common/CustomInput';
 import Search from '@mui/icons-material/Search';
 import CustomMenu from '../Common/CustomMenu';
 import CustomIconButton from '../Common/CustomIconButton';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import CustomDrawer from '../Common/CustomDrawer';
+
 const Navigation = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const [drawerOpen, setDrawerOpen] = useState(false)
+    const handleDrawerOpen = () => {
+        setDrawerOpen(true)
+    }
+    const handleDrawerClose = () => {
+        setDrawerOpen(false);
+    };
+
     const open = Boolean(anchorEl);
 
     const handleMenuOpen = (event) => {
@@ -27,43 +36,58 @@ const Navigation = () => {
     ];
 
     return (
-        <AppBar position="static" >
-            <Container
-                maxWidth="xl"   > <Toolbar >
-                    {/* Logo */}
-                    <Typography variant="h6" color={"GrayText"}>
-                        MyLogo
-                    </Typography>
+        <header className=" py-4 bg-white ">
+            <div className="container mx-auto flex items-center justify-between px-4">
+                {/* Logo */}
+                <div className="text-xl font-semibold">
+                    MyLogo
+                </div>
 
-                    {/* Search Field */}
-                    <div style={{ position: 'relative', marginRight: '16px', flexGrow: 1 }}>
-                        <CustomInput startIcon={<Search />} placeholder={"Search for Products,Brands and More"} className="bg-blue-300" />
-                    </div>
-
-                    {/* Account Button */}
-                    <CustomMenu startIcon={<AccountCircle />} title={"Account"} menuItems={menuItems} anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleMenuClose}
-                        onOpen={handleMenuOpen} className={"mr-2"} />
-
-
-                    {/* Cart Icon Button */}
-                    <CustomMenu startIcon={<ShoppingCartIcon />} title={"Cart"} menuItems={menuItems} anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleMenuClose}
-                        onOpen={handleMenuOpen} />
-
-
-                    <CustomIconButton
-                        startIcon={<MoreVertIcon />}
-                        color='primary'
+                {/* Search Field */}
+                <div className="relative flex-grow mx-4">
+                    <CustomInput
+                        startIcon={<Search className='rounded-md text-white' />}
+                        placeholder="Search for Products, Brands, and More"
+                        className="bg-blue-300 text-black placeholder-gray-700 py-2 px-4 rounded-md"
                     />
+                </div>
+
+                {/* Account Button */}
+                <CustomMenu
+                    startIcon={<AccountCircle />}
+                    title="Account"
+                    menuItems={menuItems}
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleMenuClose}
+                    onOpen={handleMenuOpen}
+                    className="mr-2"
+                />
+
+                {/* Cart Icon Button */}
+                <CustomMenu
+                    startIcon={<ShoppingCartIcon />}
+                    title="Cart"
+                    menuItems={menuItems}
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleMenuClose}
+                    onOpen={handleMenuOpen}
+                />
+
+                {/* More Options Button */}
+                <CustomIconButton
+                    startIcon={<MoreVertIcon />} onClick={handleDrawerOpen}
+                />
+            </div>
 
 
-                </Toolbar>
-            </Container>
-        </AppBar >
-
+            {/* drawer */}
+            <CustomDrawer open={drawerOpen} onClose={handleDrawerClose}>
+                {/* Drawer content goes here */}
+                <div>Your drawer content</div>
+            </CustomDrawer>
+        </header>
     );
 };
 

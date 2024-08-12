@@ -54,12 +54,12 @@ const Brands = ({ onSortChange }) => {
     return (
         <Box
             sx={{
-                width: '250px',
+                width: '100%',
                 padding: '16px',
                 backgroundColor: 'white',
                 border: '1px solid #e0e0e0',
                 borderRadius: '4px',
-                height: '100%',
+                height: 'fit-content',
                 boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
             }}
         >
