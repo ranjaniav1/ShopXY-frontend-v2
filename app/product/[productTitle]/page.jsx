@@ -9,7 +9,7 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import ProductDetailInfo from '@/app/Common/ProductDetailInfo';
 
-const page = () => {
+const Page = () => {
     const { productTitle } = useParams();
     const [product, setProduct] = useState(null);
     const [selectedImage, setSelectedImage] = useState('');
@@ -31,7 +31,6 @@ const page = () => {
     if (!product) return <Typography variant="h6">Loading...</Typography>;
 
     return (
-        <Container maxWidth="lg" sx={{ mt: 4 }}>
             <Grid container spacing={4}>
                 {/* Left side: Image gallery */}
                 <Grid item xs={12} md={6}>
@@ -131,8 +130,7 @@ const page = () => {
                     </Box>
                 </Grid>
             </Grid>
-        </Container>
     );
 };
 
-export default page;
+export default Page;
