@@ -9,7 +9,7 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import ProductDetailInfo from '@/app/Common/ProductDetailInfo';
 
-const CategoryPage = () => {
+const page = () => {
     const { productTitle } = useParams();
     const [product, setProduct] = useState(null);
     const [selectedImage, setSelectedImage] = useState('');
@@ -135,4 +135,4 @@ const CategoryPage = () => {
     );
 };
 
-export default CategoryPage;
+export default page;

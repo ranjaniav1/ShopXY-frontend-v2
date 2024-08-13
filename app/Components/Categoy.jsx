@@ -5,8 +5,9 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/scrollbar';
 import { A11y, Scrollbar } from 'swiper/modules';
-import CustomSkeleton from '../Common/CustomSkeleton';
 import { GetCategories } from '../Service/GetCategory';
+import Link from 'next/link';
+import CustomSkeleton from '../Common/CustomSkeleton';
 
 const Categoy = () => {
     const [categories, setCategories] = useState([]);
@@ -15,7 +16,6 @@ const Categoy = () => {
     async function GetCategory() {
         try {
             const result = await GetCategories();
-            console.log("cate", result);
             setCategories(result.data);
         } catch (error) {
             console.log("failed to fetch categories", error);
@@ -67,11 +67,13 @@ const Categoy = () => {
                             key={category.id}
                             className="text-center"
                         >
-                            <img
-                                src={category.category_icon}
-                                alt={category.title}
-                                className="w-24 h-24 rounded-lg object-cover mb-2 mx-auto border-btn"
-                            />
+                            <Link href={`/categories/${category.id}/${category.slug}`}>
+                                <img
+                                    src={category.category_icon}
+                                    alt={category.title}
+                                    className="w-24 h-24 rounded-lg object-cover mb-2 mx-auto border-btn"
+                                />
+                            </Link>
                         </SwiperSlide>
                     ))}
                 </Swiper>
