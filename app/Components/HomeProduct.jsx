@@ -2,11 +2,11 @@
 
 import React, { useEffect, useState } from 'react';
 import { Container, Grid } from '@mui/material';
-import { GetCategories } from '../Service/GetCategory';
 import ProductCard from './ProductCard';
 import Brands from '../Common/Brands';
 import Heading from '../Common/Heading';
 import Link from 'next/link';
+import { GetHomeScreenData } from '../Service/GetHomeScreenData';
 
 const HomeProduct = () => {
     const [products, setProducts] = useState([]);
@@ -15,7 +15,7 @@ const HomeProduct = () => {
 
     async function fetchCategories() {
         try {
-            const result = await GetCategories();
+            const result = await GetHomeScreenData();
             setProducts(result.product);
             setFilteredProducts(result.product);
         } catch (error) {

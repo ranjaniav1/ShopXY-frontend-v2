@@ -1,31 +1,49 @@
-'use client'
-import React, { useEffect, useState } from 'react'
-import { Container } from '@mui/material'
-import { GetCategories } from '../Service/GetCategory'
-import { Swiper, SwiperSlide } from 'swiper/react'
+'use client';
+import React, { useEffect, useState } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/scrollbar';
-import { A11y, Scrollbar } from 'swiper/modules'
+import { A11y, Scrollbar } from 'swiper/modules';
+import CustomSkeleton from '../Common/CustomSkeleton';
+import { GetCategories } from '../Service/GetCategory';
 
 const Categoy = () => {
-    const [categories, setCategories] = useState([])
+    const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     async function GetCategory() {
         try {
             const result = await GetCategories();
-            console.log("cate", result)
-            setCategories(result.category)
+            console.log("cate", result);
+            setCategories(result.data);
         } catch (error) {
-            console.log("failed to fetch categories", error)
+            console.log("failed to fetch categories", error);
+        } finally {
+            setLoading(false);
         }
     }
 
-    useEffect(() => { GetCategory() }, [])
+    useEffect(() => {
+        GetCategory();
+    }, []);
+
+    const skeletonCount = 9;
 
     return (
-        <div className='my-7 bg-white py-5'>
-            {categories && categories.length > 0 ? (
+        <div className='my-7 div-body py-5 rounded-md'>
+            {loading ? (
+                <div className="p-4 flex space-x-10">
+                    {Array.from({ length: skeletonCount }).map((_, index) => (
+                        <CustomSkeleton
+                            key={index}
+                            type="image"
+                            width="96px"
+                            height="96px"
+                        />
+                    ))}
+                </div>
+            ) : categories && categories.length > 0 ? (
                 <Swiper
                     modules={[A11y, Scrollbar]}
                     spaceBetween={10}
@@ -34,18 +52,14 @@ const Categoy = () => {
                     breakpoints={{
                         640: {
                             slidesPerView: 4,
-                            // spaceBetween: 20,
                         },
                         768: {
                             slidesPerView: 5,
-                            // spaceBetween: 30,
                         },
                         1024: {
                             slidesPerView: 9,
                             spaceBetween: 30,
-
                         },
-
                     }}
                 >
                     {categories.map((category) => (
@@ -58,7 +72,6 @@ const Categoy = () => {
                                 alt={category.title}
                                 className="w-24 h-24 rounded-lg object-cover mb-2 mx-auto border-btn"
                             />
-                            {/* <p className="text-lg font-semibold">{category.title}</p> */}
                         </SwiperSlide>
                     ))}
                 </Swiper>
@@ -66,7 +79,7 @@ const Categoy = () => {
                 <p>No categories found</p>
             )}
         </div>
-    )
-}
+    );
+};
 
-export default Categoy
+export default Categoy;

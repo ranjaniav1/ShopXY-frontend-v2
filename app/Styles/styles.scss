@@ -1,5 +1,9 @@
 @import "./variables";
 
+
+.div-body {
+  background-color: $primary-color;
+}
 // Swiper Navigation Button Styles
 .swiper-button-prev,
 .swiper-button-next {
@@ -22,24 +26,28 @@
   border-bottom-right-radius: 10px;
 }
 
-
+.swiper-scrollbar-drag {
+  color: $btn-color !important;
+}
 // mui btn
 .css-sghohy-MuiButtonBase-root-MuiButton-root,
 .btn {
   background-color: $btn-color !important;
 }
 
-
 // Style for the input border using the 'btn' class
 .border-btn {
   border: 1px solid $btn-color;
 }
-
-
 
 .custom-input {
   background-color: #f0f5ff; // Light background color
   padding: 4px;
   border-radius: 4px;
   width: 100%;
+}
+
+.skeleton {
+  background-color: $skeleton-primary-color;
+  border-radius: 10px;
 }

@@ -36,7 +36,7 @@ const Navigation = () => {
     ];
 
     return (
-        <header className=" py-4 bg-white ">
+        <header className=" py-4 div-body">
             <div className="container mx-auto flex items-center justify-between px-4">
                 {/* Logo */}
                 <div className="text-xl font-semibold">
