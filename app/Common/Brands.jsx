@@ -4,25 +4,13 @@ import React, { useState, useEffect } from 'react';
 import { Box, Typography, Divider } from '@mui/material';
 import CustomMenu from './CustomMenu';
 import ArrowDropDownSharpIcon from '@mui/icons-material/ArrowDropDownSharp';
-import { GetCategories } from '../Service/GetCategory';
 
 const Brands = ({ onSortChange }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [open, setOpen] = useState(false);
     const [filterType, setFilterType] = useState('');
 
-    async function fetchCategories() {
-        try {
-            const result = await GetCategories();
-            // Categories and brands are not needed anymore
-        } catch (error) {
-            console.log("Failed to fetch data", error);
-        }
-    }
 
-    useEffect(() => {
-        fetchCategories();
-    }, []);
 
     const handleMenuOpen = (event, type) => {
         setAnchorEl(event.currentTarget);
