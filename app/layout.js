@@ -15,7 +15,15 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <Navigation />
-        <Container maxWidth="xl" className="mt-[4%]">{children}</Container>
+        <Container maxWidth="xl"  sx={{
+            marginTop: {
+              xs: '20%',  // mobile devices
+              sm: '11%',  // tablets
+              md: '9%',  // small desktops
+              lg: '7%',  // medium desktops
+              xl: '5%'   // large desktops
+            }
+          }}>{children}</Container>
       </body>
     </html>
   );

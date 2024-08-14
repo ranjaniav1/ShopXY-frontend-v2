@@ -12,12 +12,9 @@ const FilterSidebar = ({ onBrandChange, brand_id }) => {
         try {
             const result = await GetSingleBrands({ brand_id });
             console.log("Fetched brands data:", result.data);
-            // Ensure the data structure is an array of brand objects
-            if (Array.isArray(result.data)) {
+           
                 setBrands(result.data);
-            } else {
-                console.error("Expected an array of brands but got:", result.data);
-            }
+           
         } catch (error) {
             console.log("Failed to fetch brands", error);
         }
@@ -108,7 +105,7 @@ const FilterSidebar = ({ onBrandChange, brand_id }) => {
                     <MenuItem value="discount">Discount</MenuItem>
                     <MenuItem value="rating">Rating</MenuItem>
                 </Select>
-            </Box>page
+            </Box>
 
             {/* Brands Filtering */}
             <Box>

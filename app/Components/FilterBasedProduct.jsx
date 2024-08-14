@@ -6,7 +6,10 @@ import Link from 'next/link';
 import Heading from '../Common/Heading';
 
 const FilterBasedProduct = ({ products }) => {
+
+
     return (
+
         <Box
             className="p-4 div-body"
             sx={{

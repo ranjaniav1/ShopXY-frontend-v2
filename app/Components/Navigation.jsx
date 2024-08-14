@@ -36,7 +36,7 @@ const Navigation = () => {
     ];
 
     return (
-        <header className="fixed top-0 left-0 w-full div-body shadow-md z-50 py-4">            <div className="container mx-auto flex items-center justify-between px-4">
+        <header className="fixed top-0 left-0 w-full div-body shadow-md z-50 py-4 ">            <div className="container mx-auto flex items-center justify-between px-4">
             {/* Logo */}
             <div className="text-xl font-semibold">
                 MyLogo
