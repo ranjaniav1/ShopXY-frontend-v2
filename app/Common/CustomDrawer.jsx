@@ -1,15 +1,16 @@
 import React from 'react';
 import { Drawer, IconButton, Radio, RadioGroup, FormControlLabel, FormLabel } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import { useDispatch, useSelector } from 'react-redux';
+import { setTheme } from '../redux/actions/action';
 
 const CustomDrawer = ({ open, onClose }) => {
-    const [theme, setTheme] = React.useState('light');
+    const dispatch = useDispatch();
+  const currentTheme = useSelector(state => state.mode); // Get the current theme from Redux store
 
-    const handleThemeChange = (event) => {
-        setTheme(event.target.value);
-        // Implement theme switch logic here (e.g., update context or local storage)
-    };
-
+  const handleThemeChange = (event) => {
+    dispatch(setTheme(event.target.value)); // Dispatch action to change the theme
+  };
     return (
         <Drawer
             anchor="right"
@@ -30,11 +31,11 @@ const CustomDrawer = ({ open, onClose }) => {
                     <div className="mb-4">
                         <FormLabel component="legend" className="text-md font-medium mb-2">Theme Options</FormLabel>
                         <RadioGroup
-                            aria-label="theme"
-                            name="theme"
-                            value={theme}
-                            onChange={handleThemeChange}
-                            className="flex flex-row"
+                           aria-label="theme"
+                           name="theme"
+                           value={currentTheme} // Use the theme from Redux store
+                           onChange={handleThemeChange}
+                           className="flex flex-row"
                         >
                             <div className="flex items-center mb-2">
                                 <FormControlLabel
