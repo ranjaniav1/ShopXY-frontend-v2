@@ -34,7 +34,7 @@ const Page = () => {
 
     return (
         <div className="my-7 px-4 py-5 rounded-md bg-gray-100 div-body">
-            <Heading text={title} />
+            <Heading text={title} className="text-4xl mb-5 btn p-4 rounded-md " />
             {loading ? (
                 <div className="p-4 flex flex-wrap gap-4 justify-center">
                     {Array.from({ length: skeletonCount }).map((_, index) => (
@@ -48,7 +48,7 @@ const Page = () => {
                     ))}
                 </div>
             ) : categories && categories.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4  p-4 ">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4   ">
                     {categories.map((category) => (
                         <div
                             key={category.id}

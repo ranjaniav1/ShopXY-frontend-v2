@@ -4,6 +4,7 @@ import { GetAllProducts } from '@/app/Service/GetProduct';
 import FilterSidebar from '@/app/Components/FilterSidebar';
 import FilterBasedProduct from '@/app/Components/FilterBasedProduct';
 import { useParams } from 'next/navigation';
+import { Grid } from '@mui/material';
 
 const Page = () => {
     const { collectionId } = useParams();
@@ -41,10 +42,15 @@ const Page = () => {
     };
 
     return (
-        <div className="flex flex-col md:flex-row">
-            <FilterSidebar onBrandChange={handleBrandChange} brand_id={collectionId} />
-            <FilterBasedProduct products={products} />
-        </div>
+        <Grid container spacing={2} sx={{marginTop:2}}>
+            <Grid item xs={12} md={3} >
+                <FilterSidebar onBrandChange={handleBrandChange} brand_id={collectionId} />
+            </Grid>
+            <Grid item xs={12} md={9}>
+
+                <FilterBasedProduct products={products} />
+            </Grid>
+        </Grid>
     );
 };
 

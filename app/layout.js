@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <Navigation />
-        <Container maxWidth="xl">{children}</Container>
+        <Container maxWidth="xl" className="mt-[4%]">{children}</Container>
       </body>
     </html>
   );
