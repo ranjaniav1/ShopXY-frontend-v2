@@ -1,38 +1,50 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import { GetAllProducts } from '../Service/GetProduct';
-import { Typography, Grid, Paper } from '@mui/material';
+import React from 'react';
+import { Typography, Grid, Paper, Box } from '@mui/material';
 import ProductCard from './ProductCard';
 import Link from 'next/link';
+import Heading from '../Common/Heading';
 
-const FilterBasedProduct = () => {
-    const [products, setProducts] = useState([]);
-
-    async function GetCollection() {
-        try {
-            const result = await GetAllProducts();
-            console.log("products", result.data);
-            setProducts(result.data);
-        } catch (error) {
-            console.log("failed to fetch products", error);
-        }
-    }
-
-    useEffect(() => {
-        GetCollection();
-    }, []);
-
+const FilterBasedProduct = ({ products }) => {
     return (
-        <div className="flex-grow p-4">
-            <Typography variant="h4" gutterBottom>
-                Products for You
-            </Typography>
-            <Grid container spacing={3}>
-                {products && products.length > 0 ? (
-                    products.map((product) => (
-                        <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
-                            <Link href={`/product/${encodeURIComponent(product.slug)}`} passHref>
-                                    <ProductCard className="w-full h-60 object-contain"
+        <Box
+            className="p-4 div-body"
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100vh',
+            }}
+        >
+            {/* Fixed Heading */}
+            <Box
+                sx={{
+                    position: 'sticky',
+                    top: 0,
+                    backgroundColor: 'white',
+                    zIndex: 1000,
+                    padding: '16px',
+                    borderBottom: '1px solid #e0e0e0',
+                }}
+            >
+                <Heading text={"Products for You"} />
+            </Box>
+
+            {/* Scrollable Container for Products */}
+            <Box
+                sx={{
+                    flexGrow: 1,
+                    overflowY: 'auto',
+                    padding: '16px',
+                    mt: 2 // Margin top to add space between heading and products
+                }}
+            >
+                <Grid container spacing={3}>
+                    {products && products.length > 0 ? (
+                        products.map((product) => (
+                            <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
+                                <Link href={`/product/${encodeURIComponent(product.slug)}`} passHref>
+                                    <ProductCard
+                                        className="w-full h-60 object-contain"
                                         imgSrc={product.image}
                                         title={product.name}
                                         price={product.actual_price}
@@ -41,16 +53,17 @@ const FilterBasedProduct = () => {
                                         description={product.description}
                                         offer={product.offer}
                                     />
-                            </Link>
-                        </Grid>
-                    ))
-                ) : (
-                    <Paper className="p-4" elevation={1}>
-                        <Typography>No products found</Typography>
-                    </Paper>
-                )}
-            </Grid>
-        </div>
+                                </Link>
+                            </Grid>
+                        ))
+                    ) : (
+                        <Paper className="p-4" elevation={1}>
+                            <Typography>No products found</Typography>
+                        </Paper>
+                    )}
+                </Grid>
+            </Box>
+        </Box>
     );
 };
 

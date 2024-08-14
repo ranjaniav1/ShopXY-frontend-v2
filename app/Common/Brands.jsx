@@ -42,7 +42,7 @@ const Brands = ({ onSortChange }) => {
     return (
         <Box
             sx={{
-                width: '100%',
+                // width: '85%',
                 padding: '16px',
                 backgroundColor: 'white',
                 border: '1px solid #e0e0e0',
@@ -58,7 +58,7 @@ const Brands = ({ onSortChange }) => {
             
             <Box sx={{ mb: 2 }}>
                 <CustomMenu
-                    startIcon={<ArrowDropDownSharpIcon />}
+                   endIcon={<ArrowDropDownSharpIcon />}
                     title="Sort By"
                     menuItems={sortMenuItems}
                     anchorEl={anchorEl}
