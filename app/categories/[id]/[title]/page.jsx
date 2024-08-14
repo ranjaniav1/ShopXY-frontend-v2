@@ -9,8 +9,8 @@ import Heading from '@/app/Common/Heading';
 const Page = () => {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
-    const { id } = useParams(); // Access route parameter
-    const { title } = useParams(); // Access route parameter
+    const { id } = useParams(); 
+    const { title } = useParams(); 
 
     async function fetchCategory() {
         try {

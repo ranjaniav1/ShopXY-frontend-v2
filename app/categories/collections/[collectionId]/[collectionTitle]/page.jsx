@@ -1,55 +1,48 @@
 'use client';
-import FilterBasedProduct from '@/app/Components/FilterBasedProduct';
-import FilterSidebar from '@/app/Components/FilterSidebar';
-import { GetSingleBrands } from '@/app/Service/GetBrands';
-import { GetAllProducts, GetSpecificProducts } from '@/app/Service/GetProduct';
-import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-
+import { GetAllProducts } from '@/app/Service/GetProduct';
+import FilterSidebar from '@/app/Components/FilterSidebar';
+import FilterBasedProduct from '@/app/Components/FilterBasedProduct';
+import { useParams } from 'next/navigation';
 
 const Page = () => {
-    const { collectionId } = useParams()
-    console.log("jsnj", collectionId)
-    const [brands, setBrands] = useState([]);
-    const [productId, setProductId] = useState();
-
-    async function GetCollection() {
-        try {
-            const result = await GetSingleBrands({ brand_id: collectionId });
-            console.log("brands", result.data.id);
-            setBrands(result.data);
-        } catch (error) {
-            console.log("failed to fetch collection", error);
-        }
-    }
+    const { collectionId } = useParams();
     const [products, setProducts] = useState([]);
-
-    async function GetProducts() {
-        try {
-            const response = await GetAllProducts();
-            console.log("products", response.data);
-            setProducts(response.data);
-            if(productId){
-                const myResult=await GetSpecificProducts({product_id:productId})
-                console.log("my result",myResult)
-                setProducts(myResult.data)
-            }
-
-        } catch (error) {
-            console.log("failed to fetch products", error);
-        }
-    }
-
-
+    const [allProducts, setAllProducts] = useState([]);
+    const [selectedBrands, setSelectedBrands] = useState([]);
 
     useEffect(() => {
-        GetCollection();
         GetProducts();
-    }, [productId]);
+    }, []);
+
+    const GetProducts = async () => {
+        try {
+            const response = await GetAllProducts();
+            setAllProducts(response.data);
+            setProducts(response.data);
+        } catch (error) {
+            console.error("Failed to fetch products:", error);
+        }
+    };
+
+    const handleBrandChange = (brands) => {
+        setSelectedBrands(brands);
+
+        if (brands.length > 0) {
+            // Filter products based on selected brand IDs
+            const filteredProducts = allProducts.filter(product =>
+                brands.includes(product.product_id) // Ensure this matches your product's brand field
+            );
+            console.log("brands chnage", filteredProducts)
+            setProducts(filteredProducts);
+        } else {
+            setProducts(allProducts);
+        }
+    };
 
     return (
         <div className="flex flex-col md:flex-row">
-            <FilterSidebar brand_id={collectionId} brands={brands}setProductId={setProductId} />
+            <FilterSidebar onBrandChange={handleBrandChange} brand_id={collectionId} />
             <FilterBasedProduct products={products} />
         </div>
     );

@@ -1,13 +1,10 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import { GetAllProducts } from '../Service/GetProduct';
+import React from 'react';
 import { Typography, Grid, Paper } from '@mui/material';
 import ProductCard from './ProductCard';
 import Link from 'next/link';
 
-const FilterBasedProduct = ({products}) => {
-   
-
+const FilterBasedProduct = ({ products }) => {
     return (
         <div className="flex-grow p-4">
             <Typography variant="h4" gutterBottom>
@@ -18,15 +15,16 @@ const FilterBasedProduct = ({products}) => {
                     products.map((product) => (
                         <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
                             <Link href={`/product/${encodeURIComponent(product.slug)}`} passHref>
-                                    <ProductCard className="w-full h-60 object-contain"
-                                        imgSrc={product.image}
-                                        title={product.name}
-                                        price={product.actual_price}
-                                        discountPrice={product.discounted_price}
-                                        rating={product.ratings}
-                                        description={product.description}
-                                        offer={product.offer}
-                                    />
+                                <ProductCard
+                                    className="w-full h-60 object-contain"
+                                    imgSrc={product.image}
+                                    title={product.name}
+                                    price={product.actual_price}
+                                    discountPrice={product.discounted_price}
+                                    rating={product.ratings}
+                                    description={product.description}
+                                    offer={product.offer}
+                                />
                             </Link>
                         </Grid>
                     ))
