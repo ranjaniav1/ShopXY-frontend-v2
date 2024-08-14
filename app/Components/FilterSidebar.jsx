@@ -1,27 +1,9 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { GetSingleBrands } from '../Service/GetBrands';
-import { Checkbox, FormControlLabel, FormGroup, Typography, Paper, Divider, Box, IconButton } from '@mui/material';
-import { ExpandMore as ExpandMoreIcon, ExpandLess as ExpandLessIcon } from '@mui/icons-material';
+import { Checkbox, FormControlLabel, FormGroup, Typography, Divider, Box } from '@mui/material';
 
-const FilterSidebar = ({ brand_id }) => {
-    const [brands, setBrands] = useState([]);
-
-    async function GetCollection() {
-        try {
-            const result = await GetSingleBrands({ brand_id });
-            console.log("brands", result.data);
-            setBrands(result.data);
-        } catch (error) {
-            console.log("failed to fetch collection", error);
-        }
-    }
-
-    useEffect(() => {
-        if (brand_id) {
-            GetCollection();
-        }
-    }, [brand_id]);
+const FilterSidebar = ({ brand_id, brands, setProductId }) => {
 
 
 
@@ -49,9 +31,11 @@ const FilterSidebar = ({ brand_id }) => {
                     {brands.map((brand) => (
                         <FormControlLabel
                             key={brand.id}
-                            control={<Checkbox color="primary" />}
+                            control={<Checkbox color="primary" onClick={() => setProductId(brand.id)}
+                             />}
                             label={brand.title}
                             sx={{ mb: 1 }}
+
                         />
                     ))}
                 </FormGroup>

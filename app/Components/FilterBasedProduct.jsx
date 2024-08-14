@@ -5,22 +5,8 @@ import { Typography, Grid, Paper } from '@mui/material';
 import ProductCard from './ProductCard';
 import Link from 'next/link';
 
-const FilterBasedProduct = () => {
-    const [products, setProducts] = useState([]);
-
-    async function GetCollection() {
-        try {
-            const result = await GetAllProducts();
-            console.log("products", result.data);
-            setProducts(result.data);
-        } catch (error) {
-            console.log("failed to fetch products", error);
-        }
-    }
-
-    useEffect(() => {
-        GetCollection();
-    }, []);
+const FilterBasedProduct = ({products}) => {
+   
 
     return (
         <div className="flex-grow p-4">
