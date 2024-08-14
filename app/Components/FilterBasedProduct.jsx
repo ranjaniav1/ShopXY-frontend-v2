@@ -7,18 +7,35 @@ import Heading from '../Common/Heading';
 
 const FilterBasedProduct = ({ products }) => {
     return (
-        <Box className="flex-grow p-4 div-body" sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-            {/* Heading */}
-            <Heading text={"Products for You"} className="text-4xl mb-5 btn p-4 rounded-md" />
+        <Box
+            className="p-4 div-body"
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100vh',
+            }}
+        >
+            {/* Fixed Heading */}
+            <Box
+                sx={{
+                    position: 'sticky',
+                    top: 0,
+                    backgroundColor: 'white',
+                    zIndex: 1000,
+                    padding: '16px',
+                    borderBottom: '1px solid #e0e0e0',
+                }}
+            >
+                <Heading text={"Products for You"} className="text-4xl mb-5 btn p-4 rounded-md" />
+            </Box>
 
-            {/* Scrollable container for products */}
+            {/* Scrollable Container for Products */}
             <Box
                 sx={{
                     flexGrow: 1,
                     overflowY: 'auto',
                     padding: '16px',
-                    display: 'flex',
-                    flexDirection: 'column',
+                    mt: 2 // Margin top to add space between heading and products
                 }}
             >
                 <Grid container spacing={3}>

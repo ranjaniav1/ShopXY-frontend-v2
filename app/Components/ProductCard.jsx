@@ -2,7 +2,7 @@ import React from 'react';
 
 const ProductCard = ({ imgSrc, title, price, discountPrice, rating, description, offer, className,onClick }) => {
     return (
-        <div className="border div-body border-gray-200 rounded-lg overflow-hidden shadow-md p-4" onClick={onClick}>
+        <div className="border div-body border-gray-200 hover:scale-105 transition-transform transform rounded-lg overflow-hidden shadow-md p-4 hover:border-green-500 hover:shadow-green-200" onClick={onClick}>
             <img
                 src={imgSrc}
                 alt={title}
