@@ -6,7 +6,6 @@ import { ExpandMore as ExpandMoreIcon, ExpandLess as ExpandLessIcon } from '@mui
 
 const FilterSidebar = ({ brand_id }) => {
     const [brands, setBrands] = useState([]);
-    const [expanded, setExpanded] = useState(true);
 
     async function GetCollection() {
         try {
@@ -24,38 +23,40 @@ const FilterSidebar = ({ brand_id }) => {
         }
     }, [brand_id]);
 
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
+
 
     return (
-        <Paper className="w-full md:w-1/4 lg:w-1/5 p-4 border-r border-gray-200 bg-white shadow-md rounded-lg">
-            <Box display="flex" alignItems="center" justifyContent="space-between">
-                <Typography variant="h6">Filters</Typography>
-                <IconButton onClick={handleExpandClick} size="small">
-                    {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                </IconButton>
-            </Box>
+
+        <Box
+            sx={{
+                width: '100%',
+                padding: '16px',
+                backgroundColor: 'white',
+                border: '1px solid #e0e0e0',
+                borderRadius: '4px',
+                height: 'fit-content',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+            }}
+        >
+            <Typography variant="h6">Filters</Typography>
+
             <Divider sx={{ my: 2 }} />
-            {expanded && (
-                <Box>
-                    <Typography variant="subtitle1" gutterBottom>
-                        Brands
-                    </Typography>
-                    <FormGroup>
-                        {brands.map((brand) => (
-                            <FormControlLabel
-                                key={brand.id}
-                                control={<Checkbox color="primary" />}
-                                label={brand.title}
-                                sx={{ mb: 1 }}
-                            />
-                        ))}
-                    </FormGroup>
-                </Box>
-            )}
-        </Paper>
-    );
+            <Box>
+                <Typography variant="subtitle1" gutterBottom>
+                    Brands
+                </Typography>
+                <FormGroup>
+                    {brands.map((brand) => (
+                        <FormControlLabel
+                            key={brand.id}
+                            control={<Checkbox color="primary" />}
+                            label={brand.title}
+                            sx={{ mb: 1 }}
+                        />
+                    ))}
+                </FormGroup>
+            </Box>
+        </Box>);
 };
 
 export default FilterSidebar;

@@ -19,7 +19,7 @@ export async function GetAllProducts() {
     console.log("error in product", error);
   }
 }
-
+// brand based product
 export async function GetSpecificProducts({ product_id }) {
   try {
     const response = await httpAxios.get(`/Get-product/${product_id}`);
