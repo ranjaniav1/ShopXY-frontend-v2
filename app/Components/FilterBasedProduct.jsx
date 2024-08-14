@@ -26,7 +26,7 @@ const FilterBasedProduct = ({ products }) => {
                     borderBottom: '1px solid #e0e0e0',
                 }}
             >
-                <Heading text={"Products for You"} className="text-4xl mb-5 btn p-4 rounded-md" />
+                <Heading text={"Products for You"} />
             </Box>
 
             {/* Scrollable Container for Products */}

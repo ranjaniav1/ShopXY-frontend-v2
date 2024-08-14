@@ -4,6 +4,7 @@ import Heading from '../Common/Heading';
 import { GetHomeScreenData } from '../Service/GetHomeScreenData';
 import CustomSkeleton from '../Common/CustomSkeleton';
 import Link from 'next/link';
+import CustomButton from '../Common/CustomButton';
 
 const Collection = () => {
     const [collection, setCollection] = useState([]);
@@ -35,6 +36,7 @@ const Collection = () => {
     return (
         <>
             <Heading text="Best Deals on Electronics" />
+
             <div className='my-4 div-body'>
                 {loading ? (
                     <div className="p-4 flex space-x-10">
@@ -55,7 +57,7 @@ const Collection = () => {
                                     key={category.id}
                                     className="flex flex-col items-center border border-btn rounded-md overflow-hidden shadow-lg div-body"
                                 >
-                                    <Link href={`/product/${encodeURIComponent(category.slug)}`}>
+                                    <Link href={`/categories/collections/${category.id}/${encodeURIComponent(category.slug)}`}>
 
                                         <img
                                             src={category.collection_image}

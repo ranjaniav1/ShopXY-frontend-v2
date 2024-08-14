@@ -10,6 +10,7 @@ const CustomMenu = ({
     title,
     menuItems,
     buttonProps,
+    endIcon,
     className, ...props
 }) => {
     return (
@@ -19,7 +20,8 @@ const CustomMenu = ({
                 onClick={onOpen}
                 variant="contained"
                 startIcon={startIcon}
-                style={{ textTransform: 'none' }} className='btn '
+                endIcon={endIcon}
+                style={{ textTransform: 'none' ,width:'100%'}} className='btn '
             // Prevents uppercase text in the button
             >
                 {title && (

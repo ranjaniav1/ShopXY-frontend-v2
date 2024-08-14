@@ -6,7 +6,7 @@ import FilterBasedProduct from '@/app/Components/FilterBasedProduct';
 import { useParams } from 'next/navigation';
 import { Grid } from '@mui/material';
 
-const Page = () => {
+const FilterConfig = () => {
     const { collectionId } = useParams();
     const [products, setProducts] = useState([]);
     const [allProducts, setAllProducts] = useState([]);
@@ -54,4 +54,4 @@ const Page = () => {
     );
 };
 
-export default Page;
+export default FilterConfig;

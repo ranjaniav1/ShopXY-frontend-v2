@@ -34,7 +34,7 @@ const Page = () => {
 
     return (
         <div className="my-7 px-4 py-5 rounded-md bg-gray-100 div-body">
-            <Heading text={title} className="text-4xl mb-5 btn p-4 rounded-md " />
+            <Heading text={title}  />
             {loading ? (
                 <div className="p-4 flex flex-wrap gap-4 justify-center">
                     {Array.from({ length: skeletonCount }).map((_, index) => (
