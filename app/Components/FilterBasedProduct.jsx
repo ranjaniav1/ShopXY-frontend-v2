@@ -60,9 +60,9 @@ const FilterBasedProduct = ({ products }) => {
                             </Grid>
                         ))
                     ) : (
-                        <Paper className="p-4" elevation={1}>
+                        <Box className="p-4" >
                             <Typography>No products found</Typography>
-                        </Paper>
+                        </Box>
                     )}
                 </Grid>
             </Box>
