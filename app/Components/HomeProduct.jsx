@@ -6,8 +6,8 @@ import ProductCard from './ProductCard';
 import Brands from '../Common/Brands';
 import Heading from '../Common/Heading';
 import Link from 'next/link';
-import { GetHomeScreenData } from '../Service/GetHomeScreenData';
 import CustomSkeleton from '../Common/CustomSkeleton';
+import { GetAllProducts } from '../Service/GetProduct';
 const HomeProduct = () => {
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
@@ -16,7 +16,7 @@ const HomeProduct = () => {
     const theme = useTheme()
     async function fetchCategories() {
         try {
-            const result = await GetHomeScreenData();
+            const result = await GetAllProducts();
             setProducts(result.product);
             setFilteredProducts(result.product);
             setLoading(false)

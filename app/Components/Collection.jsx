@@ -1,19 +1,20 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Heading from '../Common/Heading';
-import { GetHomeScreenData } from '../Service/GetHomeScreenData';
 import CustomSkeleton from '../Common/CustomSkeleton';
 import Link from 'next/link';
 import CustomButton from '../Common/CustomButton';
 import { useTheme, Box } from "@mui/material"
+import { GetCollection } from '../Service/GetCollection';
 const Collection = () => {
     const [collection, setCollection] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [visibleCount, setVisibleCount] = useState(6); // Number of items visible initially
+    const [visibleCount, setVisibleCount] = useState(6); 
     const theme = useTheme()
-    async function GetCollection() {
+    
+    async function GetCollectionData() {
         try {
-            const result = await GetHomeScreenData();
+            const result = await GetCollection();
             console.log("catcollection", result.collection);
             setCollection(result.collection);
         } catch (error) {
@@ -24,7 +25,7 @@ const Collection = () => {
     }
 
     useEffect(() => {
-        GetCollection();
+        GetCollectionData();
     }, []);
 
     const skeletonCount = 6; // Number of skeletons to show
@@ -50,7 +51,7 @@ const Collection = () => {
                         ))}
                     </div>
                 ) : collection && collection.length > 0 ? (
-                    <Box bgcolor={theme.palette.background.main} sx={{color:theme.palette.button.color}}className="rounded-md py-5">
+                    <Box bgcolor={theme.palette.background.main} sx={{ color: theme.palette.button.color }} className="rounded-md py-5">
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 px-4 py-4 gap-6">
                             {collection.slice(0, visibleCount).map((category) => (
                                 <Box

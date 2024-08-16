@@ -1,0 +1,13 @@
+{
+  "profile": "Perfil",
+  "myAccount": "Mi Cuenta",
+  "logout": "Cerrar sesión",
+  "account": "Cuenta",
+  "cart": "Carrito",
+  "searchPlaceholder": "Buscar Productos, Marcas y Más",
+  "settings": "Configuración",
+  "themeOptions": "Opciones de Tema",
+  "lightMode": "Modo Claro",
+  "darkMode": "Modo Oscuro",
+  "language": "Idioma",  "otherSettings": "Otras Configuraciones"
+}

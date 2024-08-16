@@ -1,0 +1,13 @@
+{
+  "profile": "Profile",
+  "myAccount": "My Account",
+  "logout": "Logout",
+  "account": "Account",
+  "cart": "Cart",
+  "searchPlaceholder": "Search for Products, Brands, and More",
+  "settings": "Settings",
+  "themeOptions": "Theme Options",
+  "lightMode": "Light Mode",
+  "darkMode": "Dark Mode",
+  "language": "Language",  "otherSettings": "Other Settings"
+}
