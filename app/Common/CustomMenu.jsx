@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, MenuItem, Button, Typography, Box } from '@mui/material';
+import { Menu, MenuItem, Button, Typography, Box, useTheme } from '@mui/material';
 
 const CustomMenu = ({
     anchorEl,
@@ -13,16 +13,24 @@ const CustomMenu = ({
     endIcon,
     className, ...props
 }) => {
+    const theme = useTheme()
     return (
         <Box className={className}>
             <Button
-                {...buttonProps}
-                onClick={onOpen}
-                variant="contained"
-                startIcon={startIcon}
-                endIcon={endIcon}
-                style={{ textTransform: 'none' ,width:'100%'}} className='btn '
-            // Prevents uppercase text in the button
+               {...buttonProps}
+               onClick={onOpen}
+               variant="contained"
+               startIcon={startIcon}
+               endIcon={endIcon}
+               sx={{
+                   textTransform: 'none',
+                   width: '100%',
+                   color: theme.palette.button.color,
+                   background: theme.palette.button.background,
+                   '&:hover': {
+                       background: theme.palette.button.hover,
+                   },
+               }}
             >
                 {title && (
                     <Typography variant="body1" style={{ marginLeft: '8px' }}>

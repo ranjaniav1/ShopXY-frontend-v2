@@ -49,7 +49,7 @@ const Brands = ({ onSortChange }) => {
                 borderRadius: '4px',
                 height: 'fit-content',
                 boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-            }}
+            }} 
         >
             <Typography variant="h6" gutterBottom>
                 FILTERS

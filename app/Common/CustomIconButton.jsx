@@ -1,6 +1,5 @@
 import React from 'react';
 import { IconButton, Badge } from '@mui/material';
-import PropTypes from 'prop-types';
 
 const CustomIconButton = ({
     startIcon,
@@ -13,7 +12,7 @@ const CustomIconButton = ({
     return (
         <IconButton
             onClick={onClick}
-            className={`border border-primary-color p-2 rounded-md  mx-2${className}`}
+            className={`  p-2 rounded-md  mx-2${className}`}
         >
             {badgeContent ? (
                 <Badge badgeContent={badgeContent} color={badgeColor}>

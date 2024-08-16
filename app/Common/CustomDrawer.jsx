@@ -1,38 +1,41 @@
 import React from 'react';
-import { Drawer, IconButton, Radio, RadioGroup, FormControlLabel, FormLabel } from '@mui/material';
+import { Drawer, IconButton, Radio, RadioGroup, FormControlLabel, FormLabel, useTheme, Box } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import { useDispatch, useSelector } from 'react-redux';
+import { setTheme } from '../redux/actions/action';
 
 const CustomDrawer = ({ open, onClose }) => {
-    const [theme, setTheme] = React.useState('light');
+    const dispatch = useDispatch();
+    const currentTheme = useSelector(state => state.mode); // Get the current theme from Redux store
 
+    const theme = useTheme()
     const handleThemeChange = (event) => {
-        setTheme(event.target.value);
-        // Implement theme switch logic here (e.g., update context or local storage)
+        dispatch(setTheme(event.target.value));
+        // Dispatch action to change the theme
     };
-
     return (
         <Drawer
             anchor="right"
             open={open}
             onClose={onClose}
         >
-            <div className="flex flex-col h-full">
+            <Box className="flex flex-col h-full">
                 {/* Drawer Header */}
-                <div className="flex justify-between items-center p-4 bg-gray-200">
+                <Box className="flex justify-between items-center p-4 " bgcolor={theme.palette.background.main}>
                     <h2 className="text-lg font-semibold">Settings</h2>
                     <IconButton onClick={onClose} className='btn rounded-md'>
                         <CloseIcon />
                     </IconButton>
-                </div>
-                
+                </Box>
+
                 {/* Drawer Content */}
-                <div className="p-4 flex-grow overflow-y-auto">
+                <Box className="p-4 flex-grow overflow-y-auto" bgcolor={theme.palette.background.secondary}>
                     <div className="mb-4">
                         <FormLabel component="legend" className="text-md font-medium mb-2">Theme Options</FormLabel>
                         <RadioGroup
                             aria-label="theme"
                             name="theme"
-                            value={theme}
+                            value={currentTheme} // Use the theme from Redux store
                             onChange={handleThemeChange}
                             className="flex flex-row"
                         >
@@ -54,15 +57,15 @@ const CustomDrawer = ({ open, onClose }) => {
                             </div>
                         </RadioGroup>
                     </div>
-                    
+
                     {/* Add more settings options here */}
                     <div>
                         {/* Additional settings */}
                         <h3 className="text-md font-medium mb-2">Other Settings</h3>
                         {/* Add other settings options here */}
                     </div>
-                </div>
-            </div>
+                </Box>
+            </Box>
         </Drawer>
     );
 };

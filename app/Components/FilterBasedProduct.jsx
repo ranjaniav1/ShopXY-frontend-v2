@@ -6,7 +6,10 @@ import Link from 'next/link';
 import Heading from '../Common/Heading';
 
 const FilterBasedProduct = ({ products }) => {
+
+
     return (
+
         <Box
             className="p-4 div-body"
             sx={{
@@ -57,9 +60,9 @@ const FilterBasedProduct = ({ products }) => {
                             </Grid>
                         ))
                     ) : (
-                        <Paper className="p-4" elevation={1}>
+                        <Box className="p-4" >
                             <Typography>No products found</Typography>
-                        </Paper>
+                        </Box>
                     )}
                 </Grid>
             </Box>

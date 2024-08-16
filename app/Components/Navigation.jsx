@@ -8,6 +8,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CustomDrawer from '../Common/CustomDrawer';
+import { Box, useTheme } from '@mui/material';
 
 const Navigation = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -34,13 +35,12 @@ const Navigation = () => {
         { title: 'My Account', onClick: () => console.log('My Account clicked') },
         { title: 'Logout', onClick: () => console.log('Logout clicked') },
     ];
-
+    const theme = useTheme()
     return (
-        <header className="fixed top-0 left-0 w-full div-body shadow-md z-50 py-4">            <div className="container mx-auto flex items-center justify-between px-4">
+        <Box className="fixed top-0 left-0 w-full shadow-md z-50 py-4 " style={{ background: theme.palette.background.main }}>            <Box className="container mx-auto flex items-center justify-between px-4" sx={{ background: theme.palette.background.main }}>
             {/* Logo */}
             <div className="text-xl font-semibold">
-                MyLogo
-            </div>
+                <span style={{ color: '#22aa99' }}>s</span>hopsy            </div>
 
             {/* Search Field */}
             <div className="relative flex-grow mx-4">
@@ -78,7 +78,7 @@ const Navigation = () => {
             <CustomIconButton
                 startIcon={<MoreVertIcon />} onClick={handleDrawerOpen}
             />
-        </div>
+        </Box>
 
 
             {/* drawer */}
@@ -86,7 +86,7 @@ const Navigation = () => {
                 {/* Drawer content goes here */}
                 <div>Your drawer content</div>
             </CustomDrawer>
-        </header>
+        </Box>
     );
 };
 
