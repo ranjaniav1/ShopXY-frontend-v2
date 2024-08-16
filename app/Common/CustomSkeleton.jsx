@@ -2,19 +2,21 @@
 import React from 'react';
 import { Box, Skeleton } from '@mui/material';
 
-const CustomSkeleton = ({ type = 'card', className, width = '100%', height = '100%' }) => {
+const CustomSkeleton = ({ type = 'card', className = '', width = '100%', height = '100%' }) => {
+  // Define common styles for different skeleton types
   const skeletonStyles = {
     card: "w-full max-w-sm div-body border border-gray-200 rounded-lg shadow-md p-4",
-    image: `${width} ${height}`, // Dynamic size for image skeleton
+    image: "", // We will apply width and height dynamically
     row: "w-full h-6 bg-gray-300 rounded-lg my-2",
     text: "w-full h-4 bg-gray-300 rounded-lg my-2"
   };
 
+  // Define skeleton elements for each type
   const skeletonElements = {
     card: (
       <div className={`${skeletonStyles.card} ${className}`}>
         <div className="animate-pulse">
-          <div className="w-full h-48 skeleton rounded-lg"></div>
+          <div className="w-full h-48 bg-gray-200 rounded-lg"></div>
           <div className="mt-4">
             <div className={`${skeletonStyles.text} mb-2`} />
           </div>
@@ -22,12 +24,12 @@ const CustomSkeleton = ({ type = 'card', className, width = '100%', height = '10
       </div>
     ),
     image: (
-      <Box className={`flex-shrink-0  skeleton ${skeletonStyles.image} ${className}`}>
+      <Box className={`flex-shrink-0 skeleton ${className}`} style={{ width, height }}>
         <Skeleton
           variant="rectangular"
-          width={width}
-          height={height}
-          sx={{  borderRadius: '10px' }}
+          width="100%"
+          height="100%"
+          sx={{ borderRadius: '10px' }}
         />
       </Box>
     ),

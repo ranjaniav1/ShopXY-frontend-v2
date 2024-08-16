@@ -5,13 +5,14 @@ import CustomSkeleton from '@/app/Common/CustomSkeleton';
 import { GetSingleCollection } from '@/app/Service/GetCollection';
 import Link from 'next/link';
 import Heading from '@/app/Common/Heading';
+import { Box, Card, CardContent, Grid, Typography, useTheme } from '@mui/material';
 
 const Page = () => {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
-    const { id } = useParams(); 
-    const { title } = useParams(); 
-
+    const { id } = useParams();
+    const { title } = useParams();
+const theme=useTheme()
     async function fetchCategory() {
         try {
             const result = await GetSingleCollection({ collection_id: id });
@@ -30,48 +31,44 @@ const Page = () => {
         }
     }, [id]);
 
-    const skeletonCount = 9;
-
     return (
-        <div className="my-7 px-4 py-5 rounded-md bg-gray-100 div-body">
-            <Heading text={title}  />
+        <Box className="my-7 px-4 py-5 rounded-md " sx={{background:theme.palette.background.main}}>
+            <Heading text={title} />
             {loading ? (
-                <div className="p-4 flex flex-wrap gap-4 justify-center">
-                    {Array.from({ length: skeletonCount }).map((_, index) => (
-                        <CustomSkeleton
-                            key={index}
-                            type="card"
-                            width="96px"
-                            height="96px"
-                            className="bg-gray-300"
-                        />
+                <Grid container spacing={2} className="p-4">
+                    {Array.from({ length: categories.length || 9 }).map((_, index) => (
+                        <Grid item xs={6} sm={4} md={3} lg={2} key={index}>
+                            <CustomSkeleton
+                                type="card"
+                            />
+                        </Grid>
                     ))}
-                </div>
+                </Grid>
             ) : categories && categories.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4   ">
+                <Grid container spacing={2}>
                     {categories.map((category) => (
-                        <div
-                            key={category.id}
-                            className="flex flex-col items-center border hover:border-btn rounded-md overflow-hidden shadow-lg transition-opacity duration-300 hover:opacity-80 hover:border-green-500  hover:text-[#3a6927]"
-                        >
-
-                            <Link href={`/categories/collections/${category.id}/${category.slug}`}>
-                                <img
-                                    src={category.collection_image}
-                                    alt={category.title}
-                                    className="w-full h-56 object-cover hover:scale-110"
-                                />
-                            </Link>
-                            <div className="p-4">
-                                <p className="text-lg font-semibold text-center ">{category.title}</p>
-                            </div>
-                        </div>
+                        <Grid item xs={12} sm={6} md={4} lg={3} key={category.id}>
+                            <Card className="hover:opacity-80 transition-opacity duration-300" sx={{}}>
+                                <Link href={`/categories/collections/${category.id}/${category.slug}`}>
+                                    <img
+                                        src={category.collection_image}
+                                        alt={category.title}
+                                        className="w-full h-56 object-cover hover:scale-110 transition-transform duration-300"
+                                    />
+                                </Link>
+                                <CardContent>
+                                    <Typography variant="h6" component="div" className="text-center">
+                                        {category.title}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
                     ))}
-                </div>
+                </Grid>
             ) : (
-                <p className="text-center text-gray-600">No categories found</p>
+                <Typography className="text-center text-gray-600">No categories found</Typography>
             )}
-        </div>
+        </Box>
     );
 };
 

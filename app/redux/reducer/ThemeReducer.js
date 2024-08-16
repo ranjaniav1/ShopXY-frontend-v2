@@ -1,23 +1,22 @@
-// Initial state of the theme
+import { createSlice } from "@reduxjs/toolkit";
+
 const initialState = {
-  mode: "light" // Default mode is 'light'
+  theme: "light", // Default theme
 };
-export const TOGGLE_THEME = "themetoggle";
-export const SET_THEME = "setTheme";
-// Theme reducer function
-export const themeReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case TOGGLE_THEME:
-      return {
-        ...state,
-        mode: state.mode === "light" ? "dark" : "light"
-      };
-    case SET_THEME:
-      return {
-        ...state,
-        mode: action.payload
-      };
-    default:
-      return state;
-  }
-};
+
+const ThemeReducer = createSlice({
+  name: "theme", // name of the reducer
+  initialState, // initial state
+  reducers: {
+    // list of reducers
+    setTheme: (state, action) => {
+      state.theme = action.payload;
+    },
+  },
+});
+
+// Actions generated from the reducera
+export const { setTheme } = ThemeReducer.actions;
+
+// export default reducer
+export default ThemeReducer.reducer;

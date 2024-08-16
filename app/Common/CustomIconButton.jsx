@@ -1,31 +1,24 @@
 import React from 'react';
-import { IconButton, Badge } from '@mui/material';
+import { IconButton, useTheme } from '@mui/material';
 
-const CustomIconButton = ({
-    startIcon,
-    endIcon,
-    onClick,
-    className,
-    badgeContent,
-    badgeColor,
-}) => {
+const CustomIconButton = ({ children, onClick, sx, ...props }) => {
+    const theme = useTheme();
     return (
         <IconButton
             onClick={onClick}
-            className={`  p-2 rounded-md  mx-2${className}`}
+            sx={{
+                borderRadius: '5px', 
+                padding: '8px', 
+                marginLeft: '2%',
+                backgroundColor: theme.palette.button.background, 
+                color: theme.palette.button.color, 
+                '&:hover': {
+                    backgroundColor: theme.palette.button.hover, 
+                }, ...sx, // Allow additional styling via sx prop
+            }}
+            {...props}
         >
-            {badgeContent ? (
-                <Badge badgeContent={badgeContent} color={badgeColor}>
-                    {startIcon}
-                </Badge>
-            ) : (
-                startIcon
-            )}
-            {endIcon && (
-                <span style={{ marginLeft: '8px' }}>
-                    {endIcon}
-                </span>
-            )}
+            {children}
         </IconButton>
     );
 };

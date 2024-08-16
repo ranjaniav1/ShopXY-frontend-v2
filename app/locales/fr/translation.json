@@ -1,0 +1,14 @@
+{
+  "profile": "Profil",
+  "myAccount": "Mon Compte",
+  "logout": "Déconnexion",
+  "account": "Compte",
+  "cart": "Panier",
+  "searchPlaceholder": "Rechercher des Produits, Marques et Plus",
+  "settings": "Paramètres",
+  "themeOptions": "Options de Thème",
+  "lightMode": "Mode Clair",
+  "darkMode": "Mode Sombre",
+  "language": "Langue",
+  "otherSettings": "Autres Paramètres"
+}

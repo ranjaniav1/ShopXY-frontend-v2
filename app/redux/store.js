@@ -12,13 +12,15 @@ import {
 } from "redux-persist";
 import { rootReducer } from "./reducer/rootReducer";
 
-const persistconfig = {
-  key: "root",
-storage,
+// Configure Redux Persist
+const persistConfig = {
+  key: "root", // The key to use for storing data
+  storage,
 };
 
-const persistedReducer = persistReducer(persistconfig, rootReducer);
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
+// for middle ware check https://redux-toolkit.js.org/usage/usage-guide#working-with-non-serializable-data
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
@@ -28,4 +30,5 @@ export const store = configureStore({
       },
     }),
 });
-export const persistedStore = persistStore(store);
+
+export const persistor = persistStore(store);

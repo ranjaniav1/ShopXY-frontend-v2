@@ -8,9 +8,9 @@ import { A11y, Scrollbar } from 'swiper/modules';
 import { GetCategories } from '../Service/GetCategory';
 import Link from 'next/link';
 import CustomSkeleton from '../Common/CustomSkeleton';
-import { Box, useTheme } from '@mui/material';
+import { Box, Grid, useTheme } from '@mui/material';
 
-const Categoy = () => {
+const Category = () => {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -29,23 +29,22 @@ const Categoy = () => {
         GetCategory();
     }, []);
 
-    const skeletonCount = 9;
-    const theme = useTheme()
+    const theme = useTheme();
 
-    console.log("Primary", theme.palette.background.main)
     return (
-        <Box className=' py-5 rounded-md' style={{background: theme.palette.background.main}}>
+        <Box className='py-5 rounded-md' style={{ background: theme.palette.background.main }}>
             {loading ? (
-                <div className="p-4 flex space-x-10">
-                    {Array.from({ length: skeletonCount }).map((_, index) => (
-                        <CustomSkeleton
-                            key={index}
-                            type="image"
-                            width="96px"
-                            height="96px"
-                        />
+                <Grid container spacing={2} className="p-4">
+                    {Array.from({ length: categories.length || 9 }).map((_, index) => (
+                        <Grid item xs={4} sm={3} md={2} lg={1} key={index}>
+                            <CustomSkeleton
+                                type="image"
+                                width="100%"
+                                height="100px"
+                            />
+                        </Grid>
                     ))}
-                </div>
+                </Grid>
             ) : categories && categories.length > 0 ? (
                 <Swiper
                     modules={[A11y, Scrollbar]}
@@ -66,15 +65,14 @@ const Categoy = () => {
                     }}
                 >
                     {categories.map((category) => (
-                        <SwiperSlide
-                            key={category.id}
-                            className="text-center"
-                        >
+                        <SwiperSlide key={category.id} className="text-center">
                             <Link href={`/categories/${category.id}/${category.slug}`}>
                                 <img
                                     src={category.category_icon}
                                     alt={category.title}
-                                    className="w-24 h-24 rounded-lg object-cover mb-2 mx-auto border-btn"
+                                    className="w-24 h-24 rounded-lg object-cover mb-2 mx-auto"  style={{
+                                        border: `2px solid ${theme.palette.card.border}`
+                                    }}
                                 />
                             </Link>
                         </SwiperSlide>
@@ -87,4 +85,4 @@ const Categoy = () => {
     );
 };
 
-export default Categoy;
+export default Category;
