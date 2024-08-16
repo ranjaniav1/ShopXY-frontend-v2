@@ -2,7 +2,7 @@ import { httpAxios } from "../httpAxios";
 
 export async function GetCollection() {
   try {
-    const response = await httpAxios.get(`/Get-category`);
+    const response = await httpAxios.get(`/Get-collection`);
     return response.data;
   } catch (error) {
     console.log("error in category", error);

@@ -6,13 +6,14 @@ import { GetSingleCollection } from '@/app/Service/GetCollection';
 import Link from 'next/link';
 import Heading from '@/app/Common/Heading';
 import { Box, Card, CardContent, Grid, Typography, useTheme } from '@mui/material';
+import CustomBox from '@/app/Common/CustomBox';
 
 const Page = () => {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const { id } = useParams();
     const { title } = useParams();
-const theme=useTheme()
+    const theme = useTheme()
     async function fetchCategory() {
         try {
             const result = await GetSingleCollection({ collection_id: id });
@@ -32,12 +33,11 @@ const theme=useTheme()
     }, [id]);
 
     return (
-        <Box className="my-7 px-4 py-5 rounded-md " sx={{background:theme.palette.background.main}}>
-            <Heading text={title} />
+        <CustomBox>            <Heading text={title} />
             {loading ? (
                 <Grid container spacing={2} className="p-4">
                     {Array.from({ length: categories.length || 9 }).map((_, index) => (
-                        <Grid item xs={6} sm={4} md={3} lg={2} key={index}>
+                        <Grid item xs={6} sm={4} md={5} lg={2} key={index}>
                             <CustomSkeleton
                                 type="card"
                             />
@@ -47,13 +47,19 @@ const theme=useTheme()
             ) : categories && categories.length > 0 ? (
                 <Grid container spacing={2}>
                     {categories.map((category) => (
-                        <Grid item xs={12} sm={6} md={4} lg={3} key={category.id}>
-                            <Card className="hover:opacity-80 transition-opacity duration-300" sx={{}}>
+                        <Grid item xs={6} sm={4} md={5} lg={2} key={category.id}>
+                            <Card sx={{
+                                border: `1px solid ${theme.palette.card.border}`,
+                                transition: 'border-color 0.3s ease', // Smooth transition for border color
+                                '&:hover': {
+                                    border: `1px solid ${theme.palette.card.hover}`, // Apply hover border color
+                                },
+                            }}>
                                 <Link href={`/categories/collections/${category.id}/${category.slug}`}>
                                     <img
                                         src={category.collection_image}
                                         alt={category.title}
-                                        className="w-full h-56 object-cover hover:scale-110 transition-transform duration-300"
+                                        className="w-full h-48 object-cover "
                                     />
                                 </Link>
                                 <CardContent>
@@ -68,7 +74,7 @@ const theme=useTheme()
             ) : (
                 <Typography className="text-center text-gray-600">No categories found</Typography>
             )}
-        </Box>
+        </CustomBox>
     );
 };
 
