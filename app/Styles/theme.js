@@ -9,6 +9,7 @@ const lightTheme = createTheme({
       main: "#22aa99"
     },
     background: {
+      default: "#fefefe",
       main: "#ffffff",
       secondary: "#F1F0F0"
     },
@@ -27,19 +28,7 @@ const lightTheme = createTheme({
       border: "#dddddd",
       hover: "#f5f5f5"
     },
-    container: {
-      background: "#ffffff",
-      border: "#dddddd"
-    },
-    nav: {
-      background: "#ffffff",
-      text: "#333333",
-      border: "#dddddd"
-    },
-    alert: {
-      success: "#d4edda",
-      error: "#f8d7da"
-    }
+   
   }
 });
 
@@ -51,6 +40,7 @@ const darkTheme = createTheme({
       main: "#000000"
     },
     background: {
+      default: "#0C2233",
       main: "#065471",
       secondary: "#0C2233"
     },
@@ -69,23 +59,8 @@ const darkTheme = createTheme({
       border: "#444444",
       hover: "#333333"
     },
-    container: {
-      background: "#2c2c2c",
-      border: "#444444"
-    },
-    nav: {
-      background: "#1e1e1e",
-      text: "#e0e0e0",
-      border: "#444444"
-    },
-    alert: {
-      success: "#004d00",
-      error: "#660000"
-    }
   },
-  components: {
-    // You can customize MUI components here
-  }
+
 });
 
 export { lightTheme, darkTheme };

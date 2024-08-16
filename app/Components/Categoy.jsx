@@ -8,6 +8,7 @@ import { A11y, Scrollbar } from 'swiper/modules';
 import { GetCategories } from '../Service/GetCategory';
 import Link from 'next/link';
 import CustomSkeleton from '../Common/CustomSkeleton';
+import { Box, useTheme } from '@mui/material';
 
 const Categoy = () => {
     const [categories, setCategories] = useState([]);
@@ -29,9 +30,11 @@ const Categoy = () => {
     }, []);
 
     const skeletonCount = 9;
+    const theme = useTheme()
 
+    console.log("Primary", theme.palette.background.main)
     return (
-        <div className='my-7 div-body py-5 rounded-md'>
+        <Box className=' py-5 rounded-md' style={{background: theme.palette.background.main}}>
             {loading ? (
                 <div className="p-4 flex space-x-10">
                     {Array.from({ length: skeletonCount }).map((_, index) => (
@@ -80,7 +83,7 @@ const Categoy = () => {
             ) : (
                 <p>No categories found</p>
             )}
-        </div>
+        </Box>
     );
 };
 

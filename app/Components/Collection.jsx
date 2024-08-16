@@ -5,12 +5,12 @@ import { GetHomeScreenData } from '../Service/GetHomeScreenData';
 import CustomSkeleton from '../Common/CustomSkeleton';
 import Link from 'next/link';
 import CustomButton from '../Common/CustomButton';
-
+import { useTheme, Box } from "@mui/material"
 const Collection = () => {
     const [collection, setCollection] = useState([]);
     const [loading, setLoading] = useState(true);
     const [visibleCount, setVisibleCount] = useState(6); // Number of items visible initially
-
+    const theme = useTheme()
     async function GetCollection() {
         try {
             const result = await GetHomeScreenData();
@@ -50,12 +50,12 @@ const Collection = () => {
                         ))}
                     </div>
                 ) : collection && collection.length > 0 ? (
-                    <div>
+                    <Box bgcolor={theme.palette.background.main} sx={{color:theme.palette.button.color}}className="rounded-md py-5">
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 px-4 py-4 gap-6">
                             {collection.slice(0, visibleCount).map((category) => (
-                                <div
+                                <Box
                                     key={category.id}
-                                    className="flex flex-col items-center border border-btn rounded-md overflow-hidden shadow-lg div-body"
+                                    className="flex flex-col items-center  rounded-md overflow-hidden shadow-lg "
                                 >
                                     <Link href={`/categories/collections/${category.id}/${encodeURIComponent(category.slug)}`}>
 
@@ -65,20 +65,16 @@ const Collection = () => {
                                             className="w-full h-56 object-cover"
                                         /></Link>
                                     <p className="text-lg font-semibold text-center p-4">{category.title}</p>
-                                </div>
+                                </Box>
                             ))}
                         </div>
                         {visibleCount < collection.length && (
                             <div className="text-center my-4">
-                                <button
-                                    onClick={handleShowMore}
-                                    className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-                                >
-                                    Show More
-                                </button>
+
+                                <CustomButton title="Show More" onClick={handleShowMore} className="px-4 py-2  rounded-md" />
                             </div>
                         )}
-                    </div>
+                    </Box>
                 ) : (
                     <p>No collection found</p>
                 )}

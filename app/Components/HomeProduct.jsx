@@ -1,21 +1,19 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Box, Container, Grid } from '@mui/material';
+import { Box, Container, Grid, useTheme } from '@mui/material';
 import ProductCard from './ProductCard';
 import Brands from '../Common/Brands';
 import Heading from '../Common/Heading';
 import Link from 'next/link';
 import { GetHomeScreenData } from '../Service/GetHomeScreenData';
 import CustomSkeleton from '../Common/CustomSkeleton';
-import 'aos/dist/aos.css'; // Import AOS CSS
-import Aos from 'aos';
 const HomeProduct = () => {
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [sortOption, setSortOption] = useState('');
     const [loading, setLoading] = useState(true);
-
+    const theme = useTheme()
     async function fetchCategories() {
         try {
             const result = await GetHomeScreenData();
@@ -49,29 +47,26 @@ const HomeProduct = () => {
     const handleSortChange = (option) => {
         setSortOption(option);
     };
-    useEffect(() => {
-        Aos.init({
-            duration: 1000, // Duration of the animation
-            easing: 'ease-in-out', // Easing function for the animation
-            once: true, // Whether animation should happen only once
-        });
-    }, []);
+  
 
     return (
         <>
-            <Heading text={"Products for You"} />            <Box sx={{ display: 'flex', flexDirection: "row" }}>
-
-                <Grid container spacing={2} sx={{ marginTop: 2 }}>
-                    <Grid item xs={12} md={3}>
+            <Heading text={"Products for You"} />
+            <Box sx={{ display: 'flex', flexDirection: "row", }}>
+                <Grid container spacing={4} sx={{ marginTop: 2 }}>
+                    <Grid item xs={12} md={3} sx={{ background: theme.palette.background.main, borderRadius:'5px'}}>
                         <Brands onSortChange={handleSortChange} />
                     </Grid>
-                    <Grid item xs={12} md={9}>
-                        <Grid container spacing={4}>
+                    <Grid item xs={12} md={9} sx={{
+                        borderRadius: '5px', background: theme.palette.background.main
+
+                    }}>
+                        <Grid container spacing={4} sx={{ paddingRight: '20px', }}>
                             {
                                 loading ? (<CustomSkeleton type="card" />) : (
                                     filteredProducts.length > 0 ? (
                                         filteredProducts.map((product) => (
-                                            <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}  data-aos="fade-up">
+                                            <Grid item xs={12} sm={6} md={4} lg={3} key={product.id} >
                                                 <Link href={`/product/${encodeURIComponent(product.slug)}`}>
                                                     <ProductCard
                                                         className="w-full h-60 object-contain "
