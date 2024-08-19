@@ -1,12 +1,18 @@
+import { useTheme } from '@mui/material';
 import React from 'react';
 
-const ProductCard = ({ imgSrc, title, price, discountPrice, rating, description, offer, className,onClick }) => {
+const ProductCard = ({ imgSrc, title, price, discountPrice, rating, description, offer, className, onClick }) => {
+    const theme = useTheme()
     const truncateText = (text, maxLength) => {
         if (text.length <= maxLength) return text;
         return text.slice(0, maxLength) + '...';
     };
     return (
-        <div className="border div-body border-gray-200 hover:scale-105 transition-transform transform rounded-lg overflow-hidden shadow-md p-4 hover:border-green-500 hover:shadow-green-200" onClick={onClick}>
+        <div className="border  border-gray-200 hover:scale-105 transition-transform transform rounded-lg overflow-hidden shadow-md p-4 hover:border-green-500 hover:shadow-green-200" onClick={onClick} style={{
+            background: theme.palette.card.background,
+            boxShadow: `0 4px 8px ${theme.palette.card.hover}`,
+            transition: 'border-color 0.3s ease, box-shadow 0.3s ease',
+        }}>
             <img
                 src={imgSrc}
                 alt={title}
@@ -31,7 +37,7 @@ const ProductCard = ({ imgSrc, title, price, discountPrice, rating, description,
                         <span className="text-gray-500 ml-1">({rating})</span>
                     </div>
                 )}
-                {description && <p className="text-gray-700 text-sm">{truncateText(description,100)}</p>}
+                {description && <p className="text-gray-700 text-sm">{truncateText(description, 100)}</p>}
             </div>
         </div>
     );
