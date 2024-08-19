@@ -9,6 +9,7 @@ const lightTheme = createTheme({
       main: "#22aa99"
     },
     background: {
+      default: "#f2f1f0",
       main: "#ffffff",
       secondary: "#F1F0F0",
       nav: "#ffffff",
@@ -40,6 +41,7 @@ const darkTheme = createTheme({
       main: "#000000"
     },
     background: {
+      default: "#010101",
       main: "#2c3132",
       secondary: "#0C2233",
       nav: "#000000",
