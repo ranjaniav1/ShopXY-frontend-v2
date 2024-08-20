@@ -37,7 +37,7 @@ const ProductCard = ({ imgSrc, title, price, discountPrice, rating, description,
                         <span className="text-gray-500 ml-1">({rating})</span>
                     </div>
                 )}
-                {description && <p className="text-gray-700 text-sm">{truncateText(description, 100)}</p>}
+                {description && <p className="text-gray-700 text-sm">{truncateText(description, 70)}</p>}
             </div>
         </div>
     );
