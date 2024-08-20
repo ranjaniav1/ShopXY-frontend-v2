@@ -2,18 +2,20 @@
 import React, { useEffect, useState } from 'react';
 import Heading from '../Common/Heading';
 import CustomSkeleton from '../Common/CustomSkeleton';
-import CustomButton from '../Common/CustomButton';
+import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOutlined';
 import { useTheme, Grid, Box, Typography } from "@mui/material";
 import { GetCollection } from '../Service/GetCollection';
 import CustomCollectionCard from '../Common/CustomCollectionCard';
 import CustomBox from '../Common/CustomBox';
+import CustomIconButton from '../Common/CustomIconButton';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 
 const Collection = () => {
     const [collection, setCollection] = useState([]);
     const [loading, setLoading] = useState(true);
     const [visibleCount, setVisibleCount] = useState(6);
-    const theme = useTheme();
-
+    const pathname = usePathname()
     useEffect(() => {
         async function fetchCollection() {
             try {
@@ -28,16 +30,21 @@ const Collection = () => {
         }
         fetchCollection();
     }, []);
-
-    const handleShowMore = () => {
-        setVisibleCount(prevCount => prevCount + 6);
-    };
-
-    return (
+    const showArrowIcon = pathname !== "/categories/collections"
+    // If on the /categories/collections route, display all categories
+    useEffect(() => {
+        if (pathname === "/categories/collections") {
+            setVisibleCount(collection.length);
+        }
+    }, [pathname, collection.length]); return (
         <CustomBox>
-
-            <Heading text="Best Deals on Electronics" />
-            <Box >
+            <Heading text="Best Deals on Electronics">
+                {showArrowIcon && visibleCount < collection.length && (
+                    <Link href="/categories/collections" passHref>
+                        <CustomIconButton sx={{ border: '1 px solid white' }}><ArrowCircleRightOutlinedIcon fontSize='large' /></CustomIconButton></Link>
+                )}
+            </Heading>
+            <Box>
                 {loading ? (
                     <Grid container spacing={2}>
                         {Array.from({ length: 6 }).map((_, index) => (
@@ -52,6 +59,7 @@ const Collection = () => {
                             {collection.slice(0, visibleCount).map(category => (
                                 <Grid item xs={6} sm={4} md={3} lg={2} key={category.id}>
                                     <CustomCollectionCard
+                                        tooltip={category.title}
                                         id={category.id}
                                         slug={category.slug}
                                         image={category.collection_image}
@@ -60,11 +68,6 @@ const Collection = () => {
                                 </Grid>
                             ))}
                         </Grid>
-                        {visibleCount < collection.length && (
-                            <Box textAlign="center" my={4}>
-                                <CustomButton title="Show More" onClick={handleShowMore} />
-                            </Box>
-                        )}
                     </>
                 ) : (
                     <Typography textAlign="center">No collection found</Typography>

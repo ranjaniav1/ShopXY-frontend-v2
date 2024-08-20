@@ -1,11 +1,12 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Divider } from '@mui/material';
+import { Box, Typography, Divider, useTheme } from '@mui/material';
 import CustomMenu from './CustomMenu';
 import ArrowDropDownSharpIcon from '@mui/icons-material/ArrowDropDownSharp';
 
 const Brands = ({ onSortChange }) => {
+    const theme=useTheme()
     const [anchorEl, setAnchorEl] = useState(null);
     const [open, setOpen] = useState(false);
     const [filterType, setFilterType] = useState('');
@@ -44,11 +45,11 @@ const Brands = ({ onSortChange }) => {
             sx={{
                 // width: '85%',
                 padding: '16px',
-                backgroundColor: 'white',
                 border: '1px solid #e0e0e0',
                 borderRadius: '4px',
                 height: 'fit-content',
                 boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                color:'black'
             }} 
         >
             <Typography variant="h6" gutterBottom>

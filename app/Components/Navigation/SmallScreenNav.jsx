@@ -17,7 +17,7 @@ const SmallScreenNav = ({ setDrawerOpen }) => {
     >
       {/* Logo */}
       <div className="text-xl font-semibold">
-        <span style={{ color: '#22aa99' }}>s</span>hopsy
+        <span style={{ color: '#22aa99' }}>s</span>hopxy
       </div>
 
       <Box display="flex" alignItems="center">
