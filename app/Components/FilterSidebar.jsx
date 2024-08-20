@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { Checkbox, FormControlLabel, FormGroup, Typography, Divider, Box, Select, MenuItem } from '@mui/material';
+import { Checkbox, FormControlLabel, FormGroup, Typography, Divider, Box, Select, MenuItem, useTheme } from '@mui/material';
 import { GetSingleBrands } from '../Service/GetBrands';
 
 const FilterSidebar = ({ onBrandChange, brand_id }) => {
@@ -53,9 +53,9 @@ const FilterSidebar = ({ onBrandChange, brand_id }) => {
   const handleSortChange = (event) => {
     setSortOption(event.target.value);
   };
-
+const theme=useTheme()
   return (
-    <Box sx={{ width: '100%', padding: '16px', backgroundColor: 'white', border: '1px solid #e0e0e0', borderRadius: '4px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+    <Box sx={{ width: '100%', padding: '16px', backgroundColor: theme.palette.background.main, border: '1px solid #e0e0e0', borderRadius: '4px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
       <Typography variant="h6">Filters</Typography>
       <Divider sx={{ my: 2 }} />
 
