@@ -26,7 +26,7 @@ const lightTheme = createTheme({
       disabled: "#999999"
     },
     card: {
-      border: "#000000",
+      border: "#22aa99",
       hover: "#22aa99",
       background: "#ffffff"
     }
@@ -58,7 +58,7 @@ const darkTheme = createTheme({
       disabled: "#7d7d7d"
     },
     card: {
-      border: "#ffffff",
+      border: "#22aa99",
       hover: "#22aa99",
       background: "#141d1d"
     }

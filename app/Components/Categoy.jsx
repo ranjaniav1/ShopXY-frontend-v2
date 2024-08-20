@@ -3,12 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
-import 'swiper/css/scrollbar';
-import { A11y, Scrollbar } from 'swiper/modules';
+import { A11y } from 'swiper/modules';
 import { GetCategories } from '../Service/GetCategory';
 import Link from 'next/link';
 import CustomSkeleton from '../Common/CustomSkeleton';
-import { Box, Grid, useTheme } from '@mui/material';
+import { Box, Grid, Tooltip, useTheme } from '@mui/material';
 
 const Category = () => {
     const [categories, setCategories] = useState([]);
@@ -47,10 +46,9 @@ const Category = () => {
                 </Grid>
             ) : categories && categories.length > 0 ? (
                 <Swiper
-                    modules={[A11y, Scrollbar]}
+                    modules={[A11y]}
                     spaceBetween={10}
                     slidesPerView={3}
-                    scrollbar={{ draggable: true }}
                     breakpoints={{
                         640: {
                             slidesPerView: 4,
@@ -67,13 +65,17 @@ const Category = () => {
                     {categories.map((category) => (
                         <SwiperSlide key={category.id} className="text-center">
                             <Link href={`/categories/${category.id}/${category.slug}`}>
-                                <img
-                                    src={category.category_icon}
-                                    alt={category.title}
-                                    className="w-24 h-24 rounded-lg object-cover mb-2 mx-auto"  style={{
-                                        border: `2px solid ${theme.palette.card.border}`
-                                    }}
-                                />
+                                <Tooltip title={category.title}>
+                                    <img
+                                        src={category.category_icon}
+                                        alt={category.title}
+                                        className="w-28 h-28 rounded-full object-cover mb-2 mx-auto hover:border-primary"
+                                        style={{
+                                            border: `2px solid ${theme.palette.card.border}`,
+                                            background: `${theme.palette.card.background}`,
+                                        }}
+                                    />
+                                </Tooltip>
                             </Link>
                         </SwiperSlide>
                     ))}
