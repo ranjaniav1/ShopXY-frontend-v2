@@ -6,7 +6,7 @@ import CustomMenu from './CustomMenu';
 import ArrowDropDownSharpIcon from '@mui/icons-material/ArrowDropDownSharp';
 
 const Brands = ({ onSortChange }) => {
-    const theme=useTheme()
+    const theme = useTheme()
     const [anchorEl, setAnchorEl] = useState(null);
     const [open, setOpen] = useState(false);
     const [filterType, setFilterType] = useState('');
@@ -49,17 +49,17 @@ const Brands = ({ onSortChange }) => {
                 borderRadius: '4px',
                 height: 'fit-content',
                 boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                color:'black'
-            }} 
+                color: 'black'
+            }}
         >
             <Typography variant="h6" gutterBottom>
                 FILTERS
             </Typography>
             <Divider sx={{ mb: 2 }} />
-            
+
             <Box sx={{ mb: 2 }}>
                 <CustomMenu
-                   endIcon={<ArrowDropDownSharpIcon />}
+                    endIcon={<ArrowDropDownSharpIcon />}
                     title="Sort By"
                     menuItems={sortMenuItems}
                     anchorEl={anchorEl}

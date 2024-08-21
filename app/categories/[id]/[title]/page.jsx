@@ -37,7 +37,7 @@ const Page = () => {
             {loading ? (
                 <Grid container spacing={2} className="p-4">
                     {Array.from({ length: categories.length || 9 }).map((_, index) => (
-                        <Grid item xs={6} sm={4} md={5} lg={2} key={index}>
+                        <Grid item xs={6} sm={4} md={5} lg={3} key={index}>
                             <CustomSkeleton
                                 type="card"
                             />
@@ -47,7 +47,7 @@ const Page = () => {
             ) : categories && categories.length > 0 ? (
                 <Grid container spacing={2}>
                     {categories.map((category) => (
-                        <Grid item xs={6} sm={4} md={5} lg={2} key={category.id}>
+                        <Grid item xs={6} sm={4} md={5} lg={3} key={category.id}>
                             <Card sx={{
                                 border: `1px solid ${theme.palette.card.border}`,
                                 transition: 'border-color 0.3s ease', // Smooth transition for border color
