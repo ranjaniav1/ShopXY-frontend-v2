@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import Heading from "@/app/Common/Heading";
 import FilterSidebar from "@/app/Components/FilterSidebar";
 import { Grid } from "@mui/material";
@@ -7,7 +7,6 @@ import React, { useState } from "react";
 
 const Layout = ({ children }) => {
   const { collectionId } = useParams();
-  const [products, setProducts] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
   const [selectedBrands, setSelectedBrands] = useState([]);
 
@@ -15,20 +14,24 @@ const Layout = ({ children }) => {
     setSelectedBrands(brands);
 
     if (brands.length > 0) {
-      const filteredProducts = allProducts.filter(
-        (product) => brands.includes(product.product_id)
+      const filteredProducts = allProducts.filter((product) =>
+        brands.includes(product.product_id)
       );
-      setProducts(filteredProducts);
+      setAllProducts(filteredProducts);
     } else {
-      setProducts(allProducts);
+      setAllProducts(allProducts);
     }
   };
-
+  const { collectionTitle } = useParams();
+  console.log("collection", collectionTitle);
   return (
     <Grid container spacing={2} sx={{ marginTop: 2 }}>
       <Grid item xs={12} md={3}>
-        <Heading text={"Products for You"} />
-        <FilterSidebar onBrandChange={handleBrandChange} brand_id={collectionId} />
+        <Heading text={collectionTitle} />
+        <FilterSidebar
+          onBrandChange={handleBrandChange}
+          brand_id={collectionId}
+        />
       </Grid>
       <Grid item xs={12} md={9}>
         {children}

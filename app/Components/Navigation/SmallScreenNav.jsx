@@ -26,7 +26,7 @@ const SmallScreenNav = ({ setDrawerOpen }) => {
         <CustomInput
           startIcon={<Search sx={{ fontSize: 24 }} />} // Ensure icon size is set
           placeholder="Search Products"
-          className="bg-blue-300 text-black py-2 px-4 rounded-md"
+          className="bg-blue-100 text-white py-2 px-4 rounded-md"
         />
         {/* Hamburger Menu Icon */}
         <CustomIconButton onClick={() => setDrawerOpen(true)} ><MenuIcon /></CustomIconButton>

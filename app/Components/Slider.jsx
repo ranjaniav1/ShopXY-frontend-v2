@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
-import 'swiper/css/scrollbar';
-import { Navigation, A11y, Scrollbar } from 'swiper/modules';
-import CustomSkeleton from '../Common/CustomSkeleton'; 
+import { Navigation, A11y } from 'swiper/modules';
+import CustomSkeleton from '../Common/CustomSkeleton';
 import { GetHomeScreenData } from '../Service/GetHomeScreenData';
+import Link from 'next/link';
 
 const Slider = () => {
     const [slider, setSlider] = useState([]);
@@ -32,7 +32,7 @@ const Slider = () => {
         <div className='my-7'>
             <Swiper
                 navigation={true}
-                modules={[A11y, Scrollbar, Navigation]}
+                modules={[A11y, Navigation]}
                 slidesPerView={1}
                 scrollbar={{ draggable: true }}
                 style={{ height: '400px', borderRadius: '5px' }}
@@ -45,15 +45,17 @@ const Slider = () => {
                     slider && slider.length > 0 ? (
                         slider.map((slide) => (
                             <SwiperSlide key={slide.id}>
-                                <img
-                                    src={slide.slider_image}
-                                    alt={slide.title}
-                                    style={{
-                                        width: '100%',
-                                        height: '100%',
-                                        objectFit: 'cover',
-                                    }}
-                                />
+                                <Link href={`/category/${slide.id}/${slide.slug}`}>
+                                    <img
+                                        src={slide.slider_image}
+                                        alt={slide.title}
+                                        style={{
+                                            width: '100%',
+                                            height: '100%',
+                                            objectFit: 'cover',
+                                        }}
+                                    />
+                                </Link>
                             </SwiperSlide>
                         ))
                     ) : (

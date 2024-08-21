@@ -44,7 +44,7 @@ const darkTheme = createTheme({
       default: "#010101",
       main: "#2c3132",
       secondary: "#0C2233",
-      nav: "#000000",
+      nav: "#2c3132",
       body: "#15181a"
     },
     button: {
