@@ -7,7 +7,6 @@ import React, { useState } from "react";
 
 const Layout = ({ children }) => {
   const { collectionId } = useParams();
-  const [products, setProducts] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
   const [selectedBrands, setSelectedBrands] = useState([]);
 
@@ -18,9 +17,9 @@ const Layout = ({ children }) => {
       const filteredProducts = allProducts.filter((product) =>
         brands.includes(product.product_id)
       );
-      setProducts(filteredProducts);
+      setAllProducts(filteredProducts);
     } else {
-      setProducts(allProducts);
+      setAllProducts(allProducts);
     }
   };
   const { collectionTitle } = useParams();

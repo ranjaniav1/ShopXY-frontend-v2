@@ -21,11 +21,8 @@ const FilterSidebar = ({ onBrandChange, brand_id }) => {
 
   useEffect(() => {
     GetBrands();
-  }, [brand_id]);
+  }, []);
 
-  useEffect(() => {
-    sortBrands(sortOption);
-  }, [brands, sortOption]);
 
   const sortBrands = (option) => {
     let sortedBrands = [...brands];

@@ -28,7 +28,7 @@ const FullScreenNav = ({ setDrawerOpen }) => {
                 <CustomInput
                     startIcon={<Search className='rounded-md text-white' />}
                     placeholder="Search for Products, Brands, and More"
-                    className="bg-blue-300 text-black placeholder-gray-700 py-2 px-4 rounded-md h-35"
+                    className="bg-blue-100  h-[36px] py-2  rounded-md h-35"
                 />
             </div>
 

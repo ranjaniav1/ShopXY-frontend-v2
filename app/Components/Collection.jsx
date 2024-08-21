@@ -38,10 +38,10 @@ const Collection = () => {
         }
     }, [pathname, collection.length]); return (
         <CustomBox>
-            <Heading text="Best Deals on Electronics">
+            <Heading text="Best Deals on Electronics" className={{padding:0}}>
                 {showArrowIcon && visibleCount < collection.length && (
                     <Link href="/categories/collections" passHref>
-                        <CustomIconButton sx={{ border: '1 px solid white' }}><ArrowCircleRightOutlinedIcon fontSize='large' /></CustomIconButton></Link>
+                        <CustomIconButton ><ArrowCircleRightOutlinedIcon fontSize='large' /></CustomIconButton></Link>
                 )}
             </Heading>
             <Box>
