@@ -33,7 +33,7 @@ const Layout = ({ children }) => {
           brand_id={collectionId}
         />
       </Grid>
-      <Grid item xs={12} md={9}>
+      <Grid item xs={12} md={9} sx={{mt:5.5}}>
         {children}
       </Grid>
     </Grid>

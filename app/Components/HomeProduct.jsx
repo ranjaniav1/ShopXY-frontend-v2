@@ -8,6 +8,8 @@ import Heading from '../Common/Heading';
 import Link from 'next/link';
 import CustomSkeleton from '../Common/CustomSkeleton';
 import { GetAllProducts } from '../Service/GetProduct';
+import FilterSidebar from './FilterSidebar';
+import CustomBox from '../Common/CustomBox';
 
 const HomeProduct = () => {
     const [products, setProducts] = useState([]);
@@ -31,15 +33,14 @@ const HomeProduct = () => {
     return (
         <>
             <Heading text={"Products for You"} />
-            <Box sx={{ display: 'flex', flexDirection: "row" }}>
-                <Grid container spacing={4} sx={{ marginTop: 2 }}>
-                    <Grid item xs={12} md={3} sx={{ background: theme.palette.background.main, borderRadius: '5px' }}>
-                        <Brands />
-                    </Grid>
-                    <Grid item xs={12} md={9} sx={{
-                        borderRadius: '5px', background: theme.palette.background.main
-                    }}>
-                        <Grid container spacing={4} sx={{ paddingRight: '20px' }}>
+            <Grid container spacing={2} >
+                <Grid item xs={12} md={3} sx={{ mt: 3.5 }} >
+                    <Brands />
+                    {/* <FilterSidebar /> */}
+                </Grid>
+                <Grid item xs={12} md={9}>
+                    <CustomBox>
+                        <Grid container spacing={2} >
                             {
                                 loading ? (<CustomSkeleton type="card" />) : (
                                     products.length > 0 ? (
@@ -47,7 +48,7 @@ const HomeProduct = () => {
                                             <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
                                                 <Link href={`/product/${encodeURIComponent(product.slug)}`}>
                                                     <ProductCard
-                                                        className="w-full h-60 object-contain" 
+                                                        className="w-full h-60 object-contain "
                                                         imgSrc={product.image}
                                                         title={product.name}
                                                         price={product.actual_price}
@@ -66,10 +67,9 @@ const HomeProduct = () => {
                                     )
                                 )
                             }
-                        </Grid>
-                    </Grid>
+                        </Grid></CustomBox>
                 </Grid>
-            </Box>
+            </Grid>
         </>
     );
 };

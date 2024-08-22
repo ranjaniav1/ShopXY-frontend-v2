@@ -7,6 +7,7 @@ import Link from 'next/link';
 import Heading from '@/app/Common/Heading';
 import { Box, Card, CardContent, Grid, Typography, useTheme } from '@mui/material';
 import CustomBox from '@/app/Common/CustomBox';
+import CustomCollectionCard from '@/app/Common/CustomCollectionCard';
 
 const Page = () => {
     const [categories, setCategories] = useState([]);
@@ -47,27 +48,14 @@ const Page = () => {
             ) : categories && categories.length > 0 ? (
                 <Grid container spacing={2}>
                     {categories.map((category) => (
-                        <Grid item xs={6} sm={4} md={5} lg={3} key={category.id}>
-                            <Card sx={{
-                                border: `1px solid ${theme.palette.card.border}`,
-                                transition: 'border-color 0.3s ease', // Smooth transition for border color
-                                '&:hover': {
-                                    border: `1px solid ${theme.palette.card.hover}`, // Apply hover border color
-                                },
-                            }}>
-                                <Link href={`/categories/collections/${category.id}/${category.slug}`}>
-                                    <img
-                                        src={category.collection_image}
-                                        alt={category.title}
-                                        className="w-full h-48 object-cover "
-                                    />
-                                </Link>
-                                <CardContent>
-                                    <Typography variant="h6" component="div" className="text-center">
-                                        {category.title}
-                                    </Typography>
-                                </CardContent>
-                            </Card>
+                        <Grid item xs={6} sm={4} md={3} lg={2} key={category.id}>
+                            <CustomCollectionCard
+                                tooltip={category.title}
+                                id={category.id}
+                                slug={category.slug}
+                                image={category.collection_image}
+                                title={category.title}
+                            />
                         </Grid>
                     ))}
                 </Grid>

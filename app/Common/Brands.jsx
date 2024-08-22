@@ -1,72 +1,87 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Divider, useTheme } from '@mui/material';
-import CustomMenu from './CustomMenu';
-import ArrowDropDownSharpIcon from '@mui/icons-material/ArrowDropDownSharp';
+import { Box, Typography, Divider, Select, MenuItem, FormGroup, FormControlLabel, Checkbox, useTheme } from '@mui/material';
+import { useParams } from 'next/navigation';
+import { GetSingleBrands } from '../Service/GetBrands'; // Ensure this import is correct and matches your service file
 
-const Brands = ({ onSortChange }) => {
-    const theme = useTheme()
-    const [anchorEl, setAnchorEl] = useState(null);
-    const [open, setOpen] = useState(false);
-    const [filterType, setFilterType] = useState('');
+const Brands = ({ onBrandChange }) => {
+    const [brands, setBrands] = useState([]);
+    const theme = useTheme();
 
-
-
-    const handleMenuOpen = (event, type) => {
-        setAnchorEl(event.currentTarget);
-        setFilterType(type);
-        setOpen(true);
+    // Fetch brands data
+    const fetchBrands = async () => {
+        try {
+            const result = await GetSingleBrands({ brand_id: 101 });
+            setBrands(result.data);
+        } catch (error) {
+            console.log("Failed to fetch brands", error);
+        }
     };
 
-    const handleMenuClose = () => {
-        setAnchorEl(null);
-        setOpen(false);
-    };
+    useEffect(() => {
+        fetchBrands();
+    }, []);
 
-    const handleSortSelect = (sortOption) => {
-        onSortChange(sortOption);
-        handleMenuClose();
-    };
 
-    const createMenuItems = (items, onSelect) => items.map((item) => ({
-        title: item.name || item.color,
-        onClick: () => onSelect(item.name || item.color),
-    }));
 
-    const sortMenuItems = createMenuItems([
-        { name: 'Price: Low to High' },
-        { name: 'Price: High to Low' },
-        { name: 'Newest Arrivals' },
-    ], handleSortSelect);
+  
 
     return (
-        <Box
-            sx={{
-                // width: '85%',
-                padding: '16px',
-                border: '1px solid #e0e0e0',
-                borderRadius: '4px',
-                height: 'fit-content',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                color: 'black'
-            }}
-        >
-            <Typography variant="h6" gutterBottom>
-                FILTERS
-            </Typography>
-            <Divider sx={{ mb: 2 }} />
+        <Box sx={{ width: '100%', padding: '16px', backgroundColor: theme.palette.background.main, border: '1px solid #e0e0e0', borderRadius: '4px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+            <Typography variant="h6">Filters</Typography>
+            <Divider sx={{ my: 2 }} />
 
+            {/* Sort By Dropdown */}
             <Box sx={{ mb: 2 }}>
-                <CustomMenu
-                    endIcon={<ArrowDropDownSharpIcon />}
-                    title="Sort By"
-                    menuItems={sortMenuItems}
-                    anchorEl={anchorEl}
-                    open={open && filterType === 'sort'}
-                    onClose={handleMenuClose}
-                    onOpen={(event) => handleMenuOpen(event, 'sort')}
-                />
+                <Typography variant="subtitle1" gutterBottom>
+                    Sort By
+                </Typography>
+                <Select  sx={{ width: '100%' }}>
+                    <MenuItem value="alphabetical">Alphabetical</MenuItem>
+                    <MenuItem value="reverse-alphabetical">Reverse Alphabetical</MenuItem>
+                    <MenuItem value="price-low-to-high">Price: Low to High</MenuItem>
+                    <MenuItem value="price-high-to-low">Price: High to Low</MenuItem>
+                    <MenuItem value="rating-based">Rating Based</MenuItem>
+                    <MenuItem value="discount-based">Discount Based</MenuItem>
+                </Select>
+            </Box>
+
+            {/* Rating Filter */}
+            <Box sx={{ mb: 2 }}>
+                <Typography variant="subtitle1" gutterBottom>
+                    Filter by Rating
+                </Typography>
+                <Select sx={{ width: '100%' }}>
+                    <MenuItem value="2-3">2.0 to 3.0</MenuItem>
+                    <MenuItem value="3-4">3.0 to 4.0</MenuItem>
+                    <MenuItem value="4-5">4.0 to 5.0</MenuItem>
+                </Select>
+            </Box>
+
+            {/* Brands Filtering */}
+            <Box>
+                <Typography variant="subtitle1" gutterBottom>
+                    Brands
+                </Typography>
+                <FormGroup>
+                    {brands.length > 0 ? (
+                        brands.map((brand) => (
+                            <FormControlLabel
+                                key={brand.id}
+                                control={
+                                    <Checkbox
+                                        color="primary"
+                                    />
+                                }
+                                label={brand.title}
+                                sx={{ mb: 1 }}
+                            />
+                        ))
+                    ) : (
+                        <Typography variant="body2">No brands available</Typography>
+                    )}
+                </FormGroup>
             </Box>
         </Box>
     );
