@@ -27,7 +27,7 @@ const initializeI18n = (lng) => {
   });
 };
 
-const storedLanguage = !window=="undefined" & localStorage.getItem("language");
+const storedLanguage = !window=="undefined" && localStorage.getItem("language");
 initializeI18n(storedLanguage);
 
 export default i18n;
