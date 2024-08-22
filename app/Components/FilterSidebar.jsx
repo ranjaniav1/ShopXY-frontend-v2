@@ -72,12 +72,12 @@ const FilterSidebar = ({ onBrandChange, brand_id }) => {
           <MenuItem value="discount-based">Discount Based</MenuItem>
         </Select>
       </Box>
-{/* Rating Filter */}
-<Box sx={{ mb: 2 }}>
+      {/* Rating Filter */}
+      <Box sx={{ mb: 2 }}>
         <Typography variant="subtitle1" gutterBottom>
           Filter by Rating
         </Typography>
-        <Select  sx={{ width: '100%' }}>
+        <Select sx={{ width: '100%' }}>
           <MenuItem value="2-3">2.0 to 3.0</MenuItem>
           <MenuItem value="3-4">3.0 to 4.0</MenuItem>
           <MenuItem value="4-5">4.0 to 5.0</MenuItem>

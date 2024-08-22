@@ -8,7 +8,8 @@ const CustomSkeleton = ({ type = 'card', className = '', width = '100%', height 
     card: "w-full max-w-sm div-body border border-gray-200 rounded-lg shadow-md p-4",
     image: "", // We will apply width and height dynamically
     row: "w-full h-6 bg-gray-300 rounded-lg my-2",
-    text: "w-full h-4 bg-gray-300 rounded-lg my-2"
+    text: "w-full h-4 bg-gray-300 rounded-lg my-2",
+    rounded: "w-full h-full bg-gray-300 rounded-full" // New style for rounded type
   };
 
   // Define skeleton elements for each type
@@ -34,7 +35,15 @@ const CustomSkeleton = ({ type = 'card', className = '', width = '100%', height 
       </Box>
     ),
     row: <div className={`${skeletonStyles.row} ${className}`}></div>,
-    text: <div className={`${skeletonStyles.text} ${className}`}></div>
+    text: <div className={`${skeletonStyles.text} ${className}`}></div>,
+    rounded: (
+    
+        <Skeleton
+          variant="circular"
+          width={width}
+          height={height}
+        />
+    )
   };
 
   return skeletonElements[type] || null;

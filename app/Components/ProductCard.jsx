@@ -6,11 +6,10 @@ const ProductCard = ({ imgSrc, title, price, discountPrice, rating, description,
 
     return (
         <div
-            className="relative border border-gray-200  rounded-lg overflow-hidden shadow-md p-4  box"
+            className="relative border border-gray-200  rounded-lg overflow-hidden shadow-md p-4 "
             onClick={onClick}
             style={{
                 background: theme.palette.card.background,
-                border: `1px solid ${theme.palette.card.border}`,
             }}
         >
             {/* Ribbon-style offer display in the top right corner */}
@@ -49,7 +48,7 @@ const ProductCard = ({ imgSrc, title, price, discountPrice, rating, description,
                         <span className="text-gray-500 ml-1">({rating})</span>
                     </div>
                 )}
-                {description && <p className="text-gray-700 text-sm">{description}</p>}
+                {description && <p className="text-gray-500 text-sm">{description}</p>}
             </div>
         </div>
     );
