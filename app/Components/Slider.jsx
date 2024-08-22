@@ -45,7 +45,7 @@ const Slider = () => {
                     slider && slider.length > 0 ? (
                         slider.map((slide) => (
                             <SwiperSlide key={slide.id}>
-                                <Link href={`/category/${slide.id}/${slide.slug}`}>
+                                <Link href={`/categories/${slide.id}/${slide.slug}`}>
                                     <img
                                         src={slide.slider_image}
                                         alt={slide.title}

@@ -1,16 +1,18 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Box, Grid, Typography, Card, CardContent } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import { useParams } from 'next/navigation';
 import CustomButton from '@/app/Common/CustomButton';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import { GetSingleProduct } from '@/app/Service/GetProduct';
+import ProductGallery from '@/app/Components/ProductGallery';
+import ProductDetails from '@/app/Components/ProductDetails';
 
 const Page = () => {
     const { productTitle } = useParams();
-    const [product, setProduct] = useState([]);
+    const [product, setProduct] = useState(null);
     const [selectedImage, setSelectedImage] = useState('');
     const [loading, setLoading] = useState(true);
 
@@ -19,7 +21,10 @@ const Page = () => {
             const result = await GetSingleProduct({ slug: productTitle });
             const productData = result.data;
             setProduct(productData);
-            setSelectedImage(productData.image); // Set the default selected image to pr.image
+            setProduct(productData);
+            if (productData && productData.length > 0) {
+                setSelectedImage(productData[0].image); // Set the default selected image to the main image
+            }
             setLoading(false);
         } catch (error) {
             console.log("Failed to fetch product", error);
@@ -28,103 +33,44 @@ const Page = () => {
 
     useEffect(() => {
         fetchProduct();
-    }, [productTitle]);
+    }, []);
 
     if (loading) return <Typography variant="h6">Loading...</Typography>;
 
     const handleImageClick = (img) => {
         setSelectedImage(img);
     };
-    return (
 
-        <Grid container spacing={4}>
-            {product.map((pr, index) => (
+    return (
+        <Grid container spacing={2}>
+            {product?.map((pr, index) => (
                 <React.Fragment key={index}>
                     {/* Left side: Image gallery */}
                     <Grid item xs={12} md={6}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12} md={2} sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                                {pr?.detail_image.map((img, id) => (
-                                    <Card
-                                        key={id}
-                                        sx={{
-                                            cursor: 'pointer',
-                                            borderRadius: 2,
-                                            border: '1px solid #ddd',
-                                            boxShadow: 1
-                                        }}
-                                        onClick={() => handleImageClick(img)}
-                                    >
-                                        <img
-                                            src={img}
-                                            alt={`Thumbnail ${id + 1}`}
-                                            style={{ width: '100%', height: 'auto', objectFit: 'cover', borderRadius: '8px' }}
-                                        />
-                                    </Card>
-                                ))}
-                            </Grid>
-                            <Grid item xs={12} md={10}>
-                                <Card sx={{ borderRadius: 2, border: '1px solid #ddd', boxShadow: 2 }}>
-                                    <img
-                                        src={selectedImage}
-                                        alt={pr.name}
-                                        style={{ width: '100%', height: 'auto', objectFit: 'cover', borderRadius: '8px' }}
-                                    />
-                                </Card>
-                                <Box sx={{ mt: 2 }}>
-                                    <CustomButton
-                                        startIcon={<AddShoppingCartIcon />}
-                                        variant="outlined"
-                                        title="Add To Cart"
-                                        className="px-4"
-                                        sx={{ mr: 2 }}
-                                    />
-                                    <CustomButton
-                                        startIcon={<DoubleArrowIcon />}
-                                        variant="contained"
-                                        title="BUY NOW"
-                                        className="px-4"
-                                    />
-                                </Box>
-                            </Grid>
-                        </Grid>
+                        <ProductGallery
+                            detailImages={pr.detail_image}
+                            selectedImage={selectedImage}
+                            onImageClick={handleImageClick}
+                            productName={pr.name}
+                        />
                     </Grid>
 
                     {/* Right side: Product details */}
                     <Grid item xs={12} md={6}>
-                        <Card sx={{ borderRadius: 2, border: '1px solid #ddd', boxShadow: 2 }}>
-                            <CardContent>
-                                <Typography variant="h5" gutterBottom>
-                                    {pr.name}
-                                </Typography>
-                                <Typography variant="h6" color="text.secondary">
-                                    Price: ₹{pr.actual_price}
-                                </Typography>
-                                {pr.discounted_price && (
-                                    <Typography variant="body1" color="text.primary">
-                                        Discounted Price: ₹{pr.discounted_price}
-                                    </Typography>
-                                )}
-                                {pr.offer && (
-                                    <Typography variant="body1" color="primary">
-                                        Offer: {pr.offer}%
-                                    </Typography>
-                                )}
-                                {pr.ratings && (
-                                    <Typography variant="body1" color="text.secondary">
-                                        Rating: {pr.ratings} ★
-                                    </Typography>
-                                )}
-                                {pr.special_offer && (
-                                    <Typography variant="body1" color="primary">
-                                        Special Offer: {pr.special_offer}
-                                    </Typography>
-                                )}
-                            </CardContent>
-                        </Card>
-                        <Box sx={{ mt: 4 }}>
-                            {/* Add ProductDetailInfo or any other details here */}
-                        </Box>
+                        <ProductDetails
+                            name={pr.name}
+                            actual_price={pr.actual_price}
+                            discounted_price={pr.discounted_price}
+                            offer={pr.offer}
+                            ratings={pr.ratings}
+                            special_offer={pr.special_offer}
+                            reviews={pr.reviews}
+                            description={pr.description}
+                            full_description={pr.full_description}
+                            delivery={pr.delivery}
+                            size={pr.size}
+                            tags={pr.tags}
+                        />
                     </Grid>
                 </React.Fragment>
             ))}
