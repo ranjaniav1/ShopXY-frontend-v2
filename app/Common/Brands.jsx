@@ -4,11 +4,12 @@ import React, { useState, useEffect } from 'react';
 import { Box, Typography, Divider, Select, MenuItem, FormGroup, FormControlLabel, Checkbox, useTheme } from '@mui/material';
 import { useParams } from 'next/navigation';
 import { GetSingleBrands } from '../Service/GetBrands'; // Ensure this import is correct and matches your service file
+import { useTranslation } from 'react-i18next';
 
 const Brands = ({ onBrandChange }) => {
     const [brands, setBrands] = useState([]);
     const theme = useTheme();
-
+    const { t } = useTranslation()
     // Fetch brands data
     const fetchBrands = async () => {
         try {
@@ -25,19 +26,19 @@ const Brands = ({ onBrandChange }) => {
 
 
 
-  
+
 
     return (
         <Box sx={{ width: '100%', padding: '16px', backgroundColor: theme.palette.background.main, border: '1px solid #e0e0e0', borderRadius: '4px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
-            <Typography variant="h6">Filters</Typography>
+            <Typography variant="h6">{t("Filters")}</Typography>
             <Divider sx={{ my: 2 }} />
 
             {/* Sort By Dropdown */}
             <Box sx={{ mb: 2 }}>
                 <Typography variant="subtitle1" gutterBottom>
-                    Sort By
+                    {t(" Sort By")}
                 </Typography>
-                <Select  sx={{ width: '100%' }}>
+                <Select sx={{ width: '100%' }}>
                     <MenuItem value="alphabetical">Alphabetical</MenuItem>
                     <MenuItem value="reverse-alphabetical">Reverse Alphabetical</MenuItem>
                     <MenuItem value="price-low-to-high">Price: Low to High</MenuItem>
@@ -50,7 +51,7 @@ const Brands = ({ onBrandChange }) => {
             {/* Rating Filter */}
             <Box sx={{ mb: 2 }}>
                 <Typography variant="subtitle1" gutterBottom>
-                    Filter by Rating
+                    {t("Filter by Rating")}
                 </Typography>
                 <Select sx={{ width: '100%' }}>
                     <MenuItem value="2-3">2.0 to 3.0</MenuItem>
@@ -62,7 +63,7 @@ const Brands = ({ onBrandChange }) => {
             {/* Brands Filtering */}
             <Box>
                 <Typography variant="subtitle1" gutterBottom>
-                    Brands
+                    {t("Brands")}
                 </Typography>
                 <FormGroup>
                     {brands.length > 0 ? (

@@ -10,6 +10,7 @@ import CustomSkeleton from '../Common/CustomSkeleton';
 import { GetAllProducts } from '../Service/GetProduct';
 import FilterSidebar from './FilterSidebar';
 import CustomBox from '../Common/CustomBox';
+import { useTranslation } from 'react-i18next';
 
 const HomeProduct = () => {
     const [products, setProducts] = useState([]);
@@ -29,10 +30,10 @@ const HomeProduct = () => {
     useEffect(() => {
         fetchCategories();
     }, []);
-
+    const { t } = useTranslation()
     return (
         <>
-            <Heading text={"Products for You"} />
+            <Heading text={t("Products for You")} />
             <Grid container spacing={2} >
                 <Grid item xs={12} md={3} sx={{ mt: 3.5 }} >
                     <Brands />

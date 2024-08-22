@@ -5,8 +5,10 @@ import { GetHomeScreenData } from '../Service/GetHomeScreenData';
 import { Box, Grid, Skeleton, Typography, useTheme } from '@mui/material';
 import CustomBox from '../Common/CustomBox';
 import DiscountCard from './DiscountCard';
+import { useTranslation } from 'react-i18next';
 
 const SaleAndDiscount = () => {
+    const {t}=useTranslation()
     const [collection, setCollection] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -28,7 +30,7 @@ const SaleAndDiscount = () => {
 
     return (
         <CustomBox>
-            <Heading text="Best Discount Products" />
+            <Heading text={t("Best Discount Products")} />
             <Box>
                 {loading ? (
                     <Grid container spacing={2}>

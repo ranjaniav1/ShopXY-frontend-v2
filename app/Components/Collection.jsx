@@ -10,8 +10,10 @@ import CustomBox from '../Common/CustomBox';
 import CustomIconButton from '../Common/CustomIconButton';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
 
 const Collection = () => {
+    const { t } = useTranslation()
     const [collection, setCollection] = useState([]);
     const [loading, setLoading] = useState(true);
     const [visibleCount, setVisibleCount] = useState(6);
@@ -38,7 +40,7 @@ const Collection = () => {
         }
     }, [pathname, collection.length]); return (
         <CustomBox>
-            <Heading text="Best Deals on Electronics" className={{ padding: 0 }}>
+            <Heading text={t("Best Deals on Electronics")} className={{ padding: 0 }}>
                 {showArrowIcon && visibleCount < collection.length && (
                     <Link href="/categories/collections" passHref>
                         <CustomIconButton ><ArrowCircleRightOutlinedIcon fontSize='large' /></CustomIconButton></Link>
@@ -70,7 +72,7 @@ const Collection = () => {
                         </Grid>
                     </>
                 ) : (
-                    <Typography textAlign="center">No collection found</Typography>
+                    <Typography textAlign="center">{t('no Collection Found')}</Typography>
                 )}
             </Box>
         </CustomBox>
