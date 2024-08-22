@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Box, Grid, Typography, Card, CardContent } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import { useParams } from 'next/navigation';
 import CustomButton from '@/app/Common/CustomButton';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -30,7 +30,7 @@ const Page = () => {
 
     useEffect(() => {
         fetchProduct();
-    }, [productTitle]);
+    }, []);
 
     if (loading) return <Typography variant="h6">Loading...</Typography>;
 
@@ -39,35 +39,39 @@ const Page = () => {
     };
 
     return (
-        <Grid container spacing={4}>
+        <Grid container spacing={2}>
             {product?.map((pr, index) => (
-                <Grid xs={12} md={6}>
-                    <React.Fragment key={index}>
-                        {/* Left side: Image gallery */}
-                        <ProductGallery detailImages={pr.detail_image}
+                <React.Fragment key={index}>
+                    {/* Left side: Image gallery */}
+                    <Grid item xs={12} md={6}>
+                        <ProductGallery 
+                            detailImages={pr.detail_image}
                             selectedImage={selectedImage}
                             onImageClick={handleImageClick}
-                            productName={pr.name} />
-                </Grid>
-                    {/* Right side: Product details */ }
-                < Grid xs = { 12} md = { 6} >
-                < ProductDetails
-                    name={pr.name}
-                    actual_price={pr.actual_price}
-                    discounted_price={pr.discounted_price}
-                    offer={pr.offer}
-                    ratings={pr.ratings}
-                    special_offer={pr.special_offer}
-                    reviews={pr.reviews} // Pass reviews if available
-                    description={pr.description}
-                    full_description={pr.full_description}
-                    delivery={pr.delivery}
-                    size={pr.size}
-                    tags={pr.tags}
-                />       </Grid>         </React.Fragment >
-    ))
-}
-        </Grid >
+                            productName={pr.name} 
+                        />
+                    </Grid>
+
+                    {/* Right side: Product details */}
+                    <Grid item xs={12} md={6}>
+                        <ProductDetails
+                            name={pr.name}
+                            actual_price={pr.actual_price}
+                            discounted_price={pr.discounted_price}
+                            offer={pr.offer}
+                            ratings={pr.ratings}
+                            special_offer={pr.special_offer}
+                            reviews={pr.reviews}
+                            description={pr.description}
+                            full_description={pr.full_description}
+                            delivery={pr.delivery}
+                            size={pr.size}
+                            tags={pr.tags}
+                        />
+                    </Grid>
+                </React.Fragment>
+            ))}
+        </Grid>
     );
 };
 
