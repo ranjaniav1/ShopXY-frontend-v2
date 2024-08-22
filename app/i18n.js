@@ -27,7 +27,13 @@ const initializeI18n = (lng) => {
   });
 };
 
-const storedLanguage = !window=="undefined" && localStorage.getItem("language");
-initializeI18n(storedLanguage);
+// Only run this code in the browser
+if (typeof window !== "undefined") {
+  const storedLanguage = localStorage.getItem("language");
+  initializeI18n(storedLanguage);
+} else {
+  // Initialize with default language on the server
+  initializeI18n("en");
+}
 
 export default i18n;
