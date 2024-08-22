@@ -21,7 +21,10 @@ const Page = () => {
             const result = await GetSingleProduct({ slug: productTitle });
             const productData = result.data;
             setProduct(productData);
-            setSelectedImage(productData[0].image); // Set the default selected image to the main image
+            setProduct(productData);
+            if (productData && productData.length > 0) {
+                setSelectedImage(productData[0].image); // Set the default selected image to the main image
+            }
             setLoading(false);
         } catch (error) {
             console.log("Failed to fetch product", error);
@@ -44,11 +47,11 @@ const Page = () => {
                 <React.Fragment key={index}>
                     {/* Left side: Image gallery */}
                     <Grid item xs={12} md={6}>
-                        <ProductGallery 
+                        <ProductGallery
                             detailImages={pr.detail_image}
                             selectedImage={selectedImage}
                             onImageClick={handleImageClick}
-                            productName={pr.name} 
+                            productName={pr.name}
                         />
                     </Grid>
 

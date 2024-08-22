@@ -37,21 +37,24 @@ const ProductGallery = ({ detailImages, selectedImage, onImageClick, productName
                         style={{ width: '100%', height: 'auto', objectFit: 'cover', borderRadius: '8px' }}
                     />
                 </Card>
-                <Box sx={{ mt: 2, display: 'flex', width: '100%' }}>
-                    <CustomButton
-                        startIcon={<AddShoppingCartIcon />}
-                        variant="outlined"
-                        title="Add To Cart"
-                        className="px-4"
-                        sx={{ mr: 1, flex: 1 }}
-                    />
-                    <CustomButton
-                        startIcon={<DoubleArrowIcon />}
-                        variant="contained"
-                        title="BUY NOW"
-                        className="px-4" sx={{ flex: 1 }}
-                    />
-                </Box>
+                <Grid container spacing={2} sx={{ mt: 2 }}>
+                    <Grid item xs={6}>
+                        <CustomButton
+                            startIcon={<AddShoppingCartIcon />}
+                            variant="outlined"
+                            title="Add To Cart"
+                            className="w-full"
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <CustomButton
+                            startIcon={<DoubleArrowIcon />}
+                            variant="contained"
+                            title="BUY NOW"
+                            className="w-full"
+                        />
+                    </Grid>
+                </Grid>
             </Grid>
         </Grid>
     );
