@@ -36,7 +36,7 @@ const Category = () => {
                 <Grid container spacing={2} className="p-4">
                     {Array.from({ length: categories.length || 9 }).map((_, index) => (
                         <Grid item xs={4} sm={3} md={2} lg={1} key={index}>
-                            <CustomSkeleton type="rounded" width={100} height={100} />
+                            <CustomSkeleton type="rounded" width={100} height={100} className='mx-auto' />
 
                         </Grid>
                     ))}

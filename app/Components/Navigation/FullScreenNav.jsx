@@ -8,8 +8,11 @@ import CustomInput from '@/app/Common/CustomInput';
 import CustomMenu from '@/app/Common/CustomMenu';
 import CustomIconButton from '@/app/Common/CustomIconButton';
 import { Search } from '@mui/icons-material';
+import { useTranslation } from 'react-i18next';
 
 const FullScreenNav = ({ setDrawerOpen }) => {
+    const { t } = useTranslation()
+
     const menuItems = [
         { title: 'Profile', onClick: () => console.log('Profile clicked') },
         { title: 'My Account', onClick: () => console.log('My Account clicked') },
@@ -36,15 +39,15 @@ const FullScreenNav = ({ setDrawerOpen }) => {
             <div className="flex space-x-2">
                 <CustomMenu
                     startIcon={<AccountCircle />}
-                    title="Account"
+                    title={t("Account")}
                     menuItems={menuItems}
                 />
                 <CustomMenu
                     startIcon={<ShoppingCartIcon />}
-                    title="Cart"
+                    title={t("Cart")}
                     menuItems={menuItems}
                 />
-                <CustomIconButton sx={{padding:'4px'}}
+                <CustomIconButton sx={{ padding: '4px' }}
                     onClick={() => setDrawerOpen(true)}
                 >
                     <MoreVertIcon /></CustomIconButton>

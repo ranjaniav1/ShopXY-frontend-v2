@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Checkbox, FormControlLabel, FormGroup, Typography, Divider, Box, Select, MenuItem, useTheme } from '@mui/material';
 import { GetSingleBrands } from '../Service/GetBrands';
 import { useParams } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
 
 const FilterSidebar = ({ onBrandChange, brand_id }) => {
   const [selectedBrands, setSelectedBrands] = useState([]);
@@ -53,15 +54,16 @@ const FilterSidebar = ({ onBrandChange, brand_id }) => {
     setSortOption(event.target.value);
   };
   const theme = useTheme()
+  const { t } = useTranslation()
   return (
     <Box sx={{ width: '100%', padding: '16px', backgroundColor: theme.palette.background.main, border: '1px solid #e0e0e0', borderRadius: '4px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
-      <Typography variant="h6">Filters</Typography>
+      <Typography variant="h6">{t("Filters")}</Typography>
       <Divider sx={{ my: 2 }} />
 
       {/* Sort By Dropdown */}
       <Box sx={{ mb: 2 }}>
         <Typography variant="subtitle1" gutterBottom>
-          Sort By
+          {("Sort By")}
         </Typography>
         <Select value={sortOption} onChange={handleSortChange} sx={{ width: '100%' }}>
           <MenuItem value="alphabetical">Alphabetical</MenuItem>
@@ -75,7 +77,7 @@ const FilterSidebar = ({ onBrandChange, brand_id }) => {
       {/* Rating Filter */}
       <Box sx={{ mb: 2 }}>
         <Typography variant="subtitle1" gutterBottom>
-          Filter by Rating
+          {t("Filter by Rating")}
         </Typography>
         <Select sx={{ width: '100%' }}>
           <MenuItem value="2-3">2.0 to 3.0</MenuItem>
@@ -88,7 +90,7 @@ const FilterSidebar = ({ onBrandChange, brand_id }) => {
       {/* Brands Filtering */}
       <Box>
         <Typography variant="subtitle1" gutterBottom>
-          Brands
+          {t("Brands")}
         </Typography>
         <FormGroup>
           {brands.length > 0 ? (
