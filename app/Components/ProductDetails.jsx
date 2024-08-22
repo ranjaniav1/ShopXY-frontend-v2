@@ -22,7 +22,7 @@ const RatingReview = ({ starCount, reviewCount }) => (
     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
         <Rating value={starCount} readOnly size="small" />
         <Typography variant="body2" color="text.secondary">
-            {reviewCount} {reviewCount === 1 ? 'Review' : 'Reviews'}
+        {reviewCount} {reviewCount === 1 ? ('Review') : ('Reviews')}
         </Typography>
     </Box>
 );
@@ -87,7 +87,7 @@ const ProductDetails = ({
                         {reviews.length}{t(" Reviews")}
                     </Typography>
                     <Typography variant="body2" mt={2}>
-                        Free Delivery
+                    {t('Free Delivery')}
                     </Typography>
                 </ProductCard>
             </Grid>
@@ -107,18 +107,18 @@ const ProductDetails = ({
 
             {/* Card 3: Product Details */}
             <Grid item xs={12}>
-                <ProductCard title="Product Details" theme={theme}>
-                    <Typography variant="body2" color="text.secondary">
-                        Name: {name}
+                <ProductCard title={t("Product Details")} theme={theme}>
+                <Typography variant="body2" color="text.secondary">
+                        {t('Name')}: {name}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        Colors: {colors.join(', ')}
+                        {t('Colors')}: {colors.join(', ')}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        Sizes: {sizes.join(', ')}
+                        {t('Sizes')}: {sizes.join(', ')}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        Description: {full_description}
+                        {t('Description')}: {full_description}
                     </Typography>
                 </ProductCard>
             </Grid>
