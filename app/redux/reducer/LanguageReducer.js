@@ -3,7 +3,7 @@ import i18n from "@/app/i18n";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  language: localStorage.getItem("language") || "en" // Default to 'en' if nothing is stored
+  language: "en" // Default to 'en' if nothing is stored
 };
 const LanguageReducer = createSlice({
   name: "language",
