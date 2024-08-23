@@ -8,9 +8,9 @@ export async function Register(formDataToSubmit) {
       },
     });
 
-    if (response.status === 200) {
+    if (response.status === 201) {
       const result = response.data;
-      console.log("Registration successful:");
+      console.log("Registration successful:",result);
       return result; // You may return the result to use it in the component if needed
     } else {
       console.error("Registration failed:", response.data);
