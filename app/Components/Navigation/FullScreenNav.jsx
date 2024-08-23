@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -9,10 +9,12 @@ import CustomMenu from '@/app/Common/CustomMenu';
 import CustomIconButton from '@/app/Common/CustomIconButton';
 import { Search } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
+import CustomButton from '@/app/Common/CustomButton';
+import RegisterModal from './RegisterModal';
 
 const FullScreenNav = ({ setDrawerOpen }) => {
     const { t } = useTranslation()
-
+    const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
     const menuItems = [
         { title: 'Profile', onClick: () => console.log('Profile clicked') },
         { title: 'My Account', onClick: () => console.log('My Account clicked') },
@@ -37,10 +39,10 @@ const FullScreenNav = ({ setDrawerOpen }) => {
 
             {/* Account and Cart Menu */}
             <div className="flex space-x-2">
-                <CustomMenu
+                <CustomButton
                     startIcon={<AccountCircle />}
                     title={t("Account")}
-                    menuItems={menuItems}
+                    onClick={() => setRegisterModalOpen(true)} // Open modal on click
                 />
                 <CustomMenu
                     startIcon={<ShoppingCartIcon />}
@@ -51,7 +53,10 @@ const FullScreenNav = ({ setDrawerOpen }) => {
                     onClick={() => setDrawerOpen(true)}
                 >
                     <MoreVertIcon /></CustomIconButton>
-            </div>
+            </div>  <RegisterModal
+                open={isRegisterModalOpen}
+                onClose={() => setRegisterModalOpen(false)}
+            />
         </Box>
     );
 };
