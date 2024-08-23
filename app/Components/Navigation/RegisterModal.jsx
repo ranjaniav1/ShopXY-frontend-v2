@@ -1,4 +1,3 @@
-'use client';
 import React, { useState } from 'react';
 import { Modal, Box, Button, Typography, TextField, Input } from '@mui/material';
 import { useTranslation } from 'react-i18next';
@@ -23,8 +22,19 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
         setAvatar(e.target.files[0]);
     };
 
+    const validatePhoneNumber = (phoneNumber) => {
+        const phoneNumberPattern = /^\d{10}$/;
+        return phoneNumberPattern.test(phoneNumber);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Validate phone number
+        if (!validatePhoneNumber(formData.phoneNumber)) {
+            toast.error('Phone number must be exactly 10 digits');
+            return;
+        }
 
         const formDataToSubmit = new FormData();
         formDataToSubmit.append('email', formData.email);
@@ -36,11 +46,12 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
         }
 
         try {
-            const response = await Register(formDataToSubmit);
-            toast.success(response.data.message || 'User registered successfully');
+            await Register(formDataToSubmit);
+            toast.success('User registered successfully');
             onClose(); // Close modal on success
         } catch (error) {
             console.error('Registration failed:', error);
+            // Display backend error message if available
             const errorMessage = error.response?.data?.message || 'Registration failed. Please try again.';
             toast.error(errorMessage);
         }
