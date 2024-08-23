@@ -22,19 +22,8 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
         setAvatar(e.target.files[0]);
     };
 
-    const validatePhoneNumber = (phoneNumber) => {
-        const phoneNumberPattern = /^\d{10}$/;
-        return phoneNumberPattern.test(phoneNumber);
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        // Validate phone number
-        if (!validatePhoneNumber(formData.phoneNumber)) {
-            toast.error('Phone number must be exactly 10 digits');
-            return;
-        }
 
         const formDataToSubmit = new FormData();
         formDataToSubmit.append('email', formData.email);
@@ -60,15 +49,18 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
     return (
         <>
             <Toaster position="bottom-right" />
-            <Modal open={open} onClose={onClose} aria-labelledby="register-modal-title">
+            <Modal open={open} onClose={onClose} aria-labelledby="register-modal-title" >
                 <Box
                     sx={{
                         width: 400,
-                        margin: 'auto',
                         padding: 3,
                         backgroundColor: 'white',
                         borderRadius: 2,
                         boxShadow: 3,
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%,-50%)'
                     }}
                 >
                     <Typography id="register-modal-title" variant="h6" component="h2" mb={2}>
@@ -119,14 +111,16 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
                             type="file"
                             accept="image/*"
                             onChange={handleFileChange}
-                            sx={{ my: 2 }}
+                            sx={{ my: 2 }} required
                         />
-                        <Box mt={2} display="flex" justifyContent="space-between">
-                            <Button variant="text" color="primary" onClick={onSwitchToLogin}>
-                                {t('Already have an account? Login')}
-                            </Button>
+
+                        <Box mt={2} display="flex" justifyContent="center">
                             <Button variant="contained" color="primary" type="submit">
                                 {t('Register')}
+                            </Button>
+                        </Box> <Box mt={2} display="flex" justifyContent="center">
+                            <Button variant="text" color="primary" onClick={onSwitchToLogin}>
+                                {t('Already have an account? Login')}
                             </Button>
                         </Box>
                     </form>
