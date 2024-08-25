@@ -1,38 +1,36 @@
 'use client';
 import React, { useState } from 'react';
-import { Modal, Box, Button, Typography, TextField, Link, ButtonGroup } from '@mui/material';
+import { Typography, Divider, CircularProgress, Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Login } from '@/app/Service/LoginUser';
 import toast from 'react-hot-toast';
+import { Visibility, VisibilityOff, PhoneAndroid, Google, Email } from '@mui/icons-material'; // Added PhoneAndroid and Google icons
+import CustomInput from '@/app/Common/CustomInput';
+import CustomModal from '@/app/Common/CustomModal';
+import CustomButton from '@/app/Common/CustomButton';
 
 const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
     const { t } = useTranslation();
-    const [selectedMethod, setSelectedMethod] = useState('email'); // 'email', 'phone', 'google'
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [otp, setOtp] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [loading, setLoading] = useState(false); // Loading state
 
     const handleSubmitEmail = async (e) => {
         e.preventDefault();
+        setLoading(true); // Start loading
         try {
-            // Call your login function here
             const response = await Login({ email, password });
             if (response) {
                 toast.success(t('Login successful'));
                 onClose();
             }
         } catch (error) {
-            toast.error(t('Login failed. Please try again.'));
+            toast.error(t('Login failed. Please check your credentials and try again.'));
             console.error('Login error', error);
+        } finally {
+            setLoading(false);
         }
-    };
-
-    const handleSubmitPhone = async (e) => {
-        e.preventDefault();
-        // Add your phone login logic here
-        toast.success(t('Phone login not implemented yet'));
-        onClose();
     };
 
     const handleGoogleLogin = () => {
@@ -40,128 +38,60 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
         toast.success(t('Google login not implemented yet'));
     };
 
+    const handleSubmitPhone = () => {
+        // Add your Phone login logic here
+        toast.success(t('Phone login not implemented yet'));
+    };
+
     return (
-        <Modal open={open} onClose={onClose} aria-labelledby="login-modal-title">
-            <Box
-                sx={{
-                    width: 400,
-                    margin: 'auto',
-                    padding: 3,
-                    backgroundColor: 'white',
-                    borderRadius: 2,
-                    boxShadow: 3,
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)'
-                }}
-            >
-                <Typography id="login-modal-title" variant="h6" component="h2" mb={2}>
-                    {t('Login')}
-                </Typography>
-
-                {/* Method Selection Button Group */}
-                <ButtonGroup
-                    fullWidth
+        <CustomModal open={open} onClose={onClose} title={t("Login")}>
+            {/* Email and Password Inputs */}
+            <form onSubmit={handleSubmitEmail}>
+                <CustomInput
+                    placeholder={t('Email')} startIcon={<Email />} 
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="mb-2"
+                />
+                <CustomInput
+                    placeholder={t('Password')}
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    endIcon={showPassword ? <VisibilityOff /> : <Visibility />}
+                    onClickEndIcon={() => setShowPassword(!showPassword)}
+                    className="mb-2"
+                />
+                <CustomButton
                     variant="contained"
-                    aria-label="login method selection"
-                    sx={{ mb: 2 }}
-                >
-                    <Button
-                        variant={selectedMethod === 'email' ? 'contained' : 'outlined'}
-                        onClick={() => setSelectedMethod('email')}
-                    >
-                        {t('Manualy')}
-                    </Button>
-                    <Button
-                        variant={selectedMethod === 'phone' ? 'contained' : 'outlined'}
-                        onClick={() => setSelectedMethod('phone')}
-                    >
-                        {t('Phone')}
-                    </Button>
-                    <Button
-                        variant={selectedMethod === 'google' ? 'contained' : 'outlined'}
-                        onClick={() => setSelectedMethod('google')}
-                    >
-                        {t('Google')}
-                    </Button>
-                </ButtonGroup>
+                    color="primary"
+                    fullWidth
+                    type="submit"
+                    disabled={loading}
+                    title={loading ? <CircularProgress size={24} /> : t('Login')}
+                    sx={{ mt: 2 }}
+                />
+            </form>
 
-                {/* Conditional Rendering Based on Selected Method */}
-                {selectedMethod === 'email' && (
-                    <form onSubmit={handleSubmitEmail}>
-                        <TextField
-                            label={t('Email')}
-                            type="email"
-                            fullWidth
-                            margin="normal"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                        <TextField
-                            label={t('Password')}
-                            type="password"
-                            fullWidth
-                            margin="normal"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                        <Box mt={2} display="flex" justifyContent="space-between" alignItems="center">
-                            <Link component="button" variant="body2" onClick={onSwitchToRegister}>
-                                {t('Don\'t have an account? Register')}
-                            </Link>
-                            <Button variant="contained" color="primary" type="submit">
-                                {t('Login')}
-                            </Button>
-                        </Box>
-                    </form>
-                )}
+            {/* "OR" Separator */}
+            <Divider sx={{ my: 2 }}>{t('OR')}</Divider>
 
-                {selectedMethod === 'phone' && (
-                    <form onSubmit={handleSubmitPhone}>
-                        <TextField
-                            label={t('Phone Number')}
-                            type="tel"
-                            fullWidth
-                            margin="normal"
-                            value={phoneNumber}
-                            onChange={(e) => setPhoneNumber(e.target.value)}
-                            required
-                        />
-                        <TextField
-                            label={t('OTP')}
-                            type="text"
-                            fullWidth
-                            margin="normal"
-                            value={otp}
-                            onChange={(e) => setOtp(e.target.value)}
-                            required
-                        />
-                        <Box mt={2} display="flex" justifyContent="space-between" alignItems="center">
-                            <Link component="button" variant="body2" onClick={onSwitchToRegister}>
-                                {t('Don\'t have an account? Register')}
-                            </Link>
-                            <Button variant="contained" color="primary" type="submit">
-                                {t('Login')}
-                            </Button>
-                        </Box>
-                    </form>
-                )}
-
-                {selectedMethod === 'google' && (
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        fullWidth
-                        onClick={handleGoogleLogin}
-                    >
-                        {t('Login with Google')}
-                    </Button>
-                )}
-            </Box>
-        </Modal>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                <CustomButton background="#e58d4d"
+                    fullWidth onClick={() => toast.success(t('Phone registration not implemented yet'))}
+                    startIcon={<PhoneAndroid />} title={t('Phone')} sx={{ flex: 1 }}
+                />
+                <Divider orientation="vertical" flexItem />
+                <CustomButton
+                    background="#d62746" fullWidth onClick={() => toast.success(t('Google registration not implemented yet'))}
+                    startIcon={<Google />} title={t('Google')} sx={{ flex: 1 }}
+                />
+            </Box> <Divider sx={{ my: 2 }} />
+            <CustomButton
+                variant="text" color="primary" fullWidth onClick={onSwitchToRegister}
+                title={t('not Registed? Register')} sx={{ mt: 2 }}
+            />
+        </CustomModal>
     );
 };
 

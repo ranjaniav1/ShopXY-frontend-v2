@@ -1,131 +1,109 @@
+'use client';
 import React, { useState } from 'react';
-import { Modal, Box, Button, Typography, TextField, Input } from '@mui/material';
+import { Typography, CircularProgress, Divider, Box, IconButton } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Register } from '@/app/Service/RegisterUser';
 import toast, { Toaster } from 'react-hot-toast';
+import CustomInput from '@/app/Common/CustomInput';
+import CustomModal from '@/app/Common/CustomModal';
+import CustomButton from '@/app/Common/CustomButton';
+import { PhoneAndroid, Google, Email, Lock, Person, AddPhotoAlternate, Visibility, VisibilityOff } from '@mui/icons-material';
 
 const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
     const { t } = useTranslation();
-    const [formData, setFormData] = useState({
-        email: '',
-        fullname: '',
-        password: '',
-        phoneNumber: '',
-    });
+    const [formData, setFormData] = useState({ email: '', fullname: '', password: '', phone: '' });
     const [avatar, setAvatar] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false); // State for password visibility
 
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
-    const handleFileChange = (e) => {
-        setAvatar(e.target.files[0]);
-    };
-
-    const handleSubmit = async (e) => {
+    const handleChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
+    const handleFileChange = e => setAvatar(e.target.files[0]);
+    const handleFileClick = () => document.getElementById('avatar-upload').click();
+    
+    const handleSubmit = async e => {
         e.preventDefault();
-
+        setLoading(true);
         const formDataToSubmit = new FormData();
-        formDataToSubmit.append('email', formData.email);
-        formDataToSubmit.append('fullname', formData.fullname);
-        formDataToSubmit.append('password', formData.password);
-        formDataToSubmit.append('phoneNumber', formData.phoneNumber);
-        if (avatar) {
-            formDataToSubmit.append('avatar', avatar);
-        }
+        Object.entries(formData).forEach(([key, value]) => formDataToSubmit.append(key, value));
+        if (avatar) formDataToSubmit.append('avatar', avatar);
 
         try {
             await Register(formDataToSubmit);
-            toast.success('User registered successfully');
-            onClose(); // Close modal on success
+            toast.success(t('User registered successfully'));
+            onClose();
         } catch (error) {
-            console.error('Registration failed:', error);
-            // Display backend error message if available
-            const errorMessage = error.response?.data?.message || 'Registration failed. Please try again.';
-            toast.error(errorMessage);
+            toast.error(error.response?.data?.message || t('Registration failed. Please try again.'));
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <>
             <Toaster position="bottom-right" />
-            <Modal open={open} onClose={onClose} aria-labelledby="register-modal-title" >
-                <Box
-                    sx={{
-                        width: 400,
-                        padding: 3,
-                        backgroundColor: 'white',
-                        borderRadius: 2,
-                        boxShadow: 3,
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%,-50%)'
-                    }}
-                >
-                    <Typography id="register-modal-title" variant="h6" component="h2" mb={2}>
-                        {t('Register')}
-                    </Typography>
-                    <form onSubmit={handleSubmit}>
-                        <TextField
-                            label={t('Email')}
-                            name="email"
-                            type="email"
-                            fullWidth
-                            margin="normal"
-                            value={formData.email}
-                            onChange={handleChange}
-                            required
+            <CustomModal open={open} onClose={onClose} title={t("Register")}>
+                <form onSubmit={handleSubmit}>
+                    <CustomInput
+                        placeholder={t('Email')} name="email" value={formData.email}
+                        onChange={handleChange} startIcon={<Email />} className="mb-2" required
+                    />
+                    <CustomInput
+                        placeholder={t('Full Name')} name="fullname" value={formData.fullname}
+                        onChange={handleChange} startIcon={<Person />} className="mb-2" required
+                    />
+                    <Box sx={{ position: 'relative' }}>
+                        <CustomInput
+                            placeholder={t('Password')} type={showPassword ? 'text' : 'password'} name="password"
+                            value={formData.password} onChange={handleChange}  className="mb-2" required
                         />
-                        <TextField
-                            label={t('Full Name')}
-                            name="fullname"
-                            type="text"
-                            fullWidth
-                            margin="normal"
-                            value={formData.fullname}
-                            onChange={handleChange}
-                            required
-                        />
-                        <TextField
-                            label={t('Password')}
-                            name="password"
-                            type="password"
-                            fullWidth
-                            margin="normal"
-                            value={formData.password}
-                            onChange={handleChange}
-                            required
-                        />
-                        <TextField
-                            label={t('Phone Number')}
-                            name="phoneNumber"
-                            type="text"
-                            fullWidth
-                            margin="normal"
-                            value={formData.phoneNumber}
-                            onChange={handleChange}
-                            required
-                        />
-                        <Input
-                            type="file"
-                            accept="image/*"
+                        <IconButton
+                            sx={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)' }}
+                            onClick={() => setShowPassword(prev => !prev)}
+                        >
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                    </Box>
+                    <CustomInput
+                        placeholder={t('Phone')} name="phone" value={formData.phone}
+                        onChange={handleChange} startIcon={<PhoneAndroid />} className="mb-2" required
+                    />
+                    <Box
+                        sx={{ display: 'flex', alignItems: 'center', border: '1px dashed #ccc', borderRadius: '4px', padding: '8px', cursor: 'pointer', mb: 2 }}
+                        onClick={handleFileClick}
+                    >
+                        <input
+                            type="file" id="avatar-upload" accept="image/*" style={{ display: 'none' }}
                             onChange={handleFileChange}
-                            sx={{ my: 2 }} required
                         />
-
-                        <Box mt={2} display="flex" justifyContent="center">
-                            <Button variant="contained" color="primary" type="submit">
-                                {t('Register')}
-                            </Button>
-                        </Box> <Box mt={2} display="flex" justifyContent="center">
-                            <Button variant="text" color="primary" onClick={onSwitchToLogin}>
-                                {t('Already have an account? Login')}
-                            </Button>
-                        </Box>
-                    </form>
-                </Box>
-            </Modal>
+                        <IconButton color="primary" component="span"><AddPhotoAlternate /></IconButton>
+                        <Typography variant="body2" sx={{ ml: 2 }}>
+                            {avatar ? avatar.name : t('Upload Avatar')}
+                        </Typography>
+                    </Box>
+                    <CustomButton
+                        variant="contained" color="primary" fullWidth type="submit"
+                        disabled={loading} title={loading ? <CircularProgress size={24} /> : t('Register')}
+                    />
+                    <Divider sx={{ my: 1 }}>{t('OR')}</Divider>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <CustomButton
+                           background="#e58d4d"
+                           fullWidth onClick={() => toast.success(t('Phone registration not implemented yet'))}
+                           startIcon={<PhoneAndroid />} title={t('Phone')} sx={{ flex: 1 }}
+                        />
+                        <Divider orientation="vertical" flexItem />
+                        <CustomButton
+                            background="#d62746" fullWidth onClick={() => toast.success(t('Google registration not implemented yet'))}
+                            startIcon={<Google />} title={t('Google')} sx={{ flex: 1 }}
+                        />
+                    </Box>
+                    <Divider sx={{ my: 2 }} />
+                    <CustomButton
+                        variant="text" color="primary" fullWidth onClick={onSwitchToLogin}
+                        title={t('Already have an account? Login')} sx={{ mt: 2 }}
+                    />
+                </form>
+            </CustomModal>
         </>
     );
 };
