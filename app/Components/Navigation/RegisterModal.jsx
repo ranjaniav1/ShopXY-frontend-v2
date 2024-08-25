@@ -10,9 +10,10 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
         email: '',
         fullname: '',
         password: '',
-        phoneNumber: '',
+        phone: '',
     });
     const [avatar, setAvatar] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -24,12 +25,13 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
 
         const formDataToSubmit = new FormData();
         formDataToSubmit.append('email', formData.email);
         formDataToSubmit.append('fullname', formData.fullname);
         formDataToSubmit.append('password', formData.password);
-        formDataToSubmit.append('phoneNumber', formData.phoneNumber);
+        formDataToSubmit.append('phone', formData.phone);
         if (avatar) {
             formDataToSubmit.append('avatar', avatar);
         }
@@ -40,16 +42,17 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
             onClose(); // Close modal on success
         } catch (error) {
             console.error('Registration failed:', error);
-            // Display backend error message if available
             const errorMessage = error.response?.data?.message || 'Registration failed. Please try again.';
             toast.error(errorMessage);
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <>
             <Toaster position="bottom-right" />
-            <Modal open={open} onClose={onClose} aria-labelledby="register-modal-title" >
+            <Modal open={open} onClose={onClose} aria-labelledby="register-modal-title">
                 <Box
                     sx={{
                         width: 400,
@@ -98,12 +101,12 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
                             required
                         />
                         <TextField
-                            label={t('Phone Number')}
-                            name="phoneNumber"
+                            label={t('Phone')}
+                            name="phone"
                             type="text"
                             fullWidth
                             margin="normal"
-                            value={formData.phoneNumber}
+                            value={formData.phone}
                             onChange={handleChange}
                             required
                         />
@@ -111,14 +114,21 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
                             type="file"
                             accept="image/*"
                             onChange={handleFileChange}
-                            sx={{ my: 2 }} required
+                            sx={{ my: 2 }}
+                            required
                         />
 
                         <Box mt={2} display="flex" justifyContent="center">
-                            <Button variant="contained" color="primary" type="submit">
-                                {t('Register')}
+                            <Button 
+                                variant="contained" 
+                                color="primary" 
+                                type="submit" 
+                                disabled={loading}
+                            >
+                                {loading ? t('Registering...') : t('Register')}
                             </Button>
-                        </Box> <Box mt={2} display="flex" justifyContent="center">
+                        </Box>
+                        <Box mt={2} display="flex" justifyContent="center">
                             <Button variant="text" color="primary" onClick={onSwitchToLogin}>
                                 {t('Already have an account? Login')}
                             </Button>

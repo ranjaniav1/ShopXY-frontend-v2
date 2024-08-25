@@ -2,7 +2,7 @@ import { httpAxios } from "../httpAxios";
 
 export async function Register(formDataToSubmit) {
   try {
-    const response = await httpAxios.post("/auth", formDataToSubmit, {
+    const response = await httpAxios.post("/auth/signup", formDataToSubmit, {
       headers: {
         'Content-Type': 'multipart/form-data', // Make sure the content type is set correctly for form data
       },

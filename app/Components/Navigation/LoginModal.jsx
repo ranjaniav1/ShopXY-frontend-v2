@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Modal, Box, Button, Typography, TextField, Link, ButtonGroup } from '@mui/material';
+import { Modal, Box, Button, Typography, TextField, Link, ButtonGroup, CircularProgress } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Login } from '@/app/Service/LoginUser';
 import toast from 'react-hot-toast';
@@ -12,19 +12,24 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
     const [password, setPassword] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [otp, setOtp] = useState('');
+    const [loading, setLoading] = useState(false); // Loading state
 
     const handleSubmitEmail = async (e) => {
         e.preventDefault();
+        setLoading(true); // Start loading
         try {
-            // Call your login function here
             const response = await Login({ email, password });
             if (response) {
                 toast.success(t('Login successful'));
-                onClose();
+                onClose(); // Close the modal
+                // Optionally, store token or user data
+                // localStorage.setItem('authToken', response.token);
             }
         } catch (error) {
-            toast.error(t('Login failed. Please try again.'));
+            toast.error(t('Login failed. Please check your credentials and try again.'));
             console.error('Login error', error);
+        } finally {
+            setLoading(false); // Stop loading
         }
     };
 
@@ -112,8 +117,8 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
                             <Link component="button" variant="body2" onClick={onSwitchToRegister}>
                                 {t('Don\'t have an account? Register')}
                             </Link>
-                            <Button variant="contained" color="primary" type="submit">
-                                {t('Login')}
+                            <Button variant="contained" color="primary" type="submit" disabled={loading}>
+                                {loading ? <CircularProgress size={24} /> : t('Login')}
                             </Button>
                         </Box>
                     </form>
