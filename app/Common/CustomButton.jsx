@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, IconButton, Icon, useTheme } from '@mui/material';
+import { Button, useTheme } from '@mui/material';
+
 const CustomButton = ({
     startIcon,
     endIcon,
@@ -9,9 +10,11 @@ const CustomButton = ({
     color,
     size,
     title,
+    type,
+    background, // Adding background to props
     ...props
 }) => {
-    const theme = useTheme()
+    const theme = useTheme();
     return (
         <Button
             startIcon={startIcon}
@@ -20,8 +23,15 @@ const CustomButton = ({
             className={className}
             variant={variant}
             size={size}
+            type={type}
             {...props}
-            sx={{ background: theme.palette.button.background, color: theme.palette.button.color,'&:hover':{background:theme.palette.button.hover} }}
+            sx={{
+                background: background ? background : theme.palette.button.background, // Use background prop if provided
+                color: theme.palette.button.color,
+                '&:hover': {
+                    background: theme.palette.button.hover,
+                },
+            }}
         >
             {title}
         </Button>
