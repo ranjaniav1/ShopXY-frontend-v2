@@ -4,10 +4,10 @@ import { Typography, CircularProgress, Divider, Box, IconButton } from '@mui/mat
 import { useTranslation } from 'react-i18next';
 import { Register } from '@/app/Service/RegisterUser';
 import toast, { Toaster } from 'react-hot-toast';
-import CustomInput from '@/app/Common/CustomInput';
-import CustomModal from '@/app/Common/CustomModal';
-import CustomButton from '@/app/Common/CustomButton';
 import { PhoneAndroid, Google, Email, Lock, Person, AddPhotoAlternate, Visibility, VisibilityOff } from '@mui/icons-material';
+import CustomModal from '@/app/Custom/CustomModal';
+import CustomInput from '@/app/Custom/CustomInput';
+import CustomButton from '@/app/Custom/CustomButton';
 
 const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
     const { t } = useTranslation();

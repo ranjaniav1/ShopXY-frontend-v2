@@ -3,7 +3,7 @@ import React from 'react';
 import { Typography, Grid, Box } from '@mui/material';
 import ProductCard from './ProductCard';
 import Link from 'next/link';
-import CustomBox from '../Common/CustomBox';
+import CustomBox from '../Custom/CustomBox';
 
 const FilterBasedProduct = ({ products }) => {
     const truncateText = (text, maxLength) => {

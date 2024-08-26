@@ -6,8 +6,8 @@ import 'swiper/css/navigation';
 import { A11y } from 'swiper/modules';
 import { GetCategories } from '../Service/GetCategory';
 import Link from 'next/link';
-import CustomSkeleton from '../Common/CustomSkeleton';
 import { Box, Grid, Tooltip, useTheme } from '@mui/material';
+import CustomSkeleton from '../Custom/CustomSkeleton';
 
 const Category = () => {
     const [categories, setCategories] = useState([]);

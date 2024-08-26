@@ -4,9 +4,9 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { Navigation, A11y } from 'swiper/modules';
-import CustomSkeleton from '../Common/CustomSkeleton';
 import { GetHomeScreenData } from '../Service/GetHomeScreenData';
 import Link from 'next/link';
+import CustomSkeleton from '../Custom/CustomSkeleton';
 
 const Slider = () => {
     const [slider, setSlider] = useState([]);

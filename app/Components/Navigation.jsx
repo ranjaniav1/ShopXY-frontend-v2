@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Box, Container, useTheme } from '@mui/material';
 import FullScreenNav from './Navigation/FullScreenNav';
 import SmallScreenNav from './Navigation/SmallScreenNav';
-import CustomDrawer from '../Common/CustomDrawer';
+import CustomDrawer from '../Custom/CustomDrawer';
 
 const Navigation = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);

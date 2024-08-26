@@ -2,9 +2,9 @@
 import React from 'react';
 import { Box, IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import CustomIconButton from '@/app/Common/CustomIconButton';
 import { Search } from '@mui/icons-material';
-import CustomInput from '@/app/Common/CustomInput';
+import CustomInput from '@/app/Custom/CustomInput';
+import CustomIconButton from '@/app/Custom/CustomIconButton';
 
 const SmallScreenNav = ({ setDrawerOpen }) => {
   return (

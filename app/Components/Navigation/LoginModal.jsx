@@ -4,10 +4,10 @@ import { Typography, Divider, CircularProgress, Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Login } from '@/app/Service/LoginUser';
 import toast from 'react-hot-toast';
-import { Visibility, VisibilityOff, PhoneAndroid, Google, Email } from '@mui/icons-material'; // Added PhoneAndroid and Google icons
-import CustomInput from '@/app/Common/CustomInput';
-import CustomModal from '@/app/Common/CustomModal';
-import CustomButton from '@/app/Common/CustomButton';
+import { Visibility, VisibilityOff, PhoneAndroid, Google, Email } from '@mui/icons-material'; 
+import CustomModal from '@/app/Custom/CustomModal';
+import CustomInput from '@/app/Custom/CustomInput';
+import CustomButton from '@/app/Custom/CustomButton';
 
 const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
     const { t } = useTranslation();

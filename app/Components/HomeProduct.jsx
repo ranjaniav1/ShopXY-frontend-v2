@@ -6,11 +6,10 @@ import ProductCard from './ProductCard';
 import Brands from '../Common/Brands';
 import Heading from '../Common/Heading';
 import Link from 'next/link';
-import CustomSkeleton from '../Common/CustomSkeleton';
 import { GetAllProducts } from '../Service/GetProduct';
-import FilterSidebar from './FilterSidebar';
-import CustomBox from '../Common/CustomBox';
 import { useTranslation } from 'react-i18next';
+import CustomBox from '../Custom/CustomBox';
+import CustomSkeleton from '../Custom/CustomSkeleton';
 
 const HomeProduct = () => {
     const [products, setProducts] = useState([]);

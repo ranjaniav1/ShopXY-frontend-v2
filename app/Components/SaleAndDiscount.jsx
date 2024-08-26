@@ -2,10 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import Heading from '../Common/Heading';
 import { GetHomeScreenData } from '../Service/GetHomeScreenData';
-import { Box, Grid, Skeleton, Typography, useTheme } from '@mui/material';
-import CustomBox from '../Common/CustomBox';
+import { Box, Grid, Skeleton, Typography } from '@mui/material';
 import DiscountCard from './DiscountCard';
 import { useTranslation } from 'react-i18next';
+import CustomBox from '../Custom/CustomBox';
 
 const SaleAndDiscount = () => {
     const {t}=useTranslation()

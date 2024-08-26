@@ -3,10 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import CustomSkeleton from '@/app/Common/CustomSkeleton';
 import { GetSingleCollection } from '@/app/Service/GetCollection';
-import Link from 'next/link';
 import Heading from '@/app/Common/Heading';
-import { Box, Card, CardContent, Grid, Typography, useTheme } from '@mui/material';
-import CustomBox from '@/app/Common/CustomBox';
+import { Grid, Typography, useTheme } from '@mui/material';
+import CustomBox from '@/app/Custom/CustomBox';
 import CustomCollectionCard from '@/app/Common/CustomCollectionCard';
 
 const Page = () => {
@@ -34,7 +33,8 @@ const Page = () => {
     }, [id]);
 
     return (
-        <CustomBox>            <Heading text={title} />
+        <CustomBox>
+            <Heading text={title} />
             {loading ? (
                 <Grid container spacing={2} className="p-4">
                     {Array.from({ length: categories.length || 9 }).map((_, index) => (

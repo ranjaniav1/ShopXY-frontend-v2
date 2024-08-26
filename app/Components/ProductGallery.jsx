@@ -2,9 +2,9 @@
 
 import React from 'react';
 import { Grid, Card, Box } from '@mui/material';
-import CustomButton from '@/app/Common/CustomButton';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
+import CustomButton from '../Custom/CustomButton';
 
 const ProductGallery = ({ detailImages, selectedImage, onImageClick, productName }) => {
     return (
