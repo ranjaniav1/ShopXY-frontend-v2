@@ -28,7 +28,8 @@
     "redux-persist": "^6.0.0",
     "sass": "^1.77.8",
     "styled-components": "^6.1.12",
-    "swiper": "^11.1.9"
+    "swiper": "^11.1.9",
+    "twilio": "^5.2.2"
   },
   "devDependencies": {
     "eslint": "^8",

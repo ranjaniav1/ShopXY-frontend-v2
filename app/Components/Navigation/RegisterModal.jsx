@@ -10,6 +10,8 @@ import PasswordInput from '@/app/Common/PasswordInput';
 import FileInput from '@/app/Common/FileInput';
 import { handleChange, handleFileChange, handleSubmit } from '@/app/utils/RegisterUtils';
 import CustomButton from '@/app/Custom/CustomButton';
+import PhoneRegistrationModal from './PhoneRegistrationModal';
+import GoogleRegistrationModal from './GoogleRegistrationForm';
 
 const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
     const { t } = useTranslation();
@@ -17,7 +19,27 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
     const [avatar, setAvatar] = useState(null);
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [isPhoneModalOpen, setIsPhoneModalOpen] = useState(false); // State for Phone Registration Modal
+    const [isGoogleModalOpen, setIsGoogleModalOpen] = useState(false); // State for Google Registration Modal
+    // Handler to open Phone Registration Modal
+    const handleOpenPhoneModal = () => {
+        setIsPhoneModalOpen(true);
+        onClose(); // Close the RegisterModal when opening the PhoneRegistrationModal
+    };
 
+    // Handler to close Phone Registration Modal
+    const handleClosePhoneModal = () => {
+        setIsPhoneModalOpen(false);
+    };// Handler to open Google Registration Modal
+    const handleOpenGoogleModal = () => {
+        setIsGoogleModalOpen(true);
+        onClose(); // Close the RegisterModal when opening the GoogleRegistrationModal
+    };
+
+    // Handler to close Google Registration Modal
+    const handleCloseGoogleModal = () => {
+        setIsGoogleModalOpen(false);
+    };
     return (
         <>
             <Toaster position="bottom-right" />
@@ -79,7 +101,7 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
                         <CustomButton
                             background="#e58d4d"
                             fullWidth
-                            onClick={() => toast.success(t('Phone registration not implemented yet'))}
+                            onClick={handleOpenPhoneModal}
                             startIcon={<PhoneAndroid />}
                             title={t('Phone')}
                             sx={{ flex: 1 }}
@@ -88,7 +110,7 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
                         <CustomButton
                             background="#d62746"
                             fullWidth
-                            onClick={() => toast.success(t('Google registration not implemented yet'))}
+                            onClick={handleOpenGoogleModal}
                             startIcon={<Google />}
                             title={t('Google')}
                             sx={{ flex: 1 }}
@@ -105,6 +127,9 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
                     />
                 </form>
             </CustomModal>
+            {/* rendeer phone registrationmodal */}
+            <PhoneRegistrationModal open={isPhoneModalOpen} onClose={handleClosePhoneModal} />
+            <GoogleRegistrationModal open={isGoogleModalOpen} onClose={handleCloseGoogleModal} />
         </>
     );
 };
