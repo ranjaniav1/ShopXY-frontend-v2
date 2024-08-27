@@ -17,24 +17,6 @@ const PhoneRegistrationModal = ({ open, onClose }) => {
 
     const handleSubmitPhone = async (e) => {
         e.preventDefault();
-        setLoading(true);
-        try {
-            // Check if email is valid (simple check here)
-            if (!formData.email.includes('@')) {
-                toast.error(t('Invalid email address.'));
-                setLoading(false);
-                return;
-            }
-
-
-            toast.success(t('OTP sent successfully. Please check your phone.'));
-            onClose(); // Close the modal after sending OTP
-        } catch (error) {
-            toast.error(t('Failed to send OTP. Please try again.'));
-            console.error('OTP sending error', error);
-        } finally {
-            setLoading(false);
-        }
     };
 
     return (
