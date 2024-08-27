@@ -1,16 +1,16 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Heading from '../Common/Heading';
-import CustomSkeleton from '../Common/CustomSkeleton';
 import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOutlined';
-import { useTheme, Grid, Box, Typography } from "@mui/material";
+import { Grid, Box, Typography } from "@mui/material";
 import { GetCollection } from '../Service/GetCollection';
-import CustomCollectionCard from '../Common/CustomCollectionCard';
-import CustomBox from '../Common/CustomBox';
-import CustomIconButton from '../Common/CustomIconButton';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
+import CustomBox from '../Custom/CustomBox';
+import CustomIconButton from '../Custom/CustomIconButton';
+import CustomSkeleton from '../Custom/CustomSkeleton';
+import CustomCollectionCard from '../Common/CustomCollectionCard';
 
 const Collection = () => {
     const { t } = useTranslation()

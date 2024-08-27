@@ -3,9 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Grid, Typography } from '@mui/material';
 import { useParams } from 'next/navigation';
-import CustomButton from '@/app/Common/CustomButton';
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import { GetSingleProduct } from '@/app/Service/GetProduct';
 import ProductGallery from '@/app/Components/ProductGallery';
 import ProductDetails from '@/app/Components/ProductDetails';

@@ -4,10 +4,12 @@ import { Typography, Divider, CircularProgress, Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Login } from '@/app/Service/LoginUser';
 import toast from 'react-hot-toast';
-import { Visibility, VisibilityOff, PhoneAndroid, Google, Email } from '@mui/icons-material'; // Added PhoneAndroid and Google icons
-import CustomInput from '@/app/Common/CustomInput';
-import CustomModal from '@/app/Common/CustomModal';
-import CustomButton from '@/app/Common/CustomButton';
+import { Visibility, VisibilityOff, PhoneAndroid, Google, Email } from '@mui/icons-material';
+import CustomModal from '@/app/Custom/CustomModal';
+import CustomInput from '@/app/Custom/CustomInput';
+import CustomButton from '@/app/Custom/CustomButton';
+import PhoneRegistrationModal from './PhoneRegistrationModal';
+import GoogleRegistrationModal from './GoogleRegistrationForm';
 
 const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
     const { t } = useTranslation();
@@ -15,6 +17,8 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false); // Loading state
+    const [isPhoneModalOpen, setIsPhoneModalOpen] = useState(false); // State for Phone Login Modal
+    const [isGoogleModalOpen, setIsGoogleModalOpen] = useState(false); // State for Google Login Modal
 
     const handleSubmitEmail = async (e) => {
         e.preventDefault();
@@ -33,22 +37,30 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
         }
     };
 
-    const handleGoogleLogin = () => {
-        // Add your Google login logic here
-        toast.success(t('Google login not implemented yet'));
+    const handleOpenPhoneModal = () => {
+        setIsPhoneModalOpen(true);
+        onClose(); // Close the LoginModal when opening the PhoneLoginModal
     };
 
-    const handleSubmitPhone = () => {
-        // Add your Phone login logic here
-        toast.success(t('Phone login not implemented yet'));
+    const handleOpenGoogleModal = () => {
+        setIsGoogleModalOpen(true);
+        onClose(); // Close the LoginModal when opening the GoogleLoginModal
     };
 
-    return (
+    const handleClosePhoneModal = () => {
+        setIsPhoneModalOpen(false);
+    };
+
+    const handleCloseGoogleModal = () => {
+        setIsGoogleModalOpen(false);
+    };
+
+    return (<>
         <CustomModal open={open} onClose={onClose} title={t("Login")}>
             {/* Email and Password Inputs */}
             <form onSubmit={handleSubmitEmail}>
                 <CustomInput
-                    placeholder={t('Email')} startIcon={<Email />} 
+                    placeholder={t('Email')} startIcon={<Email />}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="mb-2"
@@ -78,12 +90,12 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
 
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                 <CustomButton background="#e58d4d"
-                    fullWidth onClick={() => toast.success(t('Phone registration not implemented yet'))}
+                    fullWidth onClick={handleOpenPhoneModal}
                     startIcon={<PhoneAndroid />} title={t('Phone')} sx={{ flex: 1 }}
                 />
                 <Divider orientation="vertical" flexItem />
                 <CustomButton
-                    background="#d62746" fullWidth onClick={() => toast.success(t('Google registration not implemented yet'))}
+                    background="#d62746" fullWidth onClick={handleOpenGoogleModal}
                     startIcon={<Google />} title={t('Google')} sx={{ flex: 1 }}
                 />
             </Box> <Divider sx={{ my: 2 }} />
@@ -91,7 +103,9 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
                 variant="text" color="primary" fullWidth onClick={onSwitchToRegister}
                 title={t('not Registed? Register')} sx={{ mt: 2 }}
             />
-        </CustomModal>
+        </CustomModal> <PhoneRegistrationModal open={isPhoneModalOpen} onClose={handleClosePhoneModal} />
+        {/* Render GoogleLoginModal */}
+        <GoogleRegistrationModal open={isGoogleModalOpen} onClose={handleCloseGoogleModal} /></>
     );
 };
 
