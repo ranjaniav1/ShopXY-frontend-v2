@@ -1,13 +1,12 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import CustomSkeleton from '@/app/Common/CustomSkeleton';
 import { GetSingleCollection } from '@/app/Service/GetCollection';
 import Heading from '@/app/Common/Heading';
 import { Grid, Typography, useTheme } from '@mui/material';
 import CustomBox from '@/app/Custom/CustomBox';
+import CustomSkeleton from '@/app/Custom/CustomSkeleton'
 import CustomCollectionCard from '@/app/Common/CustomCollectionCard';
-
 const Page = () => {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
