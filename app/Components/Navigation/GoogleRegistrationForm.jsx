@@ -19,8 +19,7 @@ const GoogleRegistrationModal = ({ open, onClose }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        window.open("http://localhost:8000/api/v2/auth/google","_self")
-        // Implement Google registration logic here
+       
         console.log('Google registration data:', formData);
         onClose();
     };

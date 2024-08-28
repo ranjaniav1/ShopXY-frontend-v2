@@ -10,3 +10,5 @@ export async function Login({ email, password }) {
         throw error; // Rethrow error for handling in the component
     }
 }
+
+
