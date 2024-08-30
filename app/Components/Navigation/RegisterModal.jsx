@@ -15,7 +15,7 @@ import GoogleRegistrationModal from './GoogleRegistrationForm';
 
 const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
     const { t } = useTranslation();
-    const [formData, setFormData] = useState({ email: '', fullname: '', password: '', phone: '' });
+    const [formData, setFormData] = useState({ fullname: '', email: '', password: '', phone: '' });
     const [avatar, setAvatar] = useState(null);
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);

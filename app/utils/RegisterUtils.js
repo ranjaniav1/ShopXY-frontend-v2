@@ -1,7 +1,7 @@
 // registerUtils.js
 import i18n from "@/app/i18n";
-import { Register } from "@/app/Service/RegisterUser";
 import toast from 'react-hot-toast';
+import { Register } from "../Service/User";
 
 export const handleChange = (setFormData) => (e) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
