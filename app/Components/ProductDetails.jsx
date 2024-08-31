@@ -22,7 +22,7 @@ const RatingReview = ({ starCount, reviewCount }) => (
     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
         <Rating value={starCount} readOnly size="small" />
         <Typography variant="body2" color="text.secondary">
-        {reviewCount} {reviewCount === 1 ? ('Review') : ('Reviews')}
+            {reviewCount} {reviewCount === 1 ? ('Review') : ('Reviews')}
         </Typography>
     </Box>
 );
@@ -87,7 +87,7 @@ const ProductDetails = ({
                         {reviews.length}{t(" Reviews")}
                     </Typography>
                     <Typography variant="body2" mt={2}>
-                    {t('Free Delivery')}
+                        {t('Free Delivery')}
                     </Typography>
                 </ProductCard>
             </Grid>
@@ -108,7 +108,7 @@ const ProductDetails = ({
             {/* Card 3: Product Details */}
             <Grid item xs={12}>
                 <ProductCard title={t("Product Details")} theme={theme}>
-                <Typography variant="body2" color="text.secondary">
+                    <Typography variant="body2" color="text.secondary">
                         {t('Name')}: {name}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">

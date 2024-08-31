@@ -5,8 +5,24 @@ import { Grid, Card, Box } from '@mui/material';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import CustomButton from '../Custom/CustomButton';
+import { useSelector } from 'react-redux';
+import { addtoCart } from '../Service/Cart';
 
-const ProductGallery = ({ detailImages, selectedImage, onImageClick, productName }) => {
+const ProductGallery = ({ detailImages, selectedImage, onImageClick, productName, productId }) => {
+    let user = useSelector((state) => state?.auth?.user?.data?.user._id)
+    if (!user) {
+        user = "test"
+    }
+    console.log('user', user)
+    const handleAddToCart = async () => {
+        try {
+            const userId = user; // Replace with actual user ID from context or props
+            await addtoCart(userId, productId);
+            alert('Product added to cart successfully!');
+        } catch (error) {
+            console.log(error)
+        }
+    };
     return (
         <Grid container spacing={2}>
             <Grid item xs={2} md={2} sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
@@ -44,6 +60,7 @@ const ProductGallery = ({ detailImages, selectedImage, onImageClick, productName
                             variant="outlined"
                             title="Add To Cart"
                             className="w-full"
+                            onClick={handleAddToCart}
                         />
                     </Grid>
                     <Grid item xs={6}>

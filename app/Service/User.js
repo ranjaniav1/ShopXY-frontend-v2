@@ -4,12 +4,7 @@ export async function Register(formDataToSubmit) {
   try {
     const response = await httpAxios.post(
       "/user/auth/signup",
-      formDataToSubmit,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data" // Make sure the content type is set correctly for form data
-        }
-      }
+      formDataToSubmit
     );
 
     if (response.status === 201) {
