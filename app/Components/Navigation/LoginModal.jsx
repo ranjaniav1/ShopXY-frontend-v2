@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { Typography, Divider, CircularProgress, Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { Login } from '@/app/Service/LoginUser';
 import toast from 'react-hot-toast';
 import { Visibility, VisibilityOff, PhoneAndroid, Google, Email } from '@mui/icons-material';
 import CustomModal from '@/app/Custom/CustomModal';
@@ -10,9 +9,13 @@ import CustomInput from '@/app/Custom/CustomInput';
 import CustomButton from '@/app/Custom/CustomButton';
 import PhoneRegistrationModal from './PhoneRegistrationModal';
 import GoogleRegistrationModal from './GoogleRegistrationForm';
+import { Login } from '@/app/Service/User';
+import { setUser } from '@/app/redux/reducer/user/loginReducer';
+import { useDispatch } from 'react-redux';
 
 const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
     const { t } = useTranslation();
+    const dispatch = useDispatch(); // Initialize useDispatch
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -26,6 +29,7 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
         try {
             const response = await Login({ email, password });
             if (response) {
+                dispatch(setUser(response))
                 toast.success(t('Login successful'));
                 onClose();
             }

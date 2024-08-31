@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation';
 import { GetSingleProduct } from '@/app/Service/GetProduct';
 import ProductGallery from '@/app/Components/ProductGallery';
 import ProductDetails from '@/app/Components/ProductDetails';
+import CustomBox from '@/app/Custom/CustomBox';
 
 const Page = () => {
     const { productTitle } = useParams();
@@ -19,6 +20,7 @@ const Page = () => {
             const productData = result.data;
             setProduct(productData);
             setProduct(productData);
+            console.log("pr id", product)
             if (productData && productData.length > 0) {
                 setSelectedImage(productData[0].image); // Set the default selected image to the main image
             }
@@ -37,41 +39,44 @@ const Page = () => {
     const handleImageClick = (img) => {
         setSelectedImage(img);
     };
-
     return (
-        <Grid container spacing={2}>
-            {product?.map((pr, index) => (
-                <React.Fragment key={index}>
-                    {/* Left side: Image gallery */}
-                    <Grid item xs={12} md={6}>
-                        <ProductGallery
-                            detailImages={pr.detail_image}
-                            selectedImage={selectedImage}
-                            onImageClick={handleImageClick}
-                            productName={pr.name}
-                        />
-                    </Grid>
+        <CustomBox>
+            <Grid container spacing={2}>
 
-                    {/* Right side: Product details */}
-                    <Grid item xs={12} md={6}>
-                        <ProductDetails
-                            name={pr.name}
-                            actual_price={pr.actual_price}
-                            discounted_price={pr.discounted_price}
-                            offer={pr.offer}
-                            ratings={pr.ratings}
-                            special_offer={pr.special_offer}
-                            reviews={pr.reviews}
-                            description={pr.description}
-                            full_description={pr.full_description}
-                            delivery={pr.delivery}
-                            size={pr.size}
-                            tags={pr.tags}
-                        />
-                    </Grid>
-                </React.Fragment>
-            ))}
-        </Grid>
+                {product?.map((pr, index) => (
+                    <React.Fragment key={index}>
+                        {/* Left side: Image gallery */}
+                        <Grid item xs={12} md={4}>
+                            <ProductGallery
+                                detailImages={pr.detail_image}
+                                selectedImage={selectedImage}
+                                onImageClick={handleImageClick}
+                                productName={pr.name}
+                                productId={pr._id}
+                            />
+                        </Grid>
+
+                        {/* Right side: Product details */}
+                        <Grid item xs={12} md={8}>
+                            <ProductDetails
+                                name={pr.name}
+                                actual_price={pr.actual_price}
+                                discounted_price={pr.discounted_price}
+                                offer={pr.offer}
+                                ratings={pr.ratings}
+                                special_offer={pr.special_offer}
+                                reviews={pr.reviews}
+                                description={pr.description}
+                                full_description={pr.full_description}
+                                delivery={pr.delivery}
+                                size={pr.size}
+                                tags={pr.tags}
+                            />
+                        </Grid>
+                    </React.Fragment>
+                ))}
+            </Grid>
+        </CustomBox>
     );
 };
 

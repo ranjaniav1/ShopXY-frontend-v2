@@ -1,0 +1,14 @@
+import { httpAxios } from "../httpAxios";
+
+export const addtoCart = async (userId, productId, quantity = 1) => {
+  try {
+    const response = await httpAxios.post("/user/cart/add", {
+      userId,
+      products: [{ productId, quantity }]
+    });
+    return response.data;
+  } catch (error) {
+    console.log("Error adding to cart", error);
+    throw error;
+  }
+};

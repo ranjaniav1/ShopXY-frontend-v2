@@ -12,9 +12,11 @@ import CustomInput from '@/app/Custom/CustomInput';
 import CustomButton from '@/app/Custom/CustomButton';
 import CustomMenu from '@/app/Custom/CustomMenu';
 import CustomIconButton from '@/app/Custom/CustomIconButton';
+import { useSelector } from 'react-redux';
 
 const FullScreenNav = ({ setDrawerOpen }) => {
   const { t } = useTranslation();
+  const isAuth = useSelector((state) => state.auth.isAuthenticated)
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
 
@@ -52,11 +54,18 @@ const FullScreenNav = ({ setDrawerOpen }) => {
 
       {/* Account and Cart Menu */}
       <div className="flex space-x-2">
-        <CustomButton
-          startIcon={<AccountCircle />}
-          title={t("Account")}
-          onClick={handleOpenRegister}
-        />
+        {
+          isAuth ? (<CustomButton
+            startIcon={<AccountCircle />}
+            title={t("Account")}
+            onClick={handleOpenRegister}
+          />) : (<CustomButton
+            startIcon={<AccountCircle />}
+            title={t("Login")}
+            onClick={handleOpenRegister}
+          />)
+        }
+
         <CustomMenu
           startIcon={<ShoppingCartIcon />}
           title={t("Cart")}

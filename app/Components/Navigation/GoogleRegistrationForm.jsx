@@ -19,7 +19,7 @@ const GoogleRegistrationModal = ({ open, onClose }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Implement Google registration logic here
+       
         console.log('Google registration data:', formData);
         onClose();
     };
