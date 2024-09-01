@@ -1,6 +1,6 @@
 // src/components/PriceDetails.js
 import React from 'react';
-import { Card, CardContent, Typography, Box, Divider } from '@mui/material';
+import { Typography, Box, Divider } from '@mui/material';
 import CustomButton from '../Custom/CustomButton';
 
 const PriceDetails = ({ numberOfItems, totalProductPrice, totalDiscount, orderTotal }) => {

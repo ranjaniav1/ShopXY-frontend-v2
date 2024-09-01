@@ -98,7 +98,7 @@ const ProductDetails = ({
                 <ProductCard title={t("Select Size")} theme={theme}>
                     <Box sx={{ display: 'flex', gap: 2 }}>
                         {sizes.map((size) => (
-                            <CustomButton title={size} />
+                            <CustomButton title={size} key={size}/>
                         ))}
                     </Box>
                 </ProductCard>
