@@ -1,8 +1,7 @@
 // src/components/CartProductCard.js
 import React from 'react';
-import { Box, Typography, IconButton } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
-import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import { Box, Typography } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import CustomButton from '../Custom/CustomButton';
 
 const CartProductCard = ({ product, quantity, onEdit, onRemove }) => {
@@ -11,12 +10,11 @@ const CartProductCard = ({ product, quantity, onEdit, onRemove }) => {
             sx={{
                 display: 'flex',
                 alignItems: 'flex-start',
-                border: '1px solid #ddd',
+                border: '1px solid #e1e0e0',
                 borderRadius: 2,
                 padding: '10px',
                 marginBottom: 2,
                 boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
-                backgroundColor: '#fff',
                 position: 'relative',
             }}
         >
@@ -38,9 +36,6 @@ const CartProductCard = ({ product, quantity, onEdit, onRemove }) => {
                             onClick={() => onEdit(product._id)}
                             sx={{ marginRight: 1 }}
                         />
-                        <IconButton color="error" onClick={() => onRemove(product._id)}>
-                            <RemoveCircleOutlineIcon />
-                        </IconButton>
                     </Box>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, mr: 1 }}>
@@ -62,6 +57,7 @@ const CartProductCard = ({ product, quantity, onEdit, onRemove }) => {
                 <Typography variant="body2" color="textSecondary">
                     Qty: {quantity}
                 </Typography>
+                <CustomButton title="Remove" startIcon={<CloseIcon />} onClick={() => onRemove(product._id)} />
             </Box>
         </Box>
     );

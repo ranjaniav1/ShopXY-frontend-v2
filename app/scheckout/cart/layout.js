@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { getCart } from "@/app/Service/Cart";
 import { Box, Divider, Grid } from "@mui/material";
 import PriceDetails from "@/app/Components/PriceDetail";
+import CustomBox from "@/app/Custom/CustomBox";
 
 const Layout = ({ children }) => {
   const [cart, setCart] = useState([]);
@@ -49,32 +50,34 @@ const Layout = ({ children }) => {
   if (error) return <p>{error}</p>;
 
   return (
-    <Grid container spacing={2}>
-      {/* Grid for children (cart items) */}
-      <Grid item xs={12} md={7}>
-        {children}
-      </Grid>
+    <CustomBox>
+      <Grid container spacing={2}>
+        {/* Grid for children (cart items) */}
+        <Grid item xs={12} md={7}>
+          {children}
+        </Grid>
 
-      {/* Vertical Divider */}
-      <Grid
-        item
-        sx={{ display: { xs: "none", md: "flex" }, alignItems: "stretch" }}
-      >
-        <Box sx={{ height: "100%", display: "flex", alignItems: "stretch" }}>
-          <Divider orientation="vertical" flexItem />
-        </Box>
-      </Grid>
+        {/* Vertical Divider */}
+        <Grid
+          item
+          sx={{ display: { xs: "none", md: "flex" }, alignItems: "stretch" }}
+        >
+          <Box sx={{ height: "100%", display: "flex", alignItems: "stretch" }}>
+            <Divider orientation="vertical" flexItem />
+          </Box>
+        </Grid>
 
-      {/* Price Details Section */}
-      <Grid item xs={12} md={4}>
-        <PriceDetails
-          numberOfItems={numberOfItems}
-          totalProductPrice={totalProductPrice}
-          totalDiscount={totalDiscount}
-          orderTotal={orderTotal}
-        />
+        {/* Price Details Section */}
+        <Grid item xs={12} md={4}>
+          <PriceDetails
+            numberOfItems={numberOfItems}
+            totalProductPrice={totalProductPrice}
+            totalDiscount={totalDiscount}
+            orderTotal={orderTotal}
+          />
+        </Grid>
       </Grid>
-    </Grid>
+    </CustomBox>
   );
 };
 

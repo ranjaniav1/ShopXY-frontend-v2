@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getCart } from '@/app/Service/Cart';
 import CartProductCard from '@/app/Components/CardProductCard';
+import { Typography } from '@mui/material';
 
 const Page = () => {
     const [cart, setCart] = useState([]);
@@ -14,9 +15,7 @@ const Page = () => {
             setCart(response.cart);
             setLoading(false)
         } catch (err) {
-            setError(err.message || 'Error fetching cart data');
-        } finally {
-            setLoading(false);
+            console.log(err.message || 'Error fetching cart data');
         }
     };
     useEffect(() => {
@@ -37,7 +36,9 @@ const Page = () => {
     };
     return (
         <div>
-            <h1>Product Details</h1>
+            <Typography variant="h6" sx={{ marginBottom: 2, fontWeight: 'bold' }}>
+                Product Details
+            </Typography>
             {cart.length > 0 ? (
                 cart.map((item) => (
                     <CartProductCard

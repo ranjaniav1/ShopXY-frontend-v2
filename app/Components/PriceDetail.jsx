@@ -7,7 +7,7 @@ const PriceDetails = ({ numberOfItems, totalProductPrice, totalDiscount, orderTo
     return (
         <Box sx={{ padding: 2 }}>
             <Typography variant="h6" sx={{ marginBottom: 2, fontWeight: 'bold' }}>
-                Price Details ( {numberOfItems}Items)
+                Price Details ({numberOfItems} Items)
             </Typography>
 
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -15,7 +15,7 @@ const PriceDetails = ({ numberOfItems, totalProductPrice, totalDiscount, orderTo
                     <Typography variant="body2" color="textSecondary" sx={{ borderBottom: '1px dotted grey' }}>
                         Total Product Price:
                     </Typography>
-                    <Typography variant="body2" color="InactiveBorder" sx={{ fontWeight: 'bold' }}>
+                    <Typography variant="body2" color="textSecondary" sx={{ fontWeight: 'bold' }}>
                         + ₹{totalProductPrice}
                     </Typography>
                 </Box>
@@ -28,7 +28,7 @@ const PriceDetails = ({ numberOfItems, totalProductPrice, totalDiscount, orderTo
                     </Typography>
                 </Box>
                 <Divider />
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', fontWeight: 'bolder' }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', fontWeight: 'bolder', color: 'black' }}>
                     <Typography >
                         Order Total:
                     </Typography>
