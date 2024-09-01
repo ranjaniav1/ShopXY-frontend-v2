@@ -1,8 +1,8 @@
-import { httpAxios } from "../httpAxios";
+import {  httpDataAxios } from "../httpAxios";
 
 export async function GetBrands() {
   try {
-    const response = await httpAxios.get(`/Get-brands`);
+    const response = await httpDataAxios.get(`/Get-brands`);
     return response.data;
   } catch (error) {
     console.log("error in category", error);
@@ -11,7 +11,7 @@ export async function GetBrands() {
 
 export async function GetSingleBrands({brand_id}) {
   try {
-    const response = await httpAxios.get(`/Get-brands/${brand_id}`);
+    const response = await httpDataAxios.get(`/Get-brands/${brand_id}`);
     return response.data;
   } catch (error) {
     console.log("error in category", error);

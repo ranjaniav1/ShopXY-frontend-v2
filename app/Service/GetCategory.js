@@ -1,19 +1,19 @@
-import { httpAxios } from "../httpAxios";
+import { httpDataAxios } from "../httpAxios";
 
 export async function GetCategories() {
   try {
-    const response = await httpAxios.get(`/Get-category`);
+    const response = await httpDataAxios.get(`/Get-category`);
     return response.data;
   } catch (error) {
     console.log("error in category", error);
-  }                              
+  }
 }
 
-export async function GetSingleCategories({collection_id}) {
+export async function GetSingleCategories({ collection_id }) {
   try {
-    const response = await httpAxios.get(`/Get-category/${collection_id}`);
+    const response = await httpDataAxios.get(`/Get-category/${collection_id}`);
     return response.data;
   } catch (error) {
     console.log("error in category", error);
-  }                              
+  }
 }
