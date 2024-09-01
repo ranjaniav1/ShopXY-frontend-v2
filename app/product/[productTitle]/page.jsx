@@ -19,10 +19,9 @@ const Page = () => {
             const result = await GetSingleProduct({ slug: productTitle });
             const productData = result.data;
             setProduct(productData);
-            setProduct(productData);
             console.log("pr id", product)
-            if (productData && productData.length > 0) {
-                setSelectedImage(productData[0].image); // Set the default selected image to the main image
+            if (productData) {
+                setSelectedImage(productData.image); // Set the default selected image to the main image
             }
             setLoading(false);
         } catch (error) {
@@ -41,40 +40,39 @@ const Page = () => {
     };
     return (
         <CustomBox>
-            <Grid container spacing={2}>
+            <Grid container spacing={3}>
 
-                {product?.map((pr, index) => (
-                    <React.Fragment key={index}>
-                        {/* Left side: Image gallery */}
-                        <Grid item xs={12} md={4}>
-                            <ProductGallery
-                                detailImages={pr.detail_image}
-                                selectedImage={selectedImage}
-                                onImageClick={handleImageClick}
-                                productName={pr.name}
-                                productId={pr._id}
-                            />
-                        </Grid>
 
-                        {/* Right side: Product details */}
-                        <Grid item xs={12} md={8}>
-                            <ProductDetails
-                                name={pr.name}
-                                actual_price={pr.actual_price}
-                                discounted_price={pr.discounted_price}
-                                offer={pr.offer}
-                                ratings={pr.ratings}
-                                special_offer={pr.special_offer}
-                                reviews={pr.reviews}
-                                description={pr.description}
-                                full_description={pr.full_description}
-                                delivery={pr.delivery}
-                                size={pr.size}
-                                tags={pr.tags}
-                            />
-                        </Grid>
-                    </React.Fragment>
-                ))}
+                {/* Left side: Image gallery */}
+                <Grid item xs={12} md={4}>
+                    <ProductGallery
+                        detailImages={product.detail_image}
+                        selectedImage={selectedImage}
+                        onImageClick={handleImageClick}
+                        productName={product.name}
+                        productId={product._id}
+                    />
+                </Grid>
+
+                {/* Right side: Product details */}
+                <Grid item xs={12} md={8}>
+                    <ProductDetails
+                        name={product.name}
+                        actual_price={product.actual_price}
+                        discounted_price={product.discounted_price}
+                        offer={product.offer}
+                        ratings={product.ratings}
+                        special_offer={product.special_offer}
+                        reviews={product.reviews}
+                        description={product.description}
+                        full_description={product.full_description}
+                        delivery={product.delivery}
+                        size={product.size}
+                        tags={product.tags}
+                        gst_type={product.gst_type}
+                        brand={product.brand}
+                    />
+                </Grid>
             </Grid>
         </CustomBox>
     );

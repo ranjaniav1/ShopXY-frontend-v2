@@ -58,7 +58,7 @@ const ProductGallery = ({ detailImages, selectedImage, onImageClick, productName
                         <CustomButton
                             startIcon={<AddShoppingCartIcon />}
                             variant="outlined"
-                            title="Add To Cart"
+                            title="Cart It"
                             className="w-full"
                             onClick={handleAddToCart}
                         />
@@ -67,7 +67,7 @@ const ProductGallery = ({ detailImages, selectedImage, onImageClick, productName
                         <CustomButton
                             startIcon={<DoubleArrowIcon />}
                             variant="contained"
-                            title="BUY NOW"
+                            title="Buy Now"
                             className="w-full"
                         />
                     </Grid>

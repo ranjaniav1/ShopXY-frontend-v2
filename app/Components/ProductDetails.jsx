@@ -4,6 +4,7 @@ import React from 'react';
 import { Card, CardContent, Typography, Box, Grid, Avatar, Button, Divider, Chip, useTheme } from '@mui/material';
 import Rating from '@mui/material/Rating';
 import { useTranslation } from 'react-i18next';
+import CustomButton from '../Custom/CustomButton';
 
 // Reusable ProductCard Component
 const ProductCard = ({ title, children, theme }) => (
@@ -34,7 +35,7 @@ const ReviewItem = ({ review, theme }) => (
             <Avatar>{review.name ? review.name.charAt(0) : '?'}</Avatar>
             <Box>
                 <Typography variant="body2" fontWeight="bold">
-                    {review.name}
+                    {review.user}
                 </Typography>
                 <Rating value={review.rating} readOnly size="small" />
                 <Typography variant="body2" color="text.secondary">
@@ -43,7 +44,7 @@ const ReviewItem = ({ review, theme }) => (
             </Box>
         </Box>
         <Typography variant="body2" mt={2}>
-            {review.description}
+            {review.comment}
         </Typography>
         {review.image && (
             <img src={review.image} alt="Review" style={{ width: '100%', height: 'auto', marginTop: '8px', borderRadius: '4px' }} />
@@ -61,8 +62,8 @@ const ProductDetails = ({
     description,
     colors = [], // Default to an empty array if undefined
     sizes = ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'], // Default to an empty array if undefined
-    full_description,
-    delivery,
+    full_description, special_offer, gst_type,
+    delivery, brand
 }) => {
     const theme = useTheme();
     const { t } = useTranslation()
@@ -80,7 +81,7 @@ const ProductDetails = ({
                             <span style={{ textDecoration: 'line-through', marginLeft: '8px', color: 'red' }}>
                                 ₹{actual_price}
                             </span>
-                        )}
+                        )}  {offer}%OFF
                     </Typography>
                     <Rating value={ratings} readOnly size="small" />
                     <Typography variant="body2" color="text.secondary">
@@ -96,10 +97,8 @@ const ProductDetails = ({
             <Grid item xs={12}>
                 <ProductCard title={t("Select Size")} theme={theme}>
                     <Box sx={{ display: 'flex', gap: 2 }}>
-                        {sizes.map((size, index) => (
-                            <Button key={index} variant="outlined" sx={{ background: theme.palette.card.background, color: theme.palette.card.border, border: theme.palette.card.border }}>
-                                {size}
-                            </Button>
+                        {sizes.map((size) => (
+                            <CustomButton title={size} />
                         ))}
                     </Box>
                 </ProductCard>
@@ -119,6 +118,12 @@ const ProductDetails = ({
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                         {t('Description')}: {full_description}
+                    </Typography><Typography variant="body2" color="text.secondary">
+                        {t('Special Offer')}: {special_offer}
+                    </Typography><Typography variant="body2" color="text.secondary">
+                        {t('GST Type')}: {gst_type}
+                    </Typography><Typography variant="body2" color="text.secondary">
+                        {t('Brand')}: {brand}
                     </Typography>
                 </ProductCard>
             </Grid>
@@ -139,7 +144,25 @@ const ProductDetails = ({
                     ))}
                 </ProductCard>
             </Grid>
-        </Grid>
+            {/* Card 5: Delivery Options */}
+            <Grid item xs={12}>
+                <ProductCard title={t("Delivery Options")} theme={theme}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                        {delivery.free_delivery && (
+                            <Chip label={t('Free Delivery')} color="success" />
+                        )}
+                        {delivery.cash_on_delivery && (
+                            <Chip label={t('Cash on Delivery')} color="primary" />
+                        )}
+                        {delivery.return_policy && (
+                            <Typography variant="body2" color="text.secondary">
+                                {t('Return Policy')}: {delivery.return_policy}
+                            </Typography>
+                        )}
+                    </Box>
+                </ProductCard>
+            </Grid>
+        </Grid >
     );
 };
 

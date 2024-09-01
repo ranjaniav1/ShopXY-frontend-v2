@@ -13,6 +13,7 @@ import CustomButton from '@/app/Custom/CustomButton';
 import CustomMenu from '@/app/Custom/CustomMenu';
 import CustomIconButton from '@/app/Custom/CustomIconButton';
 import { useSelector } from 'react-redux';
+import Link from 'next/link';
 
 const FullScreenNav = ({ setDrawerOpen }) => {
   const { t } = useTranslation();
@@ -66,11 +67,10 @@ const FullScreenNav = ({ setDrawerOpen }) => {
           />)
         }
 
-        <CustomMenu
-          startIcon={<ShoppingCartIcon />}
-          title={t("Cart")}
-          menuItems={menuItems}
-        />
+        <Link href="/scheckout/cart">
+          <CustomButton title="Cart" startIcon={<ShoppingCartIcon />} />
+        </Link>
+
         <CustomIconButton sx={{ padding: '4px' }}
           onClick={() => setDrawerOpen(true)}
         >
