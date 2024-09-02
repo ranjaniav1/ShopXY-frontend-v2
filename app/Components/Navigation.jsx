@@ -23,7 +23,9 @@ const Navigation = () => {
                 </Box>
             </Container>
             <Box width={350}>
-                <CustomDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} title="Settings" children={<NavSetting />} />
+                <CustomDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} title="Settings">
+                    <NavSetting />
+                </CustomDrawer>
             </Box>
         </Box>
     );

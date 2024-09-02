@@ -87,9 +87,9 @@ const Page = () => {
                 <CustomDrawer
                     open={editDrawer}
                     onClose={() => setEditDrawer(false)}
-                    title="Edit Product" children={<EditCart selectedProduct={selectedProduct} onClose={() => setEditDrawer(false)} />
-                    }
-                />
+                    title="Edit Product"
+                ><EditCart selectedProduct={selectedProduct} /></CustomDrawer>
+
             </Box>
 
         </div>
