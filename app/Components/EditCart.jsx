@@ -1,84 +1,97 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { Box, Typography, Button, Divider } from '@mui/material';
+import { Add as AddIcon, Remove as RemoveIcon } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
-import { getCart, updateCartItem } from '@/app/Service/Cart';
-import CartProductCard from './CardProductCard';
+import { EdittoCart } from '../Service/Cart';
+import CustomButton from '../Custom/CustomButton';
 
 const EditCart = ({ selectedProduct, onClose }) => {
-    const [cart, setCart] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [quantity, setQuantity] = useState(selectedProduct?.quantity || 1);
+    const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(''); // New state for error message
     const userId = useSelector((state) => state.auth.user.data.user._id);
 
-    const fetchCartData = async () => {
+    const updateCart = async (newQuantity) => {
         setLoading(true);
+        setErrorMessage(''); // Clear previous errors
         try {
-            const response = await getCart(userId);
-            if (response && response.cart) {
-                setCart(response.cart);
-                setLoading(false);
-            } else {
-                console.error('Unexpected response format:', response);
-            }
+            await EdittoCart(userId, selectedProduct._id, newQuantity);
+            setQuantity(newQuantity); // Update local state with new quantity
         } catch (err) {
-            console.error('Error fetching cart data:', err.message || err);
+            console.error('Error updating quantity:', err.message || err);
+            setErrorMessage(`You can add up to ${selectedProduct.max_qty} units in one order`); // Set error message
         } finally {
             setLoading(false);
         }
     };
 
-    useEffect(() => {
-        if (userId) {
-            fetchCartData();
-        } else {
-            console.error('User ID is not available');
-        }
-    }, [userId]);
-
-    const handleQuantityChange = async (productId, newQuantity) => {
-        if (newQuantity < 1) return; // Prevent setting quantity to less than 1
-        try {
-            await updateCartItem(userId, productId, newQuantity);
-            fetchCartData(); // Refresh cart data
-        } catch (err) {
-            console.error('Error updating cart item:', err.message || err);
-        }
+    const handleIncrement = () => {
+        const newQuantity = quantity + 1;
+        updateCart(newQuantity); // Update server
     };
 
-    const handleIncrement = (productId) => {
-        const item = cart.find((item) => item._id === productId);
-        if (item) {
-            handleQuantityChange(productId, item.quantity + 1);
-        }
+    const handleDecrement = () => {
+        const newQuantity = quantity > 1 ? quantity - 1 : 1;
+        updateCart(newQuantity); // Update server
     };
 
-    const handleDecrement = (productId) => {
-        const item = cart.find((item) => item._id === productId);
-        if (item && item.quantity > 1) {
-            handleQuantityChange(productId, item.quantity - 1);
-        }
+    const handleContinue = async () => {
+        const newQuantity = quantity;
+        await updateCart(newQuantity); // Ensure the quantity is updated before closing
+        onClose(); // Close the drawer
     };
 
-    if (loading) {
-        return <p>Loading...</p>;
-    }
+    if (!selectedProduct) return null;
+
+    // Calculate the total price based on quantity
+    const totalPrice = (selectedProduct.discounted_price || selectedProduct.actual_price) * quantity;
 
     return (
-        <div>
-            {cart.length > 0 ? (
-                cart.map((item) => (
-                    <CartProductCard
-                        key={item._id}
-                        product={item.product}
-                        quantity={item.quantity}
-                        increment={handleIncrement}
-                        decrement={handleDecrement}
-                    />
-                ))
-            ) : (
-                <p>Your cart is empty.</p>
-            )}
-            <button onClick={onClose}>Close</button>
-        </div>
+        <Box sx={{ display: 'flex', flexDirection: "column" }}>
+            <Box sx={{ display: 'flex', marginBottom: '16px' }}>
+                <img
+                    src={selectedProduct.image || 'https://via.placeholder.com/150'}
+                    alt={selectedProduct.name}
+                    style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '8px', marginRight: '16px' }}
+                />
+                <Box sx={{ flex: 1 }}>
+                    <Typography variant="body2" sx={{ fontWeight: 'bold', marginBottom: '8px' }}>
+                        {selectedProduct.name}
+                    </Typography>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', marginBottom: '8px' }}>
+                        <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                            ₹{totalPrice.toFixed(2)}
+                        </Typography>
+
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: '16px' }}>
+                        <Button onClick={handleDecrement} sx={{ minWidth: '40px', height: '40px' }} disabled={loading}>
+                            <RemoveIcon />
+                        </Button>
+                        <Typography variant="h6" sx={{ margin: '0 16px' }}>
+                            {quantity}
+                        </Typography>
+                        <Button onClick={handleIncrement} sx={{ minWidth: '40px', height: '40px' }} disabled={loading}>
+                            <AddIcon />
+                        </Button>
+                    </Box>
+                    {errorMessage && (
+                        <Typography variant="body2" color="error" sx={{ marginBottom: '16px' }}>
+                            {errorMessage}
+                        </Typography>
+                    )}
+
+                </Box>
+            </Box>
+            <Divider sx={{ marginY: '16px' }} />
+            <Typography variant="body1" sx={{ marginBottom: '16px' }}>
+                Total Price: ₹{totalPrice.toFixed(2)}
+            </Typography>
+            <CustomButton onClick={handleContinue} title={"Continue"} />
+
+
+        </Box>
     );
 };
 

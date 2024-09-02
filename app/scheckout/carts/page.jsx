@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getCart, removetoCart } from '@/app/Service/Cart';
 import CartProductCard from '@/app/Components/CardProductCard';
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import CustomDrawer from '@/app/Custom/CustomDrawer';
 import EditCart from '@/app/Components/EditCart';
 
@@ -18,10 +18,9 @@ const Page = () => {
         setLoading(true); // Set loading to true before starting the fetch
         try {
             const response = await getCart(userId);
-            console.log("API Response:", response.cart); // Log the full response
-            if (response && response.cart) {
+            console.log("API Response:", response); // Log the full response
+            if (response && Array.isArray(response.cart)) {
                 setCart(response.cart);
-                setLoading(false)
             } else {
                 console.error('Unexpected response format:', response);
             }
@@ -40,8 +39,6 @@ const Page = () => {
         }
     }, [userId]); // Fetch data if userId changes
 
-
-
     const handleRemove = async (productId, quantity) => {
         try {
             await removetoCart(userId, productId, quantity); // Ensure quantity is passed correctly
@@ -52,46 +49,49 @@ const Page = () => {
         }
     };
 
-    if (loading) {
-        return <p>Loading...</p>;
-    }
     const handleEdit = (product) => {
         setSelectedProduct(product); // Set the selected product details
         setEditDrawer(true); // Open the drawer
     };
+
+    if (loading) {
+        return <p>Loading...</p>;
+    }
+
     return (
         <div>
             <Typography variant="h6" sx={{ marginBottom: 2, fontWeight: 'bold' }}>
                 Product Details
             </Typography>
             {cart.length > 0 ? (
-
                 cart.map((item) => (
                     <CartProductCard
                         key={item._id}
-                        image={item.image}
-                        offer={item.offer}
+                        image={item.product.image}
+                        offer={item.product.offer}
                         quantity={item.quantity}
-                        name={item.name}
+                        name={item.product.name}
                         product={item.product}
-                        size={item.size}
+                        size={item.product.size}
                         onEdit={() => handleEdit(item.product)} // Pass the product to handleEdit
-                        actual_price={item.actual_price}
-                        discounted_price={item.discounted_price}
-                        onRemove={() => handleRemove(item._id, item.quantity)} // Pass productId and quantity here
+                        actual_price={item.product.actual_price}
+                        discounted_price={item.product.discounted_price}
+                        onRemove={() => handleRemove(item.productId, item.quantity)} // Pass productId and quantity here
                     />
-
                 ))
             ) : (
                 <p>Your cart is empty.</p>
             )}
-            <CustomDrawer
-                open={editDrawer}
-                onClose={() => setEditDrawer(false)}
-                title="Edit Product"
-            >
-                <EditCart selectedProduct={selectedProduct} onClose={() => setEditDrawer(false)} />
-            </CustomDrawer>
+            <Box width="200">
+
+                <CustomDrawer
+                    open={editDrawer}
+                    onClose={() => setEditDrawer(false)}
+                    title="Edit Product" children={<EditCart selectedProduct={selectedProduct} onClose={() => setEditDrawer(false)} />
+                    }
+                />
+            </Box>
+
         </div>
     );
 };

@@ -3,29 +3,14 @@ import { Drawer, IconButton, Radio, RadioGroup, FormControlLabel, FormLabel, use
 import CloseIcon from '@mui/icons-material/Close';
 import { useDispatch, useSelector } from 'react-redux';
 import CustomIconButton from './CustomIconButton';
-import { setTheme } from '../redux/reducer/ThemeReducer';
 import { useTranslation } from 'react-i18next';
-import i18n from '../i18n';
-import { setLanguage } from '../redux/reducer/LanguageReducer';
+
 
 const CustomDrawer = ({ open, onClose, title, children }) => {
     const { t } = useTranslation();
-    const dispatch = useDispatch();
-    const currentTheme = useSelector(state => state.theme.theme);
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-    const selectedLanguage = useSelector(state => state.language.language);
-
-    const handleThemeChange = (event, newTheme) => {
-        if (newTheme !== null) {
-            dispatch(setTheme(newTheme));
-        }
-    };
-
-    const handleLanguageChange = (event) => {
-        const lang = event.target.value;
-        dispatch(setLanguage(lang));
-    };
+ 
 
     return (
         <Drawer
@@ -45,7 +30,7 @@ const CustomDrawer = ({ open, onClose, title, children }) => {
                     </CustomIconButton>
                 </Box>
 
-                <Box className="p-4 flex-grow overflow-y-auto" bgcolor={theme.palette.background.secondary}>
+                <Box className="p-4 flex-grow " bgcolor={theme.palette.background.secondary}>
                     {children}
                 </Box>
             </Box>
