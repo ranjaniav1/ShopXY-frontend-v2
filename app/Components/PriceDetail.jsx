@@ -4,6 +4,7 @@ import { Typography, Box, Divider } from '@mui/material';
 import CustomButton from '../Custom/CustomButton';
 
 const PriceDetails = ({ numberOfItems, totalProductPrice, totalDiscount, orderTotal }) => {
+    
     return (
         <Box sx={{ padding: 2 }}>
             <Typography variant="h6" sx={{ marginBottom: 2, fontWeight: 'bold' }}>

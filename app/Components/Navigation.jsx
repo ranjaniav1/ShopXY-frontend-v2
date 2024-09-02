@@ -4,6 +4,7 @@ import { Box, Container, useTheme } from '@mui/material';
 import FullScreenNav from './Navigation/FullScreenNav';
 import SmallScreenNav from './Navigation/SmallScreenNav';
 import CustomDrawer from '../Custom/CustomDrawer';
+import NavSetting from './NavSetting';
 
 const Navigation = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -21,9 +22,9 @@ const Navigation = () => {
                     <SmallScreenNav setDrawerOpen={setDrawerOpen} />
                 </Box>
             </Container>
-                <Box width={350}>
-                    <CustomDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
-                </Box>
+            <Box width={350}>
+                <CustomDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} title="Settings" children={<NavSetting />} />
+            </Box>
         </Box>
     );
 };

@@ -1,10 +1,9 @@
-// src/components/CartProductCard.js
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import CustomButton from '../Custom/CustomButton';
 
-const CartProductCard = ({ product, quantity, onEdit, onRemove }) => {
+const CartProductCard = ({ onEdit, onRemove, image, name, offer, actual_price, discounted_price, quantity, size }) => {
     return (
         <Box
             sx={{
@@ -20,44 +19,45 @@ const CartProductCard = ({ product, quantity, onEdit, onRemove }) => {
         >
             <Box sx={{ flexShrink: 0, marginRight: 2 }}>
                 <img
-                    src={product.image || 'https://via.placeholder.com/150'}
-                    alt={product.name}
+                    src={image || 'https://via.placeholder.com/150'}
+                    alt={name}
                     style={{ width: '120px', height: '120px', objectFit: 'cover', borderRadius: 2 }}
                 />
             </Box>
             <Box sx={{ flex: 1 }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Typography variant="body1" sx={{ fontWeight: 'bold', fontSize: '16px' }}>
-                        {product.name}
+                        {name}
                     </Typography>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <CustomButton
                             title="Edit"
-                            onClick={() => onEdit(product._id)}
+                            onClick={onEdit}
                             sx={{ marginRight: 1 }}
                         />
                     </Box>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, mr: 1 }}>
                     <Typography variant="body1" sx={{ fontWeight: 'bold', fontSize: '16px', marginRight: 1 }}>
-                        ₹{product.discounted_price || product.actual_price}
+                        ₹{discounted_price || actual_price}
                     </Typography>
-                    {product.discounted_price && (
+                    {discounted_price && (
                         <Typography variant="body2" color="textSecondary" sx={{ textDecoration: 'line-through' }}>
-                            ₹{product.actual_price}
+                            ₹{actual_price}
                         </Typography>
-                    )}<Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
-                        {product.offer ? `${product.offer}% off` : 'No offer'}
+                    )}
+                    <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
+                        {offer ? `${offer}% off` : 'No offer'}
                     </Typography>
                 </Box>
 
                 <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
-                    Size: {product.size.join(', ')}
+                    Size: {size}
                 </Typography>
                 <Typography variant="body2" color="textSecondary">
                     Qty: {quantity}
                 </Typography>
-                <CustomButton title="Remove" startIcon={<CloseIcon />} onClick={() => onRemove(product._id)} />
+                <CustomButton title="Remove" startIcon={<CloseIcon />} onClick={onRemove} />
             </Box>
         </Box>
     );
