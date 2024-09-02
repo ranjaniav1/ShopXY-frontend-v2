@@ -1,8 +1,8 @@
-import { httpDataAxios } from "../httpAxios";
+import { httpAxios, httpDataAxios } from "../httpAxios";
 
 export async function GetSingleProduct({ slug }) {
   try {
-    const response = await httpDataAxios.get(`/Get-product/${slug}`);
+    const response = await httpAxios.get(`/Get-product/${slug}`);
     console.log("jnjdb", response.data);
     return response.data;
   } catch (error) {
@@ -12,7 +12,7 @@ export async function GetSingleProduct({ slug }) {
 
 export async function GetAllProducts() {
   try {
-    const response = await httpDataAxios.get(`/Get-product`);
+    const response = await httpAxios.get(`/Get-product`);
     console.log("product received", response.data);
     return response.data;
   } catch (error) {
