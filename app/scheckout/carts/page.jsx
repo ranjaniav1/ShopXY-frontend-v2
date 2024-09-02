@@ -11,19 +11,30 @@ const Page = () => {
     const userId = useSelector((state) => state.auth.user.data.user._id);
 
     const fetchCartData = async () => {
+        setLoading(true); // Set loading to true before starting the fetch
         try {
             const response = await getCart(userId);
-            setCart(response.cart);
+            console.log("API Response:", response.cart); // Log the full response
+            if (response && response.cart) {
+                setCart(response.cart);
+                setLoading(false)
+            } else {
+                console.error('Unexpected response format:', response);
+            }
         } catch (err) {
-            console.log(err.message || 'Error fetching cart data');
+            console.error('Error fetching cart data:', err.message || err);
         } finally {
-            setLoading(false);
+            setLoading(false); // Set loading to false after the fetch
         }
     };
 
     useEffect(() => {
-        fetchCartData();
-    }, [userId]);
+        if (userId) {
+            fetchCartData();
+        } else {
+            console.error('User ID is not available');
+        }
+    }, [userId]); // Fetch data if userId changes
 
     const handleEdit = (itemId) => {
         // Implement edit functionality here
@@ -36,7 +47,7 @@ const Page = () => {
             setCart((prevCart) => prevCart.filter(item => item._id !== productId)); // Update cart state
             alert("Item removed successfully");
         } catch (err) {
-            console.log(err.message || 'Error removing item from cart');
+            console.error('Error removing item from cart:', err.message || err);
         }
     };
 
@@ -50,12 +61,19 @@ const Page = () => {
                 Product Details
             </Typography>
             {cart.length > 0 ? (
+
                 cart.map((item) => (
                     <CartProductCard
                         key={item._id}
-                        product={item.product}
+                        image={item.image}
+                        offer={item.offer}
                         quantity={item.quantity}
+                        name={item.name}
+                        product={item.product}
+                        size={item.size}
                         onEdit={handleEdit}
+                        actual_price={item.actual_price}
+                        discounted_price={item.discounted_price}
                         onRemove={() => handleRemove(item._id, item.quantity)} // Pass productId and quantity here
                     />
                 ))

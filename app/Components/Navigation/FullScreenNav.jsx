@@ -67,7 +67,7 @@ const FullScreenNav = ({ setDrawerOpen }) => {
           />)
         }
 
-        <Link href="/scheckout/cart">
+        <Link href="/scheckout/carts">
           <CustomButton title="Cart" startIcon={<ShoppingCartIcon />} />
         </Link>
 

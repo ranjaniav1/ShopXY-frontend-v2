@@ -28,8 +28,10 @@ export const getCart = async (userId) => {
 export const removetoCart = async (userId, productId, quantity = 1) => {
   try {
     const response = await httpAxios.delete("/user/cart/remove", {
-      userId,
-      products: [{ productId, quantity }]
+      data: {
+        userId,
+        products: [{ productId, quantity }]
+      }
     });
     return response.data;
   } catch (error) {
