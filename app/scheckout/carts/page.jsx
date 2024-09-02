@@ -4,11 +4,15 @@ import { useSelector } from 'react-redux';
 import { getCart, removetoCart } from '@/app/Service/Cart';
 import CartProductCard from '@/app/Components/CardProductCard';
 import { Typography } from '@mui/material';
+import CustomDrawer from '@/app/Custom/CustomDrawer';
+import EditCart from '@/app/Components/EditCart';
 
 const Page = () => {
     const [cart, setCart] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [editDrawer, setEditDrawer] = useState(false);
     const userId = useSelector((state) => state.auth.user.data.user._id);
+    const [selectedProduct, setSelectedProduct] = useState(null); // State to store selected product details
 
     const fetchCartData = async () => {
         setLoading(true); // Set loading to true before starting the fetch
@@ -36,10 +40,7 @@ const Page = () => {
         }
     }, [userId]); // Fetch data if userId changes
 
-    const handleEdit = (itemId) => {
-        // Implement edit functionality here
-        console.log('Edit item with ID:', itemId);
-    };
+
 
     const handleRemove = async (productId, quantity) => {
         try {
@@ -54,7 +55,10 @@ const Page = () => {
     if (loading) {
         return <p>Loading...</p>;
     }
-
+    const handleEdit = (product) => {
+        setSelectedProduct(product); // Set the selected product details
+        setEditDrawer(true); // Open the drawer
+    };
     return (
         <div>
             <Typography variant="h6" sx={{ marginBottom: 2, fontWeight: 'bold' }}>
@@ -71,15 +75,23 @@ const Page = () => {
                         name={item.name}
                         product={item.product}
                         size={item.size}
-                        onEdit={handleEdit}
+                        onEdit={() => handleEdit(item.product)} // Pass the product to handleEdit
                         actual_price={item.actual_price}
                         discounted_price={item.discounted_price}
                         onRemove={() => handleRemove(item._id, item.quantity)} // Pass productId and quantity here
                     />
+
                 ))
             ) : (
                 <p>Your cart is empty.</p>
             )}
+            <CustomDrawer
+                open={editDrawer}
+                onClose={() => setEditDrawer(false)}
+                title="Edit Product"
+            >
+                <EditCart selectedProduct={selectedProduct} onClose={() => setEditDrawer(false)} />
+            </CustomDrawer>
         </div>
     );
 };

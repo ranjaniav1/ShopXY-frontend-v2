@@ -58,6 +58,7 @@ const CartProductCard = ({ product, quantity, onEdit, onRemove }) => {
                     Qty: {quantity}
                 </Typography>
                 <CustomButton title="Remove" startIcon={<CloseIcon />} onClick={() => onRemove(product._id)} />
+
             </Box>
         </Box>
     );

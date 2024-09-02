@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import i18n from '../i18n';
 import { setLanguage } from '../redux/reducer/LanguageReducer';
 
-const CustomDrawer = ({ open, onClose }) => {
+const CustomDrawer = ({ open, onClose, title, children }) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const currentTheme = useSelector(state => state.theme.theme);
@@ -39,61 +39,14 @@ const CustomDrawer = ({ open, onClose }) => {
         >
             <Box className="flex flex-col h-full" sx={{ width: isMobile ? '100%' : 350 }}>
                 <Box className="flex justify-between items-center p-4" bgcolor={theme.palette.background.main}>
-                    <h2 className="text-lg font-semibold">{t("Settings")}</h2>
+                    <h2 className="text-lg font-semibold">{title}</h2>
                     <CustomIconButton onClick={onClose}>
                         <CloseIcon />
                     </CustomIconButton>
                 </Box>
 
                 <Box className="p-4 flex-grow overflow-y-auto" bgcolor={theme.palette.background.secondary}>
-                    <div className="mb-4">
-                        <FormLabel component="legend" className="text-md font-medium mb-2">{t("Theme Options")}</FormLabel>
-                        <RadioGroup
-                            aria-label="theme"
-                            name="theme"
-                            value={currentTheme}
-                            onChange={handleThemeChange}
-                            className="flex flex-row"
-                        >
-                            <FormControlLabel
-                                value="light"
-                                control={<Radio />}
-                                label={t("Light Mode")}
-                            />
-                            <FormControlLabel
-                                value="dark"
-                                control={<Radio />}
-                                label={t("Dark Mode")}
-                            />
-                        </RadioGroup>
-                    </div>
-
-                    <div className="mb-4">
-                        <FormLabel component="legend" className="text-md font-medium mb-2">{t("Select Language")}</FormLabel>
-                        <RadioGroup
-                            aria-label="language"
-                            name="language"
-                            value={selectedLanguage}
-                            onChange={handleLanguageChange}
-                            className="flex flex-row"
-                        >
-                            <FormControlLabel
-                                value="en"
-                                control={<Radio />}
-                                label={t("English")}
-                            />
-                            <FormControlLabel
-                                value="fr"
-                                control={<Radio />}
-                                label={t("French")}
-                            />
-                            <FormControlLabel
-                                value="es"
-                                control={<Radio />}
-                                label={t("Spanish")}
-                            />
-                        </RadioGroup>
-                    </div>
+                    {children}
                 </Box>
             </Box>
         </Drawer>
