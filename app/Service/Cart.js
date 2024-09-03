@@ -25,12 +25,12 @@ export const getCart = async (userId) => {
   }
 };
 
-export const removetoCart = async (userId, productId, quantity ) => {
+export const removetoCart = async (userId, productId) => {
   try {
     const response = await httpAxios.delete("/user/cart/remove", {
       data: {
         userId,
-        products: [{ productId, quantity }]
+        products: [{ productId }]
       }
     });
     return response.data;
@@ -44,7 +44,7 @@ export const EdittoCart = async (userId, productId, quantity) => {
   try {
     const response = await httpAxios.put("/user/cart/update", {
       userId,
-      products: [{ productId, quantity }] 
+      products: [{ productId, quantity }]
     });
     return response.data;
   } catch (error) {
@@ -52,4 +52,3 @@ export const EdittoCart = async (userId, productId, quantity) => {
     throw error;
   }
 };
-
