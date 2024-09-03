@@ -7,7 +7,9 @@ import { Box, Divider, Grid } from "@mui/material";
 import PriceDetails from "@/app/Components/PriceDetail";
 import CustomBox from "@/app/Custom/CustomBox";
 
-const Layout = ({ children }) => {
+const Layout = ({
+  children
+}) => {
   const [cart, setCart] = useState({
     items: [],
     totalProductActualPrice: 0,

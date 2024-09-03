@@ -1,97 +1,127 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Typography, Button, Divider } from '@mui/material';
 import { Add as AddIcon, Remove as RemoveIcon } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
-import { EdittoCart } from '../Service/Cart';
+import { EdittoCart, getCart } from '../Service/Cart';
 import CustomButton from '../Custom/CustomButton';
 
-const EditCart = ({ selectedProduct, onClose }) => {
-    const [quantity, setQuantity] = useState(selectedProduct?.quantity || 1);
+const EditCart = ({ onClose, setCart }) => {
     const [loading, setLoading] = useState(false);
-    const [errorMessage, setErrorMessage] = useState(''); // New state for error message
+    const [cart, setCartQty] = useState([]);
+    const [errorMessage, setErrorMessage] = useState('');
     const userId = useSelector((state) => state.auth.user.data.user._id);
 
-    const updateCart = async (newQuantity) => {
+    const fetchCartData = async () => {
         setLoading(true);
-        setErrorMessage(''); // Clear previous errors
         try {
-            await EdittoCart(userId, selectedProduct._id, newQuantity);
-            setQuantity(newQuantity); // Update local state with new quantity
+            const response = await getCart(userId);
+            setCartQty(response.cart || []);
         } catch (err) {
-            console.error('Error updating quantity:', err.message || err);
-            setErrorMessage(`You can add up to ${selectedProduct.max_qty} units in one order`); // Set error message
+            setErrorMessage(err.message || "Error fetching cart data");
         } finally {
             setLoading(false);
         }
     };
 
-    const handleIncrement = () => {
-        const newQuantity = quantity + 1;
-        updateCart(newQuantity); // Update server
+    useEffect(() => {
+        fetchCartData();
+    }, [userId]);
+
+    const updateCart = async (productId, newQuantity) => {
+        setLoading(true);
+        setErrorMessage('');
+        try {
+            await EdittoCart(userId, productId, newQuantity);
+            await fetchCartData(); // Fetch updated cart data
+        } catch (err) {
+            console.error('Error updating quantity:', err.message || err);
+            setErrorMessage('Error updating cart. Please try again.');
+        } finally {
+            setLoading(false);
+        }
     };
 
-    const handleDecrement = () => {
-        const newQuantity = quantity > 1 ? quantity - 1 : 1;
-        updateCart(newQuantity); // Update server
+    const handleIncrement = (productId, currentQuantity, maxQty) => {
+        const newQuantity = currentQuantity + 1;
+        if (newQuantity <= maxQty) {
+            updateCart(productId, newQuantity);
+        } else {
+            setErrorMessage(`You can add up to ${maxQty} units in one order`);
+        }
     };
 
-    const handleContinue = async () => {
-        const newQuantity = quantity;
-        await updateCart(newQuantity); // Ensure the quantity is updated before closing
-        onClose(); // Close the drawer
+    const handleDecrement = (productId, currentQuantity) => {
+        const newQuantity = currentQuantity > 1 ? currentQuantity - 1 : 1;
+        updateCart(productId, newQuantity);
     };
 
-    if (!selectedProduct) return null;
+    const handleCloseDrawer = async () => {
+        onClose();
+        // get your cart here and set
+        const response = await getCart(userId); console.log(response)
+        setCart(response?.cart || [])
+    }
 
-    // Calculate the total price based on quantity
-    const totalPrice = (selectedProduct.discounted_price || selectedProduct.actual_price) * quantity;
+
+
+    // if (loading) return <Typography>Loading...</Typography>;
+
+    // Calculate total price
+    const totalPrice = cart.reduce((total, item) => total + (item.product.actual_price * item.quantity), 0);
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: "column" }}>
-            <Box sx={{ display: 'flex', marginBottom: '16px' }}>
-                <img
-                    src={selectedProduct.image || 'https://via.placeholder.com/150'}
-                    alt={selectedProduct.name}
-                    style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '8px', marginRight: '16px' }}
-                />
-                <Box sx={{ flex: 1 }}>
-                    <Typography variant="body2" sx={{ fontWeight: 'bold', marginBottom: '8px' }}>
-                        {selectedProduct.name}
-                    </Typography>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', marginBottom: '8px' }}>
-                        <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-                            ₹{totalPrice.toFixed(2)}
-                        </Typography>
-
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {cart.length > 0 ? (
+                cart.map((item) => (
+                    <Box key={item.product._id} sx={{ display: 'flex', alignItems: 'center', gap: '16px', borderBottom: '1px solid #ddd' }}>
+                        <img
+                            src={item.product.image}
+                            alt={item.product.name}
+                            style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '8px' }}
+                        />
+                        <Box sx={{ flex: 1 }}>
+                            <Typography sx={{ fontWeight: 'bold' }}>
+                                {item.product.name}
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary">
+                                ₹{item.product.actual_price}
+                            </Typography>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px' }}>
+                                <Button
+                                    onClick={() => handleDecrement(item.product._id, item.quantity)}
+                                    sx={{ minWidth: '40px', height: '40px', borderRadius: '4px', borderColor: '#ddd' }}
+                                    disabled={loading}
+                                >
+                                    <RemoveIcon />
+                                </Button>
+                                <Typography variant="h6" sx={{ margin: '0 16px' }}>
+                                    {item.quantity}
+                                </Typography>
+                                <Button
+                                    onClick={() => handleIncrement(item.product._id, item.quantity, item.product.max_qty)}
+                                    sx={{ minWidth: '40px', height: '40px', borderRadius: '4px', borderColor: '#ddd' }}
+                                    disabled={loading}
+                                >
+                                    <AddIcon />
+                                </Button>
+                            </Box>
+                            {errorMessage && (
+                                <Typography variant="body2" color="error" sx={{ marginTop: '8px' }}>
+                                    {errorMessage}
+                                </Typography>
+                            )}
+                        </Box>
                     </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: '16px' }}>
-                        <Button onClick={handleDecrement} sx={{ minWidth: '40px', height: '40px' }} disabled={loading}>
-                            <RemoveIcon />
-                        </Button>
-                        <Typography variant="h6" sx={{ margin: '0 16px' }}>
-                            {quantity}
-                        </Typography>
-                        <Button onClick={handleIncrement} sx={{ minWidth: '40px', height: '40px' }} disabled={loading}>
-                            <AddIcon />
-                        </Button>
-                    </Box>
-                    {errorMessage && (
-                        <Typography variant="body2" color="error" sx={{ marginBottom: '16px' }}>
-                            {errorMessage}
-                        </Typography>
-                    )}
-
-                </Box>
-            </Box>
-            <Divider sx={{ marginY: '16px' }} />
-            <Typography variant="body1" sx={{ marginBottom: '16px' }}>
-                Total Price: ₹{totalPrice.toFixed(2)}
+                ))
+            ) : (
+                <Typography>Your cart is empty.</Typography>
+            )}
+            <Typography variant="body2">
+                Total Price: ₹{totalPrice}
             </Typography>
-            <CustomButton onClick={handleContinue} title={"Continue"} />
-
-
-        </Box>
+            <CustomButton onClick={() => handleCloseDrawer()} title={"Continue"} />
+        </div>
     );
 };
 

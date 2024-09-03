@@ -92,7 +92,7 @@ const Page = () => {
                     onClose={() => setEditDrawer(false)}
                     title="Edit Product"
                 >
-                    <EditCart selectedProduct={selectedProduct} />
+                    <EditCart setCart={setCart} onClose={() => setEditDrawer(false)} selectedProduct={selectedProduct} />
                 </CustomDrawer>
             </Box>
         </div>
