@@ -7,6 +7,8 @@ import { Box, Divider, Grid } from "@mui/material";
 import PriceDetails from "@/app/Components/PriceDetail";
 import CustomBox from "@/app/Custom/CustomBox";
 import { setMyCart } from "../redux/reducer/cartReducer";
+import CustomButton from "../Custom/CustomButton";
+import Link from "next/link";
 
 const Layout = ({ children }) => {
   const [cart, setCart] = useState({
@@ -22,24 +24,22 @@ const Layout = ({ children }) => {
   const dispatch = useDispatch();
 
   const isCart = useSelector((state) => state.cart);
+  const fetchCartData = async () => {
+    try {
+      const response = await getCart(userId);
+      setCart(response);
+      dispatch(setMyCart(response));
+      console.log("sfj", response);
+    } catch (err) {
+      setError(err.message || "Error fetching cart data");
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const fetchCartData = async () => {
-      try {
-        const response = await getCart(userId);
-        setCart(response);
-        dispatch(setMyCart(response));
-        console.log("sfj", response);
-      } catch (err) {
-        setError(err.message || "Error fetching cart data");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchCartData();
-  }, [userId, isCart]);
-
-
+  }, [userId]);
+// user id in dependency remove 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
@@ -69,6 +69,9 @@ const Layout = ({ children }) => {
             totalDiscount={isCart.totalDiscount ? isCart.totalDiscount : 0}
             orderTotal={isCart.finalPrice ? isCart.finalPrice : 0}
           />
+          <Link href="/scheckout/address">
+            <CustomButton title="Continue" />
+          </Link>
         </Grid>
       </Grid>
     </CustomBox>
