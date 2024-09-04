@@ -1,9 +1,9 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CustomButton from '../Custom/CustomButton';
 import { LocationCity, PhoneCallback } from '@mui/icons-material';
 import { TextField, Box } from '@mui/material';
-import { CreateAddress } from '../Service/Address';
+import { CreateAddress, getAddress } from '../Service/Address';
 import { useSelector } from 'react-redux';
 
 const AddressDrawer = ({ onClose }) => {
@@ -15,6 +15,9 @@ const AddressDrawer = ({ onClose }) => {
     const [pincode, setPincode] = useState('');
     const [city, setCity] = useState('');
     const [state, setState] = useState('');
+    const [addresses, setAddresses] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [selectedAddressId, setSelectedAddressId] = useState(null); // State to manage selected address
 
     const addAddress = async () => {
         try {
@@ -29,12 +32,31 @@ const AddressDrawer = ({ onClose }) => {
             };
             const result = await CreateAddress(userId, addressData);
             console.log("Address created:", result);
+            await fetchAddresses();
             onClose()
         } catch (error) {
             console.error("Error creating address", error);
         }
     };
+    const fetchAddresses = async () => {
+        try {
+            const response = await getAddress(userId);
+            const { data } = response;
 
+            setAddresses(data);
+            const primaryAddress = data.find(address => address.isPrimary);
+            if (primaryAddress) {
+                setSelectedAddressId(primaryAddress._id);
+            }
+
+            setLoading(false);
+        } catch (err) {
+            setLoading(false);
+        }
+    };
+    useEffect(() => {
+        fetchAddresses();
+    }, [userId]);
     return (
         <Box>
             {/* Contact Details Section */}
