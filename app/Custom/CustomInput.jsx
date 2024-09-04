@@ -15,7 +15,7 @@ const CustomInput = ({
   const theme = useTheme();
 
   return (
-    <InputBase
+    <InputBase 
       placeholder={placeholder}
       value={value}
       onChange={onChange}

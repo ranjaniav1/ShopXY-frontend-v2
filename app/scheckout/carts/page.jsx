@@ -1,63 +1,50 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getCart, removetoCart } from '@/app/Service/Cart';
 import CartProductCard from '@/app/Components/CardProductCard';
 import { Box, Typography } from '@mui/material';
 import CustomDrawer from '@/app/Custom/CustomDrawer';
 import EditCart from '@/app/Components/EditCart';
+import toast from 'react-hot-toast';
+import { setMyCart } from '@/app/redux/reducer/cartReducer';
 
 const Page = () => {
     const [cart, setCart] = useState([]);
     const [loading, setLoading] = useState(true);
     const [editDrawer, setEditDrawer] = useState(false);
     const userId = useSelector((state) => state.auth.user.data.user._id);
-    const [selectedProduct, setSelectedProduct] = useState(null); // State to store selected product details
-
-    const fetchCartData = async () => {
-        setLoading(true); // Set loading to true before starting the fetch
+    const [selectedProduct, setSelectedProduct] = useState(null);
+    const dispatch = useDispatch()
+    const cartData = useSelector((state) => state.cart.cart)
+    console.log("reedddu", cartData)
+    const handleRemove = async (productId) => {
         try {
-            const response = await getCart(userId);
-            console.log("API Response:", response); // Log the full response
-            if (response && Array.isArray(response.cart)) {
-                setCart(response.cart);
-            } else {
-                console.error('Unexpected response format:', response);
-            }
-        } catch (err) {
-            console.error('Error fetching cart data:', err.message || err);
-        } finally {
-            setLoading(false); // Set loading to false after the fetch
-        }
-    };
+            const response = await removetoCart(userId, productId);
 
-    useEffect(() => {
-        if (userId) {
-            fetchCartData();
-        } else {
-            console.error('User ID is not available');
-        }
-    }, [userId]); // Fetch data if userId changes
+            setCart(response.cart); // Directly set the cart from the API response
 
-    const handleRemove = async (productId, quantity) => {
-        try {
-            await removetoCart(userId, productId, quantity); // Ensure quantity is passed correctly
-            setCart((prevCart) => prevCart.filter(item => item._id !== productId)); // Update cart state
-            alert("Item removed successfully");
+            dispatch(setMyCart(response))
+            toast.success("Item removed successfully");
+
         } catch (err) {
             console.error('Error removing item from cart:', err.message || err);
+            toast.error("Failed to remove item");
         }
     };
 
     const handleEdit = (product) => {
-        setSelectedProduct(product); // Set the selected product details
-        setEditDrawer(true); // Open the drawer
+        setSelectedProduct(product);
+        setEditDrawer(true);
     };
 
-    if (loading) {
-        return <p>Loading...</p>;
-    }
-
+    // if (loading) {
+    //     return <p>Loading...</p>;
+    // }
+    useEffect(() => {
+        setCart(cartData)
+        setLoading(false)
+    }, [])
     return (
         <div>
             <Typography variant="h6" sx={{ marginBottom: 2, fontWeight: 'bold' }}>
@@ -73,25 +60,24 @@ const Page = () => {
                         name={item.product.name}
                         product={item.product}
                         size={item.product.size}
-                        onEdit={() => handleEdit(item.product)} // Pass the product to handleEdit
+                        onEdit={() => handleEdit(item.product)}
                         actual_price={item.product.actual_price}
                         discounted_price={item.product.discounted_price}
-                        onRemove={() => handleRemove(item.productId, item.quantity)} // Pass productId and quantity here
+                        onRemove={() => handleRemove(item.product._id)} // Ensure correct ID
                     />
                 ))
             ) : (
                 <p>Your cart is empty.</p>
             )}
             <Box width="200">
-
                 <CustomDrawer
                     open={editDrawer}
                     onClose={() => setEditDrawer(false)}
                     title="Edit Product"
-                ><EditCart selectedProduct={selectedProduct} /></CustomDrawer>
-
+                >
+                    <EditCart setCart={setCart} onClose={() => setEditDrawer(false)} selectedProduct={selectedProduct} />
+                </CustomDrawer>
             </Box>
-
         </div>
     );
 };

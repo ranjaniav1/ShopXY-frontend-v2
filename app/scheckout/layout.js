@@ -1,11 +1,14 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getCart } from "@/app/Service/Cart";
 import { Box, Divider, Grid } from "@mui/material";
 import PriceDetails from "@/app/Components/PriceDetail";
 import CustomBox from "@/app/Custom/CustomBox";
+import { setMyCart } from "../redux/reducer/cartReducer";
+import CustomButton from "../Custom/CustomButton";
+import Link from "next/link";
 
 const Layout = ({ children }) => {
   const [cart, setCart] = useState({
@@ -18,23 +21,25 @@ const Layout = ({ children }) => {
   const [error, setError] = useState(null);
 
   const userId = useSelector((state) => state.auth.user.data.user._id);
+  const dispatch = useDispatch();
 
+  const isCart = useSelector((state) => state.cart);
+  const fetchCartData = async () => {
+    try {
+      const response = await getCart(userId);
+      setCart(response);
+      dispatch(setMyCart(response));
+      console.log("sfj", response);
+    } catch (err) {
+      setError(err.message || "Error fetching cart data");
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const fetchCartData = async () => {
-      try {
-        const response = await getCart(userId);
-        setCart(response);
-        console.log("sfj", response);
-      } catch (err) {
-        setError(err.message || "Error fetching cart data");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchCartData();
   }, [userId]);
-
+// user id in dependency remove 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
@@ -60,10 +65,13 @@ const Layout = ({ children }) => {
         <Grid item xs={12} md={4}>
           <PriceDetails
             // numberOfItems={cart.items.length}
-            totalProductPrice={cart.totalPrice}
-            totalDiscount={cart.totalDiscount}
-            orderTotal={cart.finalPrice}
+            totalProductPrice={isCart.totalPrice ? isCart.totalPrice : 0}
+            totalDiscount={isCart.totalDiscount ? isCart.totalDiscount : 0}
+            orderTotal={isCart.finalPrice ? isCart.finalPrice : 0}
           />
+          <Link href="/scheckout/address">
+            <CustomButton title="Continue" />
+          </Link>
         </Grid>
       </Grid>
     </CustomBox>
