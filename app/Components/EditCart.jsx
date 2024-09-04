@@ -2,9 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Button, Divider } from '@mui/material';
 import { Add as AddIcon, Remove as RemoveIcon } from '@mui/icons-material';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { EdittoCart, getCart } from '../Service/Cart';
 import CustomButton from '../Custom/CustomButton';
+import { setMyCart } from '../redux/reducer/cartReducer';
 
 const EditCart = ({ onClose, setCart }) => {
     const [loading, setLoading] = useState(false);
@@ -12,11 +13,14 @@ const EditCart = ({ onClose, setCart }) => {
     const [errorMessage, setErrorMessage] = useState('');
     const userId = useSelector((state) => state.auth.user.data.user._id);
 
+    const dispatch = useDispatch()
+
     const fetchCartData = async () => {
         setLoading(true);
         try {
             const response = await getCart(userId);
             setCartQty(response.cart || []);
+            dispatch(setMyCart(response))
         } catch (err) {
             setErrorMessage(err.message || "Error fetching cart data");
         } finally {

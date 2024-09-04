@@ -7,18 +7,20 @@ import { GetSingleProduct } from '@/app/Service/GetProduct';
 import ProductGallery from '@/app/Components/ProductGallery';
 import ProductDetails from '@/app/Components/ProductDetails';
 import CustomBox from '@/app/Custom/CustomBox';
+import { useDispatch } from 'react-redux';
+import { setMyCart } from '@/app/redux/reducer/cartReducer';
 
 const Page = () => {
     const { productTitle } = useParams();
     const [product, setProduct] = useState(null);
     const [selectedImage, setSelectedImage] = useState('');
     const [loading, setLoading] = useState(true);
-
     async function fetchProduct() {
         try {
             const result = await GetSingleProduct({ slug: productTitle });
             const productData = result.data;
             setProduct(productData);
+
             console.log("pr id", product)
             if (productData) {
                 setSelectedImage(productData.image); // Set the default selected image to the main image

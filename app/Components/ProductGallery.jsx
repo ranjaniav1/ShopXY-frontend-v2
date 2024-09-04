@@ -5,8 +5,9 @@ import { Grid, Card, Box } from '@mui/material';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import CustomButton from '../Custom/CustomButton';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addtoCart } from '../Service/Cart';
+import { setMyCart } from '../redux/reducer/cartReducer';
 
 const ProductGallery = ({ detailImages, selectedImage, onImageClick, productName, productId }) => {
     let user = useSelector((state) => state?.auth?.user?.data?.user._id)
@@ -14,10 +15,12 @@ const ProductGallery = ({ detailImages, selectedImage, onImageClick, productName
         user = "test"
     }
     console.log('user', user)
+    const dispatch = useDispatch()
     const handleAddToCart = async () => {
         try {
             const userId = user; // Replace with actual user ID from context or props
-            await addtoCart(userId, productId);
+            const response = await addtoCart(userId, productId);
+            dispatch(setMyCart(response))
             alert('Product added to cart successfully!');
         } catch (error) {
             console.log(error)
