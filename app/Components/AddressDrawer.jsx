@@ -1,12 +1,12 @@
-'use client'
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CustomButton from '../Custom/CustomButton';
 import { LocationCity, PhoneCallback } from '@mui/icons-material';
 import { TextField, Box } from '@mui/material';
-import { CreateAddress, getAddress } from '../Service/Address';
-import { useSelector } from 'react-redux';
+import { CreateAddress, getAddress, updateAddress } from '../Service/Address';
+import { useDispatch, useSelector } from 'react-redux';
+import { setMyAddress } from '../redux/reducer/addressReducer';
 
-const AddressDrawer = ({ onClose }) => {
+const AddressDrawer = ({ onClose, isEditing, addressData }) => {
     const userId = useSelector((state) => state.auth.user.data.user._id);
     const [name, setName] = useState('');
     const [contactNumber, setContactNumber] = useState('');
@@ -15,48 +15,69 @@ const AddressDrawer = ({ onClose }) => {
     const [pincode, setPincode] = useState('');
     const [city, setCity] = useState('');
     const [state, setState] = useState('');
-    const [addresses, setAddresses] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [selectedAddressId, setSelectedAddressId] = useState(null); // State to manage selected address
+    const dispatch = useDispatch();
+    useEffect(() => {
+        if (isEditing && addressData) {
+            setName(addressData.name );
+            setContactNumber(addressData.phone );
+            setHouseNo(addressData.address.split(' ')[0] );
+            setRoadName(addressData.address.split(' ').slice(1).join(' ') );
+            setPincode(addressData.postalCode);
+            setCity(addressData.city);
+            setState(addressData.state );
+        } else {
+            // Clear form when not editing
+            setName('');
+            setContactNumber('');
+            setHouseNo('');
+            setRoadName('');
+            setPincode('');
+            setCity('');
+            setState('');
+        }
+    }, [isEditing, addressData]);
 
-    const addAddress = async () => {
+    const fetchAddresses = async () => {
         try {
-            const addressData = {
+            const response = await getAddress(userId);
+            return response.data;
+        } catch (err) {
+            console.error("Error fetching addresses", err);
+            return [];
+        }
+    };
+
+    const handleSaveAddress = async () => {
+        try {
+            const addressPayload = {
                 address: `${houseNo} ${roadName}`,
                 city,
                 state,
                 postalCode: pincode,
-                country: 'USA', // Assuming country is constant; adjust as needed
+                country: 'USA',
                 phone: contactNumber,
-                isPrimary: false // Assuming new addresses are not primary; adjust if needed
+                isPrimary: false, // Adjust as needed
+                name
             };
-            const result = await CreateAddress(userId, addressData);
-            console.log("Address created:", result);
-            await fetchAddresses();
-            onClose()
-        } catch (error) {
-            console.error("Error creating address", error);
-        }
-    };
-    const fetchAddresses = async () => {
-        try {
-            const response = await getAddress(userId);
-            const { data } = response;
-
-            setAddresses(data);
-            const primaryAddress = data.find(address => address.isPrimary);
-            if (primaryAddress) {
-                setSelectedAddressId(primaryAddress._id);
+    
+            if (isEditing && addressData?._id) {
+                await updateAddress(userId, {
+                    addressId: addressData._id,
+                    ...addressPayload
+                });
+            } else {
+                await CreateAddress(userId, addressPayload); // Create address expects an array
             }
-
-            setLoading(false);
-        } catch (err) {
-            setLoading(false);
+    
+            const updatedAddresses = await fetchAddresses();
+            dispatch(setMyAddress(updatedAddresses));
+            onClose();
+        } catch (error) {
+            console.error("Error saving address", error);
         }
     };
-    useEffect(() => {
-        fetchAddresses();
-    }, [userId]);
+    
+
     return (
         <Box>
             {/* Contact Details Section */}
@@ -127,7 +148,7 @@ const AddressDrawer = ({ onClose }) => {
                 />
             </Box>
             <Box mt={2}>
-                <CustomButton title="Save Address and Continue" onClick={addAddress} />
+                <CustomButton title="Save Address and Continue" onClick={handleSaveAddress} />
             </Box>
         </Box>
     );

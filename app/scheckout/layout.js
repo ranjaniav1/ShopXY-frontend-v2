@@ -20,7 +20,8 @@ const Layout = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const userId = useSelector((state) => state.auth.user.data.user._id);
+  const userId =
+    useSelector((state) => state.auth?.user?.data?.user?._id) || "test";
   const dispatch = useDispatch();
 
   const isCart = useSelector((state) => state.cart);
@@ -39,7 +40,7 @@ const Layout = ({ children }) => {
   useEffect(() => {
     fetchCartData();
   }, [userId]);
-// user id in dependency remove 
+  // user id in dependency remove
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 

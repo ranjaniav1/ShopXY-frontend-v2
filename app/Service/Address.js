@@ -6,7 +6,7 @@ export const CreateAddress = async (userId, addressData) => {
       userId,
       data: [addressData]
     });
-    return response.data;
+    return response;
   } catch (error) {
     console.log("error in create address", error);
   }
@@ -24,12 +24,22 @@ export const getAddress = async (userId) => {
 export const removeAddress = async (userId, addressId) => {
   try {
     const response = await httpAxios.delete("/user/address/delete", {
-      data: { userId, addressId } 
+      data: { userId, addressId }
     });
     return response.data;
   } catch (error) {
     console.log("Error removing address:", error);
-     
+  }
+};
+export const updateAddress = async (userId, addressData) => {
+  try {
+    const response = await httpAxios.put("/user/address/update", {
+      userId,
+      ...addressData
+    });
+    return response.data;
+  } catch (error) {
+    console.log("Error updating address:", error);
   }
 };
 
