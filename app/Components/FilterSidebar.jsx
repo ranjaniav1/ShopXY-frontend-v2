@@ -56,7 +56,7 @@ const FilterSidebar = ({ onBrandChange, brand_id }) => {
   const theme = useTheme()
   const { t } = useTranslation()
   return (
-    <Box sx={{ width: '100%', padding: '16px', backgroundColor: theme.palette.background.main, border: '1px solid #e0e0e0', borderRadius: '4px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+    <Box sx={{ width: '100%', padding: '16px', backgroundColor: theme.palette.background.main, border: '1px solid #e0e0e0', borderRadius: '10px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
       <Typography variant="h6">{t("Filters")}</Typography>
       <Divider sx={{ my: 2 }} />
 

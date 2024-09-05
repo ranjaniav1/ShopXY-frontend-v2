@@ -29,13 +29,13 @@ const ProductCard = ({ imgSrc, title, price, discountPrice, rating, description,
                 className={className}
             />
             <div>
-                <h3 className="text-xl font-semibold mb-2 truncate">{title}</h3>
+                <h3 className="text-sm font-bold  truncate">{title}</h3>
                 <div className="mb-2">
                     {discountPrice ? (
                         <>
                             <div className="flex justify-between items-baseline">
-                                <p className="text-red-500 font-bold text-lg line-through">₹{price}</p>
-                                <p className="text-green-500 font-bold text-lg">₹{discountPrice}</p>
+                                <p className="text-red-500 font-bold text-sm line-through">₹{price}</p>
+                                <p className="text-green-500 font-bold text-sm">₹{discountPrice}</p>
                             </div>
                         </>
                     ) : (

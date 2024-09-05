@@ -7,6 +7,7 @@ import { Grid, Typography, useTheme } from '@mui/material';
 import CustomBox from '@/app/Custom/CustomBox';
 import CustomSkeleton from '@/app/Custom/CustomSkeleton'
 import CustomCollectionCard from '@/app/Common/CustomCollectionCard';
+import Link from 'next/link';
 const Page = () => {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -48,13 +49,15 @@ const Page = () => {
                 <Grid container spacing={2}>
                     {categories.map((category) => (
                         <Grid item xs={6} sm={4} md={3} lg={2} key={category.id}>
-                            <CustomCollectionCard
-                                tooltip={category.title}
-                                id={category.id}
-                                slug={category.slug}
-                                image={category.collection_image}
-                                title={category.title}
-                            />
+                            <Link href={`/categories/collections/${id}/${encodeURIComponent(category.slug)}`} passHref>
+                                <CustomCollectionCard
+                                    tooltip={category.title}
+                                    id={category.id}
+                                    slug={category.slug}
+                                    image={category.collection_image}
+                                    title={category.title}
+                                />
+                            </Link>
                         </Grid>
                     ))}
                 </Grid>

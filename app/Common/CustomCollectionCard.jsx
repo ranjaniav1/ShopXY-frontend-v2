@@ -15,27 +15,25 @@ const CustomCollectionCard = ({ id, slug, image, title, tooltip }) => {
                 transition: 'border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease',
                 '&:hover': {
                     borderColor: theme.palette.card.hover,
-                    transform: 'scale(1.05)', // Optional for a slight zoom effect
-                    
-                    boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)', // Optional for a hover shadow effect
+                    transform: 'scale(1.05)',
+                    boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)',
                 },
                 background: `${theme.palette.card.background}`,
-                overflow: 'hidden', // Ensure children don't overflow outside the rounded corners
+                overflow: 'hidden',
             }}
         >
-            <Link href={`/categories/collections/${id}/${encodeURIComponent(slug)}`}>
-                <Tooltip title={tooltip} arrow>
-                    <img
-                        src={image}
-                        alt={title}
-                        className="w-full h-44 object-cover cursor-pointer"
-                    />
-                </Tooltip>
-            </Link>
+
+            <Tooltip title={tooltip} arrow>
+                <img
+                    src={image}
+                    alt={title}
+                    className="w-full h-44 object-cover cursor-pointer"
+                />
+            </Tooltip>
             <Box
                 className="absolute inset-0 flex items-center justify-center"
                 sx={{
-                    background: 'rgba(0, 0, 0, 0.5)', // Dark background with opacity
+                    background: 'rgba(0, 0, 0, 0.5)',
                     transition: 'opacity 0.3s ease',
                     opacity: 0,
                     '&:hover': {
