@@ -1,13 +1,12 @@
-'use client'
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CustomButton from '../Custom/CustomButton';
 import { LocationCity, PhoneCallback } from '@mui/icons-material';
 import { TextField, Box } from '@mui/material';
-import { CreateAddress, getAddress } from '../Service/Address';
+import { CreateAddress, getAddress, updateAddress } from '../Service/Address';
 import { useDispatch, useSelector } from 'react-redux';
 import { setMyAddress } from '../redux/reducer/addressReducer';
 
-const AddressDrawer = ({ onClose }) => {
+const AddressDrawer = ({ onClose, isEditing, addressData }) => {
     const userId = useSelector((state) => state.auth.user.data.user._id);
     const [name, setName] = useState('');
     const [contactNumber, setContactNumber] = useState('');
@@ -16,49 +15,68 @@ const AddressDrawer = ({ onClose }) => {
     const [pincode, setPincode] = useState('');
     const [city, setCity] = useState('');
     const [state, setState] = useState('');
-    const [addresses, setAddresses] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [selectedAddressId, setSelectedAddressId] = useState(null); // State to manage selected address
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    useEffect(() => {
+        if (isEditing && addressData) {
+            setName(addressData.name );
+            setContactNumber(addressData.phone );
+            setHouseNo(addressData.address.split(' ')[0] );
+            setRoadName(addressData.address.split(' ').slice(1).join(' ') );
+            setPincode(addressData.postalCode);
+            setCity(addressData.city);
+            setState(addressData.state );
+        } else {
+            // Clear form when not editing
+            setName('');
+            setContactNumber('');
+            setHouseNo('');
+            setRoadName('');
+            setPincode('');
+            setCity('');
+            setState('');
+        }
+    }, [isEditing, addressData]);
 
-
-    // Fetch the updated address list after adding a new address
     const fetchAddresses = async () => {
         try {
             const response = await getAddress(userId);
-            return response.data;  // Return the list of addresses
+            return response.data;
         } catch (err) {
             console.error("Error fetching addresses", err);
             return [];
         }
     };
-    const addAddress = async () => {
+
+    const handleSaveAddress = async () => {
         try {
-            const addressData = {
+            const addressPayload = {
                 address: `${houseNo} ${roadName}`,
                 city,
                 state,
                 postalCode: pincode,
-                country: 'USA', // Assuming country is constant; adjust as needed
+                country: 'USA',
                 phone: contactNumber,
-                isPrimary: false // Assuming new addresses are not primary; adjust if needed
+                isPrimary: false, // Adjust as needed
+                name
             };
-            // Create the address in the backend
-            await CreateAddress(userId, addressData);
-
-            // Fetch the updated list of addresses after creating the new one
+    
+            if (isEditing && addressData?._id) {
+                await updateAddress(userId, {
+                    addressId: addressData._id,
+                    ...addressPayload
+                });
+            } else {
+                await CreateAddress(userId, addressPayload); // Create address expects an array
+            }
+    
             const updatedAddresses = await fetchAddresses();
-
-            // Dispatch the updated list of addresses to Redux
             dispatch(setMyAddress(updatedAddresses));
-
-            // Close the drawer after adding the address
             onClose();
         } catch (error) {
-            console.error("Error creating address", error);
+            console.error("Error saving address", error);
         }
     };
-
+    
 
     return (
         <Box>
@@ -130,7 +148,7 @@ const AddressDrawer = ({ onClose }) => {
                 />
             </Box>
             <Box mt={2}>
-                <CustomButton title="Save Address and Continue" onClick={addAddress} />
+                <CustomButton title="Save Address and Continue" onClick={handleSaveAddress} />
             </Box>
         </Box>
     );

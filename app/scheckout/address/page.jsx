@@ -14,6 +14,8 @@ const Page = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [selectedAddressId, setSelectedAddressId] = useState(null);
+    const [isEditing, setEditing] = useState(false)
+    const [selectedAddressData, setSelectedAddressData] = useState(null); // New state for address data
     const userId = useSelector((state) => state.auth.user.data.user._id);
     const addressData = useSelector((state) => state.address.data);
     const dispatch = useDispatch()
@@ -42,19 +44,24 @@ const Page = () => {
         }
     }, [userId]);
 
-    const handleAddAddressClick = () => setOpen(true);
+    const handleAddAddressClick = () => {
+        setEditing(false);
+        setSelectedAddressData(null);
+        setOpen(true);
+    };
     const handleCloseDrawer = () => setOpen(false);
 
     const handleEditAddress = (addressId) => {
-        console.log("Edit address with ID:", addressId);
+        setOpen(true)
+        setEditing(true)
+        const address = addressData.find(addr => addr._id === addressId)
+        setSelectedAddressData(address)
     };
 
     const handleRemoveAddress = async (addressId) => {
         try {
             await removeAddress(userId, addressId);
             const getAddress = await fetchAddresses()
-            // const getAddressdispatch = dispatch(setMyAddress(getAddress))
-            // console.log("diapan", getAddressdispatch)
         } catch (err) {
             console.log("remove add", err)
             setError('Failed to remove address. Please try again.');
@@ -110,7 +117,7 @@ const Page = () => {
                 )}
             </Grid>
             <CustomDrawer open={open} onClose={handleCloseDrawer} title="Add Delivery Address">
-                <AddressDrawer onClose={handleCloseDrawer} />
+                <AddressDrawer onClose={handleCloseDrawer} isEditing={isEditing} addressData={selectedAddressData} />
             </CustomDrawer>
         </div>
     );
