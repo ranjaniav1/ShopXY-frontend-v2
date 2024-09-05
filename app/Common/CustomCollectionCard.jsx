@@ -1,6 +1,5 @@
 'use client'
 import React from 'react';
-import Link from 'next/link';
 import { Box, Tooltip, Typography, useTheme } from '@mui/material';
 
 const CustomCollectionCard = ({ id, slug, image, title, tooltip }) => {
