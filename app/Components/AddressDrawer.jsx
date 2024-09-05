@@ -4,7 +4,8 @@ import CustomButton from '../Custom/CustomButton';
 import { LocationCity, PhoneCallback } from '@mui/icons-material';
 import { TextField, Box } from '@mui/material';
 import { CreateAddress, getAddress } from '../Service/Address';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setMyAddress } from '../redux/reducer/addressReducer';
 
 const AddressDrawer = ({ onClose }) => {
     const userId = useSelector((state) => state.auth.user.data.user._id);
@@ -18,7 +19,19 @@ const AddressDrawer = ({ onClose }) => {
     const [addresses, setAddresses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedAddressId, setSelectedAddressId] = useState(null); // State to manage selected address
+    const dispatch = useDispatch()
 
+
+    // Fetch the updated address list after adding a new address
+    const fetchAddresses = async () => {
+        try {
+            const response = await getAddress(userId);
+            return response.data;  // Return the list of addresses
+        } catch (err) {
+            console.error("Error fetching addresses", err);
+            return [];
+        }
+    };
     const addAddress = async () => {
         try {
             const addressData = {
@@ -30,33 +43,23 @@ const AddressDrawer = ({ onClose }) => {
                 phone: contactNumber,
                 isPrimary: false // Assuming new addresses are not primary; adjust if needed
             };
-            const result = await CreateAddress(userId, addressData);
-            console.log("Address created:", result);
-            await fetchAddresses();
-            onClose()
+            // Create the address in the backend
+            await CreateAddress(userId, addressData);
+
+            // Fetch the updated list of addresses after creating the new one
+            const updatedAddresses = await fetchAddresses();
+
+            // Dispatch the updated list of addresses to Redux
+            dispatch(setMyAddress(updatedAddresses));
+
+            // Close the drawer after adding the address
+            onClose();
         } catch (error) {
             console.error("Error creating address", error);
         }
     };
-    const fetchAddresses = async () => {
-        try {
-            const response = await getAddress(userId);
-            const { data } = response;
 
-            setAddresses(data);
-            const primaryAddress = data.find(address => address.isPrimary);
-            if (primaryAddress) {
-                setSelectedAddressId(primaryAddress._id);
-            }
 
-            setLoading(false);
-        } catch (err) {
-            setLoading(false);
-        }
-    };
-    useEffect(() => {
-        fetchAddresses();
-    }, [userId]);
     return (
         <Box>
             {/* Contact Details Section */}

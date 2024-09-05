@@ -2,26 +2,28 @@
 import AddressDrawer from '@/app/Components/AddressDrawer'
 import CustomButton from '@/app/Custom/CustomButton'
 import CustomDrawer from '@/app/Custom/CustomDrawer'
+import { setMyAddress } from '@/app/redux/reducer/addressReducer'
 import { getAddress, removeAddress } from '@/app/Service/Address'
 import { AddAPhoto, Edit, Delete } from '@mui/icons-material'
 import { Box, Typography, Grid, IconButton, Radio, FormControlLabel } from '@mui/material'
 import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 const Page = () => {
     const [open, setOpen] = useState(false);
-    const [addresses, setAddresses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [selectedAddressId, setSelectedAddressId] = useState(null); // State to manage selected address
-    const userId = useSelector((state) => state.auth.user.data.user._id); // Replace with dynamic user ID
+    const [selectedAddressId, setSelectedAddressId] = useState(null);
+    const userId = useSelector((state) => state.auth.user.data.user._id);
+    const addressData = useSelector((state) => state.address.data);
+    const dispatch = useDispatch()
 
     const fetchAddresses = async () => {
         try {
             const response = await getAddress(userId);
-            const { data } = response; // Access the data property of the response
+            const { data } = response;
+            dispatch(setMyAddress(data));
 
-            setAddresses(data);
             const primaryAddress = data.find(address => address.isPrimary);
             if (primaryAddress) {
                 setSelectedAddressId(primaryAddress._id);
@@ -30,39 +32,37 @@ const Page = () => {
             setLoading(false);
         } catch (err) {
             setLoading(false);
+            setError('Failed to load addresses. Please try again.');
         }
     };
 
     useEffect(() => {
-        fetchAddresses();
+        if (userId) {
+            fetchAddresses();
+        }
     }, [userId]);
 
-    const handleAddAddressClick = () => {
-        setOpen(true);
-    }
-
-    const handleCloseDrawer = () => {
-        setOpen(false);
-    }
+    const handleAddAddressClick = () => setOpen(true);
+    const handleCloseDrawer = () => setOpen(false);
 
     const handleEditAddress = (addressId) => {
-        // Logic for editing an address
         console.log("Edit address with ID:", addressId);
     };
 
     const handleRemoveAddress = async (addressId) => {
         try {
             await removeAddress(userId, addressId);
-            // After successful removal, update the addresses state
-            setAddresses(prevAddresses => prevAddresses.filter(address => address._id !== addressId));
+            const getAddress = await fetchAddresses()
+            // const getAddressdispatch = dispatch(setMyAddress(getAddress))
+            // console.log("diapan", getAddressdispatch)
         } catch (err) {
+            console.log("remove add", err)
             setError('Failed to remove address. Please try again.');
         }
     };
 
     const handleAddressChange = (event) => {
         setSelectedAddressId(event.target.value);
-        // Optionally, you can update the backend to set the selected address as primary
     };
 
     return (
@@ -71,33 +71,16 @@ const Page = () => {
                 <Typography>Select Delivery Address</Typography>
                 <CustomButton title="Add new address" startIcon={<AddAPhoto />} onClick={handleAddAddressClick} />
             </Box>
-            {/* Display Addresses */}
             <Grid container spacing={2} p={2}>
-                {loading && <Typography>Loading...</Typography>}
-                {error && <Typography color="error">{error}</Typography>}
-                {!loading && !error && addresses.length > 0 ? (
-                    addresses.map((address) => (
+                {loading ? (
+                    <Typography>Loading...</Typography>
+                ) : error ? (
+                    <Typography color="error">{error}</Typography>
+                ) : addressData.length > 0 ? (
+                    addressData.map((address) => (
                         <Grid item xs={12} sm={6} md={6} key={address._id}>
-                            <Box
-                                sx={{
-                                    border: '1px solid #ddd',
-                                    borderRadius: '8px',
-                                    p: 2,
-                                    position: 'relative',
-                                    minHeight: '150px',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                }}
-                            >
-                                <Box
-                                    sx={{
-                                        position: 'absolute',
-                                        top: 8,
-                                        right: 8,
-                                        display: 'flex',
-                                        gap: '8px',
-                                    }}
-                                >
+                            <Box sx={{ border: '1px solid #ddd', borderRadius: '8px', p: 2, position: 'relative', minHeight: '150px', display: 'flex', flexDirection: 'column' }}>
+                                <Box sx={{ position: 'absolute', top: 8, right: 8, display: 'flex', gap: '8px' }}>
                                     <IconButton onClick={() => handleEditAddress(address._id)} color="primary">
                                         <Edit />
                                     </IconButton>
@@ -107,13 +90,7 @@ const Page = () => {
                                 </Box>
                                 <Box display="flex" alignItems="center" mb={1}>
                                     <FormControlLabel
-                                        control={
-                                            <Radio
-                                                checked={address._id === selectedAddressId}
-                                                value={address._id}
-                                                onChange={handleAddressChange}
-                                            />
-                                        }
+                                        control={<Radio checked={address._id === selectedAddressId} value={address._id} onChange={handleAddressChange} />}
                                         label=""
                                     />
                                     <Box ml={2}>
