@@ -31,7 +31,7 @@ const Category = () => {
     const theme = useTheme();
 
     return (
-        <Box className='py-5 rounded-md' style={{ background: theme.palette.background.main }}>
+        <Box className='p-4 rounded-md ' style={{ background: theme.palette.background.main }}>
             {loading ? (
                 <Grid container spacing={2} className="p-4">
                     {Array.from({ length: categories.length || 9 }).map((_, index) => (
@@ -66,7 +66,7 @@ const Category = () => {
                                     <img
                                         src={category.category_icon}
                                         alt={category.title}
-                                        className="w-28 h-28 rounded-full object-cover mb-2 mx-auto hover:border-primary"
+                                        className="w-20 h-20 rounded-full object-cover mb-2 mx-auto hover:border-primary"
                                         style={{
                                             border: `2px solid ${theme.palette.card.border}`,
                                             background: `${theme.palette.card.background}`,

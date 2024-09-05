@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
-import { Navigation, A11y } from 'swiper/modules';
+import 'swiper/css/autoplay';
+import { Navigation, A11y, Autoplay } from 'swiper/modules';
 import { GetHomeScreenData } from '../Service/GetHomeScreenData';
 import Link from 'next/link';
 import CustomSkeleton from '../Custom/CustomSkeleton';
@@ -32,9 +33,10 @@ const Slider = () => {
         <div className='my-7'>
             <Swiper
                 navigation={true}
-                modules={[A11y, Navigation]}
+                modules={[A11y, Navigation, Autoplay]}
                 slidesPerView={1}
                 scrollbar={{ draggable: true }}
+                autoplay={{ delay: 3000, disableOnInteraction: false }}
                 style={{ height: '400px', borderRadius: '5px' }}
             >
                 {loading ? (

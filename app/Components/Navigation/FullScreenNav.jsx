@@ -40,9 +40,11 @@ const FullScreenNav = ({ setDrawerOpen }) => {
   return (
     <Box display="flex" justifyContent="space-between" alignItems="center" p={2}>
       {/* Logo */}
-      <div className="text-xl font-semibold">
-        <span style={{ color: '#22aa99' }}>s</span>hopxy
-      </div>
+      <Link href="/">
+        <div className="text-xl font-semibold">
+          <span style={{ color: '#22aa99' }}>s</span>hopxy
+        </div>
+      </Link>
 
       {/* Search Field */}
       <div className="flex-grow mx-4">
