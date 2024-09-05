@@ -60,13 +60,15 @@ const Collection = () => {
                         <Grid container spacing={2}>
                             {collection.slice(0, visibleCount).map(category => (
                                 <Grid item xs={6} sm={4} md={3} lg={2} key={category.id}>
-                                    <CustomCollectionCard
-                                        tooltip={category.title}
-                                        id={category.id}
-                                        slug={category.slug}
-                                        image={category.collection_image}
-                                        title={category.title}
-                                    />
+                                    <Link href={`/categories/collections/${category.id}/${category.slug}`} passHref>
+                                        <CustomCollectionCard
+                                            tooltip={category.title}
+                                            id={category.id}
+                                            slug={category.slug}
+                                            image={category.collection_image}
+                                            title={category.title}
+                                        />
+                                    </Link>
                                 </Grid>
                             ))}
                         </Grid>
