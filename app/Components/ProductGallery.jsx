@@ -8,22 +8,30 @@ import CustomButton from '../Custom/CustomButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { addtoCart } from '../Service/Cart';
 import { setMyCart } from '../redux/reducer/cartReducer';
+import toast from 'react-hot-toast';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
 
 const ProductGallery = ({ detailImages, selectedImage, onImageClick, productName, productId }) => {
-    let user = useSelector((state) => state?.auth?.user?.data?.user._id)
-    if (!user) {
-        user = "test"
-    }
-    console.log('user', user)
+    const user = useSelector((state) => state?.auth?.user?.data?.user._id)
     const dispatch = useDispatch()
+    const { productTitle } = useParams()
+    const cartData = useSelector((state) => state.cart.cart) || [];
+
     const handleAddToCart = async () => {
         try {
+            // check itemalready in your acart
+            const isProductInCart = cartData.some(item => item.productId === productId)
+            if (isProductInCart) {
+                toast.error(`Product ${productTitle} is already in your cart.`);
+                return;
+            }
             const userId = user; // Replace with actual user ID from context or props
             const response = await addtoCart(userId, productId);
             dispatch(setMyCart(response))
-            alert('Product added to cart successfully!');
+            toast.success(` ${productTitle} added to cart Successfully!`);
         } catch (error) {
-            console.log(error)
+            toast.error(`Failed to add product to cart: ${error.message}`);
         }
     };
     return (
@@ -49,31 +57,34 @@ const ProductGallery = ({ detailImages, selectedImage, onImageClick, productName
                 ))}
             </Grid>
             <Grid item xs={10} md={10}>
-                <Card sx={{ borderRadius: 2, border: '1px solid #ddd', boxShadow: 2 }}>
+                <Card sx={{ borderRadius: 2, border: '1px solid #ddd', boxShadow: 1 }}>
                     <img
                         src={selectedImage}
                         alt={productName}
                         style={{ width: '100%', height: 'auto', objectFit: 'cover', borderRadius: '8px' }}
                     />
                 </Card>
-                <Grid container spacing={2} sx={{ mt: 2 }}>
-                    <Grid item xs={6}>
-                        <CustomButton
-                            startIcon={<AddShoppingCartIcon />}
-                            variant="outlined"
-                            title="Cart It"
-                            className="w-full"
-                            onClick={handleAddToCart}
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
+
+            </Grid>
+            <Grid container spacing={2} sx={{ mt: 2 }}>
+                <Grid item xs={12}>
+                    <CustomButton
+                        startIcon={<AddShoppingCartIcon />}
+                        variant="outlined"
+                        title="Cart It"
+                        className="w-full"
+                        onClick={handleAddToCart}
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <Link href="/scheckout/carts">
                         <CustomButton
                             startIcon={<DoubleArrowIcon />}
                             variant="contained"
                             title="Buy Now"
                             className="w-full"
                         />
-                    </Grid>
+                    </Link>
                 </Grid>
             </Grid>
         </Grid>

@@ -10,6 +10,7 @@ import { ProviderStore } from "./redux/storeProvider";
 import { I18nextProvider } from "react-i18next";
 import i18n from "./i18n";
 import Footer from "./Components/Footer";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,6 +19,8 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <ProviderStore>
+          <Toaster position="bottom-center" />
+
           <I18nextProvider i18n={i18n}>
             <ThemeSelector>
               <CssBaseline />
