@@ -14,13 +14,15 @@ import CustomMenu from '@/app/Custom/CustomMenu';
 import CustomIconButton from '@/app/Custom/CustomIconButton';
 import { useSelector } from 'react-redux';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const FullScreenNav = ({ setDrawerOpen }) => {
   const { t } = useTranslation();
   const isAuth = useSelector((state) => state.auth.isAuthenticated)
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
-
+  const [searchQuery, setSearchQuery] = useState('');
+  const router = useRouter()
   const handleOpenRegister = () => {
     setRegisterModalOpen(true);
     setLoginModalOpen(false);
@@ -31,6 +33,13 @@ const FullScreenNav = ({ setDrawerOpen }) => {
     setRegisterModalOpen(false);
   };
 
+
+  // search 
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      router.push(`/search/${encodeURIComponent(searchQuery.trim())}`)
+    }
+  }
   const menuItems = [
     { title: 'Profile', onClick: () => console.log('Profile clicked') },
     { title: 'My Account', onClick: () => console.log('My Account clicked') },
@@ -52,6 +61,9 @@ const FullScreenNav = ({ setDrawerOpen }) => {
           startIcon={<Search className='rounded-md text-white' />}
           placeholder="Search for Products, Brands, and More"
           className="bg-blue-100 h-[36px] py-2 rounded-md h-35"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && handleSearch()} // Trigger search on Enter key
         />
       </div>
 
