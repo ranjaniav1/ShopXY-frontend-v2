@@ -1,11 +1,24 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import Heading from "@/app/Common/Heading";
-import { Grid, Box, Checkbox, FormControlLabel, Typography, Divider, Slider, InputLabel, MenuItem, Select, FormControl } from "@mui/material";
+import {
+  Grid,
+  Box,
+  Checkbox,
+  FormControlLabel,
+  Typography,
+  Divider,
+  Slider,
+  InputLabel,
+  MenuItem,
+  Select,
+  FormControl,
+  useTheme
+} from "@mui/material";
 import { useParams } from "next/navigation";
-import { GetAllProducts } from '@/app/Service/GetProduct';
-import FilterBasedProduct from '@/app/Components/FilterBasedProduct';
+import { GetAllProducts } from "@/app/Service/GetProduct";
+import FilterBasedProduct from "@/app/Components/FilterBasedProduct";
 
 const Layout = ({ children }) => {
   const { collectionTitle } = useParams();
@@ -15,7 +28,7 @@ const Layout = ({ children }) => {
   const [brands, setBrands] = useState([]);
   const [priceRange, setPriceRange] = useState([0, 10000]);
   const [ratingRange, setRatingRange] = useState([0, 5]);
-
+  const theme = useTheme();
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -24,7 +37,9 @@ const Layout = ({ children }) => {
         setFilteredProducts(response.data);
 
         // Extract brands from the products data
-        const productBrands = [...new Set(response.data.map(product => product.brand))];
+        const productBrands = [
+          ...new Set(response.data.map((product) => product.brand))
+        ];
         setBrands(productBrands);
       } catch (error) {
         console.error("Failed to fetch products:", error);
@@ -40,7 +55,7 @@ const Layout = ({ children }) => {
   const handleBrandChange = (event, brand) => {
     const updatedSelectedBrands = event.target.checked
       ? [...selectedBrands, brand]
-      : selectedBrands.filter(b => b !== brand);
+      : selectedBrands.filter((b) => b !== brand);
 
     setSelectedBrands(updatedSelectedBrands);
   };
@@ -58,19 +73,22 @@ const Layout = ({ children }) => {
 
     // Filter by selected brands
     if (selectedBrands.length > 0) {
-      filtered = filtered.filter(product =>
+      filtered = filtered.filter((product) =>
         selectedBrands.includes(product.brand)
       );
     }
 
     // Filter by price range
-    filtered = filtered.filter(product =>
-      product.actual_price >= priceRange[0] && product.actual_price <= priceRange[1]
+    filtered = filtered.filter(
+      (product) =>
+        product.actual_price >= priceRange[0] &&
+        product.actual_price <= priceRange[1]
     );
 
     // Filter by rating range
-    filtered = filtered.filter(product =>
-      product.ratings >= ratingRange[0] && product.ratings <= ratingRange[1]
+    filtered = filtered.filter(
+      (product) =>
+        product.ratings >= ratingRange[0] && product.ratings <= ratingRange[1]
     );
 
     setFilteredProducts(filtered);
@@ -82,7 +100,15 @@ const Layout = ({ children }) => {
         <Heading text={collectionTitle} />
 
         {/* Filters */}
-        <Box sx={{ padding: '16px', border: '1px solid #e0e0e0', borderRadius: '10px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+        <Box
+          sx={{
+            padding: "16px",
+            border: "1px solid #e0e0e0",
+            borderRadius: "10px",
+            boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+            background: theme.palette.background.main
+          }}
+        >
           <Typography variant="h6">Filters</Typography>
           <Divider sx={{ my: 2 }} />
 

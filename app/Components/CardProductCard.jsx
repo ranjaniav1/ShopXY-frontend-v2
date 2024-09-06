@@ -42,11 +42,11 @@ const CartProductCard = ({ onEdit, onRemove, image, name, offer, actual_price, d
                         ₹{discounted_price || actual_price}
                     </Typography>
                     {discounted_price && (
-                        <Typography variant="body2" color="textSecondary" sx={{ textDecoration: 'line-through' }}>
+                        <Typography variant="body2" color="textSecondary" sx={{ textDecoration: 'line-through', marginRight: 1 }}>
                             ₹{actual_price}
                         </Typography>
                     )}
-                    <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
+                    <Typography variant="body2" color="textSecondary">
                         {offer ? `${offer}% off` : 'No offer'}
                     </Typography>
                 </Box>

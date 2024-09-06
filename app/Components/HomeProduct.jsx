@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Grid } from '@mui/material';
+import { Grid, useTheme } from '@mui/material';
 import FilterSection from './FilterSection';
 import ProductList from './ProductList';
 import Heading from '../Common/Heading';
@@ -54,7 +54,7 @@ const HomeProduct = () => {
     return (
         <>
             <Heading text={t("Products for You")} />
-            <Grid container spacing={2}>
+            <Grid container spacing={3} >
                 <Grid item xs={12} md={3} sx={{ mt: 3.5 }}>
                     <FilterSection
                         brands={brands}
@@ -74,7 +74,7 @@ const HomeProduct = () => {
                         }}
                     />
                 </Grid>
-                <Grid item xs={12} md={9}>
+                <Grid item xs={12} md={9} sx={{ mt: 3.5 }}>
                     <ProductList products={filteredProducts} loading={loading} />
                 </Grid>
             </Grid>

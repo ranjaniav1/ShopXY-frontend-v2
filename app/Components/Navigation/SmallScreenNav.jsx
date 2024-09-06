@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, IconButton } from '@mui/material';
+import { Badge, Box, IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import CustomButton from '@/app/Custom/CustomButton';
 import RegisterModal from './RegisterModal';
@@ -9,12 +9,19 @@ import Link from 'next/link';
 import CustomModal from '@/app/Custom/CustomModal'; // Import CustomModal
 import SearchModal from './SearchModal';
 import { Search as SearchIcon } from '@mui/icons-material';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { useRouter } from 'next/navigation';
 
 const SmallScreenNav = ({ setDrawerOpen }) => {
   const isAuth = useSelector((state) => state.auth.isAuthenticated);
+  const user = useSelector((state) => state.auth?.user?.data?.user) || {}
+  const cartItemCount = useSelector((state) => state.cart.itemCount) || 0;
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const [isOpenSearch, setIsOpenSearch] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const router = useRouter()
 
   const handleOpenRegister = () => {
     setRegisterModalOpen(true);
@@ -26,12 +33,17 @@ const SmallScreenNav = ({ setDrawerOpen }) => {
     setRegisterModalOpen(false);
   };
 
-  const openSearch = () => {
-    setIsOpenSearch(true);
+
+  // search 
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      router.push(`/search/${encodeURIComponent(searchQuery.trim())}`);
+      setIsOpenSearch(false); // Close the search modal after searching
+    }
   };
 
 
-
+  // extract full name into the 1st word
   return (
     <Box
       display="flex"
@@ -49,17 +61,28 @@ const SmallScreenNav = ({ setDrawerOpen }) => {
 
       <Box display="flex" alignItems="center">
         {/* Search Icon */}
-        <IconButton onClick={openSearch}>
+        <IconButton onClick={() => setIsOpenSearch(true)}>
           <SearchIcon />
         </IconButton>
         {/* Login/Account Button */}
-        {isAuth ? (
-          <CustomButton title="Account" onClick={handleOpenRegister} />
-        ) : (
-          <CustomButton title="Login" onClick={handleOpenRegister} />
-        )}
+        {
+          isAuth ? (
+
+            <img src={user.avatar} alt="Avatar" className="w-8 h-7 rounded-none" />
+
+          ) : (
+            <button onClick={handleOpenLogin} className='px-0.5 rounded-md btn'>Login</button>
+          )
+        }
         {/* Hamburger Menu Icon */}
-        <IconButton onClick={() => setDrawerOpen(true)}>
+        <Link href="/scheckout/carts">
+          <IconButton aria-label="cart" size="small">
+            <Badge badgeContent={cartItemCount} color="secondary">
+              <ShoppingCartIcon />
+            </Badge>
+          </IconButton>        </Link>
+
+        <IconButton onClick={() => setDrawerOpen(true)} size="small">
           <MenuIcon />
         </IconButton>
       </Box>
@@ -77,7 +100,9 @@ const SmallScreenNav = ({ setDrawerOpen }) => {
       />
 
       <CustomModal open={isOpenSearch} onClose={() => setIsOpenSearch(false)}>
-        <SearchModal />
+        <SearchModal searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          onSearch={handleSearch} />
       </CustomModal>
     </Box >
   );

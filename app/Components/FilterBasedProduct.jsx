@@ -5,6 +5,7 @@ import { Typography, Grid, Box } from '@mui/material';
 import ProductCard from './ProductCard';
 import Link from 'next/link';
 import CustomBox from '../Custom/CustomBox';
+import CustomSkeleton from '../Custom/CustomSkeleton';
 
 const FilterBasedProduct = ({ products }) => {
     const truncateText = (text, maxLength) => {
@@ -32,9 +33,13 @@ const FilterBasedProduct = ({ products }) => {
                         </Grid>
                     ))
                 ) : (
-                    <Box sx={{ padding: 4 }}>
-                        <Typography>No products found</Typography>
-                    </Box>
+                    <Grid container spacing={2}>
+                    {Array.from({ length: 6 }).map((_, index) => (
+                        <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                            <CustomSkeleton type="card" width="96px" height="96px" />
+                        </Grid>
+                    ))}
+                </Grid>
                 )}
             </Grid>
         </CustomBox>

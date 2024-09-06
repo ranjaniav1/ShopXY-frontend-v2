@@ -1,6 +1,5 @@
 @import "./variables";
 
-
 // Swiper Navigation Button Styles
 .swiper-button-prev,
 .swiper-button-next {
@@ -23,14 +22,15 @@
   border-bottom-right-radius: 10px;
 }
 
-
 // mui btn
 .css-sghohy-MuiButtonBase-root-MuiButton-root,
 .btn {
   background-color: $btn-color !important;
-  color:white
+  color: white;
 }
-
+.css-cy3uoz-MuiButtonBase-root-MuiButton-root {
+padding:0
+}
 // Style for the input border using the 'btn' class
 .border-btn {
   border: 1px solid $btn-color;
@@ -47,7 +47,10 @@
   background-color: $skeleton-primary-color;
   border-radius: 10px;
 }
-
+// stepper color
+.css-1x9g7j4-MuiSlider-root {
+  color: $btn-color;
+}
 
 // ribbon
 @import url(https://fonts.googleapis.com/css?family=Lato:700);
@@ -58,7 +61,7 @@
   width: 90%;
   height: 400px;
   background: #fff;
-  box-shadow: 0 0 15px rgba(0,0,0,.1);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
 
 /* common */
@@ -72,7 +75,7 @@
 .ribbon::after {
   position: absolute;
   z-index: -1;
-  content: '';
+  content: "";
   display: block;
   border: 5px solid #2980b9;
 }
@@ -82,10 +85,10 @@
   width: 225px;
   padding: 15px 0;
   background-color: #3498db;
-  box-shadow: 0 5px 10px rgba(0,0,0,.1);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
   color: #fff;
-  font: 700 18px/1 'Lato', sans-serif;
-  text-shadow: 0 1px 1px rgba(0,0,0,.2);
+  font: 700 18px/1 "Lato", sans-serif;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
   text-transform: uppercase;
   text-align: center;
 }
@@ -113,5 +116,3 @@
   top: 30px;
   transform: rotate(45deg);
 }
-
-

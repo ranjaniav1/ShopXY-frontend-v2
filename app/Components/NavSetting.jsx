@@ -1,4 +1,4 @@
-import { FormControlLabel, FormLabel, Radio, RadioGroup, useTheme } from '@mui/material'
+import { Divider, FormControlLabel, FormLabel, Radio, RadioGroup, useTheme } from '@mui/material'
 import React from 'react'
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -45,7 +45,6 @@ const NavSetting = () => {
                     />
                 </RadioGroup>
             </div>
-
             <div className="mb-4">
                 <FormLabel component="legend" className="text-md font-medium mb-2">{t("Select Language")}</FormLabel>
                 <RadioGroup

@@ -8,7 +8,7 @@ import CustomButton from '../Custom/CustomButton';
 
 // Reusable ProductCard Component
 const ProductCard = ({ title, children, theme }) => (
-    <Card sx={{ borderRadius: 2, boxShadow: 2, backgroundColor: theme.palette.card.background, mb: 2 }}>
+    <Card sx={{ borderRadius: 2, backgroundColor: theme.palette.card.background, mb: 2 }}>
         <CardContent>
             <Typography variant="h6">
                 {title}
@@ -30,7 +30,7 @@ const RatingReview = ({ starCount, reviewCount }) => (
 
 // Reusable ReviewItem Component
 const ReviewItem = ({ review, theme }) => (
-    <Card sx={{ p: 2, backgroundColor: theme.palette.card.background, boxShadow: 1, mb: 2 }}>
+    <div sx={{ p: 2, backgroundColor: theme.palette.card.background, mb: 2 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
             <Avatar>{review.name ? review.name.charAt(0) : '?'}</Avatar>
             <Box>
@@ -49,7 +49,7 @@ const ReviewItem = ({ review, theme }) => (
         {review.image && (
             <img src={review.image} alt="Review" style={{ width: '100%', height: 'auto', marginTop: '8px', borderRadius: '4px' }} />
         )}
-    </Card>
+    </div>
 );
 
 const ProductDetails = ({
@@ -94,7 +94,7 @@ const ProductDetails = ({
             </Grid>
 
             {/* Card 2: Select Size */}
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
                 <ProductCard title={t("Select Size")} theme={theme}>
                     <Box sx={{ display: 'flex', gap: 2 }}>
                         {sizes.map((size) => (
@@ -102,7 +102,7 @@ const ProductDetails = ({
                         ))}
                     </Box>
                 </ProductCard>
-            </Grid>
+            </Grid> */}
 
             {/* Card 3: Product Details */}
             <Grid item xs={12}>
@@ -144,24 +144,7 @@ const ProductDetails = ({
                     ))}
                 </ProductCard>
             </Grid>
-            {/* Card 5: Delivery Options */}
-            <Grid item xs={12}>
-                <ProductCard title={t("Delivery Options")} theme={theme}>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                        {delivery.free_delivery && (
-                            <Chip label={t('Free Delivery')} color="success" />
-                        )}
-                        {delivery.cash_on_delivery && (
-                            <Chip label={t('Cash on Delivery')} color="primary" />
-                        )}
-                        {delivery.return_policy && (
-                            <Typography variant="body2" color="text.secondary">
-                                {t('Return Policy')}: {delivery.return_policy}
-                            </Typography>
-                        )}
-                    </Box>
-                </ProductCard>
-            </Grid>
+
         </Grid >
     );
 };

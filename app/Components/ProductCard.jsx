@@ -4,9 +4,34 @@ import React from 'react';
 const ProductCard = ({ imgSrc, title, price, discountPrice, rating, description, offer, className, onClick }) => {
     const theme = useTheme();
 
+    // Function to truncate the description to 8 words
+    const truncateDescription = (description, wordCount) => {
+        if (!description) return '';
+
+        const words = description.split(' ');
+        if (words.length <= wordCount) return description;
+
+        return words.slice(0, wordCount).join(' ') + '...';
+    };
+
+    // Function to render stars based on rating
+    const renderStars = (rating) => {
+        const fullStars = Math.floor(rating);
+        const halfStar = rating - fullStars >= 0.5 ? 1 : 0;
+        const emptyStars = 5 - fullStars - halfStar;
+
+        return (
+            <div className="flex items-center">
+                {'★'.repeat(fullStars)}
+                {halfStar ? '☆' : ''}
+                {'☆'.repeat(emptyStars)}
+            </div>
+        );
+    };
+
     return (
         <div
-            className="relative border border-gray-200  rounded-lg overflow-hidden shadow-md p-2 "
+            className="relative border border-gray-200 rounded-lg overflow-hidden shadow-md p-2"
             onClick={onClick}
             style={{
                 background: theme.palette.card.background,
@@ -29,7 +54,7 @@ const ProductCard = ({ imgSrc, title, price, discountPrice, rating, description,
                 className={className}
             />
             <div>
-                <h3 className="text-sm font-bold  truncate">{title}</h3>
+                <h3 className="text-sm font-bold truncate">{title}</h3>
                 <div className="mb-2">
                     {discountPrice ? (
                         <>
@@ -44,11 +69,11 @@ const ProductCard = ({ imgSrc, title, price, discountPrice, rating, description,
                 </div>
                 {rating && (
                     <div className="flex items-center mb-2">
-                        <span className="text-yellow-500">{'★'.repeat(rating)}</span>
-                        <span className="text-gray-500 ml-1">({rating})</span>
+                        {renderStars(rating)}
+                        <span className="text-gray-500 ml-1">({rating.toFixed(1)})</span>
                     </div>
                 )}
-                {description && <p className="text-gray-500 text-sm">{description}</p>}
+                {description && <p className="text-gray-500 text-sm">{truncateDescription(description, 4)}</p>}
             </div>
         </div>
     );

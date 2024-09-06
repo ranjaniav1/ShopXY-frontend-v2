@@ -8,6 +8,8 @@ import CustomDrawer from '@/app/Custom/CustomDrawer';
 import EditCart from '@/app/Components/EditCart';
 import toast from 'react-hot-toast';
 import { setMyCart } from '@/app/redux/reducer/cartReducer';
+import CustomButton from '@/app/Custom/CustomButton';
+import Link from 'next/link';
 
 const Page = () => {
     const [cart, setCart] = useState([]);
@@ -17,14 +19,14 @@ const Page = () => {
     const [selectedProduct, setSelectedProduct] = useState(null);
     const dispatch = useDispatch()
     const cartData = useSelector((state) => state.cart.cart)
-    console.log("reedddu", cartData)
     const handleRemove = async (productId) => {
         try {
             const response = await removetoCart(userId, productId);
 
             setCart(response.cart); // Directly set the cart from the API response
+            const result = await getCart(userId);
 
-            dispatch(setMyCart(response))
+            dispatch(setMyCart(result))
             toast.success("Item removed successfully");
 
         } catch (err) {
@@ -52,19 +54,27 @@ const Page = () => {
             </Typography>
             {cart.length > 0 ? (
                 cart.map((item) => (
-                    <CartProductCard
-                        key={item._id}
-                        image={item.product.image}
-                        offer={item.product.offer}
-                        quantity={item.quantity}
-                        name={item.product.name}
-                        product={item.product}
-                        size={item.product.size}
-                        onEdit={() => handleEdit(item.product)}
-                        actual_price={item.product.actual_price}
-                        discounted_price={item.product.discounted_price}
-                        onRemove={() => handleRemove(item.product._id)} // Ensure correct ID
-                    />
+                    <>
+                        <CartProductCard
+                            key={item._id}
+                            image={item.product.image}
+                            offer={item.product.offer}
+                            quantity={item.quantity}
+                            name={item.product.name}
+                            product={item.product}
+                            size={item.product.size}
+                            onEdit={() => handleEdit(item.product)}
+                            actual_price={item.product.actual_price}
+                            discounted_price={item.product.discounted_price}
+                            onRemove={() => handleRemove(item.product._id)} // Ensure correct ID
+                        />
+                        <Box sx={{ textAlign: 'end' }}>
+                            <Link href="/scheckout/address">
+                                <CustomButton title="Continue" />
+                            </Link>
+
+                        </Box>
+                    </>
                 ))
             ) : (
                 <p>Your cart is empty.</p>
