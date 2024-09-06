@@ -1,4 +1,5 @@
 'use client';
+
 import React from 'react';
 import { Typography, Grid, Box } from '@mui/material';
 import ProductCard from './ProductCard';
@@ -10,6 +11,7 @@ const FilterBasedProduct = ({ products }) => {
         if (!text) return '';
         return text.length <= maxLength ? text : `${text.slice(0, maxLength)}...`;
     };
+
     return (
         <CustomBox>
             <Grid container spacing={3}>
