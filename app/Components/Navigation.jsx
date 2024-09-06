@@ -5,6 +5,8 @@ import FullScreenNav from './Navigation/FullScreenNav';
 import SmallScreenNav from './Navigation/SmallScreenNav';
 import CustomDrawer from '../Custom/CustomDrawer';
 import NavSetting from './NavSetting';
+import RegisterModal from './Navigation/RegisterModal';
+import LoginModal from './Navigation/LoginModal';
 
 const Navigation = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -26,7 +28,8 @@ const Navigation = () => {
                 <CustomDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} title="Settings">
                     <NavSetting />
                 </CustomDrawer>
-            </Box>
+            </Box> {/* Register Modal */}
+           
         </Box>
     );
 };

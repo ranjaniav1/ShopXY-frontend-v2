@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { ProviderStore } from "./redux/storeProvider";
 import { I18nextProvider } from "react-i18next";
 import i18n from "./i18n";
+import Footer from "./Components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,6 +36,7 @@ export default function RootLayout({ children }) {
               >
                 {children}
               </Container>
+              <Footer />
             </ThemeSelector>
           </I18nextProvider>
         </ProviderStore>
