@@ -1,4 +1,4 @@
-'use client';
+ 'use client';
 
 import React from 'react';
 import { Card, CardContent, Typography, Box, Grid, Avatar, Button, Divider, Chip, useTheme } from '@mui/material';

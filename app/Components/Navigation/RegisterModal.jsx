@@ -42,7 +42,7 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
     };
     return (
         <>
-            <Toaster position="bottom-right" />
+            <Toaster position="bottom-center"  />
             <CustomModal open={open} onClose={onClose} title={t("Register")}>
                 <form onSubmit={(e) => {
                     e.preventDefault();

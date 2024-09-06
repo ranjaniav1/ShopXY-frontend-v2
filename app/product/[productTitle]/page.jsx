@@ -68,7 +68,7 @@ const Page = () => {
                         reviews={product.reviews}
                         description={product.description}
                         full_description={product.full_description}
-                        delivery={product.delivery}
+                        
                         size={product.size}
                         tags={product.tags}
                         gst_type={product.gst_type}

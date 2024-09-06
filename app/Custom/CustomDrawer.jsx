@@ -23,7 +23,7 @@ const CustomDrawer = ({ open, onClose, title, children }) => {
             }}
         >
             <Box className="flex flex-col h-full" sx={{ width: isMobile ? '100%' : 450 }}>
-                <Box className="flex justify-between items-center p-4" bgcolor={theme.palette.background.main}>
+                <Box className="flex justify-between items-center p-3" bgcolor={theme.palette.background.main}>
                     <h2 className="text-lg font-semibold">{title}</h2>
                     <CustomIconButton onClick={onClose}>
                         <CloseIcon />

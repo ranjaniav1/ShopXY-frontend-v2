@@ -15,7 +15,7 @@ const CustomInput = ({
   const theme = useTheme();
 
   return (
-    <InputBase 
+    <InputBase
       placeholder={placeholder}
       value={value}
       onChange={onChange}
@@ -27,7 +27,7 @@ const CustomInput = ({
             onClick={onClickStartIcon}
             sx={{
               borderRadius: '3px', // Square button
-              padding: '4px', // Adjust padding as needed
+              padding: '3px', // Adjust padding as needed
               color: theme.palette.button.color, // Icon color from theme
               backgroundColor: theme.palette.button.background, // Background color from theme
               '&:hover': {
