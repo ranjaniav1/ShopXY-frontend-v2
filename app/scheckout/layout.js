@@ -103,7 +103,7 @@ const Layout = ({ children }) => {
               }}
             />{" "}
             <Typography>
-              Don;&apos;t worry , you can add your products here ..simply click on
+              Don&apos;t worry , you can add your products here ..simply click on
               start shopping{" "}
             </Typography>
             <Link href="/categories/collections" passHref>
