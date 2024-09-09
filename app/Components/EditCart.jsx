@@ -93,7 +93,7 @@ const EditCart = ({ onClose, setCart }) => {
                             </Typography>
                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                 <ButtonGroup variant="outlined" aria-label="quantity controls" sx={{ border: "1px solid green", borderRadius: '10px' }}>
-                                    <Button sx={{ background: green, color: white }}
+                                    <Button sx={{ background: "green", color: "white" }}
                                         onClick={() => handleDecrement(item.product._id, item.quantity)}
                                         disabled={loading}
                                     >
@@ -102,7 +102,7 @@ const EditCart = ({ onClose, setCart }) => {
                                     <Typography variant="h6" sx={{ margin: '0px 10px' }}>
                                         {item.quantity}
                                     </Typography>
-                                    <Button sx={{ background: green, color: white }}
+                                    <Button sx={{ background: "green", color: "white" }}
                                         onClick={() => handleIncrement(item.product._id, item.quantity, item.product.max_qty)}
                                         disabled={loading}
                                     >
