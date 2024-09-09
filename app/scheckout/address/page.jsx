@@ -1,4 +1,5 @@
 'use client'
+import PaypalButton from '@/app/Common/PaypalButton'
 import AddressDrawer from '@/app/Components/AddressDrawer'
 import CustomButton from '@/app/Custom/CustomButton'
 import CustomDrawer from '@/app/Custom/CustomDrawer'
@@ -116,6 +117,7 @@ const Page = () => {
                     <Typography>No addresses found.</Typography>
                 )}
             </Grid>
+            <PaypalButton />
             <CustomDrawer open={open} onClose={handleCloseDrawer} title="Add Delivery Address">
                 <AddressDrawer onClose={handleCloseDrawer} isEditing={isEditing} addressData={selectedAddressData} />
             </CustomDrawer>
