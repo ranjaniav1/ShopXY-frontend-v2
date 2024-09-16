@@ -68,11 +68,12 @@ const Page = () => {
                         reviews={product.reviews}
                         description={product.description}
                         full_description={product.full_description}
-                        
+                        productId={product._id}
                         size={product.size}
                         tags={product.tags}
                         gst_type={product.gst_type}
                         brand={product.brand}
+                        product_id={product.product_id}
                     />
                 </Grid>
             </Grid>

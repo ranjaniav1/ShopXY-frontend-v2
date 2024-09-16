@@ -11,12 +11,6 @@ import CustomButton from "../Custom/CustomButton";
 import Link from "next/link";
 
 const Layout = ({ children }) => {
-  const [cart, setCart] = useState({
-    items: [],
-    totalProductActualPrice: 0,
-    totalDiscount: 0,
-    finalPrice: 0
-  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -25,10 +19,10 @@ const Layout = ({ children }) => {
   const dispatch = useDispatch();
 
   const isCart = useSelector((state) => state.cart);
+
   const fetchCartData = async () => {
     try {
       const response = await getCart(userId);
-      setCart(response);
       dispatch(setMyCart(response));
       console.log("sfj", response);
     } catch (err) {
@@ -39,16 +33,24 @@ const Layout = ({ children }) => {
   };
   useEffect(() => {
     fetchCartData();
-  }, [userId]);
+  }, [userId, dispatch]);
   // user id in dependency remove
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
-
-
+  // Calculate total product price
+  const totalProductPrice = isCart.cart.reduce(
+    (total, item) => total + item.itemTotalPrice,
+    0
+  );
+  const totalDiscount = isCart.cart.reduce(
+    (total, item) => total + item.itemDiscountAmount,
+    0
+  );
+  const finalPrice = totalProductPrice - totalDiscount;
   return (
     <CustomBox>
       <Grid container spacing={2}>
-        {isCart.cart.length > 0 ? (
+        {isCart.cart?.length > 0 ? (
           <>
             {/* Grid for children (cart items) */}
             <Grid item xs={12} md={7}>
@@ -73,10 +75,9 @@ const Layout = ({ children }) => {
             {/* Price Details Section */}
             <Grid item xs={12} md={4}>
               <PriceDetails
-                // numberOfItems={cart.items.length}
-                totalProductPrice={isCart.totalPrice}
-                totalDiscount={isCart.totalDiscount}
-                orderTotal={isCart.finalPrice}
+                totalProductPrice={totalProductPrice}
+                totalDiscount={totalDiscount}
+                orderTotal={finalPrice}
               />
             </Grid>
           </>
@@ -103,8 +104,8 @@ const Layout = ({ children }) => {
               }}
             />{" "}
             <Typography>
-              Don&apos;t worry , you can add your products here ..simply click on
-              start shopping{" "}
+              Don&apos;t worry , you can add your products here ..simply click
+              on start shopping{" "}
             </Typography>
             <Link href="/categories/collections" passHref>
               <CustomButton title="Start Shopping" />

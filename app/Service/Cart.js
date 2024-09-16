@@ -4,7 +4,8 @@ export const addtoCart = async (userId, productId, quantity = 1) => {
   try {
     const response = await httpAxios.post("/user/cart/add", {
       userId,
-      products: [{ productId, quantity }]
+      productId,
+      quantity
     });
     return response.data;
   } catch (error) {

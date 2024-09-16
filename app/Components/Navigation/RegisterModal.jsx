@@ -8,7 +8,7 @@ import CustomModal from '@/app/Custom/CustomModal';
 import CustomInput from '@/app/Custom/CustomInput';
 import PasswordInput from '@/app/Common/PasswordInput';
 import FileInput from '@/app/Common/FileInput';
-import { handleChange, handleFileChange, handleSubmit } from '@/app/utils/RegisterUtils';
+import { handleChange, handleFileChange, handleSubmit } from '@/app/helper/RegisterUtils';
 import CustomButton from '@/app/Custom/CustomButton';
 import PhoneRegistrationModal from './PhoneRegistrationModal';
 import GoogleRegistrationModal from './GoogleRegistrationForm';

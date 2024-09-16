@@ -1,6 +1,7 @@
 'use client'
 import React from 'react';
 import { Box, Tooltip, Typography, useTheme } from '@mui/material';
+import CustomTypography from '../Custom/CustomTypography';
 
 const CustomCollectionCard = ({ id, slug, image, title, tooltip }) => {
     const theme = useTheme();
@@ -40,13 +41,10 @@ const CustomCollectionCard = ({ id, slug, image, title, tooltip }) => {
                     },
                 }}
             >
-                <Typography
-                    variant="body1"
+
+                <CustomTypography variant="body2"
                     component="p"
-                    className="text-lg font-semibold text-white text-center p-4"
-                >
-                    {title}
-                </Typography>
+                    className=" text-white text-center p-4">{title}</CustomTypography>
             </Box>
         </Box>
     );

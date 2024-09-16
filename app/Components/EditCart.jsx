@@ -1,6 +1,7 @@
 'use client';
+
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Button, Divider, useTheme, ButtonGroup } from '@mui/material';
+import { Box, Typography, Button, Divider, useTheme, ButtonGroup, CircularProgress } from '@mui/material';
 import { Add as AddIcon, Remove as RemoveIcon } from '@mui/icons-material';
 import { useSelector, useDispatch } from 'react-redux';
 import { EdittoCart, getCart } from '../Service/Cart';
@@ -12,17 +13,17 @@ const EditCart = ({ onClose, setCart }) => {
     const [cart, setCartQty] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
     const userId = useSelector((state) => state.auth.user.data.user._id);
-    const theme = useTheme()
-    const dispatch = useDispatch()
+    const theme = useTheme();
+    const dispatch = useDispatch();
 
     const fetchCartData = async () => {
         setLoading(true);
         try {
             const response = await getCart(userId);
             setCartQty(response.cart || []);
-            dispatch(setMyCart(response))
+            dispatch(setMyCart(response));
         } catch (err) {
-            setErrorMessage(err.message || "Error fetching cart data");
+            setErrorMessage(err.message || 'Error fetching cart data');
         } finally {
             setLoading(false);
         }
@@ -62,27 +63,41 @@ const EditCart = ({ onClose, setCart }) => {
 
     const handleCloseDrawer = async () => {
         onClose();
-        // get your cart here and set
-        const response = await getCart(userId); console.log(response)
-        setCart(response?.cart || [])
-    }
+        const response = await getCart(userId);
+        setCart(response?.cart || []);
+    };
 
-
-
-    // if (loading) return <Typography>Loading...</Typography>;
+    if (loading) return <CircularProgress />;
 
     // Calculate total price
     const totalPrice = cart.reduce((total, item) => total + (item.product.actual_price * item.quantity), 0);
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', padding: 2 }}>
             {cart.length > 0 ? (
                 cart.map((item) => (
-                    <Box key={item.product._id} sx={{ display: 'flex', alignItems: 'center', gap: '16px', borderBottom: '1px solid #ddd', background: theme.palette.background.main, borderRadius: '10px', padding: 2 }}>
+                    <Box
+                        key={item.product._id}
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 2,
+                            borderBottom: '1px solid #ddd',
+                            background: theme.palette.background.paper,
+                            borderRadius: 2,
+                            padding: 2,
+                            marginBottom: 2,
+                        }}
+                    >
                         <img
                             src={item.product.image}
                             alt={item.product.name}
-                            style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '8px' }}
+                            style={{
+                                width: 80,
+                                height: 80,
+                                objectFit: 'cover',
+                                borderRadius: 8,
+                            }}
                         />
                         <Box sx={{ flex: 1 }}>
                             <Typography sx={{ fontWeight: 'bold' }}>
@@ -91,9 +106,17 @@ const EditCart = ({ onClose, setCart }) => {
                             <Typography variant="body2" color="textSecondary">
                                 ₹{item.product.actual_price}
                             </Typography>
-                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                <ButtonGroup variant="outlined" aria-label="quantity controls" sx={{ border: "1px solid green", borderRadius: '10px' }}>
-                                    <Button sx={{ background: "green", color: "white" }}
+                            <Box sx={{ display: 'flex', alignItems: 'center', marginTop: 1 }}>
+                                <ButtonGroup
+                                    variant="outlined"
+                                    aria-label="quantity controls"
+                                    sx={{
+                                        border: `1px solid ${theme.palette.primary.main}`,
+                                        borderRadius: 2,
+                                    }}
+                                >
+                                    <Button
+                                        sx={{ background: theme.palette.primary.main, color: 'white' }}
                                         onClick={() => handleDecrement(item.product._id, item.quantity)}
                                         disabled={loading}
                                     >
@@ -102,7 +125,8 @@ const EditCart = ({ onClose, setCart }) => {
                                     <Typography variant="h6" sx={{ margin: '0px 10px' }}>
                                         {item.quantity}
                                     </Typography>
-                                    <Button sx={{ background: "green", color: "white" }}
+                                    <Button
+                                        sx={{ background: theme.palette.primary.main, color: 'white' }}
                                         onClick={() => handleIncrement(item.product._id, item.quantity, item.product.max_qty)}
                                         disabled={loading}
                                     >
@@ -111,7 +135,7 @@ const EditCart = ({ onClose, setCart }) => {
                                 </ButtonGroup>
                             </Box>
                             {errorMessage && (
-                                <Typography variant="body2" color="error" sx={{ marginTop: '8px' }}>
+                                <Typography variant="body2" color="error" sx={{ marginTop: 1 }}>
                                     {errorMessage}
                                 </Typography>
                             )}
@@ -121,12 +145,12 @@ const EditCart = ({ onClose, setCart }) => {
             ) : (
                 <Typography>Your cart is empty.</Typography>
             )}
-            <Divider />
+            <Divider sx={{ my: 2 }} />
             <Typography variant="body2">
-                Total Price: ₹{totalPrice}
+                Total Price: ₹{totalPrice.toFixed(2)}
             </Typography>
-            <CustomButton onClick={() => handleCloseDrawer()} title={"Continue"} />
-        </div>
+            <CustomButton onClick={handleCloseDrawer} title="Continue" sx={{ mt: 2 }} />
+        </Box>
     );
 };
 
