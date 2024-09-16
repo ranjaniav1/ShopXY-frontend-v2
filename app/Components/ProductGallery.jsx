@@ -13,23 +13,30 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 
 const ProductGallery = ({ detailImages, selectedImage, onImageClick, productName, productId }) => {
-    const user = useSelector((state) => state?.auth?.user?.data?.user._id)
+    const userId = useSelector((state) => state?.auth?.user?.data?.user._id)
     const dispatch = useDispatch()
     const { productTitle } = useParams()
     const cartData = useSelector((state) => state.cart.cart) || [];
 
     const handleAddToCart = async () => {
         try {
-            // check itemalready in your acart
-            const isProductInCart = cartData.some(item => item.productId === productId)
+            const quantity=1;//default qty is 1
+
+            const isProductInCart = cartData.some(item => item.productId === productId);
             if (isProductInCart) {
                 toast.error(`Product ${productTitle} is already in your cart.`);
                 return;
             }
-            const userId = user; // Replace with actual user ID from context or props
-            const response = await addtoCart(userId, productId);
-            dispatch(setMyCart(response))
-            toast.success(` ${productTitle} added to cart Successfully!`);
+
+            if (!userId) {
+                toast.error('You need to log in to add items to the cart.');
+                return;
+            }
+
+            const response = await addtoCart(userId, productId, quantity);
+            console.log("res", response)
+            dispatch(setMyCart(response));
+            toast.success(`${productTitle} added to cart Successfully!`);
         } catch (error) {
             toast.error(`Failed to add product to cart: ${error.message}`);
         }

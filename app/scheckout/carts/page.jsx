@@ -19,6 +19,19 @@ const Page = () => {
     const [selectedProduct, setSelectedProduct] = useState(null);
     const dispatch = useDispatch()
     const cartData = useSelector((state) => state.cart.cart)
+    useEffect(() => {
+        const fetchCart = async () => {
+            try {
+                const result = await getCart(userId);
+                dispatch(setMyCart(result));
+            } catch (err) {
+                console.error('Error fetching cart:', err.message || err);
+                toast.error("Failed to fetch cart");
+            }
+        };
+        fetchCart();
+    }, [dispatch, userId]);
+
     const handleRemove = async (productId) => {
         try {
             const response = await removetoCart(userId, productId);
@@ -52,8 +65,8 @@ const Page = () => {
             <Typography variant="h6" sx={{ marginBottom: 2, fontWeight: 'bold' }}>
                 Product Details
             </Typography>
-            {cart.length > 0 ? (
-                cart.map((item) => (
+            {cartData.length > 0 ? (
+                cartData.map((item) => (
                     <>
                         <CartProductCard
                             key={item._id}
