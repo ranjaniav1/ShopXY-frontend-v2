@@ -24,10 +24,9 @@ const Page = () => {
     const fetchAddresses = async () => {
         try {
             const response = await getAddress(userId);
-            const { data } = response;
-            dispatch(setMyAddress(data));
+            dispatch(setMyAddress(response));
 
-            const primaryAddress = data.find(address => address.isPrimary);
+            const primaryAddress = response.find(address => address.isPrimary);
             if (primaryAddress) {
                 setSelectedAddressId(primaryAddress._id);
             }

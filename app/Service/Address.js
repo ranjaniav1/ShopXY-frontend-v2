@@ -1,12 +1,25 @@
 import { httpAxios } from "../httpAxios";
 
-export const CreateAddress = async (userId, addressData) => {
+export const CreateAddress = async (
+  userId,
+  address,
+  city,
+  state,
+  postalCode,
+  country,
+  phone
+) => {
   try {
     const response = await httpAxios.post("/user/address/create", {
       userId,
-      data: [addressData]
+      address,
+      city,
+      state,
+      postalCode,
+      country,
+      phone
     });
-    return response;
+    return response.data;
   } catch (error) {
     console.log("error in create address", error);
   }
@@ -42,4 +55,3 @@ export const updateAddress = async (userId, addressData) => {
     console.log("Error updating address:", error);
   }
 };
-

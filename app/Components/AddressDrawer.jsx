@@ -18,13 +18,13 @@ const AddressDrawer = ({ onClose, isEditing, addressData }) => {
     const dispatch = useDispatch();
     useEffect(() => {
         if (isEditing && addressData) {
-            setName(addressData.name );
-            setContactNumber(addressData.phone );
-            setHouseNo(addressData.address.split(' ')[0] );
-            setRoadName(addressData.address.split(' ').slice(1).join(' ') );
+            setName(addressData.name);
+            setContactNumber(addressData.phone);
+            setHouseNo(addressData.address.split(' ')[0]);
+            setRoadName(addressData.address.split(' ').slice(1).join(' '));
             setPincode(addressData.postalCode);
             setCity(addressData.city);
-            setState(addressData.state );
+            setState(addressData.state);
         } else {
             // Clear form when not editing
             setName('');
@@ -40,7 +40,7 @@ const AddressDrawer = ({ onClose, isEditing, addressData }) => {
     const fetchAddresses = async () => {
         try {
             const response = await getAddress(userId);
-            return response.data;
+            return response;
         } catch (err) {
             console.error("Error fetching addresses", err);
             return [];
@@ -59,16 +59,23 @@ const AddressDrawer = ({ onClose, isEditing, addressData }) => {
                 isPrimary: false, // Adjust as needed
                 name
             };
-    
+
             if (isEditing && addressData?._id) {
                 await updateAddress(userId, {
                     addressId: addressData._id,
                     ...addressPayload
                 });
             } else {
-                await CreateAddress(userId, addressPayload); // Create address expects an array
+                await CreateAddress(
+                    userId,
+                    addressPayload.address, 
+                    addressPayload.city,
+                    addressPayload.state,
+                    addressPayload.postalCode,
+                    addressPayload.country,
+                    addressPayload.phone);
             }
-    
+
             const updatedAddresses = await fetchAddresses();
             dispatch(setMyAddress(updatedAddresses));
             onClose();
@@ -76,7 +83,7 @@ const AddressDrawer = ({ onClose, isEditing, addressData }) => {
             console.error("Error saving address", error);
         }
     };
-    
+
 
     return (
         <Box>
