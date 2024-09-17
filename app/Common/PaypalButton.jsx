@@ -1,3 +1,4 @@
+'use client'
 import React, { useState } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { createOrder, onPaypalApprove } from "../Service/CreateOrder";

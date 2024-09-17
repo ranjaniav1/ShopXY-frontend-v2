@@ -1,5 +1,4 @@
 'use client'
-import PaypalButton from "@/app/Common/PaypalButton";
 import AddressCard from "@/app/Components/AddressCard";
 import AddressDrawer from "@/app/Components/AddressDrawer";
 import CustomButton from "@/app/Custom/CustomButton";
@@ -96,7 +95,6 @@ const Page = () => {
             setError('Failed to update primary address. Please try again.');
         }
     };
-    // setSelectedAddressId(event.target.value);
 
     return (
         <div>
