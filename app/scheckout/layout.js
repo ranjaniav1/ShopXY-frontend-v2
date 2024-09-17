@@ -18,12 +18,13 @@ const Layout = ({ children }) => {
     useSelector((state) => state.auth?.user?.data?.user?._id) || "test";
   const dispatch = useDispatch();
 
-  const isCart = useSelector((state) => state.cart.cart.data);
+  const isCart = useSelector((state) => state.cart);
 
   const fetchCartData = async () => {
     try {
       const response = await getCart(userId);
       dispatch(setMyCart(response));
+      console.log("sfj", response);
     } catch (err) {
       setError(err.message || "Error fetching cart data");
     } finally {
@@ -32,15 +33,24 @@ const Layout = ({ children }) => {
   };
   useEffect(() => {
     fetchCartData();
-  }, []);
-
+  }, [userId, dispatch]);
+  // user id in dependency remove
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
-
+  // Calculate total product price
+  const totalProductPrice = isCart.cart.reduce(
+    (total, item) => total + item.itemTotalPrice,
+    0
+  );
+  const totalDiscount = isCart.cart.reduce(
+    (total, item) => total + item.itemDiscountAmount,
+    0
+  );
+  const finalPrice = totalProductPrice - totalDiscount;
   return (
     <CustomBox>
       <Grid container spacing={2}>
-        {isCart ? (
+        {isCart.cart?.length > 0 ? (
           <>
             {/* Grid for children (cart items) */}
             <Grid item xs={12} md={7}>
@@ -65,10 +75,9 @@ const Layout = ({ children }) => {
             {/* Price Details Section */}
             <Grid item xs={12} md={4}>
               <PriceDetails
-                numberOfItems={isCart.products.length}
-                totalProductPrice={isCart.totalPrice}
-                totalDiscount={isCart.discountPrice}
-                orderTotal={isCart.totalPrice}
+                totalProductPrice={totalProductPrice}
+                totalDiscount={totalDiscount}
+                orderTotal={finalPrice}
               />
             </Grid>
           </>

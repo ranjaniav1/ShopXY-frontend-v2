@@ -1,5 +1,8 @@
 const initialState = {
-  cart: []
+  cart: [],
+  totalProductActualPrice: 0,
+  totalDiscount: 0,
+  finalPrice: 0
 };
 
 export const SET_CART = "SET_CART";
@@ -9,7 +12,7 @@ const cartReducer = (state = initialState, action) => {
     case SET_CART:
       return {
         ...state,
-        cart: action.payload
+        ...action.payload
       };
 
     default:

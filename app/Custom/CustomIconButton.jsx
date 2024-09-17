@@ -8,12 +8,15 @@ const CustomIconButton = ({ children, onClick, sx, ...props }) => {
             onClick={onClick}
             sx={{
                 borderRadius: '5px',
-                padding: 1,
+                padding: '6px',
+                marginLeft: '2%',
+                backgroundColor: theme.palette.button.background,
+                color: theme.palette.button.color,
                 '&:hover': {
-                    backgroundColor: 'rgba(0, 0, 0, 0.1)',
-
+                    backgroundColor: theme.palette.button.hover,
                 }, ...sx, // Allow additional styling via sx prop
             }}
+            {...props}
         >
             {children}
         </IconButton>

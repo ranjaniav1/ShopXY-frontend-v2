@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import CustomBox from '../Custom/CustomBox';
 
 const SaleAndDiscount = () => {
-    const { t } = useTranslation();
+    const {t}=useTranslation()
     const [collection, setCollection] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -16,10 +16,9 @@ const SaleAndDiscount = () => {
         try {
             const result = await GetHomeScreenData();
             console.log("sale and discount", result.sale_and_discount_product);
-            setCollection(Array.isArray(result.sale_and_discount_product) ? result.sale_and_discount_product : []);
+            setCollection(result.sale_and_discount_product);
         } catch (error) {
             console.log("failed to fetch collection", error);
-            setCollection([]);  // Ensure fallback to an empty array in case of an error
         } finally {
             setLoading(false);
         }
@@ -41,14 +40,14 @@ const SaleAndDiscount = () => {
                             </Grid>
                         ))}
                     </Grid>
-                ) : collection?.length > 0 ? (
+                ) : collection.length > 0 ? (
                     <Grid container spacing={2}>
                         {collection.slice(0, 6).map((category) => (
                             <DiscountCard image={category.banner_image} key={category.id} title={category.title} alt={category.title} />
                         ))}
                     </Grid>
                 ) : (
-                    <Typography textAlign="center">{t("No collection found")}</Typography>
+                    <Typography textAlign="center">No collection found</Typography>
                 )}
             </Box>
         </CustomBox>

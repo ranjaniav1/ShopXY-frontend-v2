@@ -1,25 +1,12 @@
 import { httpAxios } from "../httpAxios";
 
-export const CreateAddress = async (
-  userId,
-  address,
-  city,
-  state,
-  postalCode,
-  country,
-  phone
-) => {
+export const CreateAddress = async (userId, addressData) => {
   try {
     const response = await httpAxios.post("/user/address/create", {
       userId,
-      address,
-      city,
-      state,
-      postalCode,
-      country,
-      phone
+      data: [addressData]
     });
-    return response.data;
+    return response;
   } catch (error) {
     console.log("error in create address", error);
   }
@@ -44,32 +31,15 @@ export const removeAddress = async (userId, addressId) => {
     console.log("Error removing address:", error);
   }
 };
-export const updateAddress = async (
-  userId,
-  addressId,
-  address,
-  city,
-  state,
-  postalCode,
-  country,
-  phone,
-  isPrimary
-) => {
+export const updateAddress = async (userId, addressData) => {
   try {
-      const response = await httpAxios.put("/user/address/update", {
-          userId,
-          addressId,
-          address,
-          city,
-          state,
-          postalCode,
-          country,
-          phone,
-          isPrimary
-      });
-      return response.data;
+    const response = await httpAxios.put("/user/address/update", {
+      userId,
+      ...addressData
+    });
+    return response.data;
   } catch (error) {
-      console.log("Error updating address:", error);
+    console.log("Error updating address:", error);
   }
 };
 
