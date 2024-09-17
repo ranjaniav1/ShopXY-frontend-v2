@@ -1,36 +1,40 @@
 'use client'
-import PaypalButton from '@/app/Common/PaypalButton'
-import AddressDrawer from '@/app/Components/AddressDrawer'
-import CustomButton from '@/app/Custom/CustomButton'
-import CustomDrawer from '@/app/Custom/CustomDrawer'
-import { setMyAddress } from '@/app/redux/reducer/addressReducer'
-import { getAddress, removeAddress } from '@/app/Service/Address'
-import { AddAPhoto, Edit, Delete } from '@mui/icons-material'
-import { Box, Typography, Grid, IconButton, Radio, FormControlLabel } from '@mui/material'
-import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import PaypalButton from "@/app/Common/PaypalButton";
+import AddressCard from "@/app/Components/AddressCard";
+import AddressDrawer from "@/app/Components/AddressDrawer";
+import CustomButton from "@/app/Custom/CustomButton";
+import CustomDrawer from "@/app/Custom/CustomDrawer";
+import { setMyAddress } from "@/app/redux/reducer/addressReducer";
+import { getAddress, removeAddress, updateAddress } from "@/app/Service/Address";
+import { AddAPhoto } from "@mui/icons-material";
+import { Box, Grid, Typography } from "@mui/material";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const Page = () => {
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [selectedAddressId, setSelectedAddressId] = useState(null);
-    const [isEditing, setEditing] = useState(false)
-    const [selectedAddressData, setSelectedAddressData] = useState(null); // New state for address data
-    const userId = useSelector((state) => state.auth.user.data.user._id);
-    const addressData = useSelector((state) => state.address.data);
-    const dispatch = useDispatch()
+    const [isEditing, setEditing] = useState(false);
+    const [selectedAddressData, setSelectedAddressData] = useState(null);
 
+    const userId = useSelector((state) => state.auth.user.data.user._id);
+    const addressData = useSelector((state) => state.address.data?.data || []);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        fetchAddresses();
+    }, []);
     const fetchAddresses = async () => {
         try {
             const response = await getAddress(userId);
             dispatch(setMyAddress(response));
 
-            const primaryAddress = response.find(address => address.isPrimary);
-            if (primaryAddress) {
-                setSelectedAddressId(primaryAddress._id);
-            }
-
+            // Set the primary address ID
+            const primaryAddress = response.data.find(address => address.isPrimary);
+            setSelectedAddressId(primaryAddress ? primaryAddress._id : null);
             setLoading(false);
         } catch (err) {
             setLoading(false);
@@ -38,39 +42,61 @@ const Page = () => {
         }
     };
 
-    useEffect(() => {
-        if (userId) {
-            fetchAddresses();
-        }
-    }, [userId]);
+
 
     const handleAddAddressClick = () => {
         setEditing(false);
         setSelectedAddressData(null);
         setOpen(true);
     };
+
     const handleCloseDrawer = () => setOpen(false);
 
     const handleEditAddress = (addressId) => {
-        setOpen(true)
-        setEditing(true)
-        const address = addressData.find(addr => addr._id === addressId)
-        setSelectedAddressData(address)
+        setOpen(true);
+        setEditing(true);
+        const address = addressData.find(addr => addr._id === addressId);
+        setSelectedAddressData(address);
     };
 
     const handleRemoveAddress = async (addressId) => {
         try {
             await removeAddress(userId, addressId);
-            const getAddress = await fetchAddresses()
+            await fetchAddresses(); // Refresh address list
         } catch (err) {
-            console.log("remove add", err)
+            console.error("Failed to remove address", err);
             setError('Failed to remove address. Please try again.');
         }
     };
 
-    const handleAddressChange = (event) => {
-        setSelectedAddressId(event.target.value);
+    const handleAddressChange = async (addressId) => {
+        try {
+            // Update the primary status of the selected address
+            const selectedAddress = addressData.find(addr => addr._id === addressId);
+            if (selectedAddress) {
+                await updateAddress(
+                    userId,
+                    addressId,
+                    selectedAddress.address,
+                    selectedAddress.city,
+                    selectedAddress.state,
+                    selectedAddress.postalCode,
+                    selectedAddress.country,
+                    selectedAddress.phone,
+                    true //set this address as a primary
+                );
+                // Update the selected address ID
+                setSelectedAddressId(addressId);
+
+                // Fetch updated addresses
+                await fetchAddresses();
+            }
+        } catch (err) {
+            console.error('Failed to update primary address', err);
+            setError('Failed to update primary address. Please try again.');
+        }
     };
+    // setSelectedAddressId(event.target.value);
 
     return (
         <div>
@@ -78,48 +104,36 @@ const Page = () => {
                 <Typography>Select Delivery Address</Typography>
                 <CustomButton title="Add new address" startIcon={<AddAPhoto />} onClick={handleAddAddressClick} />
             </Box>
+
             <Grid container spacing={2} p={2}>
-                {loading ? (
-                    <Typography>Loading...</Typography>
-                ) : error ? (
-                    <Typography color="error">{error}</Typography>
-                ) : addressData.length > 0 ? (
-                    addressData.map((address) => (
-                        <Grid item xs={12} sm={6} md={6} key={address._id}>
-                            <Box sx={{ border: '1px solid #ddd', borderRadius: '8px', p: 2, position: 'relative', minHeight: '150px', display: 'flex', flexDirection: 'column' }}>
-                                <Box sx={{ position: 'absolute', top: 8, right: 8, display: 'flex', gap: '8px' }}>
-                                    <IconButton onClick={() => handleEditAddress(address._id)} color="primary">
-                                        <Edit />
-                                    </IconButton>
-                                    <IconButton onClick={() => handleRemoveAddress(address._id)} color="error">
-                                        <Delete />
-                                    </IconButton>
-                                </Box>
-                                <Box display="flex" alignItems="center" mb={1}>
-                                    <FormControlLabel
-                                        control={<Radio checked={address._id === selectedAddressId} value={address._id} onChange={handleAddressChange} />}
-                                        label=""
-                                    />
-                                    <Box ml={2}>
-                                        <Typography>{address.address}</Typography>
-                                        <Typography variant="body1">{address.city}, {address.state}, {address.postalCode}, {address.country}</Typography>
-                                        <Typography variant="body2">Phone: {address.phone}</Typography>
-                                        <Typography variant="body2" color={address.isPrimary ? 'primary' : 'textSecondary'}>
-                                            {address.isPrimary ? 'Primary Address' : 'Secondary Address'}
-                                        </Typography>
-                                    </Box>
-                                </Box>
-                            </Box>
-                        </Grid>
-                    ))
-                ) : (
-                    <Typography>No addresses found.</Typography>
-                )}
+                {
+                    addressData ? (
+                        addressData.map((address) => (
+                            <Grid item xs={12} sm={6} md={6} key={address._id}>
+                                <AddressCard
+                                    address={address}
+                                    selectedAddressId={selectedAddressId}
+                                    handleEdit={handleEditAddress}
+                                    handleRemove={handleRemoveAddress}
+                                    handleChange={handleAddressChange}
+                                />
+                            </Grid>
+                        ))) : (<p>no address found</p>)
+                }
+
             </Grid>
-            <PaypalButton />
-            <CustomDrawer open={open} onClose={handleCloseDrawer} title="Add Delivery Address">
-                <AddressDrawer onClose={handleCloseDrawer} isEditing={isEditing} addressData={selectedAddressData} />
-            </CustomDrawer>
+
+            <Box sx={{ textAlign: 'end' }}>
+                <Link href="/scheckout/payment">
+                    <CustomButton title="Continue" />
+                </Link>
+            </Box>
+
+            {open && (
+                <CustomDrawer open={open} onClose={handleCloseDrawer} title={isEditing ? "Edit Address" : "Add Address"}>
+                    <AddressDrawer onClose={handleCloseDrawer} isEditing={isEditing} addressData={selectedAddressData} />
+                </CustomDrawer>
+            )}
         </div>
     );
 }

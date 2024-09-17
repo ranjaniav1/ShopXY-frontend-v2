@@ -44,14 +44,32 @@ export const removeAddress = async (userId, addressId) => {
     console.log("Error removing address:", error);
   }
 };
-export const updateAddress = async (userId, addressData) => {
+export const updateAddress = async (
+  userId,
+  addressId,
+  address,
+  city,
+  state,
+  postalCode,
+  country,
+  phone,
+  isPrimary
+) => {
   try {
-    const response = await httpAxios.put("/user/address/update", {
-      userId,
-      ...addressData
-    });
-    return response.data;
+      const response = await httpAxios.put("/user/address/update", {
+          userId,
+          addressId,
+          address,
+          city,
+          state,
+          postalCode,
+          country,
+          phone,
+          isPrimary
+      });
+      return response.data;
   } catch (error) {
-    console.log("Error updating address:", error);
+      console.log("Error updating address:", error);
   }
 };
+

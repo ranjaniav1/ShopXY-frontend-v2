@@ -59,16 +59,22 @@ const AddressDrawer = ({ onClose, isEditing, addressData }) => {
                 isPrimary: false, // Adjust as needed
                 name
             };
-
+            let addressResponse;
             if (isEditing && addressData?._id) {
-                await updateAddress(userId, {
-                    addressId: addressData._id,
-                    ...addressPayload
-                });
-            } else {
-                await CreateAddress(
+                addressResponse = await updateAddress(
                     userId,
-                    addressPayload.address, 
+                    addressData._id,
+                    addressPayload.address,
+                    addressPayload.city,
+                    addressPayload.state,
+                    addressPayload.postalCode,
+                    addressPayload.country,
+                    addressPayload.phone,
+                    addressPayload.isPrimary)
+            } else {
+                addressResponse = await CreateAddress(
+                    userId,
+                    addressPayload.address,
                     addressPayload.city,
                     addressPayload.state,
                     addressPayload.postalCode,
@@ -76,9 +82,13 @@ const AddressDrawer = ({ onClose, isEditing, addressData }) => {
                     addressPayload.phone);
             }
 
-            const updatedAddresses = await fetchAddresses();
-            dispatch(setMyAddress(updatedAddresses));
-            onClose();
+            if (addressResponse) {
+                const updatedAddresses = await fetchAddresses();
+                dispatch(setMyAddress(updatedAddresses));
+                onClose();
+            } else {
+                console.error("Error: No response from the server.");
+            }
         } catch (error) {
             console.error("Error saving address", error);
         }
