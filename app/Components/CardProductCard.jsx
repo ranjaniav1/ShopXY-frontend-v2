@@ -4,6 +4,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import CustomButton from '../Custom/CustomButton';
 
 const CartProductCard = ({ onEdit, onRemove, image, name, offer, actual_price, discounted_price, quantity, size }) => {
+
     return (
         <Box
             sx={{
@@ -32,7 +33,7 @@ const CartProductCard = ({ onEdit, onRemove, image, name, offer, actual_price, d
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <CustomButton
                             title="Edit"
-                            onClick={onEdit}
+                            onClick={onEdit} // Pass the clicked product here
                             sx={{ marginRight: 1 }}
                         />
                     </Box>
