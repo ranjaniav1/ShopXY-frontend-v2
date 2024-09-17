@@ -10,7 +10,7 @@ import CustomBox from '../Custom/CustomBox';
 import CustomIconButton from '../Custom/CustomIconButton';
 import CustomSkeleton from '../Custom/CustomSkeleton';
 import CustomCollectionCard from '../Common/CustomCollectionCard';
-import { fetchCollection } from '../helper/collectionHelper';
+import { GetCollection } from '../Service/GetCollection';
 
 const Collection = () => {
     const { t } = useTranslation();
@@ -22,7 +22,8 @@ const Collection = () => {
 
     useEffect(() => {
         const getCollection = async () => {
-            const data = await fetchCollection();  // Call the helper function
+            const data = await GetCollection();  // Ensure data is an array
+            console.log("collection", data)
             setCollection(data);
             setLoading(false);
         };
@@ -31,14 +32,14 @@ const Collection = () => {
 
     useEffect(() => {
         if (pathname === "/categories/collections") {
-            setVisibleCount(collection.length);
+            setVisibleCount(collection?.length || 0);  // Ensure collection is defined
         }
     }, [pathname, collection]);
 
     return (
         <CustomBox>
             <Heading text={t("Our Top Collections")}>
-                {showArrowIcon && visibleCount < collection.length && (
+                {showArrowIcon && visibleCount < (collection?.length || 0) && (
                     <Link href="/categories/collections" passHref>
                         <CustomIconButton><ArrowCircleRightOutlinedIcon fontSize='large' /></CustomIconButton>
                     </Link>
@@ -48,12 +49,11 @@ const Collection = () => {
             <Box>
                 {loading ? (
                     <Grid container spacing={2}>
-                        {Array.from({ length: 6 }).map((index) => (
-
+                        {Array.from({ length: 6 }).map((_, index) => (
                             <CustomSkeleton gridItem gridProps={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={index} type="card" width="96px" height="96px" />
                         ))}
                     </Grid>
-                ) : collection.length > 0 ? (
+                ) : collection?.length > 0 ? (
                     <Grid container spacing={2}>
                         {collection.slice(0, visibleCount).map(category => (
                             <Grid item xs={6} sm={4} md={3} lg={2} key={category.id}>

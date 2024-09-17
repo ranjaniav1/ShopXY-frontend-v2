@@ -16,7 +16,7 @@ const Slider = () => {
     async function GetCategory() {
         try {
             const result = await GetHomeScreenData();
-            console.log("swiper", result.swiper);
+            console.log("swiper", result);
             setSlider(result.swiper);
         } catch (error) {
             console.log("failed to fetch slider", error);
