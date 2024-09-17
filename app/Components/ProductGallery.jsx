@@ -16,21 +16,20 @@ const ProductGallery = ({ detailImages, selectedImage, onImageClick, productName
     const userId = useSelector((state) => state?.auth?.user?.data?.user._id)
     const dispatch = useDispatch()
     const { productTitle } = useParams()
-
-    const cartData = useSelector((state) => state.cart.cart?.data?.products) || [];
+    const cartData = useSelector((state) => state.cart.cart) || [];
 
     const handleAddToCart = async () => {
         try {
-            const quantity = 1;//default qty is 1
+            const quantity=1;//default qty is 1
 
-            const isProductInCart = cartData.some(item => item.product._id === productId);
+            const isProductInCart = cartData.some(item => item.productId === productId);
             if (isProductInCart) {
                 toast.error(`Product ${productTitle} is already in your cart.`);
                 return;
             }
 
             if (!userId) {
-                toast.error('please login first');
+                toast.error('You need to log in to add items to the cart.');
                 return;
             }
 

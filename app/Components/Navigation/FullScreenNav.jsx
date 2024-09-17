@@ -10,6 +10,8 @@ import RegisterModal from './RegisterModal';
 import LoginModal from './LoginModal';
 import CustomInput from '@/app/Custom/CustomInput';
 import CustomButton from '@/app/Custom/CustomButton';
+import CustomMenu from '@/app/Custom/CustomMenu';
+import CustomIconButton from '@/app/Custom/CustomIconButton';
 import { useSelector } from 'react-redux';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -18,8 +20,8 @@ const FullScreenNav = ({ setDrawerOpen }) => {
   const { t } = useTranslation();
   const isAuth = useSelector((state) => state.auth.isAuthenticated)
   const user = useSelector((state) => state.auth?.user?.data?.user) || {}
-  const cartItems = useSelector((state) => state.cart.cart?.data?.products) || [];
-  const cartItemCount = cartItems.length; // Ensure cartItems is an array
+  const cartItems = useSelector((state) => state.cart.cart) || [];
+  const cartItemCount = cartItems.length;
 
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);

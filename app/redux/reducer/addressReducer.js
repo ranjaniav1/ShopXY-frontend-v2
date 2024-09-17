@@ -9,7 +9,7 @@ const addressReducer = (state = initialState, action) => {
     case SET_ADDRESS:
       return {
         ...state, // Keep the other properties of the state intact
-        data: action.payload
+        data: [...action.payload] // Replace the data with the new payload (array of addresses)
       };
 
     default:

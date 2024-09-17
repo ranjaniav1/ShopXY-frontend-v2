@@ -4,10 +4,7 @@ import { Typography, Box, Divider } from '@mui/material';
 import CustomButton from '../Custom/CustomButton';
 
 const PriceDetails = ({ numberOfItems, totalProductPrice, totalDiscount, orderTotal }) => {
-
-    const formatPrice = (price) => {
-        return (price).toFixed(2)
-    }
+    
     return (
         <Box sx={{ padding: 2 }}>
             <Typography variant="h6" sx={{ marginBottom: 2, fontWeight: 'bold' }}>
@@ -20,7 +17,7 @@ const PriceDetails = ({ numberOfItems, totalProductPrice, totalDiscount, orderTo
                         Total Product Price:
                     </Typography>
                     <Typography variant="body2" color="textSecondary" sx={{ fontWeight: 'bold' }}>
-                        + ₹{formatPrice(totalProductPrice)}
+                        + ₹{totalProductPrice}
                     </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', color: "#22aa99" }}>
@@ -37,7 +34,7 @@ const PriceDetails = ({ numberOfItems, totalProductPrice, totalDiscount, orderTo
                         Order Total:
                     </Typography>
                     <Typography >
-                        ₹{formatPrice(orderTotal)}
+                        ₹{orderTotal}
                     </Typography>
                 </Box>
                 {totalDiscount > 0 && (
