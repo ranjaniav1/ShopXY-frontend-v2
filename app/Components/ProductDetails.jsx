@@ -80,7 +80,6 @@ const ProductDetails = ({
                     <ReviewComponents productId={productId} sx={{ p: 2 }} />
                 </Card>
             </Grid>
-
         </Grid >
     );
 };

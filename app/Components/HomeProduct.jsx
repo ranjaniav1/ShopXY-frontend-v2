@@ -53,7 +53,7 @@ const HomeProduct = () => {
 
     return (
         <>
-            <Heading text={t("Products for You")} />
+            <Heading text={t("Products For You")} />
             <Grid container spacing={3} >
                 <Grid item xs={12} md={3} sx={{ mt: 3.5 }}>
                     <FilterSection

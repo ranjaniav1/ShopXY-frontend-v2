@@ -10,6 +10,7 @@ import toast from 'react-hot-toast';
 import { setMyCart } from '@/app/redux/reducer/cartReducer';
 import CustomButton from '@/app/Custom/CustomButton';
 import Link from 'next/link';
+import { useTranslation } from 'react-i18next';
 
 const Page = ({ handleNext, handleBack }) => {
     const [editDrawer, setEditDrawer] = useState(false);
@@ -18,7 +19,7 @@ const Page = ({ handleNext, handleBack }) => {
     const theme = useTheme()
     const userId = useSelector((state) => state.auth.user.data.user._id);
     const cartData = useSelector((state) => state.cart.cart.data.products);
-
+    const { t } = useTranslation()
     const fetchCart = async () => {
         try {
             const result = await getCart(userId);
@@ -57,7 +58,7 @@ const Page = ({ handleNext, handleBack }) => {
 
             <Box sx={{ background: theme.palette.card.background, p: 2, borderRadius: 2 }}>
                 <Typography variant="h6" sx={{ marginBottom: 2, fontWeight: 'bold' }}>
-                    Product Details
+                    {t("Product Details")}
                 </Typography>
                 {cartData && cartData.length > 0 ? (
                     cartData.map((item) => (

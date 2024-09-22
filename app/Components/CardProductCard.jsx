@@ -4,8 +4,9 @@ import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutl
 import CustomIconButton from '../Custom/CustomIconButton';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import CustomTypography from '../Custom/CustomTypography';
+import { useTranslation } from 'react-i18next';
 const CartProductCard = ({ onEdit, onRemove, image, name, offer, actual_price, discounted_price, quantity, size }) => {
-
+const {t}=useTranslation()
     return (
         <Box
             sx={{
@@ -64,11 +65,11 @@ const CartProductCard = ({ onEdit, onRemove, image, name, offer, actual_price, d
                 <Box sx={{ display: "flex", alignItems: "center" }}>
 
                     <CustomTypography variant="body2" sx={{ marginRight: 1 }}>
-                        Size: {size}
+                        {t("Size")}: {size}
                     </CustomTypography>
                     <Divider orientation='vertical' flexItem sx={{ height: 28, marginX: 1, backgroundColor: 'gray' }} />
                     <CustomTypography variant="body2">
-                        Quantity: {quantity}
+                        {t("Quantity")}: {quantity}
                     </CustomTypography>
                 </Box>
 

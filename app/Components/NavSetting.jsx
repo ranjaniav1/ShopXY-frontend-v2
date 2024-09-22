@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTheme } from '../redux/reducer/ThemeReducer';
 import { setLanguage } from '../redux/reducer/LanguageReducer';
+import i18n from '../i18n';
+import Cookies from 'js-cookie';
 
 const NavSetting = () => {
     const { t } = useTranslation();
@@ -21,6 +23,8 @@ const NavSetting = () => {
     const handleLanguageChange = (event) => {
         const lang = event.target.value;
         dispatch(setLanguage(lang));
+        i18n.changeLanguage(lang);
+        Cookies.set("language", lang); 
     };
     return (
         <>
@@ -36,17 +40,17 @@ const NavSetting = () => {
                     <FormControlLabel
                         value="light"
                         control={<Radio />}
-                        label={t("Light Mode")}
+                        label="Light Mode"
                     />
                     <FormControlLabel
                         value="dark"
                         control={<Radio />}
-                        label={t("Dark Mode")}
+                        label="Dark Mode"
                     />
                 </RadioGroup>
             </div>
             <div className="mb-4">
-                <FormLabel component="legend" className="text-md font-medium mb-2">{t("Select Language")}</FormLabel>
+                <FormLabel component="legend" className="text-md font-medium mb-2">Select Language</FormLabel>
                 <RadioGroup
                     aria-label="language"
                     name="language"
@@ -57,18 +61,24 @@ const NavSetting = () => {
                     <FormControlLabel
                         value="en"
                         control={<Radio />}
-                        label={t("English")}
+                        label="English"
+                    />
+                    <FormControlLabel
+                        value="hi"
+                        control={<Radio />}
+                        label="Hindi"
+                    />
+                    <FormControlLabel
+                        value="gu"
+                        control={<Radio />}
+                        label="Gujarati"
                     />
                     <FormControlLabel
                         value="fr"
                         control={<Radio />}
-                        label={t("French")}
+                        label="French"
                     />
-                    <FormControlLabel
-                        value="es"
-                        control={<Radio />}
-                        label={t("Spanish")}
-                    />
+
                 </RadioGroup>
             </div></>
     )

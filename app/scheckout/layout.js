@@ -20,6 +20,7 @@ import { setMyCart } from "../redux/reducer/cartReducer";
 import CustomButton from "../Custom/CustomButton";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 const Layout = ({ children }) => {
   const [loading, setLoading] = useState(true);
@@ -31,6 +32,7 @@ const Layout = ({ children }) => {
   const dispatch = useDispatch();
   const pathname = usePathname();
   const theme = useTheme();
+  const { t } = useTranslation();
   const isCart = useSelector((state) => state.cart.cart.data);
 
   const fetchCartData = async () => {
@@ -77,7 +79,6 @@ const Layout = ({ children }) => {
     <Box>
       <Stepper
         sx={{
-
           ".Mui-completed .MuiStepIcon-root": {
             background: theme.palette.button.color,
             borderRadius: "50%",
