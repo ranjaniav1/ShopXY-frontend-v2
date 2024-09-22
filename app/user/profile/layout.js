@@ -1,10 +1,11 @@
 "use client";
 import CustomBox from "@/app/Custom/CustomBox";
 import { Avatar, Box, Button, Divider, Grid, Typography } from "@mui/material";
+("use client");
 import React from "react";
 import { useSelector } from "react-redux";
 
-const layout = ({ children }) => {
+const Layout = ({ children }) => {
   const user = useSelector((state) => state.auth?.user?.data?.user);
   return (
     <CustomBox>
@@ -50,4 +51,4 @@ const layout = ({ children }) => {
   );
 };
 
-export default layout;
+export default Layout;
