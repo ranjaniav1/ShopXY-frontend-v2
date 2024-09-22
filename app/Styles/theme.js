@@ -28,7 +28,8 @@ const lightTheme = createTheme({
     card: {
       border: "#22aa99",
       hover: "#22aa99",
-      background: "#ffffff"
+      background: "#ffffff",
+      text: "#4b5563"
     }
   }
 });
@@ -60,7 +61,8 @@ const darkTheme = createTheme({
     card: {
       border: "#22aa99",
       hover: "#22aa99",
-      background: "#141d1d"
+      background: "#141d1d",
+      text: "#fff"
     }
   }
 });

@@ -1,23 +1,11 @@
 'use client';
 
 import React from 'react';
-import { Card, CardContent, Typography, Box, Grid, Avatar, Button, Divider, Chip, useTheme } from '@mui/material';
+import { Typography, Box, Grid, useTheme, Card } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import CustomButton from '../Custom/CustomButton';
 import ReviewComponents from './RatindReview';
 import BrandRating from './BrandRating';
-
-// Reusable ProductCard Component
-const ProductCard = ({ title, children, theme }) => (
-    <Card sx={{ borderRadius: 2, backgroundColor: theme.palette.card.background, mb: 2 }}>
-        <CardContent>
-            <Typography variant="h6">
-                {title}
-            </Typography>
-            {children}
-        </CardContent>
-    </Card>
-);
+import CustomTypography from '../Custom/CustomTypography';
 
 const ProductDetails = ({
     name,
@@ -28,7 +16,7 @@ const ProductDetails = ({
     colors = [], // Default to an empty array if undefined
     sizes = ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'], // Default to an empty array if undefined
     full_description, special_offer, gst_type,
-    delivery, brand, productId, product_id
+    brand, productId, product_id
 }) => {
     const theme = useTheme();
     const { t } = useTranslation()
@@ -36,56 +24,61 @@ const ProductDetails = ({
         <Grid container spacing={4}>
             {/* Card 1: Product Description, Price */}
             <Grid item xs={12}>
-                <ProductCard title={name} theme={theme}>
-                    <Typography variant="body2" color="gray">
+                <Card sx={{ p: 2 }}>
+                    <CustomTypography variant="h4" sx={{ color: theme.palette.card.text }}>
+                        {name}
+                    </CustomTypography>
+                    <CustomTypography variant="body2" sx={{ color: theme.palette.card.text }}>
                         {description}
-                    </Typography>
-                    <Typography variant="h5" color="seagreen" gutterBottom>
+                    </CustomTypography>
+                    <CustomTypography variant="h5" className="text-green-600 mb-2">
                         ₹{discounted_price}{' '}
                         {discounted_price && (
                             <span style={{ textDecoration: 'line-through', marginLeft: '8px', color: 'red' }}>
                                 ₹{actual_price}
                             </span>
-                        )}  {offer}%OFF
-                    </Typography>
-                    <Typography variant="body2" mt={2}>
+                        )} {offer}% OFF
+                    </CustomTypography>
+                    <CustomTypography variant="body2" className="mt-2">
                         {t('Free Delivery')}
-                    </Typography>
-                </ProductCard>
+                    </CustomTypography>
+                </Card>
             </Grid>
 
             {/* Card 3: Product Details */}
             <Grid item xs={12}>
-                <ProductCard title={t("Product Details")} theme={theme}>
-                    <Typography variant="body2" color="text.secondary">
-                        {t('Name')}: {name}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        {t('Colors')}: {colors.join(', ')}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
+                <Card sx={{ p: 2 }}>
+                    <CustomTypography variant="h4" sx={{ color: theme.palette.card.text }}>
+                        {t('Product details')}:
+                    </CustomTypography>
+                    <CustomTypography variant="body2" sx={{ color: theme.palette.card.text }}>
                         {t('Sizes')}: {sizes.join(', ')}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    </CustomTypography>
+                    <CustomTypography variant="body2" sx={{ color: theme.palette.card.text }}>
                         {t('Description')}: {full_description}
-                    </Typography><Typography variant="body2" color="text.secondary">
+                    </CustomTypography>
+                    <CustomTypography variant="body2" sx={{ color: theme.palette.card.text }}>
                         {t('Special Offer')}: {special_offer}
-                    </Typography><Typography variant="body2" color="text.secondary">
+                    </CustomTypography>
+                    <CustomTypography variant="body2" sx={{ color: theme.palette.card.text }}>
                         {t('GST Type')}: {gst_type}
-                    </Typography><Typography variant="body2" color="text.secondary">
+                    </CustomTypography>
+                    <CustomTypography variant="body2" sx={{ color: theme.palette.card.text }}>
                         {t('Brand')}: {brand}
-                    </Typography>
-                </ProductCard>
+                    </CustomTypography>
+                </Card>
             </Grid>
             {/* card 4 brand rating review */}
             <Grid item xs={12}>
-
-                <BrandRating BrandId={product_id} />            </Grid>
+                <BrandRating BrandId={product_id} sx={{ p: 2 }} />            </Grid>
             {/* Card 5: Ratings and Reviews */}
             <Grid item xs={12}>
-                <ProductCard title="Ratings & Reviews" theme={theme}>
-                    <ReviewComponents productId={productId} />
-                </ProductCard>
+                <Card theme={theme} sx={{ p: 2 }}>
+                    <CustomTypography variant="h4" sx={{ color: theme.palette.card.text }}>
+                        {t('Rating & Reviews')}
+                    </CustomTypography>
+                    <ReviewComponents productId={productId} sx={{ p: 2 }} />
+                </Card>
             </Grid>
 
         </Grid >

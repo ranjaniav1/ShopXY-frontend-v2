@@ -1,18 +1,19 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import CustomButton from '../Custom/CustomButton';
-
+import { Box, Divider } from '@mui/material';
+import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
+import CustomIconButton from '../Custom/CustomIconButton';
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import CustomTypography from '../Custom/CustomTypography';
 const CartProductCard = ({ onEdit, onRemove, image, name, offer, actual_price, discounted_price, quantity, size }) => {
 
     return (
         <Box
             sx={{
                 display: 'flex',
-                alignItems: 'flex-start',
+                alignItems: 'center',
                 border: '1px solid #e1e0e0',
                 borderRadius: 2,
-                padding: '10px',
+                padding: '16px',
                 marginBottom: 2,
                 boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
                 position: 'relative',
@@ -22,45 +23,57 @@ const CartProductCard = ({ onEdit, onRemove, image, name, offer, actual_price, d
                 <img
                     src={image || 'https://via.placeholder.com/150'}
                     alt={name}
-                    style={{ width: '120px', height: '120px', objectFit: 'cover', borderRadius: 2 }}
+                    style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: 2 }}
                 />
             </Box>
+
+            {/* product details */}
             <Box sx={{ flex: 1 }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Typography variant="body1" sx={{ fontWeight: 'bold', fontSize: '16px' }}>
-                        {name}
-                    </Typography>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <CustomButton
-                            title="Edit"
-                            onClick={onEdit} // Pass the clicked product here
-                            sx={{ marginRight: 1 }}
-                        />
+                    <CustomTypography variant="body1" sx={{ fontWeight: 500 }}>{name}</CustomTypography>
+
+                    {/* edit and delete btn with divider */}
+                    <Box sx={{ display: 'flex', alignItems: 'center', border: "1px solid gray ", borderRadius: 2 }}>
+                        <CustomIconButton
+                            onClick={onEdit}
+                      
+                        ><ModeEditOutlineOutlinedIcon /></CustomIconButton>
+
+                        <Divider orientation='vertical' flexItem sx={{ height: 48, backgroundColor: 'gray' }} />
+
+                        <CustomIconButton onClick={onRemove} ><DeleteForeverOutlinedIcon sx={{ color: "red" }} /></CustomIconButton>
                     </Box>
                 </Box>
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, mr: 1 }}>
-                    <Typography variant="body1" sx={{ fontWeight: 'bold', fontSize: '16px', marginRight: 1 }}>
+
+                {/* price and offer section */}
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                    <CustomTypography variant="body1" sx={{ fontWeight: 'bold', fontSize: '16px', marginRight: 1 }}>
                         ₹{discounted_price || actual_price}
-                    </Typography>
+                    </CustomTypography>
                     {discounted_price && (
-                        <Typography variant="body2" color="textSecondary" sx={{ textDecoration: 'line-through', marginRight: 1 }}>
+                        <CustomTypography variant="body2" sx={{ textDecoration: 'line-through', marginRight: 1 }}>
                             ₹{actual_price}
-                        </Typography>
+                        </CustomTypography>
                     )}
-                    <Typography variant="body2" color="textSecondary">
+
+                    <CustomTypography variant="body2" color="textSecondary">
                         {offer ? `${offer}% off` : 'No offer'}
-                    </Typography>
+                    </CustomTypography>
+                </Box>
+                {/* size and qty section */}
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+
+                    <CustomTypography variant="body2" sx={{ marginRight: 1 }}>
+                        Size: {size}
+                    </CustomTypography>
+                    <Divider orientation='vertical' flexItem sx={{ height: 28, marginX: 1, backgroundColor: 'gray' }} />
+                    <CustomTypography variant="body2">
+                        Quantity: {quantity}
+                    </CustomTypography>
                 </Box>
 
-                <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
-                    Size: {size}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                    Qty: {quantity}
-                </Typography>
-                <CustomButton title="Remove" startIcon={<CloseIcon />} onClick={onRemove} />
             </Box>
-        </Box>
+        </Box >
     );
 };
 

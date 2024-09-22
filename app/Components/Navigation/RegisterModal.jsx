@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Typography, CircularProgress, Divider, Box } from '@mui/material';
+import { Typography, CircularProgress, Divider, Box, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import toast, { Toaster } from 'react-hot-toast';
 import { PhoneAndroid, Google, Email, Person } from '@mui/icons-material';
@@ -15,11 +15,12 @@ import GoogleRegistrationModal from './GoogleRegistrationForm';
 
 const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
     const { t } = useTranslation();
+    const theme = useTheme()
     const [formData, setFormData] = useState({ fullname: '', email: '', password: '', phone: '' });
     const [avatar, setAvatar] = useState(null);
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const [isPhoneModalOpen, setIsPhoneModalOpen] = useState(false); // State for Phone Registration Modal
+    const [isPhoneModalOpen, setIsPhoneModalOpen] = useState(false);
     const [isGoogleModalOpen, setIsGoogleModalOpen] = useState(false); // State for Google Registration Modal
     // Handler to open Phone Registration Modal
     const handleOpenPhoneModal = () => {
@@ -42,7 +43,7 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
     };
     return (
         <>
-            <CustomModal open={open} onClose={onClose} title={t("Register")}>
+            <CustomModal open={open} onClose={onClose} title={t("Register")} sx={{ color: theme.palette.text.primary }}>
                 <form onSubmit={(e) => {
                     e.preventDefault();
                     handleSubmit(formData, avatar, setLoading, onClose);

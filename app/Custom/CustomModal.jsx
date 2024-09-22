@@ -6,7 +6,7 @@ import CustomIconButton from './CustomIconButton';
 
 const CustomModal = ({ open, onClose, title, children }) => {
     return (
-        <Modal open={open} onClose={onClose} aria-labelledby="custom-modal-title">
+        <Modal open={open} onClose={onClose} >
             <Box
                 sx={{
                     width: 400,
@@ -23,7 +23,7 @@ const CustomModal = ({ open, onClose, title, children }) => {
             >
                 {/* Modal Heading */}
                 <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                    <Typography id="custom-modal-title" variant="h6" component="h2">
+                    <Typography variant="h6" component="h2">
                         {title}
                     </Typography>
                     {/* Close Button */}

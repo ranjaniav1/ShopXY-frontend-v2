@@ -21,7 +21,6 @@ const Page = () => {
             const productData = result.data;
             setProduct(productData);
 
-            console.log("pr id", product)
             if (productData) {
                 setSelectedImage(productData.image); // Set the default selected image to the main image
             }

@@ -6,12 +6,12 @@ import CustomDrawer from "@/app/Custom/CustomDrawer";
 import { setMyAddress } from "@/app/redux/reducer/addressReducer";
 import { getAddress, removeAddress, updateAddress } from "@/app/Service/Address";
 import { AddAPhoto } from "@mui/icons-material";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Container, Grid, Typography } from "@mui/material";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-const Page = () => {
+const Page = ({ handleNext, handleBack }) => {
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -120,12 +120,26 @@ const Page = () => {
                 }
 
             </Grid>
+            <Container>
 
-            <Box sx={{ textAlign: 'end' }}>
-                <Link href="/scheckout/payment">
-                    <CustomButton title="Continue" />
-                </Link>
-            </Box>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between', // Aligns buttons to start and end
+                        padding: '16px 0', // Optional: Adjust padding as needed
+                    }}
+                >
+                    <Link href="/scheckout/carts">
+                        <CustomButton title="Back" onClick={handleBack} variant="outlined" />
+                    </Link>
+
+                    <Link href="/scheckout/payment">
+                        <CustomButton title="Next" variant="outlined" onClick={handleNext} />
+                    </Link>
+                </Box>
+
+
+            </Container>
 
             {open && (
                 <CustomDrawer open={open} onClose={handleCloseDrawer} title={isEditing ? "Edit Address" : "Add Address"}>

@@ -22,8 +22,7 @@ const Collection = () => {
 
     useEffect(() => {
         const getCollection = async () => {
-            const data = await GetCollection();  // Ensure data is an array
-            console.log("collection", data)
+            const data = await GetCollection();
             setCollection(data);
             setLoading(false);
         };
@@ -41,7 +40,7 @@ const Collection = () => {
             <Heading text={t("Our Top Collections")}>
                 {showArrowIcon && visibleCount < (collection?.length || 0) && (
                     <Link href="/categories/collections" passHref>
-                        <CustomIconButton><ArrowCircleRightOutlinedIcon fontSize='large' /></CustomIconButton>
+                        <CustomIconButton><ArrowCircleRightOutlinedIcon fontSize='large' sx={{ color: "white" }} /></CustomIconButton>
                     </Link>
                 )}
             </Heading>
