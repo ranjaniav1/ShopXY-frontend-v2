@@ -3,9 +3,11 @@ import React, { useEffect, useState } from 'react'
 import { GetSpecificBrandReview } from '../Service/GetReviews'
 import { Box } from '@mui/material'
 import StorefrontIcon from '@mui/icons-material/Storefront';
+import { useTranslation } from 'react-i18next';
 
 const BrandRating = ({ BrandId }) => {
     const [brand, setBrand] = useState({ title: '' });
+    const { t } = useTranslation()
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -31,10 +33,10 @@ const BrandRating = ({ BrandId }) => {
 
     return (
         <div className="border-gray-300">
-            <h1>Sold By</h1>
+            <h1>{t("Sold By")}</h1>
             <Box sx={{ display: "flex", alignItems: "center" }}>
                 <StorefrontIcon sx={{ fontSize: 50 }} />
-                <h1 style={{ marginLeft: '10px' }}>{ 'No title available'}</h1>
+                <h1 style={{ marginLeft: '10px' }}>{'No title available'}</h1>
             </Box>
         </div>
     );

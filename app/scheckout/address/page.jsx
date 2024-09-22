@@ -9,6 +9,7 @@ import { AddAPhoto } from "@mui/icons-material";
 import { Box, Container, Grid, Typography } from "@mui/material";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
 const Page = ({ handleNext, handleBack }) => {
@@ -22,7 +23,7 @@ const Page = ({ handleNext, handleBack }) => {
     const userId = useSelector((state) => state.auth.user.data.user._id);
     const addressData = useSelector((state) => state.address.data?.data || []);
     const dispatch = useDispatch();
-
+    const { t } = useTranslation()
     useEffect(() => {
         fetchAddresses();
     }, []);
@@ -99,8 +100,8 @@ const Page = ({ handleNext, handleBack }) => {
     return (
         <div>
             <Box display="flex" justifyContent="space-between" alignItems="center" p={2}>
-                <Typography>Select Delivery Address</Typography>
-                <CustomButton title="Add new address" startIcon={<AddAPhoto />} onClick={handleAddAddressClick} />
+                <Typography>{t("Select Delivery Address")}</Typography>
+                <CustomButton title={t("Add New Address")} startIcon={<AddAPhoto />} onClick={handleAddAddressClick} />
             </Box>
 
             <Grid container spacing={2} p={2}>

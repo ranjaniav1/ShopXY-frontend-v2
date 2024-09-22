@@ -2,22 +2,23 @@
 import React from 'react';
 import { Typography, Box, Divider } from '@mui/material';
 import CustomButton from '../Custom/CustomButton';
+import { useTranslation } from 'react-i18next';
 
 const PriceDetails = ({ numberOfItems, totalProductPrice, totalDiscount, orderTotal }) => {
-
+    const { t } = useTranslation()
     const formatPrice = (price) => {
         return (price).toFixed(2)
     }
     return (
         <Box sx={{ padding: 2 }}>
             <Typography variant="h6" sx={{ marginBottom: 2, fontWeight: 'bold' }}>
-                Price Details ({numberOfItems} Items)
+                {t(" Price Details")} ({numberOfItems} Items)
             </Typography>
 
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Typography variant="body2" color="textSecondary" sx={{ borderBottom: '1px dotted grey' }}>
-                        Total Product Price:
+                        {t("Total Product Price")}:
                     </Typography>
                     <Typography variant="body2" color="textSecondary" sx={{ fontWeight: 'bold' }}>
                         + ₹{formatPrice(totalProductPrice)}
@@ -25,7 +26,7 @@ const PriceDetails = ({ numberOfItems, totalProductPrice, totalDiscount, orderTo
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', color: "#22aa99" }}>
                     <Typography variant="body2" sx={{ borderBottom: '1px dotted #22aa99' }}>
-                        Total Discount:
+                        {t("Total Discount")}:
                     </Typography>
                     <Typography variant="body2" >
                         -  ₹{totalDiscount}
@@ -34,7 +35,7 @@ const PriceDetails = ({ numberOfItems, totalProductPrice, totalDiscount, orderTo
                 <Divider />
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', fontWeight: 'bolder', color: 'black' }}>
                     <Typography >
-                        Order Total:
+                        {t("Order Total")}:
                     </Typography>
                     <Typography >
                         ₹{formatPrice(orderTotal)}
