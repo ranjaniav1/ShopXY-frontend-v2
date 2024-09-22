@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 
 // Create a mapping between variant and actual HTML elements or styles
@@ -14,35 +16,18 @@ const typographyVariantMap = {
   overline: 'text-xs uppercase text-gray-500 tracking-wider',
 };
 
-const CustomTypography = ({ variant, children, className = '' }) => {
-  // Determine the class for the typography based on the variant
+const CustomTypography = ({ variant, children, className = '', sx = {} }) => {
+
   const typographyClass = typographyVariantMap[variant];
 
-  // Use dynamic HTML tags based on variant or custom styles
-  switch (variant) {
-    case 'h1':
-      return <h1 className={`${typographyClass} ${className}`}>{children}</h1>;
-    case 'h2':
-      return <h2 className={`${typographyClass} ${className}`}>{children}</h2>;
-    case 'h3':
-      return <h3 className={`${typographyClass} ${className}`}>{children}</h3>;
-    case 'h4':
-      return <h4 className={`${typographyClass} ${className}`}>{children}</h4>;
-    case 'h5':
-      return <h5 className={`${typographyClass} ${className}`}>{children}</h5>;
-    case 'h6':
-      return <h6 className={`${typographyClass} ${className}`}>{children}</h6>;
-    case 'body1':
-      return <p className={`${typographyClass} ${className}`}>{children}</p>;
-    case 'body2':
-      return <p className={`${typographyClass} ${className}`}>{children}</p>;
-    case 'caption':
-      return <span className={`${typographyClass} ${className}`}>{children}</span>;
-    case 'overline':
-      return <span className={`${typographyClass} ${className}`}>{children}</span>;
-    default:
-      return <p className={className}>{children}</p>;
-  }
+  return React.createElement(
+    variant.startsWith('h') ? variant : 'p', 
+    {
+      className: `${typographyClass} ${className}`,
+      style: sx, 
+    },
+    children
+  );
 };
 
 export default CustomTypography;

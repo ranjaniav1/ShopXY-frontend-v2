@@ -3,16 +3,19 @@ import React, { useState } from 'react';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Badge, Box, IconButton } from '@mui/material';
+import { Badge, Box, IconButton, Menu, MenuItem } from '@mui/material';
 import { Search } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import RegisterModal from './RegisterModal';
 import LoginModal from './LoginModal';
 import CustomInput from '@/app/Custom/CustomInput';
 import CustomButton from '@/app/Custom/CustomButton';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { Logout } from '@/app/Service/User';
+import { logout } from '@/app/redux/reducer/user/loginReducer';
+import toast from 'react-hot-toast';
 
 const FullScreenNav = ({ setDrawerOpen }) => {
   const { t } = useTranslation();
@@ -24,7 +27,9 @@ const FullScreenNav = ({ setDrawerOpen }) => {
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [anchorEl, setAnchorEl] = useState(null); // For profile menu
   const router = useRouter()
+  const dispatch = useDispatch()
 
   const handleOpenRegister = () => {
     setRegisterModalOpen(true);
@@ -43,12 +48,29 @@ const FullScreenNav = ({ setDrawerOpen }) => {
       router.push(`/search/${encodeURIComponent(searchQuery.trim())}`)
     }
   }
-  const menuItems = [
-    { title: 'Profile', onClick: () => console.log('Profile clicked') },
-    { title: 'My Account', onClick: () => console.log('My Account clicked') },
-    { title: 'Logout', onClick: () => console.log('Logout clicked') },
-  ];
 
+  // Open profile menu
+  const handleProfileMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  // Close profile menu
+  const handleProfileMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+
+  // Logout functionality
+  const handleLogout = async () => {
+    try {
+      await Logout({ userId: user._id });
+      dispatch(logout());
+      toast.success('User logged out successfully.');
+      router.push('/');
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
+  };
   return (
     <Box display="flex" justifyContent="space-between" alignItems="center" p={2}>
       {/* Logo */}
@@ -75,14 +97,20 @@ const FullScreenNav = ({ setDrawerOpen }) => {
         {
           isAuth ? (
 
-
-            <CustomButton
-              title={
-                <div className="flex item-center space-x-2">
-                  <img src={user.avatar} alt="Avatar" className="w-8 h-8 rounded-none" /> <span>{user.fullname}</span></div>
-              }
-              onClick={handleOpenRegister}
-            />) : (
+            <div>
+              {/* Display profile and menu */}
+              <IconButton onClick={handleProfileMenuOpen}>
+                <img src={user.avatar} alt="Avatar" className="w-8 h-8 rounded-none" />
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleProfileMenuClose}
+              >
+                <MenuItem onClick={() => router.push('/user/profile')}>Profile</MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              </Menu>
+            </div>) : (
             <CustomButton
               startIcon={<AccountCircle />}
               title={t("Login")}
