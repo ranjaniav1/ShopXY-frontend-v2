@@ -1,7 +1,6 @@
 "use client";
 import CustomBox from "@/app/Custom/CustomBox";
 import { Avatar, Box, Button, Divider, Grid, Typography } from "@mui/material";
-("use client");
 import React from "react";
 import { useSelector } from "react-redux";
 
