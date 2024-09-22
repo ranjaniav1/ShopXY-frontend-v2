@@ -31,7 +31,7 @@ const CustomButton = ({
         } else if (variant === 'text') {
             return {
                 background: 'transparent',
-                color: theme.palette[color].main,
+                // color: theme.palette[color].main,
                 '&:hover': {
                     background: theme.palette.action.hover,
                 },
