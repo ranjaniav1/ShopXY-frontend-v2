@@ -9,10 +9,10 @@ export async function GetCategories() {
   }
 }
 
-export async function GetSingleCategories({ collection_id }) {
+export async function GetSingleCategories({ id }) {
   try {
-    const response = await httpDataAxios.get(`/Get-category/${collection_id}`);
-    return response.data;
+    const response = await httpDataAxios.get(`/Get-category/${id}`);
+    return response.data.data;
   } catch (error) {
     console.log("error in category", error);
   }
