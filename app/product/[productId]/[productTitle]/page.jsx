@@ -11,14 +11,14 @@ import { useDispatch } from 'react-redux';
 import { setMyCart } from '@/app/redux/reducer/cartReducer';
 
 const Page = () => {
-    const { productTitle } = useParams();
+    const { productId } = useParams();
     const [product, setProduct] = useState(null);
     const [selectedImage, setSelectedImage] = useState('');
     const [loading, setLoading] = useState(true);
     async function fetchProduct() {
         try {
-            const result = await GetSingleProduct({ slug: productTitle });
-            const productData = result.data;
+            const result = await GetSingleProduct({ productId: productId });
+            const productData = result;
             setProduct(productData);
 
             if (productData) {
@@ -47,11 +47,12 @@ const Page = () => {
                 {/* Left side: Image gallery */}
                 <Grid item xs={12} md={4}>
                     <ProductGallery
-                        detailImages={product.detail_image}
-                        selectedImage={selectedImage}
+    detailImages={product?.detail_image || []} // Add a fallback to an empty array to avoid undefined errors
+    selectedImage={selectedImage}
                         onImageClick={handleImageClick}
                         productName={product.name}
                         productId={product._id}
+
                     />
                 </Grid>
 
@@ -73,6 +74,7 @@ const Page = () => {
                         gst_type={product.gst_type}
                         brand={product.brand}
                         product_id={product.product_id}
+
                     />
                 </Grid>
             </Grid>
