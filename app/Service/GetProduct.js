@@ -10,6 +10,15 @@ export async function GetSingleProduct({ productId }) {
   }
 }
 
+export async function GetSpecificProduct({ id }) {
+  try {
+    const response = await httpAxios.get(`/Get-product/specific/${id}`);
+    console.log("single", response.data.data);
+    return response.data.data;
+  } catch (error) {
+    console.log("error in category", error);
+  }
+}
 export async function GetSingleProductBrand({ productId }) {
   try {
     const response = await httpAxios.get(`/Get-product/${productId}`);

@@ -19,7 +19,7 @@ const FilterBasedProduct = ({ products }) => {
                 {products && products.length > 0 ? (
                     products.map((product) => (
                         <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
-                            <Link href={`/product/${encodeURIComponent(product.slug)}`} passHref>
+                            <Link href={`/product/${product.product_id}/${encodeURIComponent(product.slug)}`} passHref>
                                 <ProductCard className="w-full h-40 object-contain"
                                     imgSrc={product.image}
                                     title={product.name}
@@ -34,12 +34,12 @@ const FilterBasedProduct = ({ products }) => {
                     ))
                 ) : (
                     <Grid container spacing={2}>
-                    {Array.from({ length: 6 }).map((_, index) => (
-                        <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                            <CustomSkeleton type="card" width="96px" height="96px" />
-                        </Grid>
-                    ))}
-                </Grid>
+                        {Array.from({ length: 6 }).map((_, index) => (
+                            <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                                <CustomSkeleton type="card" width="96px" height="96px" />
+                            </Grid>
+                        ))}
+                    </Grid>
                 )}
             </Grid>
         </CustomBox>
