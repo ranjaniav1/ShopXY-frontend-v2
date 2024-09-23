@@ -63,9 +63,6 @@ const ProductDetails = ({
                     <CustomTypography variant="body2" sx={{ color: theme.palette.card.text }}>
                         {t('GST Type')}: {gst_type}
                     </CustomTypography>
-                    <CustomTypography variant="body2" sx={{ color: theme.palette.card.text }}>
-                        {t('Brand')}: {brand}
-                    </CustomTypography>
                 </Card>
             </Grid>
             {/* card 4 brand rating review */}

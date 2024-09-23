@@ -17,7 +17,7 @@ const Category = () => {
         try {
             const result = await GetCategories();
             console.log("category", result)
-            setCategories(result.data);
+            setCategories(result);
         } catch (error) {
             console.log("failed to fetch categories", error);
         } finally {

@@ -14,6 +14,7 @@ export async function GetSingleCollection({ collection_id }) {
     const response = await httpDataAxios.get(
       `/Get-collection/${collection_id}`
     );
+    console.log("col", response.data.data);
     return response.data.data;
   } catch (error) {
     console.log("error in category", error);

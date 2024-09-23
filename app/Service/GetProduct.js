@@ -1,10 +1,20 @@
-import { httpAxios, httpDataAxios } from "../httpAxios";
+import { httpAxios } from "../httpAxios";
 
-export async function GetSingleProduct({ slug }) {
+export async function GetSingleProduct({ productId }) {
   try {
-    const response = await httpAxios.get(`/Get-product/${slug}`);
-    console.log("jnjdb", response.data);
-    return response.data;
+    const response = await httpAxios.get(`/Get-product/${productId}`);
+    console.log("jnjdb", response.data.data.product);
+    return response.data.data.product;
+  } catch (error) {
+    console.log("error in category", error);
+  }
+}
+
+export async function GetSingleProductBrand({ productId }) {
+  try {
+    const response = await httpAxios.get(`/Get-product/${productId}`);
+    console.log("jnjdb", response.data.data.brand);
+    return response.data.data.brand;
   } catch (error) {
     console.log("error in category", error);
   }
