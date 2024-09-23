@@ -50,7 +50,7 @@ const Page = () => {
                 <Grid container spacing={2}>
                     {categories.map((category) => (
                         <Grid item xs={6} sm={4} md={3} lg={2} key={category.id}>
-                            <Link href={`/categories/collections/${id}/${encodeURIComponent(category.slug)}`} passHref>
+                            <Link href={`/categories/collections/${category.id}/${encodeURIComponent(category.slug)}`} passHref>
                                 <CustomCollectionCard
                                     tooltip={category.title}
                                     id={category.id}

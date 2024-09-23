@@ -17,13 +17,14 @@ import {
   useTheme
 } from "@mui/material";
 import { useParams } from "next/navigation";
-import { GetAllProducts } from "@/app/Service/GetProduct";
+import { GetAllProducts, GetSpecificProduct } from "@/app/Service/GetProduct";
 import FilterBasedProduct from "@/app/Components/FilterBasedProduct";
 
 const Layout = ({ children }) => {
   const { collectionTitle } = useParams();
   const [allProducts, setAllProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const { collectionId } = useParams();
   const [selectedBrands, setSelectedBrands] = useState([]);
   const [brands, setBrands] = useState([]);
   const [priceRange, setPriceRange] = useState([0, 10000]);
@@ -32,9 +33,9 @@ const Layout = ({ children }) => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await GetAllProducts();
-        setAllProducts(response.data);
-        setFilteredProducts(response.data);
+        const response = await GetSpecificProduct({ id: collectionId });
+        setAllProducts(response);
+        setFilteredProducts(response);
 
         // Extract brands from the products data
         const productBrands = [
