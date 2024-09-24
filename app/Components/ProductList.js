@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Grid, useTheme, Typography } from "@mui/material";
+import { Grid, Typography, useTheme } from "@mui/material";
 import ProductCard from "./ProductCard";
 import Link from "next/link";
 import CustomSkeleton from "../Custom/CustomSkeleton";
@@ -9,21 +9,32 @@ import CustomSkeleton from "../Custom/CustomSkeleton";
 const ProductList = ({ products, loading }) => {
   const theme = useTheme(); // Use theme inside the component
 
+  // Debugging: Log the loading state and products
+  console.log("Loading:", loading);
+  console.log("Products:", products);
+
   return (
     <Grid container spacing={2}>
       {loading ? (
         <CustomSkeleton type="card" />
-      ) : products.length ? (
-        products.map((product) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
+      ) : products && products.length > 0 ? ( // Ensure products is an array and has items
+        products.map((product, index) => (
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            lg={3}
+            key={product.id}
+            data-aos="fade-up"
+            data-aos-delay={index * 100}
+          >
             <Link
-              href={`/product/${product.product_id}/${encodeURIComponent(
-                product.slug
-              )}`}
+              href={`/product/${product.product_id}/${encodeURIComponent(product.slug)}`}
               passHref
             >
               <ProductCard
-                className="w-full h-48 object-contain"
+                className="w-full h-48 object-contain "
                 imgSrc={product.image}
                 title={product.name}
                 price={product.actual_price}

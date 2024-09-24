@@ -16,7 +16,7 @@ const ProductDetails = ({
     colors = [], // Default to an empty array if undefined
     sizes = ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'], // Default to an empty array if undefined
     full_description, special_offer, gst_type,
-    brand, productId, product_id
+    productId, brand
 }) => {
     const theme = useTheme();
     const { t } = useTranslation()
@@ -67,7 +67,8 @@ const ProductDetails = ({
             </Grid>
             {/* card 4 brand rating review */}
             <Grid item xs={12}>
-                <BrandRating BrandId={product_id} sx={{ p: 2 }} />            </Grid>
+                <BrandRating brand={brand} sx={{ p: 2 }} />
+            </Grid>
             {/* Card 5: Ratings and Reviews */}
             <Grid item xs={12}>
                 <Card theme={theme} sx={{ p: 2 }}>

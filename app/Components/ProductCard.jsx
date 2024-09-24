@@ -31,7 +31,7 @@ const ProductCard = ({ imgSrc, title, price, discountPrice, rating, description,
 
     return (
         <div
-            className="relative border border-gray-200 rounded-lg overflow-hidden shadow-md p-2"
+            className="relative border border-gray-200 rounded-lg overflow-hidden shadow-md p-2 cursor-pointer"
             onClick={onClick}
             style={{
                 background: theme.palette.card.background,
