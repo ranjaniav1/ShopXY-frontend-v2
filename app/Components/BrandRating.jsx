@@ -1,38 +1,17 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { GetSingleProductBrand } from '../Service/GetProduct';
+
 import { Box, Card, Typography, useTheme } from '@mui/material';
 import StorefrontIcon from '@mui/icons-material/Storefront';
-import { useTranslation } from 'react-i18next';
 import CustomDrawer from '../Custom/CustomDrawer';
 import BrandReviewDrawer from './BrandReviewDrawer';
 
-const BrandRating = ({ BrandId }) => {
-    const [brand, setBrand] = useState({});
-    const { t } = useTranslation();
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+const BrandRating = ({ brand }) => {
+
+
     const theme = useTheme();
     const [open, setOpen] = useState(false);
 
-    async function getBrands() {
-        try {
-            const response = await GetSingleProductBrand({ productId: BrandId });
-            setBrand(response);
-        } catch (err) {
-            setError('Failed to fetch brand reviews');
-            console.error(err);
-        } finally {
-            setLoading(false);
-        }
-    }
-
-    useEffect(() => {
-        getBrands();
-    }, [BrandId]);
-
-    if (loading) return <Typography variant="body1">Loading...</Typography>;
-    if (error) return <Typography variant="body1">{error}</Typography>;
 
     const rating = brand.rating || 0;
     const reviewCount = brand.reviewCount || 0;

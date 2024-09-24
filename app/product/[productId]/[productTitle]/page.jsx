@@ -13,13 +13,16 @@ import { setMyCart } from '@/app/redux/reducer/cartReducer';
 const Page = () => {
     const { productId } = useParams();
     const [product, setProduct] = useState(null);
+    const [brand, setBrand] = useState(null);
     const [selectedImage, setSelectedImage] = useState('');
     const [loading, setLoading] = useState(true);
     async function fetchProduct() {
         try {
-            const result = await GetSingleProduct({ productId: productId });
-            const productData = result;
+            const result = await GetSingleProduct({ id: productId });
+            const productData = result.product;
+
             setProduct(productData);
+            setBrand(result.brand);
 
             if (productData) {
                 setSelectedImage(productData.image); // Set the default selected image to the main image
@@ -47,8 +50,8 @@ const Page = () => {
                 {/* Left side: Image gallery */}
                 <Grid item xs={12} md={4}>
                     <ProductGallery
-    detailImages={product?.detail_image || []} // Add a fallback to an empty array to avoid undefined errors
-    selectedImage={selectedImage}
+                        detailImages={product?.detail_image || []} // Add a fallback to an empty array to avoid undefined errors
+                        selectedImage={selectedImage}
                         onImageClick={handleImageClick}
                         productName={product.name}
                         productId={product._id}
@@ -72,8 +75,9 @@ const Page = () => {
                         size={product.size}
                         tags={product.tags}
                         gst_type={product.gst_type}
-                        brand={product.brand}
+                        brand={brand}
                         product_id={product.product_id}
+                        product={product}
 
                     />
                 </Grid>

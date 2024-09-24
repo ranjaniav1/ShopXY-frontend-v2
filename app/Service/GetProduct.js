@@ -12,16 +12,16 @@ export async function GetAllProducts() {
 }
 
 // collection based product
-export async function GetSingleProduct({ productId }) {
+export async function GetSingleProduct({ id }) {
   try {
-    const response = await httpAxios.get(`/Get-product/${productId}`);
-    console.log("jnjdb", response.data.data.product);
-    return response.data.data.product;
+    const response = await httpAxios.get(`/Get-product/${id}`);
+    console.log("jnjdb", response.data.data);
+    return response.data.data;
   } catch (error) {
     console.log("error in category", error);
   }
 }
-// single product
+// based on collection id 
 export async function GetSpecificProduct({ id }) {
   try {
     const response = await httpAxios.get(`/Get-product/specific/${id}`);
@@ -32,13 +32,4 @@ export async function GetSpecificProduct({ id }) {
   }
 }
 
-// collection based but for brand get last so
-export async function GetSingleProductBrand({ productId }) {
-  try {
-    const response = await httpAxios.get(`/Get-product/${productId}`);
-    console.log("jnjdb", response.data.data.brand);
-    return response.data.data.brand;
-  } catch (error) {
-    console.log("error in category", error);
-  }
-}
+
