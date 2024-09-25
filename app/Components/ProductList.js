@@ -30,7 +30,7 @@ const ProductList = ({ products, loading }) => {
             data-aos-delay={index * 100}
           >
             <Link
-              href={`/product/${product.product_id}/${encodeURIComponent(product.slug)}`}
+              href={`/product/${product._id}/${encodeURIComponent(product.slug)}`}
               passHref
             >
               <ProductCard

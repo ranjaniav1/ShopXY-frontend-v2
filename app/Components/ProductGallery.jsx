@@ -9,12 +9,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addtoCart } from '../Service/Cart';
 import { setMyCart } from '../redux/reducer/cartReducer';
 import toast from 'react-hot-toast';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 const ProductGallery = ({ detailImages, selectedImage, onImageClick, productName, productId }) => {
     const userId = useSelector((state) => state?.auth?.user?.data?.user._id)
     const dispatch = useDispatch()
+    const router = useRouter()
     const { productTitle } = useParams()
 
     const cartData = useSelector((state) => state.cart.cart?.data?.products) || [];
@@ -38,6 +39,30 @@ const ProductGallery = ({ detailImages, selectedImage, onImageClick, productName
             console.log("res", response)
             dispatch(setMyCart(response));
             toast.success(`${productTitle} added to cart Successfully!`);
+        } catch (error) {
+            toast.error(`Failed to add product to cart: ${error.message}`);
+        }
+    };
+    const handleBuyNow = async () => {
+        try {
+            const quantity = 1;//default qty is 1
+
+            const isProductInCart = cartData.some(item => item.product._id === productId);
+            if (isProductInCart) {
+                toast.error(`Product ${productTitle} is already in your cart.`);
+                return;
+            }
+
+            if (!userId) {
+                toast.error('please login first');
+                return;
+            }
+
+            const response = await addtoCart(userId, productId, quantity);
+            console.log("res", response)
+            dispatch(setMyCart(response));
+            toast.success(`${productTitle} added to cart Successfully!`);
+            router.push("/scheckout/carts")
         } catch (error) {
             toast.error(`Failed to add product to cart: ${error.message}`);
         }
@@ -85,14 +110,13 @@ const ProductGallery = ({ detailImages, selectedImage, onImageClick, productName
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <Link href="/scheckout/carts">
-                        <CustomButton
-                            startIcon={<DoubleArrowIcon />}
-                            variant="contained"
-                            title="Buy Now"
-                            className="w-full"
-                        />
-                    </Link>
+                    <CustomButton
+                        startIcon={<DoubleArrowIcon />}
+                        variant="contained"
+                        title="Buy Now"
+                        className="w-full" onClick={handleBuyNow}
+                    />
+
                 </Grid>
             </Grid>
         </Grid>
