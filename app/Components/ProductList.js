@@ -9,9 +9,6 @@ import CustomSkeleton from "../Custom/CustomSkeleton";
 const ProductList = ({ products, loading }) => {
   const theme = useTheme(); // Use theme inside the component
 
-  // Debugging: Log the loading state and products
-  console.log("Loading:", loading);
-  console.log("Products:", products);
 
   return (
     <Grid container spacing={2}>

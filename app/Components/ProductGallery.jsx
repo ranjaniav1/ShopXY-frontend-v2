@@ -26,7 +26,8 @@ const ProductGallery = ({ detailImages, selectedImage, onImageClick, productName
 
             const isProductInCart = cartData.some(item => item.product._id === productId);
             if (isProductInCart) {
-                toast.error(`Product ${productTitle} is already in your cart.`);
+                
+                toast.error(`item is already in your cart.`);
                 return;
             }
 
@@ -38,7 +39,7 @@ const ProductGallery = ({ detailImages, selectedImage, onImageClick, productName
             const response = await addtoCart(userId, productId, quantity);
             console.log("res", response)
             dispatch(setMyCart(response));
-            toast.success(`${productTitle} added to cart Successfully!`);
+            toast.success(`item added !`);
         } catch (error) {
             toast.error(`Failed to add product to cart: ${error.message}`);
         }
@@ -49,7 +50,7 @@ const ProductGallery = ({ detailImages, selectedImage, onImageClick, productName
 
             const isProductInCart = cartData.some(item => item.product._id === productId);
             if (isProductInCart) {
-                toast.error(`Product ${productTitle} is already in your cart.`);
+                router.push("/scheckout/carts")
                 return;
             }
 
@@ -61,7 +62,7 @@ const ProductGallery = ({ detailImages, selectedImage, onImageClick, productName
             const response = await addtoCart(userId, productId, quantity);
             console.log("res", response)
             dispatch(setMyCart(response));
-            toast.success(`${productTitle} added to cart Successfully!`);
+            toast.success(`item added !`);
             router.push("/scheckout/carts")
         } catch (error) {
             toast.error(`Failed to add product to cart: ${error.message}`);

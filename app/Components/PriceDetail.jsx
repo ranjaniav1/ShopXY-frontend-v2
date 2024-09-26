@@ -7,8 +7,12 @@ import { useTranslation } from 'react-i18next';
 const PriceDetails = ({ numberOfItems, totalProductPrice, totalDiscount, orderTotal }) => {
     const { t } = useTranslation()
     const formatPrice = (price) => {
-        return (price).toFixed(2)
+        return Number(price).toFixed(2)
     }
+    const finalPrice = () => {
+        // Ensure both totalProductPrice and totalDiscount are treated as numbers
+        return Number(totalProductPrice) - Number(totalDiscount);
+    };
     return (
         <Box sx={{ padding: 2 }}>
             <Typography variant="h6" sx={{ marginBottom: 2, fontWeight: 'bold' }}>
@@ -38,7 +42,7 @@ const PriceDetails = ({ numberOfItems, totalProductPrice, totalDiscount, orderTo
                         {t("Order Total")}:
                     </Typography>
                     <Typography >
-                        ₹{formatPrice(orderTotal)}
+                        ₹{formatPrice(finalPrice())}
                     </Typography>
                 </Box>
                 {totalDiscount > 0 && (

@@ -150,14 +150,15 @@ const Layout = ({ children }) => {
                   height: "100%", // Adjust this value as needed
                   width: "100%", // Adjust this value as needed
                   textAlign: "center",
-                  paddingBottom: 2
+                  paddingBottom: 2,
+                  paddingTop: 2,
                 }}
               >
                 <img
                   src="https://cdn1.vectorstock.com/i/1000x1000/43/85/young-man-pushing-a-shopping-empty-cart-vector-13494385.jpg"
                   alt="Your cart is empty"
                   style={{
-                    height: "500px",
+                    height: "400px",
                     maxWidth: "100%",
                     objectFit: "cover"
                   }}
