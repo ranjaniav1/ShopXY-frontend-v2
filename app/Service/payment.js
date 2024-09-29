@@ -2,7 +2,7 @@ import { httpAxios } from "../httpAxios";
 
 export const cashOnDelivery = async (userId, cartId) => {
   try {
-    const response = await httpAxios.post("/payment/place-order-cod", {
+    const response = await httpAxios.post("/user/payment/place-order-cod", {
       userId,
       cartId
     });

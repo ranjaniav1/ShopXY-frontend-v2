@@ -1,5 +1,6 @@
 "use client";
 import CustomBox from "@/app/Custom/CustomBox";
+import { getNotifications } from "@/app/Service/Profile";
 import {
   Avatar,
   Box,
@@ -9,22 +10,43 @@ import {
   Tabs,
   Tab
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 const Layout = ({ children }) => {
+  const userId = useSelector((state) => state.auth?.user?.data?.user._id);
   const user = useSelector((state) => state.auth?.user?.data?.user);
   const [activeTab, setActiveTab] = useState(0); // Track the active tab
+  const [notifications, setNotifications] = useState([]); // Store notifications
 
   // Handle tab change
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
   };
 
+  // Fetch notifications when the "Notifications" tab is selected
+  useEffect(() => {
+    if (activeTab === 0) {
+      notify();
+    }
+  }, [activeTab]);
+
+  const notify = async () => {
+    try {
+      const response = await getNotifications(userId);
+      console.log("res", response);
+      setNotifications(response); // Store the notifications in state
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  useEffect(() => {
+    notify();
+  }, []);
   return (
     <CustomBox>
       <Grid container spacing={4}>
-        {/* left side with profile and tabs in separate sections */}
+        {/* Left side with profile and tabs in separate sections */}
         <Grid item xs={12} md={4}>
           {/* Profile Section */}
           <Box
@@ -86,12 +108,28 @@ const Layout = ({ children }) => {
 
         <Divider orientation="vertical" flexItem />
 
-        {/* right side with dynamic content based on selected tab */}
-        <Grid item xs={12} md={8}>
+        {/* Right side with dynamic content based on selected tab */}
+        <Grid item xs={12} md={6}>
           {activeTab === 0 && (
             <Box p={2}>
               <Typography variant="h5">Notifications</Typography>
-              {/* Notification content can go here */}
+              {/* Display the notifications data */}
+              {notifications ? (
+                notifications.map((notification) => (
+                  <Box key={notification.id} mb={2}>
+                    <Typography variant="body1">
+                      {notification.notify}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      {new Date(notification.timestamp).toLocaleDateString()}
+                    </Typography>
+                  </Box>
+                ))
+              ) : (
+                <Typography variant="body2" color="textSecondary">
+                  No notifications available.
+                </Typography>
+              )}
             </Box>
           )}
           {activeTab === 1 && (
@@ -112,8 +150,8 @@ const Layout = ({ children }) => {
               {/* Add a logout button or functionality here */}
             </Box>
           )}
-
-          {/* Default children content if needed */}
+        </Grid>
+        <Grid xs={12} md={8}>
           {children && activeTab === 0 && <Box p={2}>{children}</Box>}
         </Grid>
       </Grid>
