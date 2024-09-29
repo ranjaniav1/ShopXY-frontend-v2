@@ -1,20 +1,38 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-
 import { Box, Card, Typography, useTheme } from '@mui/material';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import CustomDrawer from '../Custom/CustomDrawer';
 import BrandReviewDrawer from './BrandReviewDrawer';
+import { GetSpecificBrandReview } from '../Service/GetReviews';
 
-const BrandRating = ({ brand }) => {
-
-
+const BrandRating = ({ brand, brandId }) => {
+    const [reviews, setReviews] = useState([]);
+    const [analytics, setAnalytics] = useState({});
     const theme = useTheme();
     const [open, setOpen] = useState(false);
 
+    const fetchReviews = async () => {
+        try {
+            const data = await GetSpecificBrandReview({ id: brandId });
+            console.log("Fetched data:", data);
 
-    const rating = brand.rating || 0;
-    const reviewCount = brand.reviewCount || 0;
+            if (data && data.success) {
+                setReviews(data.data.reviews);
+                setAnalytics(data.data.analytics.analytics); // Access the nested analytics object
+            }
+        } catch (error) {
+            console.error("Error fetching reviews:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchReviews();
+    }, [brandId]);
+
+    // Extract rating and review count safely
+    const averageRating = analytics.averageRating || 0;
+    const reviewCount = analytics.totalReviews || 0;
 
     return (
         <>
@@ -38,7 +56,7 @@ const BrandRating = ({ brand }) => {
                 </Box>
                 <Box sx={{ flexGrow: 1, textAlign: 'center' }}>
                     <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#ff9800' }}>
-                        {rating} ⭐
+                        {averageRating.toFixed(1)} ⭐
                     </Typography>
                 </Box>
                 <Box sx={{ textAlign: 'right' }}>
@@ -48,7 +66,7 @@ const BrandRating = ({ brand }) => {
                 </Box>
             </Card>
             <CustomDrawer open={open} onClose={() => setOpen(false)} title={brand.title}>
-                <BrandReviewDrawer brand={brand} />
+            <BrandReviewDrawer brand={brand} reviews={reviews} analytics={analytics} />
             </CustomDrawer>
         </>
     );

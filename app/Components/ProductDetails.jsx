@@ -67,7 +67,7 @@ const ProductDetails = ({
             </Grid>
             {/* card 4 brand rating review */}
             <Grid item xs={12}>
-                <BrandRating brand={brand} sx={{ p: 2 }} />
+                <BrandRating brand={brand} brandId={productId} sx={{ p: 2 }} />
             </Grid>
             {/* Card 5: Ratings and Reviews */}
             <Grid item xs={12}>

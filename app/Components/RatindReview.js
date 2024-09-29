@@ -1,4 +1,3 @@
-// ReviewComponents.js
 import React, { useEffect, useState } from "react";
 import { Box, Divider } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
@@ -14,7 +13,7 @@ const ReviewComponents = ({ productId }) => {
     const fetchReviews = async () => {
       try {
         const { data } = await GetSpecificProductReview({ id: productId });
-        if (data) {
+        if (data && Array.isArray(data.reviews)) {  // Ensure reviews is an array
           setReviews(data.reviews);
         }
       } catch (error) {
@@ -45,9 +44,7 @@ const ReviewComponents = ({ productId }) => {
       ))}
       <Divider />
       {/* Display Review Items */}
-      {reviews.map((review) => (
-        <ReviewItem key={review._id} review={review} theme={theme} />
-      ))}
+      <ReviewItem reviews={reviews} theme={theme} />  {/* Pass reviews array here */}
     </Box>
   );
 };

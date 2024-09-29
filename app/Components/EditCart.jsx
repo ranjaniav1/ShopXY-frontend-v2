@@ -72,7 +72,7 @@ const EditCart = ({ onClose, selectedProduct }) => {
     if (loading) return <CircularProgress />;
 
     // Calculate total price using local quantity state
-    const totalPrice = (selectedProduct?.product?.actual_price || 0) * localQuantity;
+    const totalPrice = (selectedProduct?.product?.discounted_price || 0) * localQuantity;
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', padding: 2 }}>

@@ -19,7 +19,7 @@ const userSlice = createSlice({
     },
 
     // Action to log out user
-    logout: (state) => {
+    RemoveUser: (state) => {
       state.user = null; // Clear the user data
       state.isAuthenticated = false; // Set user as unauthenticated
     }
@@ -27,7 +27,7 @@ const userSlice = createSlice({
 });
 
 // Export actions to use them in components or middleware
-export const { setUser, logout } = userSlice.actions;
+export const { setUser, RemoveUser } = userSlice.actions;
 
 // Export the reducer to be included in the store
 export default userSlice.reducer;
