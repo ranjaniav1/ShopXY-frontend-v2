@@ -1,6 +1,8 @@
 "use client";
-import CustomBox from "@/app/Custom/CustomBox";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { getNotifications } from "@/app/Service/Profile";
+import { DeleteAccount, Logout as performLogout } from "@/app/Service/User";
 import {
   Avatar,
   Box,
@@ -10,18 +12,33 @@ import {
   Tabs,
   Tab
 } from "@mui/material";
-import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import CustomBox from "@/app/Custom/CustomBox";
+import { toast } from "react-hot-toast";
+import DialogBox from "@/app/Custom/CustomDialog";
+import { logout } from "@/app/redux/reducer/user/loginReducer";
+import { Logout } from "@/app/Service/User";
+import { RemoveUser } from "../../redux/reducer/user/loginReducer";
+import { useRouter } from "next/navigation";
 
 const Layout = ({ children }) => {
+  const dispatch = useDispatch();
   const userId = useSelector((state) => state.auth?.user?.data?.user._id);
   const user = useSelector((state) => state.auth?.user?.data?.user);
   const [activeTab, setActiveTab] = useState(0); // Track the active tab
   const [notifications, setNotifications] = useState([]); // Store notifications
+  const [openDialog, setOpenDialog] = useState(false); // Control dialog visibility
+  const router = useRouter();
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false); // Control delete dialog visibility
 
   // Handle tab change
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
+    // Open dialog if "Logout" tab is selected
+    if (newValue === 3) {
+      setOpenDialog(true);
+    } else if (newValue === 2) {
+      setOpenDeleteDialog(true); // Delete account dialog
+    }
   };
 
   // Fetch notifications when the "Notifications" tab is selected
@@ -34,15 +51,37 @@ const Layout = ({ children }) => {
   const notify = async () => {
     try {
       const response = await getNotifications(userId);
-      console.log("res", response);
       setNotifications(response); // Store the notifications in state
     } catch (e) {
       console.log(e);
     }
   };
-  useEffect(() => {
-    notify();
-  }, []);
+
+  // Handle logout confirmation
+  const handleLogoutConfirm = async () => {
+    try {
+      await Logout({ userId: userId });
+      dispatch(RemoveUser());
+      toast.success("User logged out successfully.");
+      // Redirect to home or login page
+      router.push("/");
+    } catch (error) {
+      console.error("Error during logout:", error);
+    } finally {
+      setOpenDialog(false); // Close dialog after logout
+    }
+  };
+  const handleDeleteAccount = async () => {
+    console.log("User ID to delete:", userId); // Log the userId
+    try {
+      await DeleteAccount(userId);
+      toast.success("Account deleted successfully.");
+      // Handle post-deletion actions like redirecting or updating state
+    } catch (error) {
+      toast.error("Failed to delete account: " + error.message);
+    }
+  };
+
   return (
     <CustomBox>
       <Grid container spacing={4}>
@@ -114,7 +153,7 @@ const Layout = ({ children }) => {
             <Box p={2}>
               <Typography variant="h5">Notifications</Typography>
               {/* Display the notifications data */}
-              {notifications ? (
+              {notifications.length > 0 ? (
                 notifications.map((notification) => (
                   <Box key={notification.id} mb={2}>
                     <Typography variant="body1">
@@ -144,17 +183,25 @@ const Layout = ({ children }) => {
               {/* Delete Account content can go here */}
             </Box>
           )}
-          {activeTab === 3 && (
-            <Box p={2}>
-              <Typography variant="h5">Logout</Typography>
-              {/* Add a logout button or functionality here */}
-            </Box>
-          )}
-        </Grid>
-        <Grid xs={12} md={8}>
-          {children && activeTab === 0 && <Box p={2}>{children}</Box>}
+          {/* Remove the logout content; it will be handled in the dialog */}
         </Grid>
       </Grid>
+
+      {/* Confirmation Dialog for Logout */}
+      <DialogBox
+        open={openDialog}
+        title="Logout Confirmation"
+        description="Are you sure you want to logout?"
+        onConfirm={handleLogoutConfirm}
+        onCancel={() => setOpenDialog(false)}
+      />
+      <DialogBox
+        open={openDeleteDialog}
+        title="Delete Account Confirmation"
+        description="Are you sure you want to delete your account? This action cannot be undone."
+        onConfirm={handleDeleteAccount}
+        onCancel={() => setOpenDeleteDialog(false)}
+      />
     </CustomBox>
   );
 };

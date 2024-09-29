@@ -14,8 +14,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Logout } from '@/app/Service/User';
-import { logout } from '@/app/redux/reducer/user/loginReducer';
 import toast from 'react-hot-toast';
+import { RemoveUser } from '@/app/redux/reducer/user/loginReducer';
 
 const FullScreenNav = ({ setDrawerOpen }) => {
   const { t } = useTranslation();
@@ -64,7 +64,7 @@ const FullScreenNav = ({ setDrawerOpen }) => {
   const handleLogout = async () => {
     try {
       await Logout({ userId: user._id });
-      dispatch(logout());
+      dispatch(RemoveUser());
       toast.success('User logged out successfully.');
       router.push('/');
     } catch (error) {

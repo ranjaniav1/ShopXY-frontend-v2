@@ -55,16 +55,11 @@ export async function Logout({ userId }) {
 export async function DeleteAccount(userId) {
   try {
     const response = await httpAxios.delete("/user/auth/delete-account", {
-      data: { userId } // send the userId in the body
+      data: { userId } // Correctly send the userId in the request body
     });
 
-    if (response.status === 200) {
-      console.log("Account deleted successfully:", response.data);
-      return response.data;
-    } else {
-      console.error("Account deletion failed:", response.data);
-      throw new Error("Account deletion failed");
-    }
+    console.log("Account deleted successfully:", response.data);
+    return response.data;
   } catch (error) {
     console.error("Error during account deletion:", error);
     throw error;
