@@ -1,17 +1,46 @@
+'use client';
+
 import { useTheme } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import { addWishlist, deleteWishlistItem } from '../Service/Profile';
+import toast from 'react-hot-toast';
+import Link from 'next/link';
 
-const ProductCard = ({ imgSrc, title, price, discountPrice, rating, description, offer, className, onClick }) => {
+const ProductCard = ({ imgSrc, title, price, discountPrice, rating, description, offer, className, userId, productId, slug }) => {
     const theme = useTheme();
+    const [isWished, setIsWished] = useState(false);
 
-    // Function to truncate the description to 8 words
-    const truncateDescription = (description, wordCount) => {
-        if (!description) return '';
+    // Check if the product is already in the wishlist when the component mounts
+    useEffect(() => {
+        const savedWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+        setIsWished(savedWishlist.includes(productId));
+    }, [productId]);
 
-        const words = description.split(' ');
-        if (words.length <= wordCount) return description;
+    const handleAddToWishlist = async (e) => {
+        e.stopPropagation(); // Prevent navigation to product page
 
-        return words.slice(0, wordCount).join(' ') + '...';
+        const savedWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+
+        try {
+            if (!isWished) {
+                // Adding to wishlist
+                await addWishlist(userId, productId);
+                localStorage.setItem('wishlist', JSON.stringify([...savedWishlist, productId]));
+                setIsWished(true);
+                toast.success('Product added to wishlist!');
+            } else {
+                // Removing from wishlist
+                await deleteWishlistItem(userId, productId);
+                const updatedWishlist = savedWishlist.filter(id => id !== productId);
+                localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
+                setIsWished(false);
+                toast.success('Product removed from wishlist!');
+            }
+        } catch (error) {
+            console.error('Failed to update wishlist:', error);
+            toast.error('Failed to update wishlist');
+        }
     };
 
     // Function to render stars based on rating
@@ -31,50 +60,48 @@ const ProductCard = ({ imgSrc, title, price, discountPrice, rating, description,
 
     return (
         <div
-            className="relative border border-gray-200 rounded-lg overflow-hidden shadow-md p-2 cursor-pointer"
-            onClick={onClick}
+            className="relative border border-gray-200 rounded-lg overflow-hidden shadow-md p-2"
             style={{
                 background: theme.palette.card.background,
             }}
         >
-            {/* Ribbon-style offer display in the top right corner */}
+            {/* Ribbon-style offer display */}
             {offer && (
-                <div className="">
-                    <div className="ribbon ribbon-top-right">
-                        <span>
-                            {offer}% OFF
-                        </span>
-                    </div>
+                <div className="ribbon ribbon-top-right">
+                    <span>{offer}% OFF</span>
                 </div>
             )}
 
-            <img
-                src={imgSrc}
-                alt={title}
-                className={className}
-            />
-            <div>
-                <h3 className="text-sm font-bold truncate">{title}</h3>
-                <div className="mb-2">
-                    {discountPrice ? (
-                        <>
-                            <div className="flex justify-between items-baseline">
-                                <p className="text-red-500 font-bold text-sm line-through">₹{price}</p>
-                                <p className="text-green-500 font-bold text-sm">₹{discountPrice}</p>
-                            </div>
-                        </>
-                    ) : (
-                        <p className="text-green-500 font-bold text-lg">{price}</p>
-                    )}
-                </div>
-                {rating && (
-                    <div className="flex items-center mb-2">
-                        {renderStars(rating)}
-                        <span className="text-gray-500 ml-1">({rating.toFixed(1)})</span>
+            <Link href={`/product/${productId}/${encodeURIComponent(slug)}`} passHref>
+                <img
+                    src={imgSrc}
+                    alt={title}
+                    className={className}
+                    style={{ cursor: 'pointer' }}
+                /></Link>
+            <h3 className="text-sm font-bold truncate">{title}</h3>
+            <div className="mb-2">
+                {discountPrice ? (
+                    <div className="flex justify-between items-baseline">
+                        <p className="text-red-500 font-bold text-sm line-through">₹{price}</p>
+                        <p className="text-green-500 font-bold text-sm">₹{discountPrice}</p>
                     </div>
+                ) : (
+                    <p className="text-green-500 font-bold text-lg">{price}</p>
                 )}
-                {description && <p className="text-gray-500 text-sm">{truncateDescription(description, 4)}</p>}
             </div>
+            {rating && (
+                <div className="flex items-center mb-2">
+                    {renderStars(rating)}
+                    <ThumbUpIcon
+                        color={isWished ? 'success' : 'action'}
+                        onClick={handleAddToWishlist} // Use the defined function
+                        sx={{ cursor: 'pointer', marginLeft: '8px' }}
+                    />
+                    <span className="text-gray-500 ml-1">({rating.toFixed(1)})</span>
+                </div>
+            )}
+            {description && <p className="text-gray-500 text-sm">{description}</p>}
         </div>
     );
 };

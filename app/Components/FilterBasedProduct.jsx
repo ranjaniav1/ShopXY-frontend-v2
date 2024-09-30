@@ -3,33 +3,35 @@
 import React from 'react';
 import { Typography, Grid, Box } from '@mui/material';
 import ProductCard from './ProductCard';
-import Link from 'next/link';
 import CustomBox from '../Custom/CustomBox';
 import CustomSkeleton from '../Custom/CustomSkeleton';
+import { useSelector } from 'react-redux';
 
 const FilterBasedProduct = ({ products }) => {
     const truncateText = (text, maxLength) => {
         if (!text) return '';
         return text.length <= maxLength ? text : `${text.slice(0, maxLength)}...`;
     };
-
+    const userId = useSelector((state) => state.auth.user.data.user._id)
     return (
         <CustomBox>
             <Grid container spacing={3}>
                 {products && products.length > 0 ? (
                     products.map((product) => (
                         <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
-                            <Link href={`/product/${product._id}/${encodeURIComponent(product.slug)}`} passHref>
-                                <ProductCard className="w-full h-40 object-contain"
-                                    imgSrc={product.image}
-                                    title={product.name}
-                                    price={product.actual_price}
-                                    discountPrice={product.discounted_price}
-                                    rating={product.ratings}
-                                    description={truncateText(product.description, 50)}
-                                    offer={product.offer}
-                                />
-                            </Link>
+
+                            <ProductCard className="w-full h-40 object-contain"
+                                imgSrc={product.image}
+                                title={product.name}
+                                price={product.actual_price}
+                                discountPrice={product.discounted_price}
+                                rating={product.ratings}
+                                description={truncateText(product.description, 50)}
+                                offer={product.offer}
+                                userId={userId}
+                                productId={product._id}
+                                slug={product.slug}
+                            />
                         </Grid>
                     ))
                 ) : (
