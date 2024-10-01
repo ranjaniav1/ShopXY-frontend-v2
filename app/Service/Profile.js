@@ -28,13 +28,15 @@ export const getWishlist = async (userId) => {
 };
 
 // Function to delete an item from the wishlist
-export const deleteWishlistItem = async (userId, productId) => {
+export const deleteWishlistItem = async ({userId, productId}) => {
   try {
     const response = await httpAxios.delete(`/user/profile/delete-wishlist`, {
-      userId,
-      productId
+      data: {
+        userId,
+        productId
+      }
     });
-    return response.data;
+    return response.data.data;
   } catch (error) {
     console.error("Error deleting wishlist item:", error);
     throw error;
