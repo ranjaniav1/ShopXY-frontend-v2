@@ -48,13 +48,11 @@ const SaleAndDiscount = () => {
         ) : collection?.length > 0 ? (
           <Grid container spacing={2}>
             {collection.slice(0, 6).map((category, index) => (
-              <div key={index}>
-                <DiscountCard
+                <DiscountCard key={index}
                   image={category.banner_image}
                   title={category.title}
                   alt={category.title}
                 />
-              </div>
             ))}
           </Grid>
         ) : (
