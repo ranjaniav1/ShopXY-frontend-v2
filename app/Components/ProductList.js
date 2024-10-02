@@ -7,8 +7,13 @@ import CustomSkeleton from "../Custom/CustomSkeleton";
 import { useSelector } from "react-redux";
 
 const ProductList = ({ products, loading }) => {
-  const userId = useSelector((state) => state.auth.user.data.user._id) ;
-
+  const { isAuthenticated, userId } = useSelector((state) => {
+    const isAuth = state.auth.isAuthenticated;
+    return {
+      isAuthenticated: isAuth,
+      userId: isAuth ? state.auth.user?.data?.user?._id : null,
+    };
+  });
   return (
     <Grid container spacing={2}>
       {loading ? (
