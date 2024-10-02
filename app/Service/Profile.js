@@ -28,7 +28,7 @@ export const getWishlist = async (userId) => {
 };
 
 // Function to delete an item from the wishlist
-export const deleteWishlistItem = async ({userId, productId}) => {
+export const deleteWishlistItem = async ({ userId, productId }) => {
   try {
     const response = await httpAxios.delete(`/user/profile/delete-wishlist`, {
       data: {
@@ -52,6 +52,20 @@ export const getNotifications = async (userId) => {
     return response.data.data.messages;
   } catch (error) {
     console.error("Error fetching notifications:", error);
+    throw error;
+  }
+};
+
+// get order
+export const getOrder = async (userId) => {
+  try {
+    const response = await httpAxios.get(`/user/payment/get-order`, {
+      userId,
+      orderId
+    });
+    return response.data.data;
+  } catch (error) {
+    console.error("Error fetching wishlist:", error);
     throw error;
   }
 };

@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   deleteWishlistItem,
   getNotifications,
+  getOrder,
   getWishlist
 } from "@/app/Service/Profile"; // Import the necessary services
 import { DeleteAccount, Logout as performLogout } from "@/app/Service/User";
@@ -43,15 +44,16 @@ const Layout = ({ children }) => {
   const [activeTab, setActiveTab] = useState(0); // Track the active tab
   const [notifications, setNotifications] = useState([]);
   const [wishlist, setWishlist] = useState([]);
+  const [order, setOrder] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const router = useRouter();
   const [openDeleteAccountDialog, setOpenDeleteAccountDialog] = useState(false);
 
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
-    if (newValue === 2) {
+    if (newValue === 3) {
       setOpenDialog(true);
-    } else if (newValue === 3) {
+    } else if (newValue === 4) {
       setOpenDeleteAccountDialog(true); // Delete account dialog
     } else if (newValue === 1) {
       fetchWishlist(); // Fetch wishlist when the tab is activated
@@ -84,7 +86,15 @@ const Layout = ({ children }) => {
       console.error("Error fetching wishlist:", error);
     }
   };
-
+  // fetch order otems
+  const fetchOrder = async () => {
+    try {
+      const response = await getOrder(userId);
+      setOrder(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   // Handle logout confirmation
   const handleLogoutConfirm = async () => {
     try {
@@ -110,8 +120,6 @@ const Layout = ({ children }) => {
   };
 
   const handleRemoveFromWishlist = async (productId) => {
-    console.log("User ID:", userId); // Log userId
-    console.log("Product ID:", productId); // Log productId
     try {
       await deleteWishlistItem({ userId, productId });
       setWishlist(wishlist.filter((item) => item.product._id !== productId)); // Update the local state
@@ -133,30 +141,46 @@ const Layout = ({ children }) => {
         {/* Right side with dynamic content based on selected tab */}
         <Grid item xs={12} md={8}>
           {activeTab === 0 && (
-            <Box p={2} className="bg-gray-100 rounded-md shadow-lg  mx-auto">
+            <Box p={2} className="bg-gray-100 rounded-md shadow-md mx-auto">
+              {/* Optional Title */}
               {/* <Typography variant="h5" className="text-blue-600 mb-4">
                 Notifications
-              </Typography> */}
+            </Typography> */}
               {notifications.length > 0 ? (
                 notifications.map((notification) => (
                   <Paper
                     key={notification.id}
                     sx={{
-                      p: 3,
-                      mb: 3,
+                      p: 2,
+                      mb: 2,
+                      display: "flex", // Use flexbox for layout
+                      justifyContent: "space-between", // Space between message and timestamp
+                      alignItems: "center", // Center vertically
                       backgroundColor: "#fff",
                       borderLeft: "4px solid #00796b",
-                      boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.05)"
+                      boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.1)"
                     }}
                   >
                     <Typography
                       variant="body1"
                       className="font-semibold text-gray-700"
+                      sx={{ flexGrow: 1 }} // Allow the message to take available space
                     >
                       {notification.notify}
                     </Typography>
-                    <Typography variant="body2" className="text-gray-500 mt-1">
-                      {new Date(notification.timestamp).toLocaleDateString()}
+                    <Typography
+                      variant="body2"
+                      className="text-gray-500 ml-2"
+                      sx={{ minWidth: "120px", textAlign: "right" }} // Fixed width for alignment
+                    >
+                      {new Date(notification.timestamp).toLocaleString([], {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: true
+                      })}
                     </Typography>
                   </Paper>
                 ))
@@ -173,14 +197,18 @@ const Layout = ({ children }) => {
           )}
 
           {activeTab === 1 && (
-            <Box p={2} className="bg-gray-100 rounded-md shadow-lg mx-auto">
+            <Box p={2} className="bg-gray-100 rounded-md shadow-md mx-auto">
               {wishlist.length > 0 ? (
                 wishlist.map((item) => (
-                  <WishlistItem
-                    key={item.product._id}
-                    item={item}
-                    handleRemove={handleRemoveFromWishlist}
-                  />
+                  <>
+                    <Grid item xs={12} md={3}>
+                      <WishlistItem
+                        key={item.product._id}
+                        item={item}
+                        handleRemove={handleRemoveFromWishlist}
+                      />
+                    </Grid>
+                  </>
                 ))
               ) : (
                 <Typography variant="h6" color="textSecondary" align="center">
@@ -188,6 +216,12 @@ const Layout = ({ children }) => {
                 </Typography>
               )}
             </Box>
+          )}
+          {activeTab === 2 && (
+            <Box
+              p={2}
+              className="bg-gray-100 rounded-md shadow-md mx-auto"
+            ></Box>
           )}
         </Grid>
       </Grid>
