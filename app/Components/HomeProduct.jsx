@@ -8,8 +8,7 @@ ProductList from './ProductList';
 import Heading from '../Common/Heading';
 import { GetAllProducts } from '../Service/GetProduct';
 import { useTranslation } from 'react-i18next';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+
 
 const HomeProduct = () => {
     const [products, setProducts] = useState([]);
@@ -32,7 +31,6 @@ const HomeProduct = () => {
 
     useEffect(() => {
         fetchProducts();
-        AOS.init({ duration: 1000 });
     }, []);
 
     useEffect(() => {
@@ -66,7 +64,7 @@ const HomeProduct = () => {
                         }}
                     />
                 </Grid>
-                <Grid item xs={12} md={9} sx={{ mt: 3.5 }} data-aos="fade-up">
+                <Grid item xs={12} md={9} sx={{ mt: 3.5 }} >
                     {loading ? (
                         <Typography variant="h6" align="center">{t("Loading...")}</Typography>
                     ) : filteredProducts.length === 0 ? (

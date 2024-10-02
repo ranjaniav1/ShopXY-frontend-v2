@@ -19,6 +19,7 @@ const TabSection = ({ activeTab, handleTabChange }) => {
       >
         <Tab label="Notifications" />
         <Tab label="Wishlist" />
+        <Tab label="Orders" />
         <Tab label="Logout" />
         <Tab label="Delete Account" />
       </Tabs>
