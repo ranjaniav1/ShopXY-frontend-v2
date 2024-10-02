@@ -1,11 +1,11 @@
 import { Box, Grid, Typography, useTheme } from '@mui/material';
 import React from 'react';
 
-const DiscountCard = ({ image, alt, title }) => {
+const DiscountCard = ({ image, alt, title ,key}) => {
     const theme = useTheme();
 
     return (
-        <Grid item xs={6} sm={4} md={3} lg={2} >
+        <Grid item xs={6} sm={4} md={3} lg={2} key={key}>
             <Box
                 sx={{
                     position: 'relative',
