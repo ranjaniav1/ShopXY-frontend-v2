@@ -7,11 +7,10 @@ import CustomSkeleton from "../Custom/CustomSkeleton";
 import { useSelector } from "react-redux";
 
 const ProductList = ({ products, loading }) => {
-  const { isAuthenticated, userId } = useSelector((state) => {
+  const { userId } = useSelector((state) => {
     const isAuth = state.auth.isAuthenticated;
     return {
-      isAuthenticated: isAuth,
-      userId: isAuth ? state.auth.user?.data?.user?._id : null,
+      userId: isAuth ? state.auth.user?.data?.user?._id : null
     };
   });
   return (
@@ -26,7 +25,7 @@ const ProductList = ({ products, loading }) => {
         </Grid>
       ) : products && products.length > 0 ? ( // Ensure products is an array and has items
         products.map((product, index) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
+          <Grid item xs={12} sm={6} md={4} lg={3} key={product._id}>
             <ProductCard
               className="w-full h-48 object-contain "
               imgSrc={product.image}

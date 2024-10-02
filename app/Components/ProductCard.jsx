@@ -31,7 +31,11 @@ const ProductCard = ({
 
   const handleAddToWishlist = async (e) => {
     e.stopPropagation(); // Prevent navigation to product page
-
+    // Check if the user is authenticated
+    if (!userId) {
+      toast.error("Please login first to add to wishlist!");
+      return; // Exit the function if not authenticated
+    }
     const savedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
 
     try {
@@ -111,15 +115,13 @@ const ProductCard = ({
       {rating && (
         <div className="flex items-center mb-2">
           {renderStars(rating)}
-          {userId ? (
-            <ThumbUpIcon
-              color={isWished ? "success" : "action"}
-              onClick={handleAddToWishlist} // Use the defined function
-              sx={{ cursor: "pointer", marginLeft: "8px" }}
-            />
-          ) : (
-            <></>
-          )}
+
+          <ThumbUpIcon
+            color={isWished ? "success" : "action"}
+            onClick={handleAddToWishlist}
+            sx={{ cursor: "pointer", marginLeft: "8px" }}
+          />
+
           <span className="text-gray-500 ml-1">({rating.toFixed(1)})</span>
         </div>
       )}

@@ -12,6 +12,7 @@ export async function GetCategories() {
 export async function GetSingleCategories({ id }) {
   try {
     const response = await httpDataAxios.get(`/Get-category/${id}`);
+    console.log("res of collection service",response)
     return response.data.data;
   } catch (error) {
     console.log("error in category", error);
