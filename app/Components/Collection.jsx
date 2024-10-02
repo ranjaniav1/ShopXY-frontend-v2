@@ -20,12 +20,13 @@ const Collection = () => {
     const pathname = usePathname();
     const showArrowIcon = pathname !== "/categories/collections";
 
+    const getCollection = async () => {
+        const response = await GetCollection();
+        console.log("collecton",response)
+        setCollection(response);
+        setLoading(false);
+    };
     useEffect(() => {
-        const getCollection = async () => {
-            const data = await GetCollection();
-            setCollection(data);
-            setLoading(false);
-        };
         getCollection();
     }, []);
 
@@ -52,7 +53,7 @@ const Collection = () => {
                             <CustomSkeleton gridItem gridProps={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={index} type="card" width="96px" height="96px" />
                         ))}
                     </Grid>
-                ) : collection?.length > 0 ? (
+                ) : collection && collection?.length > 0 ? (
                     <Grid container spacing={2}>
                         {collection.slice(0, visibleCount).map(category => (
                             <Grid item xs={6} sm={4} md={3} lg={2} key={category.id}>
