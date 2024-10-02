@@ -60,8 +60,8 @@ const Category = () => {
                         },
                     }}
                 >
-                    {categories.map((category) => (
-                        <SwiperSlide key={category.id} className="text-center">
+                    {categories.map((category,index) => (
+                        <SwiperSlide key={index} className="text-center">
                             <Link href={`/categories/${category.id}/${category.slug}`}>
                                 <Tooltip title={category.title}>
                                     <img

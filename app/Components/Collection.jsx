@@ -55,8 +55,8 @@ const Collection = () => {
                     </Grid>
                 ) : collection && collection?.length > 0 ? (
                     <Grid container spacing={2}>
-                        {collection.slice(0, visibleCount).map(category => (
-                            <Grid item xs={6} sm={4} md={3} lg={2} key={category.id}>
+                        {collection.slice(0, visibleCount).map((category,index) => (
+                            <Grid item xs={6} sm={4} md={3} lg={2} key={index}>
                                 <Link href={`/categories/collections/${category.id}/${category.slug}`} passHref>
                                     <CustomCollectionCard
                                         tooltip={category.title}
