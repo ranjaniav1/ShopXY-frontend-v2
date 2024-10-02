@@ -30,9 +30,6 @@ import { logout } from "@/app/redux/reducer/user/loginReducer";
 import { Logout } from "@/app/Service/User";
 import { RemoveUser } from "../../redux/reducer/user/loginReducer";
 import { useRouter } from "next/navigation";
-import DeleteIcon from "@mui/icons-material/Delete"; // Import Delete icon
-import CustomCollectionCard from "@/app/Common/CustomCollectionCard";
-import Link from "next/link";
 import UserProfile from "@/app/Components/profile/UserProfile";
 import TabSection from "@/app/Components/profile/TabSection";
 import WishlistItem from "@/app/Components/profile/WishlistProduct";
@@ -64,6 +61,11 @@ const Layout = ({ children }) => {
   useEffect(() => {
     if (activeTab === 0) {
       notify();
+    } else if (activeTab === 1) {
+      fetchWishlist();
+    }
+    if (activeTab === 2) {
+      fetchOrder();
     }
   }, [activeTab]);
 
@@ -90,6 +92,7 @@ const Layout = ({ children }) => {
   const fetchOrder = async () => {
     try {
       const response = await getOrder(userId);
+      console.log("res", response);
       setOrder(response);
     } catch (error) {
       console.log(error);
@@ -197,18 +200,17 @@ const Layout = ({ children }) => {
           )}
 
           {activeTab === 1 && (
-            <Box p={2} className="bg-gray-100 rounded-md shadow-md mx-auto">
+            <Box
+              p={2}
+              className="bg-gray-100 rounded-md shadow-md mx-auto flex "
+            >
               {wishlist.length > 0 ? (
                 wishlist.map((item) => (
-                  <>
-                    <Grid item xs={12} md={3}>
-                      <WishlistItem
-                        key={item.product._id}
-                        item={item}
-                        handleRemove={handleRemoveFromWishlist}
-                      />
-                    </Grid>
-                  </>
+                    <WishlistItem
+                      key={item.product._id}
+                      item={item}
+                      handleRemove={handleRemoveFromWishlist}
+                    />
                 ))
               ) : (
                 <Typography variant="h6" color="textSecondary" align="center">
@@ -218,10 +220,169 @@ const Layout = ({ children }) => {
             </Box>
           )}
           {activeTab === 2 && (
-            <Box
-              p={2}
-              className="bg-gray-100 rounded-md shadow-md mx-auto"
-            ></Box>
+            <Box p={2} className="bg-gray-100 rounded-md shadow-lg mx-auto">
+              {order.length > 0 ? (
+                order.map((orderItem, index) => (
+                  <Box key={orderItem._id}>
+                    <Card
+                      sx={{
+                        marginBottom: 2,
+                        borderRadius: 2,
+                        boxShadow: 1,
+                        border: "1px solid #e0e0e0",
+                        backgroundColor: "#ffffff"
+                      }}
+                    >
+                      <CardContent>
+                        <Typography variant="h5" component="div" gutterBottom>
+                          Order ID: {orderItem._id}
+                        </Typography>
+                        <Grid
+                          container
+                          justifyContent="space-between"
+                          sx={{ marginBottom: 2 }}
+                        >
+                          <Grid item xs={6}>
+                            <Typography variant="body1" color="text.secondary">
+                              Order Status: {orderItem.orderStatus}
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={6} container justifyContent="flex-end">
+                            <Typography
+                              variant="body1"
+                              color="text.secondary"
+                              sx={{ textAlign: "right" }}
+                            >
+                              Order Date:{" "}
+                              {new Date(
+                                orderItem.createdAt
+                              ).toLocaleDateString()}
+                            </Typography>
+                          </Grid>
+                        </Grid>
+
+                        <Divider sx={{ margin: "16px 0" }} />
+
+                        <Box
+                          sx={{
+                            border: "1px dotted #e0e0e0",
+                            borderRadius: 2,
+                            // padding: 2,
+                            backgroundColor: "#ffffff", // Optional background color
+                            // boxShadow: 2, // Optional shadow for better visibility
+                            marginBottom: 2 // Space below the order card
+                          }}
+                        >
+                          {orderItem.product.map((item, index) => (
+                            <Box key={item._id}>
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  borderRadius: 1,
+                                
+                                }}
+                              >
+                                <CardMedia
+                                  component="img"
+                                  image={item.product.image}
+                                  alt={item.product.name}
+                                  sx={{
+                                    width: 80,
+                                    height: 80,
+                                    objectFit: "cover",
+                                    margin: 1
+                                  }} // Smaller image
+                                />
+                                <CardContent sx={{ flexGrow: 1 }}>
+                                  <Grid container spacing={1}>
+                                    <Grid item xs={6}>
+                                      <Typography variant="h6">
+                                        {item.product.name}
+                                      </Typography>
+                                    </Grid>
+                                    <Grid
+                                      item
+                                      xs={6}
+                                      container
+                                      justifyContent="flex-end"
+                                    >
+                                      <Typography
+                                        variant="body1"
+                                        sx={{ color: "#f57c00", marginTop: 1 }}
+                                      >
+                                        Price: $
+                                        {item.product.discounted_price.toFixed(
+                                          2
+                                        )}
+                                      </Typography>
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                      <Typography
+                                        variant="body1"
+                                        color="text.secondary"
+                                      >
+                                        {item.product.description}
+                                      </Typography>
+                                    </Grid>
+                                    <Grid
+                                      item
+                                      xs={6}
+                                      container
+                                      justifyContent="flex-end"
+                                    >
+                                      <Typography
+                                        variant="body1"
+                                        color="text.secondary"
+                                        sx={{ textAlign: "right" }}
+                                      >
+                                        Qty: {item.quantity}
+                                      </Typography>
+                                    </Grid>
+                                  </Grid>
+                                </CardContent>
+                              </Box>
+
+                              {/* Divider between products */}
+                              {index < orderItem.product.length - 1 && (
+                                <Divider sx={{ margin: "8px 0" }} />
+                              )}
+                            </Box>
+                          ))}
+                        </Box>
+
+                        <Divider sx={{ margin: "16px 0" }} />
+
+                        <Grid container justifyContent="space-between">
+                          <Grid item>
+                            <Typography variant="body1" color="text.secondary">
+                              Payment Type: {orderItem.paymentType}
+                            </Typography>
+                          </Grid>
+                          <Grid item>
+                            <Typography variant="body1" color="text.secondary">
+                              Total Price: ${orderItem.totalPrice.toFixed(2)}
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                      </CardContent>
+                    </Card>
+                    {/* {index < order.length - 1 && (
+                      <Divider sx={{ margin: "16px 0" }} />
+                    )}{" "} */}
+                    {/* Divider between orders */}
+                  </Box>
+                ))
+              ) : (
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  align="center"
+                >
+                  No orders found.
+                </Typography>
+              )}
+            </Box>
           )}
         </Grid>
       </Grid>

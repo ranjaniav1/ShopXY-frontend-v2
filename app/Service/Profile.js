@@ -55,17 +55,13 @@ export const getNotifications = async (userId) => {
     throw error;
   }
 };
-
-// get order
+// Function to get order for a user
 export const getOrder = async (userId) => {
   try {
-    const response = await httpAxios.get(`/user/payment/get-order`, {
-      userId,
-      orderId
-    });
-    return response.data.data;
+    const response = await httpAxios.get(`/user/payment/get-order/${userId}`);
+    return response.data;
   } catch (error) {
-    console.error("Error fetching wishlist:", error);
+    console.error("Error fetching notifications:", error);
     throw error;
   }
 };
