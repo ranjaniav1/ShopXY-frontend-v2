@@ -6,7 +6,6 @@ const CustomInput = ({
   startIcon,
   endIcon,
   onChange,
-  onClickStartIcon,
   onClickEndIcon,
   value,
   className,
@@ -24,7 +23,6 @@ const CustomInput = ({
       startAdornment={startIcon && (
         <InputAdornment position="start">
           <IconButton
-            onClick={onClickStartIcon}
             sx={{
               borderRadius: '3px', // Square button
               padding: '3px', // Adjust padding as needed

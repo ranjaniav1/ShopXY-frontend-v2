@@ -1,13 +1,12 @@
-"use client";
+'use client';
 import React, { useEffect, useState } from 'react';
 import Heading from '../Common/Heading';
 import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOutlined';
 import { Grid, Box, Typography } from "@mui/material";
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import CustomBox from '../Custom/CustomBox';
-import CustomIconButton from '../Custom/CustomIconButton';
 import CustomSkeleton from '../Custom/CustomSkeleton';
 import CustomCollectionCard from '../Common/CustomCollectionCard';
 import { GetCollection } from '../Service/GetCollection';
@@ -26,7 +25,6 @@ const Collection = () => {
 
     const getCollection = async () => {
         const response = await GetCollection();
-        console.log("collection", response);
         setCollection(response);
         setLoading(false);
     };
@@ -36,19 +34,21 @@ const Collection = () => {
     }, []);
 
     useEffect(() => {
+        // If on /categories/collections, display all collections
         if (pathname === "/categories/collections") {
             setVisibleCount(collection?.length || 0);
         }
     }, [pathname, collection]);
+
 
     return (
         <CustomBox>
             <Heading text={t("Our Top Collections")}>
                 {showArrowIcon && visibleCount < (collection?.length || 0) && (
                     <Link href="/categories/collections" passHref>
-                        <CustomIconButton>
-                            <ArrowCircleRightOutlinedIcon fontSize='large' sx={{ color: "white" }} />
-                        </CustomIconButton>
+                  
+                        <ArrowCircleRightOutlinedIcon fontSize='large' sx={{ color: "white" }} />
+                  
                     </Link>
                 )}
             </Heading>
@@ -67,31 +67,51 @@ const Collection = () => {
                             />
                         ))}
                     </Grid>
-                ) : collection.length > 0 ? (
-                    <Swiper
-                        modules={[Navigation, A11y]}
-                        spaceBetween={10}
-                        slidesPerView={2}
-                        breakpoints={{
-                            640: { slidesPerView: 2 },
-                            768: { slidesPerView: 4 },
-                            1024: { slidesPerView: 6, spaceBetween: 30 },
-                        }}
-                    >
-                        {collection.slice(0, visibleCount).map((category, index) => (
-                            <SwiperSlide key={index}>
-                                <Link href={`/categories/collections/${category.id}/${category.slug}`} passHref>
-                                    <CustomCollectionCard
-                                        tooltip={category.title}
-                                        id={category.id}
-                                        slug={category.slug}
-                                        image={category.collection_image}
-                                        title={category.title}
-                                    />
-                                </Link>
-                            </SwiperSlide>
-                        ))}
-                    </Swiper>
+                ) : collection && collection.length > 0 ? (
+                    pathname === "/categories/collections" ? (
+                        // Display all collections in a grid if on /categories/collections
+                        <Grid container spacing={2}>
+                            {collection.map((category, index) => (
+                                <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                                    <Link href={`/categories/collections/${category.id}/${category.slug}`} passHref>
+                                        <CustomCollectionCard
+                                            tooltip={category.title}
+                                            id={category.id}
+                                            slug={category.slug}
+                                            image={category.collection_image}
+                                            title={category.title}
+                                        />
+                                    </Link>
+                                </Grid>
+                            ))}
+                        </Grid>
+                    ) : (
+                        // Use Swiper for other pages
+                        <Swiper
+                            modules={[Navigation, A11y]}
+                            spaceBetween={10}
+                            slidesPerView={2}
+                            breakpoints={{
+                                640: { slidesPerView: 2 },
+                                768: { slidesPerView: 4 },
+                                1024: { slidesPerView: 6, spaceBetween: 30 },
+                            }}
+                        >
+                            {collection.slice(0, visibleCount).map((category, index) => (
+                                <SwiperSlide key={index}>
+                                    <Link href={`/categories/collections/${category.id}/${category.slug}`} passHref>
+                                        <CustomCollectionCard
+                                            tooltip={category.title}
+                                            id={category.id}
+                                            slug={category.slug}
+                                            image={category.collection_image}
+                                            title={category.title}
+                                        />
+                                    </Link>
+                                </SwiperSlide>
+                            ))}
+                        </Swiper>
+                    )
                 ) : (
                     <Typography textAlign="center">{t('no Collection Found')}</Typography>
                 )}
