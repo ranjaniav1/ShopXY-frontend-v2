@@ -27,7 +27,7 @@ const CustomCollectionCard = ({ id, slug, image, title, tooltip }) => {
                 <img
                     src={image}
                     alt={title}
-                    className="w-full h-44 object-cover cursor-pointer"
+                    className="w-full h-48 object-cover cursor-pointer"
                 />
             </Tooltip>
             <Box
