@@ -18,7 +18,6 @@ const FilterBasedProduct = ({ products }) => {
     };
   });
   return (
-    <CustomBox>
       <Grid container spacing={3}>
         {products && products.length > 0 ? (
           products.map((product) => (
@@ -48,7 +47,6 @@ const FilterBasedProduct = ({ products }) => {
           </Grid>
         )}
       </Grid>
-    </CustomBox>
   );
 };
 

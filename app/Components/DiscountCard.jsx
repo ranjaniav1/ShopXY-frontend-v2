@@ -10,7 +10,7 @@ const DiscountCard = ({ image, alt, title ,key}) => {
                 sx={{
                     position: 'relative',
                     border: `1px solid ${theme.palette.card.border}`,
-                    background: theme.palette.card.background,
+                    background: theme.palette.background.main,
                     borderRadius: '8px',
                     overflow: 'hidden',
                     boxShadow: theme.shadows[2],
