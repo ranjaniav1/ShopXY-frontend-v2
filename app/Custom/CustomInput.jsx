@@ -1,14 +1,16 @@
-import React from 'react';
-import { InputBase, IconButton, InputAdornment, useTheme } from '@mui/material';
+import React from "react";
+import { InputBase, IconButton, InputAdornment, useTheme } from "@mui/material";
 
 const CustomInput = ({
   placeholder,
   startIcon,
   endIcon,
   onChange,
-  onClickEndIcon,
   value,
   className,
+  onClickStartIcon,
+  onClickEndIcon,
+
   ...props
 }) => {
   const theme = useTheme();
@@ -18,43 +20,60 @@ const CustomInput = ({
       placeholder={placeholder}
       value={value}
       onChange={onChange}
-      className={`border-btn custom-input ${className}`} // Apply custom and border styles
+      className={`border-btn custom-input ${className}`}
+      sx={{
+        backgroundColor: theme.palette.background.default, // Background color from theme
+        color: theme.palette.text.primary, // Text color from theme
+        borderRadius: "4px",
+        padding: "4px",
+        width: "100%",
+        "& .MuiInputBase-input": {
+          color: theme.palette.text.primary // Input text color from theme
+        }
+      }} // Apply custom and border styles
       {...props}
-      startAdornment={startIcon && (
-        <InputAdornment position="start">
-          <IconButton
-            sx={{
-              borderRadius: '3px', // Square button
-              padding: '3px', // Adjust padding as needed
-              color: theme.palette.button.color, // Icon color from theme
-              backgroundColor: theme.palette.button.background, // Background color from theme
-              '&:hover': {
-                backgroundColor: theme.palette.button.hover, // Background color on hover
-              },
-            }}
-          >
-            {startIcon}
-          </IconButton>
-        </InputAdornment>
-      )}
-      endAdornment={endIcon && (
-        <InputAdornment position="end">
-          <IconButton
-            onClick={onClickEndIcon}
-            sx={{
-              borderRadius: '3px', // Square button
-              padding: '4px', // Adjust padding as needed
-              color: theme.palette.button.color, // Icon color from theme
-              backgroundColor: theme.palette.button.background, // Background color from theme
-              '&:hover': {
-                backgroundColor: theme.palette.button.hover, // Background color on hover
-              },
-            }}
-          >
-            {endIcon}
-          </IconButton>
-        </InputAdornment>
-      )}
+      startAdornment={
+        startIcon && (
+          <InputAdornment position="start">
+            <IconButton
+              tabIndex={-1}
+              onClick={onClickStartIcon}
+              sx={{
+                borderRadius: "3px", // Square button
+                padding: "3px", // Adjust padding as needed
+                color: theme.palette.button.color, // Icon color from theme
+                backgroundColor: theme.palette.button.background, // Background color from theme
+                "&:hover": {
+                  backgroundColor: theme.palette.button.hover // Background color on hover
+                }
+              }}
+            >
+              {startIcon}
+            </IconButton>
+          </InputAdornment>
+        )
+      }
+      endAdornment={
+        endIcon && (
+          <InputAdornment position="end">
+            <IconButton
+              tabIndex={-1}
+              onClick={onClickEndIcon}
+              sx={{
+                borderRadius: "3px", // Square button
+                padding: "4px", // Adjust padding as needed
+                color: theme.palette.button.color, // Icon color from theme
+                backgroundColor: theme.palette.button.background, // Background color from theme
+                "&:hover": {
+                  backgroundColor: theme.palette.button.hover // Background color on hover
+                }
+              }}
+            >
+              {endIcon}
+            </IconButton>
+          </InputAdornment>
+        )
+      }
     />
   );
 };

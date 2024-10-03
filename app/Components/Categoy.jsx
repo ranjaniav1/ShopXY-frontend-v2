@@ -56,7 +56,7 @@ const Category = () => {
         <Swiper
           modules={[A11y]}
           spaceBetween={10}
-          slidesPerView={3}
+          slidesPerView={2}
           breakpoints={{
             640: {
               slidesPerView: 4
@@ -89,12 +89,7 @@ const Category = () => {
                   />
                 </Tooltip>
               </Link>{" "}
-              <Typography
-                variant="caption"
-                sx={{ color: theme.palette.text.primary }}
-              >
-                {category.title}
-              </Typography>
+            
             </SwiperSlide>
           ))}
         </Swiper>
