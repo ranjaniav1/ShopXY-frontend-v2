@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React, { useEffect, useState } from 'react';
 import Heading from '../Common/Heading';
 import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOutlined';
@@ -11,6 +11,10 @@ import CustomIconButton from '../Custom/CustomIconButton';
 import CustomSkeleton from '../Custom/CustomSkeleton';
 import CustomCollectionCard from '../Common/CustomCollectionCard';
 import { GetCollection } from '../Service/GetCollection';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import { Navigation, A11y } from 'swiper/modules';
 
 const Collection = () => {
     const { t } = useTranslation();
@@ -22,17 +26,18 @@ const Collection = () => {
 
     const getCollection = async () => {
         const response = await GetCollection();
-        console.log("collecton",response)
+        console.log("collection", response);
         setCollection(response);
         setLoading(false);
     };
+
     useEffect(() => {
         getCollection();
     }, []);
 
     useEffect(() => {
         if (pathname === "/categories/collections") {
-            setVisibleCount(collection?.length || 0);  // Ensure collection is defined
+            setVisibleCount(collection?.length || 0);
         }
     }, [pathname, collection]);
 
@@ -41,7 +46,9 @@ const Collection = () => {
             <Heading text={t("Our Top Collections")}>
                 {showArrowIcon && visibleCount < (collection?.length || 0) && (
                     <Link href="/categories/collections" passHref>
-                        <CustomIconButton><ArrowCircleRightOutlinedIcon fontSize='large' sx={{ color: "white" }} /></CustomIconButton>
+                        <CustomIconButton>
+                            <ArrowCircleRightOutlinedIcon fontSize='large' sx={{ color: "white" }} />
+                        </CustomIconButton>
                     </Link>
                 )}
             </Heading>
@@ -50,13 +57,29 @@ const Collection = () => {
                 {loading ? (
                     <Grid container spacing={2}>
                         {Array.from({ length: 6 }).map((_, index) => (
-                            <CustomSkeleton gridItem gridProps={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={index} type="card" width="96px" height="96px" />
+                            <CustomSkeleton 
+                                gridItem 
+                                gridProps={{ xs: 12, sm: 6, md: 4, lg: 3 }} 
+                                key={index} 
+                                type="card" 
+                                width="96px" 
+                                height="96px" 
+                            />
                         ))}
                     </Grid>
-                ) : collection && collection?.length > 0 ? (
-                    <Grid container spacing={2}>
-                        {collection.slice(0, visibleCount).map((category,index) => (
-                            <Grid item xs={6} sm={4} md={3} lg={2} key={index}>
+                ) : collection.length > 0 ? (
+                    <Swiper
+                        modules={[Navigation, A11y]}
+                        spaceBetween={10}
+                        slidesPerView={2}
+                        breakpoints={{
+                            640: { slidesPerView: 2 },
+                            768: { slidesPerView: 4 },
+                            1024: { slidesPerView: 6, spaceBetween: 30 },
+                        }}
+                    >
+                        {collection.slice(0, visibleCount).map((category, index) => (
+                            <SwiperSlide key={index}>
                                 <Link href={`/categories/collections/${category.id}/${category.slug}`} passHref>
                                     <CustomCollectionCard
                                         tooltip={category.title}
@@ -66,9 +89,9 @@ const Collection = () => {
                                         title={category.title}
                                     />
                                 </Link>
-                            </Grid>
+                            </SwiperSlide>
                         ))}
-                    </Grid>
+                    </Swiper>
                 ) : (
                     <Typography textAlign="center">{t('no Collection Found')}</Typography>
                 )}
