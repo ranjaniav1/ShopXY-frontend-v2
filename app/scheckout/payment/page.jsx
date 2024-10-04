@@ -4,8 +4,16 @@ import CustomTypography from "@/app/Custom/CustomTypography";
 import { clearMyCart, setMyCart } from "@/app/redux/reducer/cartReducer";
 import { getCart } from "@/app/Service/Cart";
 import { cashOnDelivery, promodCodes } from "@/app/Service/payment";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  InputAdornment,
+  TextField,
+  Typography,
+  useTheme
+} from "@mui/material";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,13 +24,15 @@ const Page = ({ handleBack }) => {
   const [promoCode, setPromoCode] = useState(""); // State to store promo code input
   const [promoError, setPromoError] = useState(""); // State to store promo code error
   const dispatch = useDispatch();
-
+  const theme = useTheme();
+  const router = useRouter();
   // Handle Cash on Delivery Payment
   async function handleCodPay() {
     try {
       const response = await cashOnDelivery(userId, cartId);
-      dispatch(clearMyCart()); // Clear cart on successful payment
-      toast.success("payment sucess"); // Handle success (e.g., redirect or display success message)
+      dispatch(clearMyCart());
+      toast.success("payment sucess");
+      router.push("/");
     } catch (error) {
       console.error("Error during COD payment", error);
     }
@@ -33,12 +43,10 @@ const Page = ({ handleBack }) => {
     try {
       const response = await promodCodes(promoCode, cartId);
       const cart = await getCart(userId); // Send promo code and cart ID to backend
-      console.log(cart);
-
       dispatch(setMyCart(cart)); // Update cart with applied discount
+      toast.success("coupon added!");
 
       console.log("Promo code applied successfully:", response);
-      toast.success("coupon added!");
       setPromoError(""); // Clear error on successful promo code application
     } catch (error) {
       console.error("Error during promo code application", error);
@@ -49,39 +57,75 @@ const Page = ({ handleBack }) => {
   }
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center" p={2}>
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      p={2}
+      sx={{
+        backgroundColor: theme.palette.background.body,
+        borderRadius: 2,
+        boxShadow: theme.shadows[3],
+        width: "100%",
+        maxWidth: "600px",
+        margin: "auto"
+      }}
+    >
       {/* Payment Method Section */}
-      <CustomTypography variant="h5" gutterBottom>
-        Select Payment Method
+      <CustomTypography
+        variant="h5"
+        gutterBottom
+        sx={{ color: theme.palette.text.primary }}
+      >
+        Payment Method: Cash on Delivery{" "}
       </CustomTypography>
 
       {/* Cash On Delivery Button */}
       <CustomButton
         title="Cash On Delivery"
-        sx={{ width: "100%", mt: 1 }}
+        sx={{
+          width: "100%",
+          mt: 1,
+          backgroundColor: theme.palette.button.background,
+          ":hover": {
+            backgroundColor: theme.palette.button.hover
+          }
+        }}
         onClick={handleCodPay}
       />
 
       {/* Promo Code Section */}
       <Box sx={{ width: "100%", mt: 4 }}>
-        <Typography variant="h6">Apply Promo Code</Typography>
-        <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
-          <TextField
-            label="Promo Code"
-            variant="outlined"
-            fullWidth
-            sx={{ mr: 2 }}
-            value={promoCode}
-            onChange={(e) => setPromoCode(e.target.value)} // Update promo code state on input change
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handlePromoCodeApply}
-          >
-            Apply
-          </Button>
-        </Box>
+        <Typography variant="h6" sx={{ color: theme.palette.text.primary }}>
+          Enter Promo code
+        </Typography>
+        <TextField
+          label="Promo Code"
+          variant="outlined"
+          fullWidth
+          value={promoCode}
+          onChange={(e) => setPromoCode(e.target.value)}
+          sx={{ mt: 2 }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handlePromoCodeApply}
+                  sx={{
+                    backgroundColor: theme.palette.primary.main,
+                    ":hover": {
+                      backgroundColor: theme.palette.primary.dark
+                    }
+                  }}
+                >
+                  Apply
+                </Button>
+              </InputAdornment>
+            )
+          }}
+        />
         {promoError && (
           <Typography color="error" mt={2}>
             {promoError}
@@ -98,12 +142,16 @@ const Page = ({ handleBack }) => {
           mt: 5
         }}
       >
-        <Link href="/scheckout/carts">
+        <Link href="/scheckout/address">
           <CustomButton
             title="Back"
             onClick={handleBack}
             variant="outlined"
-            sx={{ flex: 1 }}
+            sx={{
+              flex: 1,
+              color: theme.palette.text.primary,
+              borderColor: theme.palette.primary.main
+            }}
           />
         </Link>
       </Box>

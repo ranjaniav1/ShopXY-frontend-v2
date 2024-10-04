@@ -12,6 +12,7 @@ import {
   StepLabel,
   Stepper,
   Typography,
+  useMediaQuery,
   useTheme
 } from "@mui/material";
 import PriceDetails from "@/app/Components/PriceDetail";
@@ -34,6 +35,7 @@ const Layout = ({ children }) => {
   const theme = useTheme();
   const { t } = useTranslation();
   const isCart = useSelector((state) => state.cart.cart.data);
+  const isXsScreen = useMediaQuery(theme.breakpoints.down("xs")); // Media query for xs screens
 
   const fetchCartData = async () => {
     try {
@@ -115,7 +117,7 @@ const Layout = ({ children }) => {
                 <Grid
                   item
                   sx={{
-                    display: { xs: "none", md: "flex" },
+                    display: { xs: "flex", md: "flex" },
                     alignItems: "stretch"
                   }}
                 >
@@ -126,7 +128,11 @@ const Layout = ({ children }) => {
                       alignItems: "stretch"
                     }}
                   >
-                    <Divider orientation="vertical" flexItem />
+                    {isXsScreen ? (
+                      <Divider orientation="horizontal" flexItem />
+                    ) : (
+                      <Divider orientation="vertical" flexItem />
+                    )}{" "}
                   </Box>
                 </Grid>
 
@@ -151,7 +157,7 @@ const Layout = ({ children }) => {
                   width: "100%", // Adjust this value as needed
                   textAlign: "center",
                   paddingBottom: 2,
-                  paddingTop: 2,
+                  paddingTop: 2
                 }}
               >
                 <img

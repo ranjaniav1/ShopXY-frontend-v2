@@ -9,15 +9,18 @@ import {
   removeAddress,
   updateAddress
 } from "@/app/Service/Address";
-import { AddAPhoto } from "@mui/icons-material";
-import { Box, Container, Grid, Typography } from "@mui/material";
+import { Box, Container, Grid, Typography, useTheme } from "@mui/material";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { useMediaQuery } from "@mui/material";
+import { Add } from "@mui/icons-material"; // For add icon
+import CustomIconButton from "@/app/Custom/CustomIconButton";
 
 const Page = ({ handleNext, handleBack }) => {
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -29,6 +32,7 @@ const Page = ({ handleNext, handleBack }) => {
   const addressData = useSelector((state) => state.address.data?.data || []);
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const theme = useTheme();
   useEffect(() => {
     fetchAddresses();
   }, []);
@@ -112,11 +116,24 @@ const Page = ({ handleNext, handleBack }) => {
         p={2}
       >
         <Typography>{t("Select Delivery Address")}</Typography>
-        <CustomButton
-          title={t("Add New Address")}
-          startIcon={<AddAPhoto />}
-          onClick={handleAddAddressClick}
-        />
+
+        {isSmallScreen ? (
+          <CustomIconButton
+            onClick={handleAddAddressClick}
+            sx={{
+              background: theme.palette.button.background,
+              color: theme.palette.button.color
+            }}
+          >
+            {" "}
+            <Add />
+          </CustomIconButton>
+        ) : (
+          <CustomButton
+            title={t("Add Address")} // Show full button for larger devices
+            onClick={handleAddAddressClick}
+          />
+        )}
       </Box>
 
       <Grid container spacing={2} p={2}>
@@ -151,20 +168,25 @@ const Page = ({ handleNext, handleBack }) => {
               variant="outlined"
             />
           </Link>
-          
-        {selectedAddressId ? (
+
+          {selectedAddressId ? (
             <Link href="/scheckout/payment">
-                <CustomButton title="Next" variant="outlined" onClick={handleNext} />
-            </Link>
-        ) : (
-            <CustomButton
+              <CustomButton
                 title="Next"
                 variant="outlined"
-                disabled // Disable button if no address is selected
-                onClick={() => toast.error(t("Please add an address before proceeding."))} // Optional: Show a toast when clicked
+                onClick={handleNext}
+              />
+            </Link>
+          ) : (
+            <CustomButton
+              title="Next"
+              variant="outlined"
+              disabled // Disable button if no address is selected
+              onClick={() =>
+                toast.error(t("Please add an address before proceeding."))
+              } // Optional: Show a toast when clicked
             />
-        )}
-          
+          )}
         </Box>
       </Container>
 
