@@ -70,9 +70,18 @@ const PriceDetails = ({
           <Typography>₹{formatPrice(finalPrice())}</Typography>
         </Box>
         {totalDiscount > 0 && (
-          <CustomButton
-            title={` Yay! You saved ₹${totalDiscount} on your order!`}
-          />
+          <Typography
+            variant="body2"
+            sx={{
+              mt: 2,
+              color: theme.palette.success.main,
+              background:theme.palette.card.background,
+              textAlign: "center",
+              fontWeight: "bold"
+            }}
+          >
+            🎉 Yay! You saved ₹{totalDiscount} on your order!
+          </Typography>
         )}
       </Box>
     </Box>

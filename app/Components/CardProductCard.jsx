@@ -58,7 +58,7 @@ const {t}=useTranslation()
                     )}
 
                     <CustomTypography variant="body2" color="textSecondary">
-                        {offer ? `${offer}% off` : 'No offer'}
+                        {offer ? ` ₹{offer}% off` : 'No offer'}
                     </CustomTypography>
                 </Box>
                 {/* size and qty section */}
