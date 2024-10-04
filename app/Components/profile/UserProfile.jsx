@@ -1,20 +1,48 @@
-import React from "react";
-import { Avatar, Box, Typography } from "@mui/material";
+import React, { useState } from "react";
+import { Avatar, Box, IconButton, Typography, useTheme } from "@mui/material";
+import { Edit as EditIcon } from "@mui/icons-material"; // Importing the edit icon from MUI
+import CustomModal from "@/app/Custom/CustomModal";
+import EditUserModal from "./EditUserModal";
 
 const UserProfile = ({ user }) => {
+  const theme = useTheme();
+  const [open, setOpen] = useState(false);
+  // Handler to toggle modal
+  const onEditClick = () => {
+    setOpen(true);
+  };
+
+  // Handler to close modal
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <Box
       sx={{
+        position: "relative", // For positioning the edit icon
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         p: 3,
         mb: 4,
-        background: "linear-gradient(135deg, #e0f7fa, #26a69a)",
+        background: `linear-gradient(135deg, ${theme.palette.primary.light}, ${theme.palette.primary.main})`, // Theme-based background
         borderRadius: "12px",
-        boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)"
+        boxShadow: theme.shadows[3]
       }}
     >
+      {" "}
+      {/* Edit Icon in the top-right corner */}
+      <IconButton
+        onClick={onEditClick}
+        sx={{
+          position: "absolute",
+          top: 8,
+          right: 8,
+          color: theme.palette.grey[50] // Theme-based color for the icon
+        }}
+      >
+        <EditIcon />
+      </IconButton>
       <Avatar
         src={user?.avatar || "/default-avatar.png"}
         alt={user?.fullname || "User Avatar"}
@@ -22,18 +50,24 @@ const UserProfile = ({ user }) => {
           width: 130,
           height: 130,
           mb: 2,
-          border: "2px solid #22aa99"
+          border: `2px solid ${theme.palette.secondary.main}` // Theme-based border color
         }}
       />
-      <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+      <Typography
+        variant="h5"
+        sx={{ fontWeight: "bold", color: theme.palette.text.primary }}
+      >
         {user?.fullname || "Your Name"}
       </Typography>
-      <Typography variant="body1" color="textSecondary">
+      <Typography variant="body1" sx={{ color: theme.palette.text.secondary }}>
         {user?.email || "Email not available"}
       </Typography>
-      <Typography variant="body1" color="textSecondary">
+      <Typography variant="body1" sx={{ color: theme.palette.text.secondary }}>
         {user?.phone || "Phone not available"}
       </Typography>
+      <CustomModal open={open} onClose={handleClose} title="Edit Profile">
+        <EditUserModal user={user} onClose={handleClose} />
+      </CustomModal>
     </Box>
   );
 };
