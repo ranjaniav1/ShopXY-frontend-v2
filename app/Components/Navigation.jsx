@@ -13,7 +13,13 @@ const Navigation = () => {
     const theme = useTheme();
 
     return (
-        <Box className="nav " style={{ background: theme.palette.background.nav }}>
+        <Box className="nav "  style={{
+            background: theme.palette.background.nav,
+            position: 'fixed', // Fix the nav at the top
+            top: 0, // Align to the top
+            left: 0,
+            right: 0,
+            zIndex: 1000, }}>
             <Container maxWidth="xl">
                 {/* Only visible on larger screens */}
                 <Box display={{ xs: 'none', md: 'block' }}>

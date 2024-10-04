@@ -1,14 +1,9 @@
-// /** @type {import('next').NextConfig} */
-// const nextConfig = {};
-
-// export default nextConfig;
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images: {
-      domains: ['res.cloudinary.com'], // Add your external image domains here
-    },
-    // Other configurations can go here
+  images: {
+    domains: ["res.cloudinary.com", "cdn1.vectorstock.com","eshop-backend-tau.vercel.app"] // Add your external image domains here
   }
-  
-export default nextConfig  
+  // Other configurations can go here
+};
+
+export default nextConfig;

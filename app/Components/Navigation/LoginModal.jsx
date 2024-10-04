@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Typography, Divider, CircularProgress, Box } from '@mui/material';
+import {  Divider, CircularProgress, Box, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
 import { Visibility, VisibilityOff, PhoneAndroid, Google, Email } from '@mui/icons-material';
@@ -14,6 +14,7 @@ import { setUser } from '@/app/redux/reducer/user/loginReducer';
 import { useDispatch } from 'react-redux';
 
 const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
+    const theme = useTheme(); 
     const { t } = useTranslation();
     const dispatch = useDispatch(); // Initialize useDispatch
     const [email, setEmail] = useState('');
@@ -84,7 +85,7 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
                     type="submit"
                     disabled={loading}
                     title={loading ? <CircularProgress size={24} /> : t('Login')}
-                    sx={{ mt: 2 }}
+                    sx={{ mt: 2,backgroundColor:theme.palette.primary.main }}
                 />
             </form>
 
@@ -92,19 +93,19 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
             <Divider sx={{ my: 2 }}>{t('OR')}</Divider>
 
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <CustomButton background="#e58d4d"
+                <CustomButton 
                     fullWidth onClick={handleOpenPhoneModal}
-                    startIcon={<PhoneAndroid />} title={t('Phone')} sx={{ flex: 1 }}
+                    startIcon={<PhoneAndroid />} title={t('Phone')} sx={{ flex: 1 ,backgroundColor:theme.palette.warning.main}}
                 />
                 <Divider orientation="vertical" flexItem />
                 <CustomButton
-                    background="#d62746" fullWidth onClick={handleOpenGoogleModal}
-                    startIcon={<Google />} title={t('Google')} sx={{ flex: 1 }}
+                    fullWidth onClick={handleOpenGoogleModal}
+                    startIcon={<Google />} title={t('Google')} sx={{ flex: 1,backgroundColor:theme.palette.error.main }}
                 />
             </Box> <Divider sx={{ my: 2 }} />
             <CustomButton
                 variant="text" color="primary" fullWidth onClick={onSwitchToRegister}
-                title={t('not Registed? Register')} sx={{ mt: 2 }}
+                title={t('not Registed? Register')} sx={{ mt: 2 ,backgroundColor:theme.palette.primary.main}}
             />
         </CustomModal> <PhoneRegistrationModal open={isPhoneModalOpen} onClose={handleClosePhoneModal} />
         {/* Render GoogleLoginModal */}

@@ -1,38 +1,81 @@
 'use client';
 import React from 'react';
-import { Box, Skeleton, Grid } from '@mui/material';
+import { Box, Skeleton, Grid, useTheme } from '@mui/material';
 
-const CustomSkeleton = ({ 
-  type = 'card', 
-  className = '', 
-  width = '100%', 
+const CustomSkeleton = ({
+  type = 'card',
+  className = '',
+  width = '100%',
   height = '100%',
   gridProps = {},  // Add props for Grid if needed
   gridItem = false // Indicate if this skeleton should be wrapped in a Grid item
 }) => {
+  const theme = useTheme();  // Use theme for dynamic styling
+
   // Define common styles for different skeleton types
   const skeletonStyles = {
-    card: "w-full max-w-sm div-body border border-gray-200 rounded-lg shadow-md p-4",
-    image: "", // We will apply width and height dynamically
-    row: "w-full h-6 bg-gray-300 rounded-lg my-2",
-    text: "w-full h-4 bg-gray-300 rounded-lg my-2",
-    rounded: "w-full h-full bg-gray-300 rounded-full"
+    card: {
+      wrapper: {
+        width: '100%',
+        maxWidth: 'sm',
+        padding: '16px',
+        border: `1px solid ${theme.palette.divider}`,
+        borderRadius: '10px',
+        boxShadow: theme.shadows[1],
+        backgroundColor: theme.palette.background.paper,
+      },
+      image: {
+        width: '100%',
+        height: '12rem',
+        backgroundColor: theme.palette.background.default,
+        borderRadius: '10px',
+      },
+      text: {
+        width: '100%',
+        height: '1.25rem',
+        backgroundColor: theme.palette.action.hover,
+        marginBottom: '0.5rem',
+        borderRadius: '4px',
+      },
+    },
+    image: {
+      width,
+      height,
+      borderRadius: '10px',
+    },
+    row: {
+      width: '100%',
+      height: '6rem',
+      backgroundColor: theme.palette.action.hover,
+      borderRadius: '4px',
+    },
+    text: {
+      width: '100%',
+      height: '1.25rem',
+      backgroundColor: theme.palette.action.hover,
+      borderRadius: '4px',
+      marginBottom: '0.5rem',
+    },
+    rounded: {
+      borderRadius: '50%',
+      backgroundColor: theme.palette.action.hover,
+    },
   };
 
   // Define skeleton elements for each type
   const skeletonElements = {
     card: (
-      <div className={`${skeletonStyles.card} ${className}`}>
+      <Box sx={skeletonStyles.card.wrapper} className={className}>
         <div className="animate-pulse">
-          <div className="w-full h-48 bg-gray-200 rounded-lg"></div>
-          <div className="mt-4">
-            <div className={`${skeletonStyles.text} mb-2`} />
-          </div>
+          <Box sx={skeletonStyles.card.image}></Box>
+          <Box mt={2}>
+            <Box sx={skeletonStyles.card.text}></Box>
+          </Box>
         </div>
-      </div>
+      </Box>
     ),
     image: (
-      <Box className={`flex-shrink-0 skeleton ${className}`} style={{ width, height }}>
+      <Box className={`flex-shrink-0 skeleton ${className}`} sx={skeletonStyles.image}>
         <Skeleton
           variant="rectangular"
           width="100%"
@@ -41,15 +84,16 @@ const CustomSkeleton = ({
         />
       </Box>
     ),
-    row: <div className={`${skeletonStyles.row} ${className}`}></div>,
-    text: <div className={`${skeletonStyles.text} ${className}`}></div>,
+    row: <Box sx={skeletonStyles.row} className={className}></Box>,
+    text: <Box sx={skeletonStyles.text} className={className}></Box>,
     rounded: (
       <Skeleton
         variant="circular"
         width={width}
         height={height}
+        sx={skeletonStyles.rounded}
       />
-    )
+    ),
   };
 
   const skeletonContent = skeletonElements[type] || null;

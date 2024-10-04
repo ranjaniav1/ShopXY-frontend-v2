@@ -1,13 +1,14 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Grid, Typography } from "@mui/material";
+import { Grid, Typography, useTheme } from "@mui/material";
 import FilterSection from "./FilterSection";
 import ProductList from "./ProductList";
 import Heading from "../Common/Heading";
 import { GetAllProducts } from "../Service/GetProduct";
 import { useTranslation } from "react-i18next";
 import CustomSkeleton from "../Custom/CustomSkeleton";
+import CustomBox from "../Custom/CustomBox";
 
 const HomeProduct = () => {
   const [products, setProducts] = useState([]);
@@ -55,9 +56,9 @@ const HomeProduct = () => {
   }, [selectedRatings, priceRange, products]);
 
   return (
-    <>
+    <CustomBox>
       <Heading text={t("Products For You")} />
-      <Grid container spacing={3}>
+      <Grid container spacing={2}>
         <Grid item xs={12} md={3} sx={{ mt: 3.5 }}>
           <FilterSection
             priceRange={priceRange}
@@ -88,7 +89,7 @@ const HomeProduct = () => {
           )}
         </Grid>
       </Grid>
-    </>
+    </CustomBox>
   );
 };
 

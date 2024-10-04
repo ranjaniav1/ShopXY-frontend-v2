@@ -31,10 +31,11 @@ export default function RootLayout({ children }) {
                   marginTop: {
                     xs: "6%", // mobile devices
                     sm: "3%", // tablets
-                    md: "2%", // small desktops
-                    lg: "2%", // medium desktops
-                    xl: "1.5%" // large desktops
-                  }
+                    md: "6%", // small desktops
+                    lg: "4%", // medium desktops
+                    xl: "1.5%", // large desktops
+                  },
+                  paddingTop: "64px", // adjust based on the height of your nav
                 }}
               >
                 {children}

@@ -13,6 +13,7 @@ const ProductList = ({ products, loading }) => {
       userId: isAuth ? state.auth.user?.data?.user?._id : null
     };
   });
+  const theme=useTheme()
   return (
     <Grid container spacing={2}>
       {loading ? (
@@ -24,8 +25,8 @@ const ProductList = ({ products, loading }) => {
           ))}
         </Grid>
       ) : products && products.length > 0 ? ( // Ensure products is an array and has items
-        products.map((product, index) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={product._id}>
+        products.map((product) => (
+          <Grid item xs={12} sm={6} md={4} lg={3} key={product._id} >
             <ProductCard
               className="w-full h-48 object-contain "
               imgSrc={product.image}

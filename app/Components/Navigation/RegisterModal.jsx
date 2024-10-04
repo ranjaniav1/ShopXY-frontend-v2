@@ -90,7 +90,6 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
                     />
                     <CustomButton
                         variant="contained"
-                        color="primary"
                         fullWidth
                         type="submit"
                         disabled={loading}

@@ -1,127 +1,151 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { Grid, Card, Box } from '@mui/material';
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
-import CustomButton from '../Custom/CustomButton';
-import { useDispatch, useSelector } from 'react-redux';
-import { addtoCart } from '../Service/Cart';
-import { setMyCart } from '../redux/reducer/cartReducer';
-import toast from 'react-hot-toast';
-import { useParams, useRouter } from 'next/navigation';
-import Link from 'next/link';
+import React from "react";
+import { Grid, Card, Box } from "@mui/material";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import DoubleArrowIcon from "@mui/icons-material/DoubleArrow";
+import CustomButton from "../Custom/CustomButton";
+import { useDispatch, useSelector } from "react-redux";
+import { addtoCart } from "../Service/Cart";
+import { setMyCart } from "../redux/reducer/cartReducer";
+import toast from "react-hot-toast";
+import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
 
-const ProductGallery = ({ detailImages, selectedImage, onImageClick, productName, productId }) => {
-    const userId = useSelector((state) => state?.auth?.user?.data?.user._id)
-    const dispatch = useDispatch()
-    const router = useRouter()
-    const { productTitle } = useParams()
+const ProductGallery = ({
+  detailImages,
+  selectedImage,
+  onImageClick,
+  productName,
+  productId
+}) => {
+  const userId = useSelector((state) => state?.auth?.user?.data?.user._id);
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const { productTitle } = useParams();
 
-    const cartData = useSelector((state) => state.cart.cart?.data?.products) || [];
+  const cartData =
+    useSelector((state) => state.cart.cart?.data?.products) || [];
 
-    const handleAddToCart = async () => {
-        try {
-            const quantity = 1;//default qty is 1
+  const handleAddToCart = async () => {
+    try {
+      const quantity = 1; //default qty is 1
 
-            const isProductInCart = cartData.some(item => item.product._id === productId);
-            if (isProductInCart) {
-                
-                toast.error(`item is already in your cart.`);
-                return;
-            }
+      const isProductInCart = cartData.some(
+        (item) => item.product._id === productId
+      );
+      if (isProductInCart) {
+        toast.error(`item is already in your cart.`);
+        return;
+      }
 
-            if (!userId) {
-                toast.error('please login first');
-                return;
-            }
+      if (!userId) {
+        toast.error("please login first");
+        return;
+      }
 
-            const response = await addtoCart(userId, productId, quantity);
-            console.log("res", response)
-            dispatch(setMyCart(response));
-            toast.success(`item added !`);
-        } catch (error) {
-            toast.error(`Failed to add product to cart: ${error.message}`);
-        }
-    };
-    const handleBuyNow = async () => {
-        try {
-            const quantity = 1;//default qty is 1
+      const response = await addtoCart(userId, productId, quantity);
+      console.log("res", response);
+      dispatch(setMyCart(response));
+      toast.success(`item added !`);
+    } catch (error) {
+      toast.error(`Failed to add product to cart: ${error.message}`);
+    }
+  };
+  const handleBuyNow = async () => {
+    try {
+      const quantity = 1; //default qty is 1
 
-            const isProductInCart = cartData.some(item => item.product._id === productId);
-            if (isProductInCart) {
-                router.push("/scheckout/carts")
-                return;
-            }
+      const isProductInCart = cartData.some(
+        (item) => item.product._id === productId
+      );
+      if (isProductInCart) {
+        router.push("/scheckout/carts");
+        return;
+      }
 
-            if (!userId) {
-                toast.error('please login first');
-                return;
-            }
+      if (!userId) {
+        toast.error("please login first");
+        return;
+      }
 
-            const response = await addtoCart(userId, productId, quantity);
-            console.log("res", response)
-            dispatch(setMyCart(response));
-            toast.success(`item added !`);
-            router.push("/scheckout/carts")
-        } catch (error) {
-            toast.error(`Failed to add product to cart: ${error.message}`);
-        }
-    };
-    return (
-        <Grid container spacing={2}>
-            <Grid item xs={2} md={2} sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                {detailImages.map((img, id) => (
-                    <Card
-                        key={id}
-                        sx={{
-                            cursor: 'pointer',
-                            borderRadius: 2,
-                            border: '1px solid #ddd',
-                            boxShadow: 1,
-                        }}
-                        onClick={() => onImageClick(img)}
-                    >
-                        <img
-                            src={img}
-                            alt={`Thumbnail ${id + 1}`}
-                            style={{ width: '100%', height: 'auto', objectFit: 'cover', borderRadius: '8px' }}
-                        />
-                    </Card>
-                ))}
-            </Grid>
-            <Grid item xs={10} md={10}>
-                <Card sx={{ borderRadius: 2, border: '1px solid #ddd', boxShadow: 1 }}>
-                    <img
-                        src={selectedImage}
-                        alt={productName}
-                        style={{ width: '100%', height: 'auto', objectFit: 'cover', borderRadius: '8px' }}
-                    />
-                </Card>
-
-            </Grid>
-            <Grid container spacing={2} sx={{ mt: 2 }}>
-                <Grid item xs={12}>
-                    <CustomButton
-                        startIcon={<AddShoppingCartIcon />}
-                        variant="outlined"
-                        title="Cart It"
-                        className="w-full"
-                        onClick={handleAddToCart}
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <CustomButton
-                        startIcon={<DoubleArrowIcon />}
-                        variant="contained"
-                        title="Buy Now"
-                        className="w-full" onClick={handleBuyNow}
-                    />
-
-                </Grid>
-            </Grid>
+      const response = await addtoCart(userId, productId, quantity);
+      console.log("res", response);
+      dispatch(setMyCart(response));
+      toast.success(`item added !`);
+      router.push("/scheckout/carts");
+    } catch (error) {
+      toast.error(`Failed to add product to cart: ${error.message}`);
+    }
+  };
+  return (
+    <Grid container spacing={2}>
+      <Grid
+        item
+        xs={2}
+        md={2}
+        sx={{ display: "flex", flexDirection: "column", gap: 1 }}
+      >
+        {detailImages.map((img, id) => (
+          <Card
+            key={id}
+            sx={{
+              cursor: "pointer",
+              borderRadius: 2,
+              border: "1px solid #ddd",
+              boxShadow: 1
+            }}
+            onClick={() => onImageClick(img)}
+          >
+            <img
+              src={img}
+              alt={`Thumbnail ${id + 1}`}
+              style={{
+                width: "100%",
+                height: "auto",
+                objectFit: "cover",
+                borderRadius: "8px"
+              }}
+            />
+          </Card>
+        ))}
+      </Grid>
+      <Grid item xs={10} md={10}>
+        <Card sx={{ borderRadius: 2, border: "1px solid #ddd", boxShadow: 1 }}>
+          <img
+            src={selectedImage}
+            alt={productName}
+            style={{
+              width: "100%",
+              height: "30%",
+              objectFit: "cover",
+              borderRadius: "8px"
+            }}
+          />
+        </Card>
+      </Grid>
+      <Grid container spacing={2} sx={{ mt: 2 }}>
+        <Grid item xs={12}>
+          <CustomButton
+            startIcon={<AddShoppingCartIcon />}
+            variant="contained"
+            title="Cart It"
+            className="w-full"
+            onClick={handleAddToCart}
+          />
         </Grid>
-    );
+        <Grid item xs={12}>
+          <CustomButton
+            startIcon={<DoubleArrowIcon />}
+            variant="contained"
+            title="Buy Now"
+            className="w-full"
+            onClick={handleBuyNow}
+          />
+        </Grid>
+      </Grid>
+    </Grid>
+  );
 };
 
 export default ProductGallery;
