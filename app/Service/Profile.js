@@ -55,6 +55,18 @@ export const getNotifications = async (userId) => {
     throw error;
   }
 };
+// delete notify based on id
+export const DeleteNotifications = async (userId, notificationId) => {
+  try {
+    const response = await httpAxios.delete(
+      `/user/profile/notification/${userId}/${notificationId}`
+    );
+    return response.data.data;
+  } catch (error) {
+    console.error("Error deleting notifications:", error);
+    throw error;
+  }
+};
 // Function to get order for a user
 export const getOrder = async (userId) => {
   try {

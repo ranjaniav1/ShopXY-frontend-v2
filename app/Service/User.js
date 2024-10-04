@@ -65,3 +65,20 @@ export async function DeleteAccount(userId) {
     throw error;
   }
 }
+
+// Edit user profile
+// Edit user profile API call
+export async function EditUser(formData) {
+  try {
+    const response = await httpAxios.put("/user/auth/edit-user", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data" // Important for file uploads
+      }
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error during edit profile:", error);
+    throw error;
+  }
+}

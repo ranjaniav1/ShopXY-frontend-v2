@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
+  DeleteNotifications,
   deleteWishlistItem,
   getNotifications,
   getOrder,
@@ -34,6 +35,7 @@ import { useRouter } from "next/navigation";
 import UserProfile from "@/app/Components/profile/UserProfile";
 import TabSection from "@/app/Components/profile/TabSection";
 import WishlistItem from "@/app/Components/profile/WishlistProduct";
+import DeleteIcon from "@mui/icons-material/Delete"; // Import the delete icon
 
 const Layout = ({ children }) => {
   const dispatch = useDispatch();
@@ -46,14 +48,24 @@ const Layout = ({ children }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const router = useRouter();
   const [openDeleteAccountDialog, setOpenDeleteAccountDialog] = useState(false);
+  const [hoveredNotificationId, setHoveredNotificationId] = useState(null);
+
   const theme = useTheme();
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
+    // Reset dialog states when switching tabs
     if (newValue === 3) {
       setOpenDialog(true);
+      setOpenDeleteAccountDialog(false); // Ensure delete dialog is closed
     } else if (newValue === 4) {
-      setOpenDeleteAccountDialog(true); // Delete account dialog
-    } else if (newValue === 1) {
+      setOpenDeleteAccountDialog(true);
+      setOpenDialog(false); // Ensure logout dialog is closed
+    } else {
+      setOpenDialog(false); // Close dialog on other tabs
+      setOpenDeleteAccountDialog(false); // Close delete account dialog on other tabs
+    }
+
+    if (newValue === 1) {
       fetchWishlist(); // Fetch wishlist when the tab is activated
     }
   };
@@ -73,7 +85,22 @@ const Layout = ({ children }) => {
       console.log(e);
     }
   };
-
+  // delete notify
+  const handleDeleteNotification = async (notificationId) => {
+    try {
+      await DeleteNotifications(userId, notificationId);
+      toast.success("Notification removed!");
+      // Update notifications state correctly
+      setNotifications((prevNotifications) =>
+        prevNotifications.filter(
+          (notification) => notification._id !== notificationId
+        )
+      );
+    } catch (e) {
+      console.log("notify delete", e);
+      toast.error("Failed to remove notification.");
+    }
+  };
   // Fetch wishlist items
   const fetchWishlist = async () => {
     try {
@@ -100,6 +127,7 @@ const Layout = ({ children }) => {
       await Logout({ userId: userId });
       dispatch(RemoveUser());
       toast.success("User logged out successfully.");
+      setOpenDialog(false); // Close dialog after logout
       router.push("/");
     } catch (error) {
       console.error("Error during logout:", error);
@@ -113,6 +141,8 @@ const Layout = ({ children }) => {
       await DeleteAccount(userId);
       dispatch(RemoveUser());
       toast.success("Account deleted successfully.");
+      setOpenDeleteAccountDialog(false); // Close dialog after logout
+      router.push("/");
     } catch (error) {
       toast.error("Failed to delete account: " + error.message);
     }
@@ -156,22 +186,27 @@ const Layout = ({ children }) => {
               {notifications.length > 0 ? (
                 notifications.map((notification) => (
                   <Paper
-                    key={notification.id}
+                    key={notification._id}
                     sx={{
                       p: 2,
                       mb: 2,
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "center",
-                      backgroundColor: theme.palette.background.main, // Theme-based background for notification
-                      borderLeft: `4px solid ${theme.palette.primary.main}`, // Theme-based primary color for border
-                      boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.1)"
+                      backgroundColor: theme.palette.background.main,
+                      borderLeft: `4px solid ${theme.palette.primary.main}`,
+                      boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.1)",
+                      position: "relative" // To position the delete icon
                     }}
+                    onMouseEnter={() =>
+                      setHoveredNotificationId(notification._id)
+                    } // Set hovered id
+                    onMouseLeave={() => setHoveredNotificationId(null)}
                   >
                     <Typography
                       variant="body1"
                       sx={{
-                        color: theme.palette.text.primary, // Theme-based secondary   color: theme.palette.text.primary, // Theme-based primary text color
+                        color: theme.palette.text.primary,
                         flexGrow: 1,
                         fontWeight: "bold"
                       }} // Allow the message to take available space
@@ -196,6 +231,22 @@ const Layout = ({ children }) => {
                         hour12: true
                       })}
                     </Typography>
+                    {hoveredNotificationId === notification._id && ( // Show delete icon on hover
+                      <IconButton
+                        onClick={() =>
+                          handleDeleteNotification(notification._id)
+                        } // Call delete handler
+                        sx={{
+                          position: "absolute",
+                          right: "8px", // Adjust position
+                          top: "50%",
+                          transform: "translateY(-50%)",
+                          color: theme.palette.error.main // Theme-based error color
+                        }}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    )}
                   </Paper>
                 ))
               ) : (
@@ -213,7 +264,7 @@ const Layout = ({ children }) => {
             <Box
               p={2}
               sx={{
-                backgroundColor: theme.palette.background.default, 
+                backgroundColor: theme.palette.background.default,
                 display: "flex",
                 borderRadius: "8px",
                 boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
@@ -236,7 +287,15 @@ const Layout = ({ children }) => {
             </Box>
           )}
           {activeTab === 2 && (
-            <Box p={2} className="bg-gray-100 rounded-md shadow-lg mx-auto">
+            <Box
+              p={2}
+              sx={{
+                backgroundColor: theme.palette.background.default, // Use theme-based background
+                borderRadius: "8px",
+                boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
+                mx: "auto"
+              }}
+            >
               {order.length > 0 ? (
                 order.map((orderItem, index) => (
                   <Box key={orderItem._id}>
@@ -245,8 +304,8 @@ const Layout = ({ children }) => {
                         marginBottom: 2,
                         borderRadius: 2,
                         boxShadow: 1,
-                        border: "1px solid #e0e0e0",
-                        backgroundColor: "#ffffff"
+                        border: `1px solid ${theme.palette.divider}`, // Use theme divider color
+                        backgroundColor: theme.palette.card.background
                       }}
                     >
                       <CardContent>
@@ -259,14 +318,17 @@ const Layout = ({ children }) => {
                           sx={{ marginBottom: 2 }}
                         >
                           <Grid item xs={6}>
-                            <Typography variant="body1" color="text.secondary">
+                            <Typography
+                              variant="body1"
+                              color={theme.palette.text.secondary}
+                            >
                               Order Status: {orderItem.orderStatus}
                             </Typography>
                           </Grid>
                           <Grid item xs={6} container justifyContent="flex-end">
                             <Typography
                               variant="body1"
-                              color="text.secondary"
+                              color={theme.palette.text.secondary}
                               sx={{ textAlign: "right" }}
                             >
                               Order Date:{" "}
@@ -281,12 +343,9 @@ const Layout = ({ children }) => {
 
                         <Box
                           sx={{
-                            border: "1px dotted #e0e0e0",
+                            border: `1px dotted ${theme.palette.divider}`,
                             borderRadius: 2,
-                            // padding: 2,
-                            backgroundColor: "#ffffff", // Optional background color
-                            // boxShadow: 2, // Optional shadow for better visibility
-                            marginBottom: 2 // Space below the order card
+                            marginBottom: 2
                           }}
                         >
                           {orderItem.product.map((item, index) => (
@@ -324,9 +383,12 @@ const Layout = ({ children }) => {
                                     >
                                       <Typography
                                         variant="body1"
-                                        sx={{ color: "#f57c00", marginTop: 1 }}
+                                        sx={{
+                                          color: theme.palette.primary.main,
+                                          marginTop: 1
+                                        }}
                                       >
-                                        Price: $
+                                        Price: ₹
                                         {item.product.discounted_price.toFixed(
                                           2
                                         )}
@@ -335,7 +397,7 @@ const Layout = ({ children }) => {
                                     <Grid item xs={6}>
                                       <Typography
                                         variant="body1"
-                                        color="text.secondary"
+                                        color={theme.palette.text.secondary}
                                       >
                                         {item.product.description}
                                       </Typography>
@@ -348,7 +410,7 @@ const Layout = ({ children }) => {
                                     >
                                       <Typography
                                         variant="body1"
-                                        color="text.secondary"
+                                        color={theme.palette.text.secondary}
                                         sx={{ textAlign: "right" }}
                                       >
                                         Qty: {item.quantity}
@@ -370,13 +432,19 @@ const Layout = ({ children }) => {
 
                         <Grid container justifyContent="space-between">
                           <Grid item>
-                            <Typography variant="body1" color="text.secondary">
+                            <Typography
+                              variant="body1"
+                              color={theme.palette.text.secondary}
+                            >
                               Payment Type: {orderItem.paymentType}
                             </Typography>
                           </Grid>
                           <Grid item>
-                            <Typography variant="body1" color="text.secondary">
-                              Total Price: ${orderItem.totalPrice.toFixed(2)}
+                            <Typography
+                              variant="body1"
+                              color={theme.palette.text.secondary}
+                            >
+                              Total Price: ₹{orderItem.discountedPrice}
                             </Typography>
                           </Grid>
                         </Grid>
@@ -405,6 +473,7 @@ const Layout = ({ children }) => {
       {/* Confirmation Dialog for Logout */}
       <DialogBox
         open={openDialog}
+        onClose={() => setOpenDialog(false)}
         title="Logout Confirmation"
         description="Are you sure you want to logout?"
         onConfirm={handleLogoutConfirm}
@@ -412,6 +481,7 @@ const Layout = ({ children }) => {
       />
       <DialogBox
         open={openDeleteAccountDialog}
+        onClose={() => setOpenDeleteAccountDialog(false)}
         title="Delete Account Confirmation"
         description="Are you sure you want to delete your account?"
         onConfirm={handleDeleteAccount}
