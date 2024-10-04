@@ -7,7 +7,7 @@ import {
   Typography,
   Divider,
   Slider,
-  useTheme,
+  useTheme
 } from "@mui/material";
 import { useParams } from "next/navigation";
 import { GetSpecificProduct } from "@/app/Service/GetProduct";
@@ -18,26 +18,21 @@ const Layout = () => {
   const { collectionTitle, collectionId } = useParams();
   const [allProducts, setAllProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [priceRange, setPriceRange] = useState([0, 1000]);
+  const [priceRange, setPriceRange] = useState([0, 5000]);
   const [ratingRange, setRatingRange] = useState([0, 5]);
-  const [selectedColors, setSelectedColors] = useState([]);
-
+  const [loading, setLoading] = useState(true);
 
   const theme = useTheme();
 
   const fetchProducts = async () => {
     try {
       const response = await GetSpecificProduct({ id: collectionId });
+      console.log("res", response);
       setAllProducts(response);
-      setFilteredProducts(response);
-
-      // Extract colors from the products data
-      const productColors = [
-        ...new Set(response.data.flatMap((product) => product.color))
-      ];
-      setSelectedColors(productColors);
+      setLoading(false);
     } catch (error) {
       console.error("Failed to fetch products:", error);
+      setLoading(false);
     }
   };
 
@@ -47,11 +42,7 @@ const Layout = () => {
 
   useEffect(() => {
     applyFilters();
-  }, [
-    priceRange,
-    ratingRange,
-    allProducts
-  ]);
+  }, [priceRange, ratingRange, allProducts]);
 
   const handlePriceRangeChange = (event, newValue) => {
     setPriceRange(newValue);
@@ -107,7 +98,7 @@ const Layout = () => {
                 onChange={handlePriceRangeChange}
                 valueLabelDisplay="auto"
                 min={0}
-                max={1000}
+                max={5000}
                 step={10}
               />
             </Box>
@@ -130,8 +121,12 @@ const Layout = () => {
         </Grid>
 
         {/* Filtered Products */}
-        <Grid item xs={12} md={9}>
-          <FilterBasedProduct products={filteredProducts} />
+        <Grid item xs={12} md={7}>
+          {loading ? (
+            <Typography>Loading products...</Typography>
+          ) : (
+            <FilterBasedProduct products={filteredProducts} />
+          )}{" "}
         </Grid>
       </Grid>
     </CustomBox>

@@ -21,7 +21,8 @@ import {
   CardContent,
   CardMedia,
   Paper,
-  Button
+  Button,
+  useTheme
 } from "@mui/material";
 import CustomBox from "@/app/Custom/CustomBox";
 import { toast } from "react-hot-toast";
@@ -45,7 +46,7 @@ const Layout = ({ children }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const router = useRouter();
   const [openDeleteAccountDialog, setOpenDeleteAccountDialog] = useState(false);
-
+  const theme = useTheme();
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
     if (newValue === 3) {
@@ -59,14 +60,9 @@ const Layout = ({ children }) => {
 
   // Fetch notifications when the "Notifications" tab is selected
   useEffect(() => {
-    if (activeTab === 0) {
-      notify();
-    } else if (activeTab === 1) {
-      fetchWishlist();
-    }
-    if (activeTab === 2) {
-      fetchOrder();
-    }
+    if (activeTab === 0) notify();
+    if (activeTab === 1) fetchWishlist();
+    if (activeTab === 2) fetchOrder();
   }, [activeTab]);
 
   const notify = async () => {
@@ -144,7 +140,15 @@ const Layout = ({ children }) => {
         {/* Right side with dynamic content based on selected tab */}
         <Grid item xs={12} md={8}>
           {activeTab === 0 && (
-            <Box p={2} className="bg-gray-100 rounded-md shadow-md mx-auto">
+            <Box
+              p={2}
+              sx={{
+                backgroundColor: theme.palette.background.default, // Use theme-based background
+                borderRadius: "8px",
+                boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
+                mx: "auto"
+              }}
+            >
               {/* Optional Title */}
               {/* <Typography variant="h5" className="text-blue-600 mb-4">
                 Notifications
@@ -156,25 +160,32 @@ const Layout = ({ children }) => {
                     sx={{
                       p: 2,
                       mb: 2,
-                      display: "flex", // Use flexbox for layout
-                      justifyContent: "space-between", // Space between message and timestamp
-                      alignItems: "center", // Center vertically
-                      backgroundColor: "#fff",
-                      borderLeft: "4px solid #00796b",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      backgroundColor: theme.palette.background.main, // Theme-based background for notification
+                      borderLeft: `4px solid ${theme.palette.primary.main}`, // Theme-based primary color for border
                       boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.1)"
                     }}
                   >
                     <Typography
                       variant="body1"
-                      className="font-semibold text-gray-700"
-                      sx={{ flexGrow: 1 }} // Allow the message to take available space
+                      sx={{
+                        color: theme.palette.text.primary, // Theme-based secondary   color: theme.palette.text.primary, // Theme-based primary text color
+                        flexGrow: 1,
+                        fontWeight: "bold"
+                      }} // Allow the message to take available space
                     >
                       {notification.notify}
                     </Typography>
                     <Typography
                       variant="body2"
-                      className="text-gray-500 ml-2"
-                      sx={{ minWidth: "120px", textAlign: "right" }} // Fixed width for alignment
+                      sx={{
+                        color: theme.palette.text.secondary, // Theme-based secondary text color
+                        minWidth: "120px",
+                        textAlign: "right",
+                        ml: 2
+                      }}
                     >
                       {new Date(notification.timestamp).toLocaleString([], {
                         year: "numeric",
@@ -190,8 +201,7 @@ const Layout = ({ children }) => {
               ) : (
                 <Typography
                   variant="body2"
-                  color="textSecondary"
-                  className="text-gray-500"
+                  sx={{ color: theme.palette.text.secondary }}
                 >
                   No notifications available.
                 </Typography>
@@ -202,15 +212,21 @@ const Layout = ({ children }) => {
           {activeTab === 1 && (
             <Box
               p={2}
-              className="bg-gray-100 rounded-md shadow-md mx-auto flex "
+              sx={{
+                backgroundColor: theme.palette.background.default, 
+                display: "flex",
+                borderRadius: "8px",
+                boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
+                mx: "auto"
+              }}
             >
               {wishlist.length > 0 ? (
                 wishlist.map((item) => (
-                    <WishlistItem
-                      key={item.product._id}
-                      item={item}
-                      handleRemove={handleRemoveFromWishlist}
-                    />
+                  <WishlistItem
+                    key={item.product._id}
+                    item={item}
+                    handleRemove={handleRemoveFromWishlist}
+                  />
                 ))
               ) : (
                 <Typography variant="h6" color="textSecondary" align="center">
@@ -279,8 +295,7 @@ const Layout = ({ children }) => {
                                 sx={{
                                   display: "flex",
                                   alignItems: "center",
-                                  borderRadius: 1,
-                                
+                                  borderRadius: 1
                                 }}
                               >
                                 <CardMedia
