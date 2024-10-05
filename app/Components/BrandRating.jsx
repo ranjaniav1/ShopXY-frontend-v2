@@ -1,16 +1,28 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Box, Card, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  IconButton,
+  Tooltip,
+  Typography,
+  useTheme
+} from "@mui/material";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import CustomDrawer from "../Custom/CustomDrawer";
 import BrandReviewDrawer from "./BrandReviewDrawer";
 import { GetSpecificBrandReview } from "../Service/GetReviews";
+import CustomModal from "../Custom/CustomModal";
+import BrandReviewForm from "./BrandReviewForm";
+import RateReviewIcon from "@mui/icons-material/RateReview"; // Icon for submitting review
 
 const BrandRating = ({ brand, brandId }) => {
   const [reviews, setReviews] = useState([]);
   const [analytics, setAnalytics] = useState({});
   const theme = useTheme();
-  const [open, setOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false); // For the drawer
+  const [modalOpen, setModalOpen] = useState(false); // For the modal
 
   const fetchReviews = async () => {
     try {
@@ -46,13 +58,17 @@ const BrandRating = ({ brand, brandId }) => {
           background: theme.palette.background.paper,
           cursor: "pointer" // Make the card clickable
         }}
-        onClick={() => setOpen(true)} // Open drawer on click
+        onClick={() => setDrawerOpen(true)}
       >
         <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
           <StorefrontIcon
             sx={{ fontSize: 50, color: theme.palette.button.background }}
           />
-          <Typography variant="h6" sx={{ marginLeft: 1, fontWeight: "bold" }}>
+          <Typography
+            variant="h6"
+            sx={{ marginLeft: 1, fontWeight: "bold" }}
+            onClick={() => setModalOpen(true)}
+          >
             {brand.title}
           </Typography>
         </Box>
@@ -64,19 +80,31 @@ const BrandRating = ({ brand, brandId }) => {
             {averageRating.toFixed(1)} ⭐
           </Typography>
         </Box>
-        <Box sx={{ textAlign: "right" }}>
+        <Box sx={{ textAlign: "right", display: "flex", alignItems: "center" }}>
           <Typography
             variant="body2"
-            sx={{ color: theme.palette.text.secondary }}
+            sx={{ color: theme.palette.text.secondary, marginRight: 1 }}
           >
             {reviewCount} Review{reviewCount !== 1 ? "s" : ""}
           </Typography>
+          {/* Icon button to submit a review */}
+          <Tooltip title="Submit a Review">
+            <IconButton
+              onClick={(e) => {
+                e.stopPropagation(); // Prevents drawer from opening
+                setModalOpen(true); // Open modal for submitting review
+              }}
+            >
+              <RateReviewIcon sx={{ color: theme.palette.primary.main }} />
+            </IconButton>
+          </Tooltip>
         </Box>
       </Card>
+
       <CustomDrawer
-        open={open}
-        onClose={() => setOpen(false)}
-        title={brand.title}
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        title={`Reviews for ${brand.title}`}
       >
         <BrandReviewDrawer
           brand={brand}
@@ -84,6 +112,14 @@ const BrandRating = ({ brand, brandId }) => {
           analytics={analytics}
         />
       </CustomDrawer>
+
+      <CustomModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        title={`Review ${brand.title}`}
+      >
+        <BrandReviewForm brandId={brandId} />
+      </CustomModal>
     </>
   );
 };

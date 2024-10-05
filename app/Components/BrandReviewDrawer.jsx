@@ -52,6 +52,10 @@ const BrandReviewDrawer = ({ brand, reviews, analytics }) => {
                         {/* Number of reviews */}
                         <Typography sx={{ marginLeft: 1 }}>
                             {starCounts[star]} Review{starCounts[star] !== 1 ? 's' : ''}
+                        </Typography> |
+                          {/* Percentage display */}
+                          <Typography sx={{ marginLeft: 1, color: '#555' }}>
+                            {getPercentage(starCounts[star]).toFixed(2)}%
                         </Typography>
                     </Box>
                 ))}

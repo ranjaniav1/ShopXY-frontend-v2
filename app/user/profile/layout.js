@@ -28,7 +28,6 @@ import {
 import CustomBox from "@/app/Custom/CustomBox";
 import { toast } from "react-hot-toast";
 import DialogBox from "@/app/Custom/CustomDialog";
-import { logout } from "@/app/redux/reducer/user/loginReducer";
 import { Logout } from "@/app/Service/User";
 import { RemoveUser } from "../../redux/reducer/user/loginReducer";
 import { useRouter } from "next/navigation";
@@ -127,8 +126,8 @@ const Layout = ({ children }) => {
       await Logout({ userId: userId });
       dispatch(RemoveUser());
       toast.success("User logged out successfully.");
-      setOpenDialog(false); // Close dialog after logout
       router.push("/");
+      setOpenDialog(false); // Close dialog after logout
     } catch (error) {
       console.error("Error during logout:", error);
     } finally {
@@ -141,8 +140,8 @@ const Layout = ({ children }) => {
       await DeleteAccount(userId);
       dispatch(RemoveUser());
       toast.success("Account deleted successfully.");
-      setOpenDeleteAccountDialog(false); // Close dialog after logout
       router.push("/");
+      setOpenDeleteAccountDialog(false); // Close dialog after logout
     } catch (error) {
       toast.error("Failed to delete account: " + error.message);
     }
