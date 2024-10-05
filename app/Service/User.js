@@ -32,7 +32,7 @@ export async function Login({ email, password }) {
     console.error("Error in login:", error);
     throw error; // Rethrow error for handling in the component
   }
-}
+} 
 // Logout user
 export async function Logout({ userId }) {
   try {
@@ -67,7 +67,6 @@ export async function DeleteAccount(userId) {
 }
 
 // Edit user profile
-// Edit user profile API call
 export async function EditUser(formData) {
   try {
     const response = await httpAxios.put("/user/auth/edit-user", formData, {

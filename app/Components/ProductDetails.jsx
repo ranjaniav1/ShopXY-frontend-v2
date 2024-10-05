@@ -1,11 +1,22 @@
 "use client";
 
-import React from "react";
-import { Typography, Box, Grid, useTheme, Card } from "@mui/material";
+import React, { useState } from "react";
+import {
+  Typography,
+  Box,
+  Grid,
+  useTheme,
+  Card,
+  IconButton,
+  Tooltip
+} from "@mui/material";
 import { useTranslation } from "react-i18next";
 import ReviewComponents from "./RatindReview";
 import BrandRating from "./BrandRating";
 import CustomTypography from "../Custom/CustomTypography";
+import RateReviewIcon from "@mui/icons-material/RateReview"; // Icon for submitting review
+import CustomModal from "../Custom/CustomModal";
+import BrandReviewForm from "./BrandReviewForm";
 
 const ProductDetails = ({
   name,
@@ -13,8 +24,6 @@ const ProductDetails = ({
   discounted_price,
   offer,
   description,
-  colors = [], // Default to an empty array if undefined
-  sizes = ["S", "M", "L", "XL", "XXL", "XXXL"], // Default to an empty array if undefined
   full_description,
   special_offer,
   gst_type,
@@ -23,6 +32,8 @@ const ProductDetails = ({
 }) => {
   const theme = useTheme();
   const { t } = useTranslation();
+  const [modalOpen, setModalOpen] = useState(false); // For the modal
+
   return (
     <Grid container spacing={4}>
       {/* Card 1: Product Description, Price */}
@@ -30,23 +41,25 @@ const ProductDetails = ({
         <Card sx={{ p: 2, background: theme.palette.background.paper }}>
           <CustomTypography
             variant="h4"
-            sx={{ color: theme.palette.text.primary }}           >
+            sx={{ color: theme.palette.text.primary }}
+          >
             {name}
           </CustomTypography>
           <CustomTypography
             variant="body2"
-            sx={{ color: theme.palette.text.secondary }}           >
+            sx={{ color: theme.palette.text.secondary }}
+          >
             {description}
           </CustomTypography>
           <CustomTypography variant="h5" className="text-green-600 mb-2">
             ₹{discounted_price}{" "}
             {discounted_price && (
               <span
-              style={{
-                textDecoration: "line-through",
-                marginLeft: "8px",
-                color: theme.palette.error.main // Theme-based color for struck-through price
-              }}
+                style={{
+                  textDecoration: "line-through",
+                  marginLeft: "8px",
+                  color: theme.palette.error.main // Theme-based color for struck-through price
+                }}
               >
                 ₹{actual_price}
               </span>
@@ -68,12 +81,7 @@ const ProductDetails = ({
           >
             {t("Product details")}:
           </CustomTypography>
-          <CustomTypography
-            variant="body2"
-            sx={{ color: theme.palette.text.secondary }} // Theme-based text color
-          >
-            {t("Sizes")}: {sizes.join(", ")}
-          </CustomTypography>
+
           <CustomTypography
             variant="body2"
             sx={{ color: theme.palette.text.secondary }} // Theme-based text color
@@ -104,15 +112,39 @@ const ProductDetails = ({
           theme={theme}
           sx={{ p: 2, background: theme.palette.background.paper }}
         >
-          <CustomTypography
-            variant="h4"
-            sx={{ color: theme.palette.text.primary }}
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
           >
-            {t("Rating & Reviews")}
-          </CustomTypography>
+            <CustomTypography
+              variant="h4"
+              sx={{ color: theme.palette.text.primary }}
+            >
+              {t("Rating & Reviews")}
+            </CustomTypography>
+            <Tooltip title="Submit a Review">
+              <IconButton
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevents drawer from opening
+                  setModalOpen(true); // Open modal for submitting review
+                }}
+                sx={{ color: theme.palette.primary.main }}
+              >
+                <RateReviewIcon />
+              </IconButton>
+            </Tooltip>
+          </Box>
           <ReviewComponents productId={productId} sx={{ p: 2 }} />
         </Card>
       </Grid>
+      <CustomModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        title={`Review ${name}`}
+      >
+        <BrandReviewForm productId={productId} />
+      </CustomModal>
     </Grid>
   );
 };

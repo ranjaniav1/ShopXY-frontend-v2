@@ -15,6 +15,7 @@ import { useParams } from "next/navigation";
 import { searchProduct } from "@/app/Service/search"; // Adjust the import based on your structure
 import ProductCard from "@/app/Components/ProductCard";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
 const SearchResults = () => {
   const { query } = useParams(); // Get the query from the URL
@@ -27,6 +28,12 @@ const SearchResults = () => {
     categories: []
   });
   const [categories, setCategories] = useState([]);
+  const { userId } = useSelector((state) => {
+    const isAuth = state.auth.isAuthenticated;
+    return {
+      userId: isAuth ? state.auth.user?.data?.user?._id : null
+    };
+  });
 
   useEffect(() => {
     const fetchResults = async () => {
@@ -150,10 +157,7 @@ const SearchResults = () => {
           <Grid container spacing={2}>
             {filteredResults.map((product) => (
               <Grid item xs={12} sm={6} md={4} lg={3} key={product._id}>
-                <Link
-                  href={`/product/${product._id}/${encodeURIComponent(product.slug)}`}
-                  passHref
-                >
+               
                   <ProductCard
                     className="h-40 w-full object-cover"
                     imgSrc={product.image}
@@ -163,8 +167,11 @@ const SearchResults = () => {
                     rating={product.ratings}
                     description={product.description}
                     offer={product.offer}
+                    userId={userId}
+                    productId={product._id}
+                    slug={product.slug}
                   />
-                </Link>
+                
               </Grid>
             ))}
           </Grid>
