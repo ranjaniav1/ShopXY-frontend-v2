@@ -9,7 +9,8 @@ import { GetAllProducts } from "../Service/GetProduct";
 import { useTranslation } from "react-i18next";
 import CustomSkeleton from "../Custom/CustomSkeleton";
 import CustomBox from "../Custom/CustomBox";
-
+import  AOS  from "aos";
+import "aos/dist/aos.css";
 const HomeProduct = () => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -54,12 +55,18 @@ const HomeProduct = () => {
     };
     applyFilters();
   }, [selectedRatings, priceRange, products]);
-
+  useEffect(() => {
+    AOS.init({
+      duration: 600, // Animation duration
+      easing: 'ease-in-out', // Animation easing
+      once: true, // Whether animation should happen only once
+    });
+  }, []);
   return (
     <CustomBox>
       <Heading text={t("Products For You")} />
       <Grid container spacing={2}>
-        <Grid item xs={12} md={3} sx={{ mt: 3.5 }}>
+        <Grid item xs={12} md={3} sx={{ mt: 3.5 }}  data-aos="fade-right">
           <FilterSection
             priceRange={priceRange}
             setPriceRange={setPriceRange}
@@ -71,7 +78,7 @@ const HomeProduct = () => {
             }}
           />
         </Grid>
-        <Grid item xs={12} md={9} sx={{ mt: 3.5 }}>
+        <Grid item xs={12} md={9} sx={{ mt: 3.5 }} data-aos="fade-left">
           {loading ? (
             <Grid container spacing={2}>
               {Array.from({ length: 6 }).map((_, index) => (
