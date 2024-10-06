@@ -12,7 +12,7 @@ export async function Register(formDataToSubmit) {
       return result;
     } else {
       console.error("Registration failed:", response.data);
-      throw new Error("Registration failed");
+      throw new Error(response.data.message || "Registration failed");
     }
   } catch (error) {
     console.error("Error:", error);
@@ -36,7 +36,7 @@ export async function Login({ email, password }) {
 // Logout user
 export async function Logout({ userId }) {
   try {
-    const response = await httpAxios.post("/user/auth/logout", { userId });
+    const response = await httpAxios.post("/user/auth/logout", { userId },{ withCredentials: true });
 
     if (response.status === 200) {
       console.log("Logout successful:", response.data);
