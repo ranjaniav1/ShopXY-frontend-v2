@@ -17,10 +17,9 @@ const inter = Inter({ subsets: ["latin"] });
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={inter.className} full-height>
         <ProviderStore>
           <Toaster position="bottom-center" />
-
           <I18nextProvider i18n={i18n}>
             <ThemeSelector>
               <CssBaseline />

@@ -118,7 +118,7 @@ const BrandRating = ({ brand, brandId }) => {
         onClose={() => setModalOpen(false)}
         title={`Review ${brand.title}`}
       >
-        <BrandReviewForm brandId={brandId} />
+        <BrandReviewForm brandId={brandId} onClose={() => setModalOpen(false)}/>
       </CustomModal>
     </>
   );
