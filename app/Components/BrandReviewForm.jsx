@@ -51,7 +51,6 @@ const BrandReviewForm = ({ brandId, onClose, productId }) => {
         await SubmitBrandReview(reviewData);
         toast.success("Thank you for giving our brand a review!");
       }
-
       onClose();
       setRating(0);
       setReview("");

@@ -143,7 +143,10 @@ const ProductDetails = ({
         onClose={() => setModalOpen(false)}
         title={`Review ${name}`}
       >
-        <BrandReviewForm productId={productId} />
+        <BrandReviewForm
+          productId={productId}
+          onClose={() => setModalOpen(false)}
+        />
       </CustomModal>
     </Grid>
   );
