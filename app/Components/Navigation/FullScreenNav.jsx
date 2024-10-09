@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { Logout } from "@/app/Service/User";
 import toast from "react-hot-toast";
 import { RemoveUser } from "@/app/redux/reducer/user/loginReducer";
+import Cookies from "js-cookie";
 
 const FullScreenNav = ({ setDrawerOpen }) => {
   const { t } = useTranslation();
@@ -66,6 +67,7 @@ const FullScreenNav = ({ setDrawerOpen }) => {
   const handleLogout = async () => {
     try {
       await Logout({ userId: user._id });
+      Cookies.remove("user");
       dispatch(RemoveUser());
       toast.success("User logged out successfully.");
       router.push("/");

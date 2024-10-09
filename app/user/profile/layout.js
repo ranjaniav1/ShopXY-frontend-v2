@@ -35,8 +35,9 @@ import UserProfile from "@/app/Components/profile/UserProfile";
 import TabSection from "@/app/Components/profile/TabSection";
 import WishlistItem from "@/app/Components/profile/WishlistProduct";
 import DeleteIcon from "@mui/icons-material/Delete"; // Import the delete icon
+import Cookies from "js-cookie";
 
-const Layout = ({ children }) => {
+const Layout = () => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.auth?.user?.data?.user._id);
   const user = useSelector((state) => state.auth?.user?.data?.user);
@@ -124,6 +125,7 @@ const Layout = ({ children }) => {
   const handleLogoutConfirm = async () => {
     try {
       await Logout({ userId: userId });
+      Cookies.remove("user");
       dispatch(RemoveUser());
       toast.success("User logged out successfully.");
       router.push("/");
@@ -138,6 +140,7 @@ const Layout = ({ children }) => {
   const handleDeleteAccount = async () => {
     try {
       await DeleteAccount(userId);
+      Cookies.remove("user");
       dispatch(RemoveUser());
       toast.success("Account deleted successfully.");
       router.push("/");

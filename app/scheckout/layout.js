@@ -61,9 +61,6 @@ const Layout = ({ children }) => {
     }
   }, [pathname]); // Listen to pathname changes
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
-
   const steps = ["Cart", "Address", "Payment"];
 
   const handleNext = () => {
@@ -106,7 +103,7 @@ const Layout = ({ children }) => {
       <CustomBox>
         <Container maxWidth="xl">
           <Grid container spacing={4}>
-            {isCart ? (
+            {isCart && isCart.products.length > 0 ? (
               <>
                 {/* Grid for children (cart items) */}
                 <Grid item xs={12} md={7}>
@@ -166,16 +163,33 @@ const Layout = ({ children }) => {
                   style={{
                     height: "400px",
                     maxWidth: "100%",
-                    objectFit: "cover"
+                    objectFit: "cover",
+                    animation: "scale 2s infinite alternate" // Animation applied here
                   }}
-                />{" "}
+                />
+
                 <Typography>
-                  Don&apos;t worry , you can add your products here ..simply
-                  click on start shopping{" "}
+                  Don&apos;t worry, you can add your products here. Simply click
+                  on Start Shopping.
                 </Typography>
+
                 <Link href="/categories/collections" passHref>
                   <CustomButton title="Start Shopping" />
                 </Link>
+
+                {/* CSS Animation Styles */}
+                <style>
+                  {`
+                  @keyframes scale {
+                    0% {
+                      transform: scale(1);
+                    }
+                    100% {
+                      transform: scale(1.05);
+                    }
+                  }
+                `}
+                </style>
               </Box>
             )}
           </Grid>
