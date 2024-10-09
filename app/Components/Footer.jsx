@@ -36,9 +36,9 @@ const Footer = () => {
           <Grid container>
             <Grid item xs={12} md={3}>
               <div className="px-3">
-                <h1 className="text-2xl font-semibold ml-2 my-3">Shopxy</h1>
+                <h1 className="text-2xl font-semibold ml-2 my-3">ShopXY</h1>
                 <p>
-                  At Shopxy, you can find all your favorite products in one
+                  At ShopXY, you can find all your favorite products in one
                   place, from home essentials to the latest gadgets. We aim to
                   provide you with the best shopping experience.
                 </p>
@@ -77,7 +77,7 @@ const Footer = () => {
                   <li className="text-gray-400">
                     1234 Market St, San Francisco, CA
                   </li>
-                  <li className="text-gray-400">Email: support@shopxy.com</li>
+                  <li className="text-gray-400">Email: support@ShopXY.com</li>
                   <li className="text-gray-400">Phone: +1 (555) 123-4567</li>
                   <div className="icons">
                     <li>
@@ -105,7 +105,7 @@ const Footer = () => {
         <Divider />
         <div className="py-2 text-center">
           <p className="text-gray-400">
-            &copy; {new Date().getFullYear()} Shopxy. All rights reserved.
+            &copy; {new Date().getFullYear()} ShopXY. All rights reserved.
           </p>
         </div>
       </Container>
