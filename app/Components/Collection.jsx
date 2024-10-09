@@ -80,6 +80,7 @@ const Collection = () => {
                                             slug={category.slug}
                                             image={category.collection_image}
                                             title={category.title}
+                                            
                                         />
                                     </Link>
                                 </Grid>
