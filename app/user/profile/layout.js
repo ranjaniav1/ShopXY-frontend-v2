@@ -37,7 +37,7 @@ import WishlistItem from "@/app/Components/profile/WishlistProduct";
 import DeleteIcon from "@mui/icons-material/Delete"; // Import the delete icon
 import Cookies from "js-cookie";
 
-const Layout = () => {
+const Layout = ({ children }) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.auth?.user?.data?.user._id);
   const user = useSelector((state) => state.auth?.user?.data?.user);
