@@ -31,7 +31,7 @@ export const promodCodes = async (promocode, cartId) => {
 // Stripe Payment Service (new)
 export const createStripePayment = async (userId, cartId, cartData) => {
   try {
-    const response = await axios.post("http://localhost:9000/api/v2/user/payment/order", {
+    const response = await axios.post("https://eshop-backend-tau.vercel.app/api/v2/user/payment/order", {
       paymentMethod: "stripe",
       cartData,
       userId,
