@@ -3,7 +3,11 @@ import CustomButton from "@/app/Custom/CustomButton";
 import CustomTypography from "@/app/Custom/CustomTypography";
 import { clearMyCart, setMyCart } from "@/app/redux/reducer/cartReducer";
 import { getCart } from "@/app/Service/Cart";
-import { cashOnDelivery, promodCodes } from "@/app/Service/payment";
+import {
+  cashOnDelivery,
+  handleStripePayment,
+  promodCodes
+} from "@/app/Service/payment";
 import {
   Box,
   Button,
@@ -14,18 +18,30 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
+import PaypalButton from "../../Common/PaypalButton";
+import { loadStripe } from "@stripe/stripe-js";
 
 const Page = ({ handleBack }) => {
   const userId = useSelector((state) => state.auth.user.data.user._id);
   const cartId = useSelector((state) => state.cart.cart.data._id);
+  const cartData = useSelector((state) => state.cart.cart.data.products); 
+  console.log("Cart Data from Redux:", cartData); // Modify based on your reducer structure
+  const [stripePromise, setStripePromise] = useState(null);
+
   const [promoCode, setPromoCode] = useState(""); // State to store promo code input
   const [promoError, setPromoError] = useState(""); // State to store promo code error
   const dispatch = useDispatch();
   const theme = useTheme();
   const router = useRouter();
+  useEffect(() => {
+    const stripe = loadStripe(
+      "pk_test_51PxLryRrN241bQ7Plo5ZmfXZqbcdcPPkaeMhCjYGPlr1kcCKvnWApXpNh1r9vfOTp6ZIWc0nOgv5sK4Ec3hbvVJj00vEdntnWT"
+    );
+    setStripePromise(stripe);
+  }, []);
   // Handle Cash on Delivery Payment
   async function handleCodPay() {
     try {
@@ -55,6 +71,29 @@ const Page = ({ handleBack }) => {
       );
     }
   }
+  async function handleStripePay() {
+    try {
+      if (!stripePromise) {
+        toast.error("Stripe is not initialized");
+        return;
+      }
+  
+      const stripe = await stripePromise; // Use the stripePromise from state
+  
+      const result = await handleStripePayment(userId, cartId, cartData, stripe);
+  
+      if (result.error) {
+        toast.error("Payment failed: " + result.error.message);
+      } else {
+        toast.success("Payment successful!");
+        router.push("/");
+      }
+    } catch (error) {
+      console.error("Error during Stripe payment", error);
+      toast.error("Payment failed");
+    }
+  }
+  
 
   return (
     <Box
@@ -93,7 +132,21 @@ const Page = ({ handleBack }) => {
         }}
         onClick={handleCodPay}
       />
+      <PaypalButton />
 
+      {/* Stripe Payment Button */}
+      <CustomButton
+        title="Pay with Stripe"
+        sx={{
+          width: "100%",
+          mt: 2,
+          backgroundColor: "#6772e5",
+          ":hover": {
+            backgroundColor: "#5469d4"
+          }
+        }}
+        onClick={handleStripePay}
+      />
       {/* Promo Code Section */}
       <Box sx={{ width: "100%", mt: 4 }}>
         <Typography variant="h6" sx={{ color: theme.palette.text.primary }}>
