@@ -31,12 +31,22 @@ export const promodCodes = async (promocode, cartId) => {
 // Stripe Payment Service (new)
 export const createStripePayment = async (userId, cartId, cartData) => {
   try {
-    const response = await axios.post("https://eshop-backend-tau.vercel.app/api/v2/user/payment/order", {
-      paymentMethod: "stripe",
-      cartData,
-      userId,
-      cartId,
-    });
+    const response = await axios.post(
+      "https://eshop-backend-tau.vercel.app/api/v2/user/payment/order",
+      {
+        cartData,
+        paymentMethod: "stripe",
+        metadata: {
+          userId,
+          cartId
+        }
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log(response);
     return response.data;
   } catch (error) {
     console.log("Error during Stripe payment creation", error);
@@ -44,14 +54,19 @@ export const createStripePayment = async (userId, cartId, cartData) => {
   }
 };
 
-
 // Function to handle Stripe session and redirect
 export const handleStripePayment = async (userId, cartId, cartData) => {
-  const stripePublicKey = "pk_test_51PxLryRrN241bQ7Plo5ZmfXZqbcdcPPkaeMhCjYGPlr1kcCKvnWApXpNh1r9vfOTp6ZIWc0nOgv5sK4Ec3hbvVJj00vEdntnWT";
+  const stripePublicKey =
+    "pk_test_51PxLryRrN241bQ7Plo5ZmfXZqbcdcPPkaeMhCjYGPlr1kcCKvnWApXpNh1r9vfOTp6ZIWc0nOgv5sK4Ec3hbvVJj00vEdntnWT";
   const stripe = await loadStripe(stripePublicKey); // Load Stripe instance
 
   try {
-    const { id: sessionId } = await createStripePayment(userId, cartId, cartData); // Create Stripe session
+    const { id: sessionId } = await createStripePayment(
+      userId,
+      cartId,
+      cartData
+    ); // Create Stripe session
+    console.log("session id", sessionId);
     if (!sessionId) {
       toast.error("Stripe session creation failed.");
       return;

@@ -27,7 +27,7 @@ import { loadStripe } from "@stripe/stripe-js";
 const Page = ({ handleBack }) => {
   const userId = useSelector((state) => state.auth.user.data.user._id);
   const cartId = useSelector((state) => state.cart.cart.data._id);
-  const cartData = useSelector((state) => state.cart.cart.data.products); 
+  const cartData = useSelector((state) => state.cart.cart.data.products);
   console.log("Cart Data from Redux:", cartData); // Modify based on your reducer structure
   const [stripePromise, setStripePromise] = useState(null);
 
@@ -77,11 +77,16 @@ const Page = ({ handleBack }) => {
         toast.error("Stripe is not initialized");
         return;
       }
-  
+
       const stripe = await stripePromise; // Use the stripePromise from state
-  
-      const result = await handleStripePayment(userId, cartId, cartData, stripe);
-  
+
+      const result = await handleStripePayment(
+        userId,
+        cartId,
+        cartData,
+        // stripe
+      );
+
       if (result.error) {
         toast.error("Payment failed: " + result.error.message);
       } else {
@@ -93,7 +98,6 @@ const Page = ({ handleBack }) => {
       toast.error("Payment failed");
     }
   }
-  
 
   return (
     <Box
