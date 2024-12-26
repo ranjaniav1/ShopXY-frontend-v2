@@ -1,11 +1,10 @@
-// pages/payment-success.js
-"use client";
-import React, { useEffect, useState } from "react";
+"use client"
 import { useParams, useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 
 const PaymentSuccess = () => {
   const router = useRouter();
-  const { session_id } = useParams(); // Retrieve the session ID from the URL
+  const { session_id } = useParams();  // Retrieve session ID from URL
   const [sessionDetails, setSessionDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -13,13 +12,13 @@ const PaymentSuccess = () => {
   useEffect(() => {
     const fetchSession = async () => {
       try {
-        if (!session_id) return; // Wait until the session_id is available
-        const response = await fetch(`/api/payment/session/${session_id}`); // Your backend API to get session details
+        if (!session_id) return;
+        const response = await fetch(`/api/payment/session/${session_id}`);
         if (!response.ok) {
           throw new Error("Failed to fetch session details");
         }
         const data = await response.json();
-        setSessionDetails(data); // Set session details in state
+        setSessionDetails(data);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -30,13 +29,8 @@ const PaymentSuccess = () => {
     fetchSession();
   }, [session_id]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div>
@@ -47,7 +41,6 @@ const PaymentSuccess = () => {
           <p>Order ID: {sessionDetails.id}</p>
           <p>Total Amount: ${(sessionDetails.amount_total / 100).toFixed(2)}</p>
           <p>Status: {sessionDetails.payment_status}</p>
-          {/* Add more details as needed */}
         </div>
       ) : (
         <p>No session details available.</p>
