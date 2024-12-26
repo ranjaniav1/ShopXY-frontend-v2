@@ -83,7 +83,7 @@ const Page = ({ handleBack }) => {
       const result = await handleStripePayment(
         userId,
         cartId,
-        // cartData,
+        cartData,
         // stripe
       );
 
