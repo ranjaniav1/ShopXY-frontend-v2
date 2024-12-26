@@ -78,20 +78,21 @@ const Page = ({ handleBack }) => {
         return;
       }
 
-      const stripe = await stripePromise; // Use the stripePromise from state
+      const stripe = await stripePromise;  // Access Stripe instance
 
-      const result = await handleStripePayment(
-        userId,
-        cartId,
-        cartData,
-        // stripe
-      );
+      const { id: sessionId } = await handleStripePayment(userId, cartId, cartData);  // Create Stripe session
 
-      if (result.error) {
-        toast.error("Payment failed: " + result.error.message);
-      } else {
-        toast.success("Payment successful!");
-        router.push("/");
+      if (!sessionId) {
+        toast.error("Failed to create Stripe session");
+        return;
+      }
+
+      // Redirect to Stripe Checkout
+      const { error } = await stripe.redirectToCheckout({ sessionId });
+
+      if (error) {
+        toast.error("Payment failed: " + error.message);
+        console.error("Error redirecting to Stripe checkout:", error);
       }
     } catch (error) {
       console.error("Error during Stripe payment", error);

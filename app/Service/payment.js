@@ -6,7 +6,7 @@ export const cashOnDelivery = async (userId, cartId) => {
   try {
     const response = await httpAxios.post("/user/payment/place-order-cod", {
       userId,
-      cartId
+      cartId,orderType:"cod"
     });
     return response.data.data;
   } catch (error) {
