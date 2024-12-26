@@ -33,10 +33,11 @@ export const createStripePayment = async (userId, cartId, cartData) => {
   try {
     const response = await axios.post("https://eshop-backend-tau.vercel.app/api/v2/user/payment/order", {
       paymentMethod: "stripe",
-      cartData,
+      // cartData,
       userId,
-      cartId,
+      // cartId,
     });
+    console.log(response)
     return response.data;
   } catch (error) {
     console.log("Error during Stripe payment creation", error);
@@ -52,6 +53,7 @@ export const handleStripePayment = async (userId, cartId, cartData) => {
 
   try {
     const { id: sessionId } = await createStripePayment(userId, cartId, cartData); // Create Stripe session
+    console.log("session id",sessionId)
     if (!sessionId) {
       toast.error("Stripe session creation failed.");
       return;
