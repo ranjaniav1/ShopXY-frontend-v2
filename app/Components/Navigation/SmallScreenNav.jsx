@@ -7,7 +7,6 @@ import { Search as SearchIcon } from "@mui/icons-material";
 import NavCartButton from "./NavCartButton";
 import NavAuthButtons from "./NavAuthButtons";
 import CustomModal from "@/app/Custom/CustomModal";
-import SearchModal from "./SearchModal";
 import NavSearchBar from "./NavSearchBar";
 
 const SmallScreenNav = ({ setDrawerOpen }) => {
