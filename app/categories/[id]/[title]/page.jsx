@@ -16,7 +16,6 @@ const Page = () => {
     const [loading, setLoading] = useState(true);
     const { id } = useParams();
     const { title } = useParams();
-    const theme = useTheme();
 
     async function fetchCategory() {
         try {

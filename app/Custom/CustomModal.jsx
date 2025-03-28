@@ -4,12 +4,13 @@ import { Modal, Box, Typography, IconButton, useTheme } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import CustomIconButton from "./CustomIconButton";
 
-const CustomModal = ({ open, onClose, title, children }) => {
+const CustomModal = ({ open, onClose, title, children,height})=>{
   const theme = useTheme();
   return (
     <Modal open={open} onClose={onClose}>
       <Box
         sx={{
+          height:height,
           width: 400,
           margin: "auto",
           padding: 3,

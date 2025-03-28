@@ -43,11 +43,8 @@ const SearchResults = () => {
         const data = await searchProduct(query);
         setResults(data.products); // Adjust based on your response structure
 
-        // Extract unique categories from the results
-        const uniqueCategories = [
-          ...new Set(data.products.flatMap((product) => product.tags))
-        ];
-        setCategories(uniqueCategories);
+        const uniqueBrands = [...new Set(data.products.map(p => p.name))];
+        setCategories(uniqueBrands);
 
         // Apply filters initially
         applyFilters(data.products);
@@ -76,7 +73,7 @@ const SearchResults = () => {
       .filter(
         (product) =>
           filters.categories.length === 0 ||
-          filters.categories.some((category) => product.tags.includes(category))
+          filters.categories.some((category) => product.name===category)
       );
 
     setFilteredResults(filtered);
@@ -120,17 +117,17 @@ const SearchResults = () => {
           <Typography variant="body1" mb={1}>
             Categories
           </Typography>
-          {categories.map((category) => (
+          {categories.map((brand) => (
             <FormControlLabel
-              key={category}
+              key={brand}
               control={
                 <Checkbox
-                  checked={filters.categories.includes(category)}
+                  checked={filters.categories.includes(brand)}
                   onChange={handleCategoryChange}
-                  value={category}
+                  value={brand}
                 />
               }
-              label={category}
+              label={brand}
             />
           ))}
         </FormGroup>
