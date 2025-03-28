@@ -2,7 +2,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navigation from "./Components/Navigation";
-import { Container, CssBaseline, ThemeProvider } from "@mui/material";
+import {Container, CssBaseline, ThemeProvider } from "@mui/material";
 import "./Styles/styles.scss";
 import { darkTheme, lightTheme } from "./Styles/theme";
 import { useSelector } from "react-redux";
@@ -17,7 +17,7 @@ const inter = Inter({ subsets: ["latin"] });
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className} >
+      <body className={inter.className}>
         <ProviderStore>
           <Toaster position="bottom-center" />
           <I18nextProvider i18n={i18n}>
@@ -28,13 +28,13 @@ export default function RootLayout({ children }) {
                 maxWidth="xl"
                 sx={{
                   marginTop: {
-                    xs: "6%", // mobile devices
-                    sm: "3%", // tablets
+                    xs: "12%",//mobile devices
+                    sm: "7%",// tablets
                     md: "6%", // small desktops
-                    lg: "4%", // medium desktops
-                    xl: "1.5%", // large desktops
+                    lg: "6%",//medium desktops
+                    xl: "4%", // large desktops
                   },
-                  paddingTop: "64px", // adjust based on the height of your nav
+                  paddingTop: "30px", // adjust based on the height of your nav
                 }}
               >
                 {children}

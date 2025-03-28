@@ -5,8 +5,6 @@ import FullScreenNav from './Navigation/FullScreenNav';
 import SmallScreenNav from './Navigation/SmallScreenNav';
 import CustomDrawer from '../Custom/CustomDrawer';
 import NavSetting from './NavSetting';
-import RegisterModal from './Navigation/RegisterModal';
-import LoginModal from './Navigation/LoginModal';
 
 const Navigation = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -19,7 +17,7 @@ const Navigation = () => {
             top: 0, // Align to the top
             left: 0,
             right: 0,
-            zIndex: 1000, }}>
+            zIndex: 1000,height:"80px" }}>
             <Container maxWidth="xl">
                 {/* Only visible on larger screens */}
                 <Box display={{ xs: 'none', md: 'block' }}>
