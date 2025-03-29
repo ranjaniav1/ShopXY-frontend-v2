@@ -20,6 +20,7 @@ const Layout = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [priceRange, setPriceRange] = useState([0, 5000]);
   const [ratingRange, setRatingRange] = useState([0, 5]);
+
   const [loading, setLoading] = useState(true);
 
   const theme = useTheme();
@@ -53,7 +54,9 @@ const Layout = () => {
   };
 
   const applyFilters = () => {
-    let filtered = allProducts;
+    if (!allProducts.length) return;
+
+  let filtered = [...allProducts];
 
     // Filter by price range
     filtered = filtered.filter(
@@ -95,7 +98,7 @@ const Layout = () => {
               <Divider sx={{ my: 2 }} />
               <Slider
               size="small"
-defaultValue="100"
+defaultValue={100}
                 value={priceRange}
                 onChange={handlePriceRangeChange}
                 valueLabelDisplay="auto"
@@ -109,11 +112,13 @@ defaultValue="100"
               <Divider sx={{ my: 2 }} />
               <Slider
               size="small"
-                value={ratingRange}
-                onChange={handleRatingRangeChange}
-                valueLabelDisplay="auto"
-               
-                sx={{ mb: 2 }}
+              min={0}
+              max={5}
+              step={0.5}
+              value={ratingRange}
+              onChange={handleRatingRangeChange}
+              valueLabelDisplay="auto"
+              sx={{ mb: 2 }}
               />
             </Box>
           </Box>
