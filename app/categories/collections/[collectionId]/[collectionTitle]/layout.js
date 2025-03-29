@@ -94,12 +94,12 @@ const Layout = () => {
               <Typography variant="subtitle1">Price Range</Typography>
               <Divider sx={{ my: 2 }} />
               <Slider
+              size="small"
+defaultValue="100"
                 value={priceRange}
                 onChange={handlePriceRangeChange}
                 valueLabelDisplay="auto"
-                min={0}
-                max={5000}
-                step={10}
+                aria-label="Small"
               />
             </Box>
 
@@ -108,12 +108,11 @@ const Layout = () => {
               <Typography variant="subtitle1">Ratings</Typography>
               <Divider sx={{ my: 2 }} />
               <Slider
+              size="small"
                 value={ratingRange}
                 onChange={handleRatingRangeChange}
                 valueLabelDisplay="auto"
-                min={0}
-                max={5}
-                step={0.5}
+               
                 sx={{ mb: 2 }}
               />
             </Box>
