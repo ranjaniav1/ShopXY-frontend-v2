@@ -36,6 +36,8 @@ import TabSection from "@/app/Components/profile/TabSection";
 import WishlistItem from "@/app/Components/profile/WishlistProduct";
 import DeleteIcon from "@mui/icons-material/Delete"; // Import the delete icon
 import Cookies from "js-cookie";
+import generateInvoice from "@/app/Components/profile/generateInvoice";
+import CustomButton from "@/app/Custom/CustomButton";
 
 const Layout = ({ children }) => {
   const dispatch = useDispatch();
@@ -292,181 +294,115 @@ const Layout = ({ children }) => {
             <Box
               p={2}
               sx={{
-                backgroundColor: theme.palette.background.default, // Use theme-based background
+                backgroundColor: theme.palette.background.default, 
                 borderRadius: "8px",
                 boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
                 mx: "auto"
               }}
             >
-              {order.length > 0 ? (
-                order.map((orderItem, index) => (
-                  <Box key={orderItem._id}>
-                    <Card
-                      sx={{
-                        marginBottom: 2,
-                        borderRadius: 2,
-                        boxShadow: 1,
-                        border: `1px solid ${theme.palette.divider}`, // Use theme divider color
-                        backgroundColor: theme.palette.card.background
-                      }}
-                    >
-                      <CardContent>
-                        <Typography variant="h5" component="div" gutterBottom>
-                          Order ID: {orderItem._id}
-                        </Typography>
-                        <Grid
-                          container
-                          justifyContent="space-between"
-                          sx={{ marginBottom: 2 }}
-                        >
-                          <Grid item xs={6}>
-                            <Typography
-                              variant="body1"
-                              color={theme.palette.text.secondary}
-                            >
-                              Order Status: {orderItem.orderStatus}
-                            </Typography>
-                          </Grid>
-                          <Grid item xs={6} container justifyContent="flex-end">
-                            <Typography
-                              variant="body1"
-                              color={theme.palette.text.secondary}
-                              sx={{ textAlign: "right" }}
-                            >
-                              Order Date:{" "}
-                              {new Date(
-                                orderItem.createdAt
-                              ).toLocaleDateString()}
-                            </Typography>
-                          </Grid>
-                        </Grid>
-
-                        <Divider sx={{ margin: "16px 0" }} />
-
-                        <Box
-                          sx={{
-                            border: `1px dotted ${theme.palette.divider}`,
-                            borderRadius: 2,
-                            marginBottom: 2
-                          }}
-                        >
-                          {orderItem.product.map((item, index) => (
-                            <Box key={item._id}>
-                              <Box
-                                sx={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                  borderRadius: 1
-                                }}
-                              >
-                                <CardMedia
-                                  component="img"
-                                  image={item.product.image}
-                                  alt={item.product.name}
-                                  sx={{
-                                    width: 80,
-                                    height: 80,
-                                    objectFit: "cover",
-                                    margin: 1
-                                  }} // Smaller image
-                                />
-                                <CardContent sx={{ flexGrow: 1 }}>
-                                  <Grid container spacing={1}>
-                                    <Grid item xs={6}>
-                                      <Typography variant="h6">
-                                        {item.product.name}
-                                      </Typography>
-                                    </Grid>
-                                    <Grid
-                                      item
-                                      xs={6}
-                                      container
-                                      justifyContent="flex-end"
-                                    >
-                                      <Typography
-                                        variant="body1"
-                                        sx={{
-                                          color: theme.palette.primary.main,
-                                          marginTop: 1
-                                        }}
-                                      >
-                                        Price: ₹
-                                        {item.product.discounted_price.toFixed(
-                                          2
-                                        )}
-                                      </Typography>
-                                    </Grid>
-                                    <Grid item xs={6}>
-                                      <Typography
-                                        variant="body1"
-                                        color={theme.palette.text.secondary}
-                                      >
-                                        {item.product.description}
-                                      </Typography>
-                                    </Grid>
-                                    <Grid
-                                      item
-                                      xs={6}
-                                      container
-                                      justifyContent="flex-end"
-                                    >
-                                      <Typography
-                                        variant="body1"
-                                        color={theme.palette.text.secondary}
-                                        sx={{ textAlign: "right" }}
-                                      >
-                                        Qty: {item.quantity}
-                                      </Typography>
-                                    </Grid>
-                                  </Grid>
-                                </CardContent>
-                              </Box>
-
-                              {/* Divider between products */}
-                              {index < orderItem.product.length - 1 && (
-                                <Divider sx={{ margin: "8px 0" }} />
-                              )}
-                            </Box>
-                          ))}
-                        </Box>
-
-                        <Divider sx={{ margin: "16px 0" }} />
-
-                        <Grid container justifyContent="space-between">
-                          <Grid item>
-                            <Typography
-                              variant="body1"
-                              color={theme.palette.text.secondary}
-                            >
-                              Payment Type: {orderItem.paymentType}
-                            </Typography>
-                          </Grid>
-                          <Grid item>
-                            <Typography
-                              variant="body1"
-                              color={theme.palette.text.secondary}
-                            >
-                              Total Price: ₹{orderItem.discountedPrice}
-                            </Typography>
-                          </Grid>
-                        </Grid>
-                      </CardContent>
-                    </Card>
-                    {/* {index < order.length - 1 && (
-                      <Divider sx={{ margin: "16px 0" }} />
-                    )}{" "} */}
-                    {/* Divider between orders */}
-                  </Box>
-                ))
-              ) : (
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  align="center"
-                >
-                  No orders found.
+             {order.length > 0 ? (
+  order.map((orderItem, index) => (
+    <Box key={orderItem._id}>
+      <Card
+        sx={{
+          marginBottom: 2,
+          borderRadius: 2,
+          boxShadow: 1,
+          border: `1px solid ${theme.palette.divider}`,
+          backgroundColor: theme.palette.card.background
+        }}
+      >
+        <CardContent>
+        <Grid container justifyContent="space-between" alignItems="center">
+                <Typography variant="h5" component="div">
+                  Order ID: {orderItem._id}
                 </Typography>
-              )}
+                <CustomButton  onClick={() => generateInvoice(orderItem)} className=" px-4 py-2 rounded-md transition-all duration-200" title="Download Invoice"/>
+              </Grid>
+              <Divider sx={{ margin: "16px 0" }} />
+
+          <Grid container justifyContent="space-between" sx={{ marginBottom: 2 }}>
+            <Grid item xs={6}>
+              <Typography variant="body1" color={theme.palette.text.secondary}>
+                Order Status: {orderItem.orderStatus}
+              </Typography>
+            </Grid>
+            <Grid item xs={6} container justifyContent="flex-end">
+              <Typography
+                variant="body1"
+                color={theme.palette.text.secondary}
+                sx={{ textAlign: "right" }}
+              >
+                Order Date:{" "}
+                {new Date(orderItem.createdAt).toLocaleDateString()}
+              </Typography>
+            </Grid>
+          </Grid>
+
+          {/* <Divider sx={{ margin: "16px 0" }} /> */}
+
+          <Box sx={{ border: `1px dotted ${theme.palette.divider}`, borderRadius: 2, marginBottom: 2 }}>
+            {orderItem.product.map((item, index) => (
+              <Box key={item._id}>
+                <Box sx={{ display: "flex", alignItems: "center", borderRadius: 1 }}>
+                  <CardMedia
+                    component="img"
+                    image={item.product.image}
+                    alt={item.product.name}
+                    sx={{ width: 80, height: 80, objectFit: "cover", margin: 1 }}
+                  />
+                  <CardContent sx={{ flexGrow: 1 }}>
+                    <Grid container spacing={1}>
+                      <Grid item xs={6}>
+                        <Typography variant="h6">{item.product.name}</Typography>
+                      </Grid>
+                      <Grid item xs={6} container justifyContent="flex-end">
+                        <Typography variant="body1" sx={{ color: theme.palette.primary.main, marginTop: 1 }}>
+                          Price: ₹{item.product.discounted_price.toFixed(2)}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Typography variant="body1" color={theme.palette.text.secondary}>
+                          {item.product.description}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={6} container justifyContent="flex-end">
+                        <Typography variant="body1" color={theme.palette.text.secondary} sx={{ textAlign: "right" }}>
+                          Qty: {item.quantity}
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  </CardContent>
+                </Box>
+                {index < orderItem.product.length - 1 && <Divider sx={{ margin: "8px 0" }} />}
+              </Box>
+            ))}
+          </Box>
+
+          <Divider sx={{ margin: "16px 0" }} />
+
+          <Grid container justifyContent="space-between">
+            <Grid item>
+              <Typography variant="body1" color={theme.palette.text.secondary}>
+                Payment Type: {orderItem.paymentType}
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography variant="body1" color={theme.palette.text.secondary}>
+                Total Price: ₹{orderItem.discountedPrice}
+              </Typography>
+            </Grid>
+          </Grid>
+        </CardContent>
+      </Card>
+    </Box>
+  ))
+) : (
+  <Typography variant="body2" color="text.secondary" align="center">
+    No orders found.
+  </Typography>
+)}
+
             </Box>
           )}
         </Grid>
