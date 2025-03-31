@@ -70,7 +70,8 @@ export const DeleteNotifications = async (userId, notificationId) => {
 // Function to get order for a user
 export const getOrder = async (userId) => {
   try {
-    const response = await httpAxios.get(`/user/payment/get-order/${userId}`);
+    const response = await httpAxios.get(`/user/payment/get-order/${userId}`); // Pass userId in URL path
+    console.log("ordrs",response)
     return response.data;
   } catch (error) {
     console.error("Error fetching notifications:", error);

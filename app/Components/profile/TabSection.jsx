@@ -20,7 +20,6 @@ const TabSection = ({ activeTab, handleTabChange }) => {
         onChange={handleTabChange}
         sx={{
           width: "100%",
-          maxWidth: 0,
           "& .MuiTab-root": {
             color: theme.palette.text.primary, // Theme-based text color for tabs
             "&.Mui-selected": {
