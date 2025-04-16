@@ -5,11 +5,9 @@ import { Grid, Card, Box } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import DoubleArrowIcon from "@mui/icons-material/DoubleArrow";
 import CustomButton from "../Custom/CustomButton";
-import { useDispatch, useSelector } from "react-redux";
-import { addtoCart } from "../Service/Cart";
-import { setMyCart } from "../redux/reducer/cartReducer";
-import toast from "react-hot-toast";
-import { useParams, useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import { handleAddToCart } from "../helper/cartUtils";
+import Link from "next/link";
 
 const ProductGallery = ({
   detailImages,
@@ -18,64 +16,7 @@ const ProductGallery = ({
   productName,
   productId
 }) => {
-  const userId = useSelector((state) => state?.auth?.user?.data?.user._id);
-  const dispatch = useDispatch();
-  const router = useRouter();
-
-  const cartData =
-    useSelector((state) => state.cart.cart?.data?.products) || [];
-
-  const handleAddToCart = async () => {
-    try {
-      const quantity = 1; //default qty is 1
-
-      const isProductInCart = cartData.some(
-        (item) => item.product._id === productId
-      );
-      if (isProductInCart) {
-        toast.error(`item is already in your cart.`);
-        return;
-      }
-
-      if (!userId) {
-        toast.error("please login first");
-        return;
-      }
-
-      const response = await addtoCart(userId, productId, quantity);
-      console.log("res", response);
-      dispatch(setMyCart(response));
-      toast.success(`item added !`);
-    } catch (error) {
-      toast.error(`Failed to add product to cart: ${error.message}`);
-    }
-  };
-  const handleBuyNow = async () => {
-    try {
-      const quantity = 1; //default qty is 1
-
-      const isProductInCart = cartData.some(
-        (item) => item.product._id === productId
-      );
-      if (isProductInCart) {
-        router.push("/scheckout/carts");
-        return;
-      }
-
-      if (!userId) {
-        toast.error("please login first");
-        return;
-      }
-
-      const response = await addtoCart(userId, productId, quantity);
-      console.log("res", response);
-      dispatch(setMyCart(response));
-      toast.success(`item added !`);
-      router.push("/scheckout/carts");
-    } catch (error) {
-      toast.error(`Failed to add product to cart: ${error.message}`);
-    }
-  };
+  const userId = useSelector((state) => state?.auth?.user?.data?.user?._id);
 // 🔹 Magnifier Effect
 const [lensPosition, setLensPosition] = useState({ x: 0, y: 0 });
 const [isHovering, setIsHovering] = useState(false);
@@ -177,17 +118,19 @@ const imgRef = useRef(null);
             variant="contained"
             title="Cart It"
             className="w-full"
-            onClick={handleAddToCart}
+            onClick={()=>handleAddToCart({userId:userId,productId:productId})}
           />
         </Grid>
         <Grid item xs={12}>
+        <Link href="/scheckout/carts" className="w-full">
           <CustomButton
             startIcon={<DoubleArrowIcon />}
             variant="contained"
             title="Buy Now"
             className="w-full"
-            onClick={handleBuyNow}
-          />
+            onClick={()=>handleAddToCart({userId:userId,productId:productId})}
+
+          /></Link>
         </Grid>
       </Grid>
     </Grid>
