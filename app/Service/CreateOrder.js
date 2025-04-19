@@ -1,4 +1,3 @@
-import toast from "react-hot-toast";
 import { httpAxios } from "../httpAxios";
 
 const createOrder = async (paymentMethod) => {
@@ -20,26 +19,5 @@ const createOrder = async (paymentMethod) => {
   }
 };
 
-const onPaypalApprove = async (data, actions) => {
-  try {
-    // Capture the payment on your backend
-    const response = await httpAxios.post(
-      `/payment/paypal/capture/${data.orderID}`
-    );
 
-    const orderData = await response.json();
-
-    if (orderData.status === "COMPLETED") {
-      toast.success("Payment captured successfully!");
-      console.log("Capture result:", orderData);
-    } else {
-      throw new Error("Transaction capture failed");
-    }
-  } catch (error) {
-    console.error("Error capturing PayPal order:", error);
-    setMessage(
-      `Sorry, your transaction could not be processed...${error.message}`
-    );
-  }
-};
-export { createOrder, onPaypalApprove };
+export { createOrder };

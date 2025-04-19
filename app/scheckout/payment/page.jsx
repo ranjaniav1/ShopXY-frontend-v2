@@ -1,7 +1,6 @@
 "use client";
 import CustomButton from "@/app/Custom/CustomButton";
 import CustomTypography from "@/app/Custom/CustomTypography";
-import { getCart } from "@/app/Service/Cart";
 import {
   cashOnDelivery,
   handleStripePayment,
@@ -20,29 +19,24 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import PaypalButton from "../../Common/PaypalButton";
-import { loadStripe } from "@stripe/stripe-js";
 
-const PaymentPage = ({ handleBack }) => {
+import { loadStripe } from "@stripe/stripe-js";
+import { httpAxios } from "@/app/httpAxios";
+
+const PaymentPage = ({ handleBack, cartData, loadCart }) => {
+  console.log("cart for pay",cartData)
   const userId = useSelector((state) => state.auth.user.data.user._id);
-  const [stripePromise, setStripePromise] = useState(null);
 
   const [promoCode, setPromoCode] = useState(""); // State to store promo code input
   const [promoError, setPromoError] = useState(""); // State to store promo code error
   const dispatch = useDispatch();
   const theme = useTheme();
   const router = useRouter();
-  useEffect(() => {
-    const stripe = loadStripe(
-      "pk_test_51PxLryRrN241bQ7Plo5ZmfXZqbcdcPPkaeMhCjYGPlr1kcCKvnWApXpNh1r9vfOTp6ZIWc0nOgv5sK4Ec3hbvVJj00vEdntnWT"
-    );
-    setStripePromise(stripe);
-  }, []);
+
   // Handle Cash on Delivery Payment
   async function handleCodPay() {
     try {
       const response = await cashOnDelivery(userId, cartId);
-      dispatch(clearMyCart());
       toast.success("payment sucess");
       router.push("/");
     } catch (error) {
@@ -53,9 +47,8 @@ const PaymentPage = ({ handleBack }) => {
   // Handle Promo Code Validation
   async function handlePromoCodeApply() {
     try {
-      const response = await promodCodes(promoCode, cartId);
-      const cart = await getCart(userId); // Send promo code and cart ID to backend
-      dispatch(setMyCart(cart)); // Update cart with applied discount
+      const response = await promodCodes(promoCode, cartData._id); // Send promo code to backend
+      await loadCart(userId)
       toast.success("coupon added!");
 
       console.log("Promo code applied successfully:", response);
@@ -67,32 +60,42 @@ const PaymentPage = ({ handleBack }) => {
       );
     }
   }
-  async function handleStripePay() {
-    try {
-      if (!stripePromise) {
-        toast.error("Stripe is not initialized");
-        return;
+  
+  async function handleStripePay(paymentType,cartId,userId) {
+    if (paymentType === "Stripe") {
+      console.log("Initiating Stripe...");
+      try {
+        // Create a checkout session by calling your backend API
+        const { data } = await httpAxios.post(
+          "/user/payment/order",
+          {
+            paymentMethod: "stripe",
+            metadata: {
+              userId,
+              cartId,
+            },
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+  
+        // Load Stripe and create an instance
+        const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+  
+        if (stripe) {
+          const result = await stripe.redirectToCheckout({ sessionId: data.id });
+          if (result.error) {
+            console.error("Stripe Checkout error:", result.error.message);
+          }
+        } else {
+          console.error("Stripe is not available.");
+        }
+      } catch (error) {
+        console.error("Error creating checkout session:", error.message);
       }
-
-      const stripe = await stripePromise;  // Access Stripe instance
-
-      const { id: sessionId } = await handleStripePayment(userId, cartId, cartData);  // Create Stripe session
-
-      if (!sessionId) {
-        toast.error("Failed to create Stripe session");
-        return;
-      }
-
-      // Redirect to Stripe Checkout
-      const { error } = await stripe.redirectToCheckout({ sessionId });
-
-      if (error) {
-        toast.error("Payment failed: " + error.message);
-        console.error("Error redirecting to Stripe checkout:", error);
-      }
-    } catch (error) {
-      console.error("Error during Stripe payment", error);
-      toast.error("Payment failed");
     }
   }
 
@@ -133,7 +136,7 @@ const PaymentPage = ({ handleBack }) => {
         }}
         onClick={handleCodPay}
       />
-      <PaypalButton />
+     
 
       {/* Stripe Payment Button */}
       <CustomButton
@@ -146,7 +149,7 @@ const PaymentPage = ({ handleBack }) => {
             backgroundColor: "#5469d4"
           }
         }}
-        onClick={handleStripePay}
+        onClick={()=>handleStripePay("Stripe", cartData._id, userId)}
       />
       {/* Promo Code Section */}
       <Box sx={{ width: "100%", mt: 4 }}>
