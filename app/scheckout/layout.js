@@ -17,39 +17,37 @@ import {
 } from "@mui/material";
 import PriceDetails from "@/app/Components/PriceDetail";
 import CustomBox from "@/app/Custom/CustomBox";
-import { setMyCart } from "../redux/reducer/cartReducer";
 import CustomButton from "../Custom/CustomButton";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useTranslation } from "react-i18next";
+import { fetchCart } from "../helper/cartUtils";
+import CartPage from "./carts/page";
+import AddressPage from "./address/page";
+import PaymentPage from "./payment/page";
 
 const Layout = ({ children }) => {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [activeStep, setActiveStep] = useState(0);
 
   const userId =
     useSelector((state) => state.auth?.user?.data?.user?._id) || "test";
-  const dispatch = useDispatch();
+  const [cartData, setCartData] = useState([]);
   const pathname = usePathname();
   const theme = useTheme();
-  const { t } = useTranslation();
-  const isCart = useSelector((state) => state.cart.cart.data);
-  const isXsScreen = useMediaQuery(theme.breakpoints.down("xs")); // Media query for xs screens
+  const isXsScreen = useMediaQuery(theme.breakpoints.down("xs"));
 
-  const fetchCartData = async () => {
+  const loadCart = async () => {
     try {
-      const response = await getCart(userId);
-      dispatch(setMyCart(response));
-    } catch (err) {
-      setError(err.message || "Error fetching cart data");
-    } finally {
-      setLoading(false);
+      const data = await fetchCart(userId);
+      console.log("Fetched cart data:", data); // Add log here
+      setCartData(data);
+    } catch (error) {
+      console.error("Error loading cart data:", error);
     }
   };
+
   useEffect(() => {
-    fetchCartData();
-  }, []);
+    loadCart();
+  }, [userId]);
 
   useEffect(() => {
     if (pathname === "/scheckout/carts") {
@@ -59,7 +57,7 @@ const Layout = ({ children }) => {
     } else if (pathname === "/scheckout/payment") {
       setActiveStep(2);
     }
-  }, [pathname]); // Listen to pathname changes
+  }, [pathname]);
 
   const steps = ["Cart", "Address", "Payment"];
 
@@ -74,6 +72,7 @@ const Layout = ({ children }) => {
       setActiveStep(activeStep - 1);
     }
   };
+
   return (
     <Box>
       <Stepper
@@ -103,11 +102,14 @@ const Layout = ({ children }) => {
       <CustomBox>
         <Container maxWidth="xl">
           <Grid container spacing={4}>
-            {isCart && isCart.products.length > 0 ? (
+            {cartData ? (
               <>
                 {/* Grid for children (cart items) */}
                 <Grid item xs={12} md={7}>
-                  {React.cloneElement(children, { handleNext, handleBack })}
+                  {/* cart component ne call kr and aema props pass kr */}
+                {pathname === "/scheckout/carts" && <CartPage loadCart={loadCart} cartData={cartData} />} 
+                {pathname === "/scheckout/address" && <AddressPage handleBack={handleBack} handleNext={handleNext} />} 
+                {pathname === "/scheckout/payment" && <PaymentPage loadCart={loadCart} cartData={cartData} />} 
                 </Grid>
 
                 {/* Vertical Divider */}
@@ -129,17 +131,17 @@ const Layout = ({ children }) => {
                       <Divider orientation="horizontal" flexItem />
                     ) : (
                       <Divider orientation="vertical" flexItem />
-                    )}{" "}
+                    )}
                   </Box>
                 </Grid>
 
                 {/* Price Details Section */}
                 <Grid item xs={12} md={4}>
                   <PriceDetails
-                    numberOfItems={isCart.products.length}
-                    totalProductPrice={isCart.totalPrice}
-                    totalDiscount={isCart.discountPrice}
-                    orderTotal={isCart.totalPrice}
+                    numberOfItems={cartData.products?.length || 0}
+                    totalProductPrice={cartData.totalPrice}
+                    totalDiscount={cartData.discountPrice}
+                    orderTotal={cartData.totalPrice}
                   />
                 </Grid>
               </>

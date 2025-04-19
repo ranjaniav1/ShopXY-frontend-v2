@@ -27,7 +27,7 @@ export default function RootLayout({ children }) {
               <Container
                 maxWidth="xl"
                 sx={{
-                  marginTop: {
+                  marginY: {
                     xs: "12%",//mobile devices
                     sm: "7%",// tablets
                     md: "6%", // small desktops

@@ -1,7 +1,6 @@
 "use client";
 import CustomButton from "@/app/Custom/CustomButton";
 import CustomTypography from "@/app/Custom/CustomTypography";
-import { clearMyCart, setMyCart } from "@/app/redux/reducer/cartReducer";
 import { getCart } from "@/app/Service/Cart";
 import {
   cashOnDelivery,
@@ -24,11 +23,8 @@ import { useDispatch, useSelector } from "react-redux";
 import PaypalButton from "../../Common/PaypalButton";
 import { loadStripe } from "@stripe/stripe-js";
 
-const Page = ({ handleBack }) => {
+const PaymentPage = ({ handleBack }) => {
   const userId = useSelector((state) => state.auth.user.data.user._id);
-  const cartId = useSelector((state) => state.cart.cart.data._id);
-  const cartData = useSelector((state) => state.cart.cart.data.products);
-  console.log("Cart Data from Redux:", cartData); // Modify based on your reducer structure
   const [stripePromise, setStripePromise] = useState(null);
 
   const [promoCode, setPromoCode] = useState(""); // State to store promo code input
@@ -217,4 +213,4 @@ const Page = ({ handleBack }) => {
   );
 };
 
-export default Page;
+export default PaymentPage;

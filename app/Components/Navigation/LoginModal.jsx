@@ -6,14 +6,12 @@ import toast from "react-hot-toast";
 import {
   Visibility,
   VisibilityOff,
-  PhoneAndroid,
   Google,
   Email
 } from "@mui/icons-material";
 import CustomModal from "@/app/Custom/CustomModal";
 import CustomInput from "@/app/Custom/CustomInput";
 import CustomButton from "@/app/Custom/CustomButton";
-import PhoneRegistrationModal from "./PhoneRegistrationModal";
 import GoogleRegistrationModal from "./GoogleRegistrationForm";
 import { Login } from "@/app/Service/User";
 import { setUser } from "@/app/redux/reducer/user/loginReducer";
@@ -28,7 +26,6 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false); // Loading state
-  const [isPhoneModalOpen, setIsPhoneModalOpen] = useState(false); // State for Phone Login Modal
   const [isGoogleModalOpen, setIsGoogleModalOpen] = useState(false); // State for Google Login Modal
 
   const handleSubmitEmail = async (e) => {
@@ -52,19 +49,13 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
     }
   };
 
-  const handleOpenPhoneModal = () => {
-    setIsPhoneModalOpen(true);
-    onClose(); // Close the LoginModal when opening the PhoneLoginModal
-  };
 
   const handleOpenGoogleModal = () => {
     setIsGoogleModalOpen(true);
     onClose(); // Close the LoginModal when opening the GoogleLoginModal
   };
 
-  const handleClosePhoneModal = () => {
-    setIsPhoneModalOpen(false);
-  };
+ 
 
   const handleCloseGoogleModal = () => {
     setIsGoogleModalOpen(false);
@@ -103,14 +94,7 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
         {/* "OR" Separator */}
         <Divider sx={{ my: 2 }}>{t("OR")}</Divider>
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-          <CustomButton
-            fullWidth
-            onClick={handleOpenPhoneModal}
-            startIcon={<PhoneAndroid />}
-            title={t("Phone")}
-            sx={{ flex: 1, backgroundColor: theme.palette.warning.main }}
-          />
-          <Divider orientation="vertical" flexItem />
+         
           <CustomButton
             fullWidth
             onClick={handleOpenGoogleModal}
@@ -129,10 +113,7 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
           sx={{ mt: 2, backgroundColor: theme.palette.primary.main }}
         />
       </CustomModal>{" "}
-      <PhoneRegistrationModal
-        open={isPhoneModalOpen}
-        onClose={handleClosePhoneModal}
-      />
+     
       {/* Render GoogleLoginModal */}
       <GoogleRegistrationModal
         open={isGoogleModalOpen}

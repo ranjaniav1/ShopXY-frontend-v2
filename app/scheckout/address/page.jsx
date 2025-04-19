@@ -19,7 +19,7 @@ import { useMediaQuery } from "@mui/material";
 import { Add } from "@mui/icons-material"; // For add icon
 import CustomIconButton from "@/app/Custom/CustomIconButton";
 
-const Page = ({ handleNext, handleBack }) => {
+const AddressPage = ({ handleNext, handleBack }) => {
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -207,4 +207,4 @@ const Page = ({ handleNext, handleBack }) => {
   );
 };
 
-export default Page;
+export default AddressPage;

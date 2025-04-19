@@ -21,7 +21,7 @@ const FullScreenNav = ({ setDrawerOpen }) => {
       {/* Logo */}
       <Link href="/">
         <div className="text-xl font-semibold">
-          <span style={{ color: "#22aa99" }}>s</span>hopxy
+          <span style={{ color: "#22aa99" }}>S</span>hopXY
         </div>
       </Link>
 

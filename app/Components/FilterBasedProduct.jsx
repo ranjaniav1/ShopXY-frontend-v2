@@ -18,7 +18,7 @@ const FilterBasedProduct = ({ products }) => {
   });
 
   return (
-    <Grid container spacing={3}>
+    <Grid container spacing={2}>
       {products && products.length > 0 ? (
         products.map((product) => (
           <Grid item xs={12} sm={8} md={6} lg={4} key={product._id}>
