@@ -5,7 +5,7 @@ export async function GetCollection() {
     const response = await httpDataAxios.get(`/Get-collection`);
     return response.data.data;
   } catch (error) {
-    console.log("error in category", error);
+    console.log("error in collection", error);
   }
 }
 

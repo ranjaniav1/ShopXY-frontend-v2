@@ -14,7 +14,7 @@ import ImageIcon from "@mui/icons-material/Image";
 import DeleteIcon from "@mui/icons-material/Delete"; // Import DeleteIcon
 import { useSelector } from "react-redux";
 
-const BrandReviewForm = ({ brandId, onClose, productId }) => {
+const BrandReviewForm = ({ brandId, onClose, productId,onSubmitSuccess }) => {
   const theme = useTheme(); // Access the theme
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState("");
@@ -51,16 +51,24 @@ const BrandReviewForm = ({ brandId, onClose, productId }) => {
         await SubmitBrandReview(reviewData);
         toast.success("Thank you for giving our brand a review!");
       }
+      // ✅ Inform parent that submission succeeded
+      if (onSubmitSuccess) {
+        onSubmitSuccess();
+      }
       onClose();
       setRating(0);
       setReview("");
       setImages([]);
     } catch (error) {
-      // Handle the error case and display error message
-      const errorMessage = error.response?.data?.message;
+      const errorMessage =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Something went wrong. Please try again.";
+    
       toast.error(errorMessage);
       console.error("Error submitting review:", error);
-    } finally {
+    }
+     finally {
       setLoading(false);
     }
   };

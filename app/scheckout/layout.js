@@ -24,6 +24,7 @@ import { fetchCart } from "../helper/cartUtils";
 import CartPage from "./carts/page";
 import AddressPage from "./address/page";
 import PaymentPage from "./payment/page";
+import EmptyCart from "../Components/EmptyCart";
 
 const Layout = ({ children }) => {
   const [activeStep, setActiveStep] = useState(0);
@@ -75,34 +76,36 @@ const Layout = ({ children }) => {
 
   return (
     <Box>
+     {cartData?.products?.length > 0 && (
       <Stepper
         sx={{
           ".Mui-completed .MuiStepIcon-root": {
             background: theme.palette.button.color,
             borderRadius: "50%",
-            color: theme.palette.button.background
+            color: theme.palette.button.background,
           },
           ".Mui-active .MuiStepIcon-root": {
-            color: "#22aa99" // Active step icon color
+            color: "#22aa99",
           },
           ".css-rxa01a-MuiSvgIcon-root-MuiStepIcon-root": {
-            color: "white"
-          }
+            color: "white",
+          },
         }}
         activeStep={activeStep}
         alternativeLabel
       >
-        {steps.map((label, index) => (
+        {steps.map((label) => (
           <Step key={label}>
             <StepLabel>{label}</StepLabel>
           </Step>
         ))}
       </Stepper>
+    )}
 
       <CustomBox>
         <Container maxWidth="xl">
           <Grid container spacing={4}>
-            {cartData ? (
+            {cartData &&  cartData.products && cartData.products.length>0  ? (
               <>
                 {/* Grid for children (cart items) */}
                 <Grid item xs={12} md={7}>
@@ -146,53 +149,7 @@ const Layout = ({ children }) => {
                 </Grid>
               </>
             ) : (
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  height: "100%", // Adjust this value as needed
-                  width: "100%", // Adjust this value as needed
-                  textAlign: "center",
-                  paddingBottom: 2,
-                  paddingTop: 2
-                }}
-              >
-                <img
-                  src="https://cdn1.vectorstock.com/i/1000x1000/43/85/young-man-pushing-a-shopping-empty-cart-vector-13494385.jpg"
-                  alt="Your cart is empty"
-                  style={{
-                    height: "400px",
-                    maxWidth: "100%",
-                    objectFit: "cover",
-                    animation: "scale 2s infinite alternate" // Animation applied here
-                  }}
-                />
-
-                <Typography>
-                  Don&apos;t worry, you can add your products here. Simply click
-                  on Start Shopping.
-                </Typography>
-
-                <Link href="/categories/collections" passHref>
-                  <CustomButton title="Start Shopping" />
-                </Link>
-
-                {/* CSS Animation Styles */}
-                <style>
-                  {`
-                  @keyframes scale {
-                    0% {
-                      transform: scale(1);
-                    }
-                    100% {
-                      transform: scale(1.05);
-                    }
-                  }
-                `}
-                </style>
-              </Box>
+             <EmptyCart/>
             )}
           </Grid>
         </Container>

@@ -15,12 +15,12 @@ export const addWishlist = async (userId, productId) => {
 };
 
 // Function to get the wishlist
-export const getWishlist = async (userId) => {
+export const getWishlist = async (userId,page=1,limit=10) => {
   try {
-    const response = await httpAxios.get(`/user/profile/get-wishlist`, {
+    const response = await httpAxios.get(`/user/profile/get-wishlist?page=${page}&limit=${limit}`, {
       params: { userId }
     });
-    return response.data.data.products;
+    return response.data.data;
   } catch (error) {
     console.error("Error fetching wishlist:", error);
     throw error;
@@ -44,19 +44,24 @@ export const deleteWishlistItem = async ({ userId, productId }) => {
 };
 
 // Function to get notifications for a user
-export const getNotifications = async (userId) => {
+export const getNotifications = async (userId, page = 1, limit = 10) => {
   try {
     const response = await httpAxios.get(
-      `/user/profile/notification/${userId}`
+      `/user/profile/notification/${userId}?page=${page}&limit=${limit}`
     );
-    return response.data.data.messages;
+    return response.data.data;
   } catch (error) {
     console.error("Error fetching notifications:", error);
     throw error;
   }
 };
+
 // delete notify based on id
 export const DeleteNotifications = async (userId, notificationId) => {
+  if (!userId || !notificationId) {
+    throw new Error("Missing userId or notificationId for deletion.");
+  }
+
   try {
     const response = await httpAxios.delete(
       `/user/profile/notification/${userId}/${notificationId}`
@@ -68,11 +73,10 @@ export const DeleteNotifications = async (userId, notificationId) => {
   }
 };
 // Function to get order for a user
-export const getOrder = async (userId) => {
+export const getOrder = async (userId,page=1,limit=1) => {
   try {
-    const response = await httpAxios.get(`/user/payment/get-order/${userId}`); // Pass userId in URL path
-    console.log("ordrs",response)
-    return response.data;
+    const response = await httpAxios.get(`/user/payment/get-order/${userId}?page=${page}&limit=${limit}`); // Pass userId in URL path
+    return response.data.data;
   } catch (error) {
     console.error("Error fetching notifications:", error);
     throw error;
