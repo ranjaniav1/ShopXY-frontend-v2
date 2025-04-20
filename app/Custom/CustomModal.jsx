@@ -11,8 +11,11 @@ const CustomModal = ({ open, onClose, title, children,height})=>{
       <Box
         sx={{
           height:height,
-          width: 400,
-          margin: "auto",
+          width: {
+            xs: "90%",
+            sm: 400,
+            md: 500,
+          },          margin: "auto",
           padding: 3,
           backgroundColor: theme.palette.background.paper,
           borderRadius: 2,
