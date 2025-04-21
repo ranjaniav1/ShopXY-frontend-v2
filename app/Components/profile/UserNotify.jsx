@@ -69,12 +69,12 @@ const UserNotify = ({ userId, activeTab }) => {
               variant="body1"
               sx={{
                 flexGrow: 1,
-                fontWeight: "bold",
+                fontWeight: "bold",color:theme.palette.text.primary,
               }}
             >
               {notification.notify}
             </CustomTypography>
-            <CustomTypography variant="body2" sx={{ ml: 2, minWidth: "120px" }}>
+            <CustomTypography variant="body2" sx={{ ml: 2, minWidth: "120px",color:theme.palette.text.secondary }}>
               {new Date(notification.timestamp).toLocaleString()}
             </CustomTypography>
             {hoveredNotificationId === notification._id && (
@@ -104,7 +104,7 @@ const UserNotify = ({ userId, activeTab }) => {
         <Button onClick={() => setPage((p) => Math.max(p - 1, 1))} disabled={page <= 1}>
           Previous
         </Button>
-        <CustomTypography variant="body2">
+        <CustomTypography variant="body2" sx={{color:theme.palette.text.secondary }}>
           Page {page} of {totalPages}
         </CustomTypography>
         <Button onClick={() => setPage((p) => Math.min(p + 1, totalPages))} disabled={page >= totalPages}>

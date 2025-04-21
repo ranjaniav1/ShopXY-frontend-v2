@@ -52,7 +52,6 @@ const BrandRating = ({ brand, brandId }) => {
       <Card
         sx={{
           padding: 2,
-          borderRadius: 2,
           boxShadow: 2,
           display: "flex",
           alignItems: "center",

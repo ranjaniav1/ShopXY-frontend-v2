@@ -1,7 +1,6 @@
 import React from "react";
-import { Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import ProductCard from "./ProductCard";
-import CustomSkeleton from "../Custom/CustomSkeleton";
 import { useSelector } from "react-redux";
 import CustomTypography from "../Custom/CustomTypography";
 

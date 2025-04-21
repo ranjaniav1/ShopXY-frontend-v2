@@ -1,38 +1,38 @@
-"use client";
+'use client';
 import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
   CircularProgress,
   Grid,
-  Slider,
-  FormControlLabel,
-  Checkbox,
-  FormGroup,
-  Button
+  Slider
 } from "@mui/material";
 import { useParams } from "next/navigation";
-import { searchProduct } from "@/app/Service/search"; // Adjust the import based on your structure
+import { searchProduct } from "@/app/Service/search";
 import ProductCard from "@/app/Components/ProductCard";
-import Link from "next/link";
-import { useSelector } from "react-redux";
 import CustomTypography from "@/app/Custom/CustomTypography";
+import { useSelector } from "react-redux";
+import CustomBox from "@/app/Custom/CustomBox";
+import Heading from "@/app/Common/Heading";
 
 const SearchResults = () => {
-  const { query } = useParams(); // Get the query from the URL
+  const { query } = useParams();
   const [results, setResults] = useState([]);
   const [filteredResults, setFilteredResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const [priceLimits, setPriceLimits] = useState([0, 89]); // Dynamic min/max for slider
+
   const [filters, setFilters] = useState({
-    priceRange: [0, 1000],
-    categories: []
+    priceRange: [0, 89],
+    ratingRange: [0, 5]
   });
-  const [categories, setCategories] = useState([]);
+
   const { userId } = useSelector((state) => {
     const isAuth = state.auth.isAuthenticated;
     return {
-      userId: isAuth ? state.auth.user?.data?.user?._id : null
+      userId: isAuth ? state.auth.user?.data?.user?._id : null,
     };
   });
 
@@ -42,13 +42,20 @@ const SearchResults = () => {
       setError("");
       try {
         const data = await searchProduct(query);
-        setResults(data.products); // Adjust based on your response structure
+        setResults(data.products);
 
-        const uniqueBrands = [...new Set(data.products.map(p => p.name))];
-        setCategories(uniqueBrands);
+        const allPrices = data.products.map((product) => product.actual_price);
+        const minPrice = Math.floor(Math.min(...allPrices));
+        const maxPrice = Math.ceil(Math.max(...allPrices));
 
-        // Apply filters initially
-        applyFilters(data.products);
+        setFilters((prevFilters) => ({
+          ...prevFilters,
+          priceRange: [minPrice, maxPrice],
+        }));
+        setPriceLimits([minPrice, maxPrice]);
+
+        applyFilters(data.products, [minPrice, maxPrice], filters.ratingRange);
+
       } catch (err) {
         setError("Failed to fetch results.");
       } finally {
@@ -60,102 +67,105 @@ const SearchResults = () => {
   }, [query]);
 
   useEffect(() => {
-    // Apply filters whenever filters state or results change
-    applyFilters(results);
+    applyFilters(results, filters.priceRange, filters.ratingRange);
   }, [filters, results]);
 
-  const applyFilters = (products) => {
+  const applyFilters = (products, priceRange = filters.priceRange, ratingRange = filters.ratingRange) => {
     const filtered = products
       .filter(
         (product) =>
-          product.actual_price >= filters.priceRange[0] &&
-          product.actual_price <= filters.priceRange[1]
+          product.actual_price >= priceRange[0] &&
+          product.actual_price <= priceRange[1]
       )
       .filter(
         (product) =>
-          filters.categories.length === 0 ||
-          filters.categories.some((category) => product.name===category)
+          product.ratings >= ratingRange[0] &&
+          product.ratings <= ratingRange[1]
       );
 
     setFilteredResults(filtered);
   };
 
   const handlePriceRangeChange = (event, newValue) => {
-    setFilters((prev) => ({ ...prev, priceRange: newValue }));
-  };
-
-  const handleCategoryChange = (event) => {
-    const { value, checked } = event.target;
     setFilters((prev) => ({
       ...prev,
-      categories: checked
-        ? [...prev.categories, value]
-        : prev.categories.filter((cat) => cat !== value)
+      priceRange: newValue,
     }));
   };
 
+  const handleRatingRangeChange = (event, newValue) => {
+    setFilters((prev) => ({ ...prev, ratingRange: newValue }));
+  };
+
   return (
-    <Box display="flex" p={2}>
-      {/* Filter Sidebar */}
-      <Box width="20%" p={2} borderRight="1px solid #ddd">
-        <CustomTypography variant="h6" mb={2}>
-          Filters
-        </CustomTypography>
+    <CustomBox>
+      <Grid container spacing={2} sx={{ px: { xs: 1, sm: 2 } }}>
+        {/* Filter Sidebar */}
+        <Grid item xs={12} md={3}>
+          <Box
+            sx={{
+              p: 2,
+              borderRadius: 2,
+              boxShadow: 1,
+              position: "sticky",
+              top: "100px",
+            }}
+          >
+            <Heading text="Filter By" />
 
-        <CustomTypography variant="body1" mb={1}>
-          Price Range
-        </CustomTypography>
-        <Slider
-          value={filters.priceRange}
-          onChange={handlePriceRangeChange}
-          valueLabelDisplay="auto"
-          min={0}
-          max={1000}
-          step={10}
-        />
+            {/* Price Filter */}
+            <Box my={2}>
+              <CustomTypography fontWeight={600} fontSize="1rem">
+                Price Range
+              </CustomTypography>
+              <Slider
+                size="small"
+                min={priceLimits[0]}
+                max={priceLimits[1]}
+                step={1}
+                marks
+                value={filters.priceRange}
+                onChange={handlePriceRangeChange}
+                valueLabelDisplay="auto"
+                valueLabelFormat={(value) => `₹${value}`}
+              />
+              <CustomTypography fontSize="0.875rem">
+                ₹{filters.priceRange[0]} - ₹{filters.priceRange[1]}
+              </CustomTypography>
+            </Box>
 
-        <FormGroup mt={2}>
-          <CustomTypography variant="body1" mb={1}>
-            Categories
-          </CustomTypography>
-          {categories.map((brand) => (
-            <FormControlLabel
-              key={brand}
-              control={
-                <Checkbox
-                  checked={filters.categories.includes(brand)}
-                  onChange={handleCategoryChange}
-                  value={brand}
-                />
-              }
-              label={brand}
-            />
-          ))}
-        </FormGroup>
+            {/* Rating Filter */}
+            <Box my={2}>
+              <CustomTypography fontWeight={600} fontSize="1rem">
+                Rating Range
+              </CustomTypography>
+              <Slider
+                size="small"
+                min={0}
+                max={5}
+                step={0.1}
+                marks
+                value={filters.ratingRange}
+                onChange={handleRatingRangeChange}
+                valueLabelDisplay="auto"
+              />
+              <CustomTypography fontSize="0.875rem">
+                {filters.ratingRange[0]} - {filters.ratingRange[1]} Stars
+              </CustomTypography>
+            </Box>
+          </Box>
+        </Grid>
 
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() =>
-            setFilters({ ...filters, priceRange: [0, 1000], categories: [] })
-          }
-          sx={{ mt: 2 }}
-        >
-          Reset Filters
-        </Button>
-      </Box>
+        {/* Search Results */}
+        <Grid item xs={12} sm={9}>
+          {loading && <CircularProgress />}
+          {error && <CustomTypography color="error">{error}</CustomTypography>}
 
-      {/* Search Results */}
-      <Box width="80%" p={2}>
-        {loading && <CircularProgress />}
-
-        {error && <CustomTypography color="error">{error}</CustomTypography>}
-
-        {filteredResults.length > 0 ? (
+          {/* Product List */}
           <Grid container spacing={2}>
-            {filteredResults.map((product) => (
-              <Grid item xs={12} sm={6} md={4} lg={3} key={product._id}>
-               
+            {filteredResults.length > 0 ? (
+              filteredResults.map((product) => (
+                <Grid item xs={12} sm={6} md={4} lg={3} key={product._id}>
                   <ProductCard
                     className="h-40 w-full object-cover"
                     imgSrc={product.image}
@@ -169,15 +179,15 @@ const SearchResults = () => {
                     productId={product._id}
                     slug={product.slug}
                   />
-                
-              </Grid>
-            ))}
+                </Grid>
+              ))
+            ) : (
+              <CustomTypography>No results found.</CustomTypography>
+            )}
           </Grid>
-        ) : (
-          <CustomTypography>No results found.</CustomTypography>
-        )}
-      </Box>
-    </Box>
+        </Grid>
+      </Grid>
+    </CustomBox>
   );
 };
 

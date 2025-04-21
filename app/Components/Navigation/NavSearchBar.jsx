@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Search } from "@mui/icons-material";
 import CustomInput from "@/app/Custom/CustomInput";
 import { searchProduct } from "@/app/Service/search";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation"; // ✅ using App Router
 import { useTheme } from "@mui/material";
 
 const NavSearchBar = ({ onClose }) => {
@@ -10,10 +10,17 @@ const NavSearchBar = ({ onClose }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [disableSuggestions, setDisableSuggestions] = useState(false);
   const router = useRouter();
+  const pathname = usePathname(); // ✅ watch path change
   const theme = useTheme();
-  const searchRef = useRef(null); // 🔹 Ref for outside click detection
+  const searchRef = useRef(null);
 
-  // 🔹 Detect clicks outside the component
+  // ✅ close modal when route changes
+  useEffect(() => {
+    if (disableSuggestions) {
+      onClose?.();
+    }
+  }, [pathname]);
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
@@ -49,8 +56,7 @@ const NavSearchBar = ({ onClose }) => {
     if (searchQuery.trim()) {
       router.push(`/search/${encodeURIComponent(searchQuery.trim())}`);
       setSuggestions([]);
-      setDisableSuggestions(true);
-      onClose?.();
+      setDisableSuggestions(true); // this triggers modal close in useEffect
     }
   };
 
@@ -86,9 +92,8 @@ const NavSearchBar = ({ onClose }) => {
               onClick={() => {
                 setSearchQuery(item.name);
                 setSuggestions([]);
-                setDisableSuggestions(true);
+                setDisableSuggestions(true); // triggers modal close
                 router.push(`/product/${item._id}/${encodeURIComponent(item.slug)}`);
-                onClose?.();
               }}
             >
               {item.name}

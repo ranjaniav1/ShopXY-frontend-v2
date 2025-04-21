@@ -14,13 +14,13 @@ const AddressCard = ({ address, selectedAddressId, handleEdit, handleRemove, han
         <Box
             sx={{
                 alignItems: 'center',
-                border: '1px solid #e1e0e0',
+                border: `1px solid ${theme.palette.card.border}`,
+        backgroundColor: theme.palette.card.background,
                 borderRadius: 2,
                 padding: '16px',
                 marginBottom: 2,
                 boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
                 position: 'relative',
-                background: theme.palette.card.background
             }}
         >
 
@@ -75,10 +75,10 @@ const AddressCard = ({ address, selectedAddressId, handleEdit, handleRemove, han
                     {/* <CustomTypography variant="body1" fontWeight="bold" sx={{ color: '#333', mb: '4px' }}>
                 {address.address}
             </CustomTypography */}
-                    <CustomTypography variant="body2" color="textSecondary">
+                    <CustomTypography variant="body2" sx={{color: theme.palette.text.secondary}}>
                         {address.city}, {address.state}, {address.postalCode}
                     </CustomTypography>
-                    <CustomTypography variant="body2" color="textSecondary" mt={0.5}>
+                    <CustomTypography variant="body2" sx={{color: theme.palette.text.secondary}} mt={0.5}>
                         {address.country} |  Phone: {address.phone}
                     </CustomTypography>
                 </Box>
