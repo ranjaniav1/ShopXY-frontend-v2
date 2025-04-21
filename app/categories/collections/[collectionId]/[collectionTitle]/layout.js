@@ -4,7 +4,6 @@ import Heading from "@/app/Common/Heading";
 import {
   Grid,
   Box,
-  CustomTypography,
   Slider,
   useTheme,
 } from "@mui/material";
@@ -12,6 +11,7 @@ import { useParams } from "next/navigation";
 import { GetSpecificProduct } from "@/app/Service/GetProduct";
 import FilterBasedProduct from "@/app/Components/FilterBasedProduct";
 import CustomBox from "@/app/Custom/CustomBox";
+import CustomTypography from "@/app/Custom/CustomTypography";
 
 const Layout = () => {
   const { collectionTitle, collectionId } = useParams();
@@ -102,7 +102,6 @@ const Layout = () => {
         <Grid item xs={12} md={3}>
           <Box
             sx={{
-              backgroundColor: "white",
               p: 2,
               borderRadius: 2,
               boxShadow: 1,

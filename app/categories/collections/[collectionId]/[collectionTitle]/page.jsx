@@ -1,6 +1,7 @@
 'use client';
-import React, {  useState } from 'react';
 import FilterBasedProduct from '@/app/Components/FilterBasedProduct';
+import React, {  useState } from 'react';
+
 
 
 const FilterConfig = () => {
