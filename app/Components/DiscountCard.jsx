@@ -75,7 +75,7 @@ const DiscountCard = ({ image, alt, title }) => {
                         zIndex: 1,
                     }}
                 >
-                    <CustomTypography variant="body1"  sx={{color:theme.palette.text.primary}}>
+                    <CustomTypography variant="body1"  sx={{color:theme.palette.button.color}}>
                         {title}
                     </CustomTypography>
                 </Box>
