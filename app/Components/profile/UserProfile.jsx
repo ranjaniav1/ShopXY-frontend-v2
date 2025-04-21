@@ -3,6 +3,7 @@ import { Avatar, Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Edit as EditIcon } from "@mui/icons-material"; // Importing the edit icon from MUI
 import CustomModal from "@/app/Custom/CustomModal";
 import EditUserModal from "./EditUserModal";
+import CustomTypography from "@/app/Custom/CustomTypography";
 
 const UserProfile = ({ user }) => {
   const theme = useTheme();
@@ -53,18 +54,18 @@ const UserProfile = ({ user }) => {
           border: `2px solid ${theme.palette.secondary.main}` // Theme-based border color
         }}
       />
-      <Typography
+      <CustomTypography
         variant="h5"
         sx={{ fontWeight: "bold", color: theme.palette.text.primary }}
       >
         {user?.fullname || "Your Name"}
-      </Typography>
-      <Typography variant="body1" sx={{ color: theme.palette.text.secondary }}>
+      </CustomTypography>
+      <CustomTypography variant="body1" sx={{ color: theme.palette.text.secondary }}>
         {user?.email || "Email not available"}
-      </Typography>
-      <Typography variant="body1" sx={{ color: theme.palette.text.secondary }}>
+      </CustomTypography>
+      <CustomTypography variant="body1" sx={{ color: theme.palette.text.secondary }}>
         {user?.phone || "Phone not available"}
-      </Typography>
+      </CustomTypography>
       <CustomModal open={open} onClose={handleClose} title="Edit Profile">
         <EditUserModal user={user} onClose={handleClose} />
       </CustomModal>

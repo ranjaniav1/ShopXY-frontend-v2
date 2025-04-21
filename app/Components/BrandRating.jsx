@@ -16,6 +16,7 @@ import { GetSpecificBrandReview } from "../Service/GetReviews";
 import CustomModal from "../Custom/CustomModal";
 import BrandReviewForm from "./BrandReviewForm";
 import RateReviewIcon from "@mui/icons-material/RateReview"; // Icon for submitting review
+import CustomTypography from "../Custom/CustomTypography";
 
 const BrandRating = ({ brand, brandId }) => {
   const [reviews, setReviews] = useState([]);
@@ -64,29 +65,29 @@ const BrandRating = ({ brand, brandId }) => {
           <StorefrontIcon
             sx={{ fontSize: 50, color: theme.palette.button.background }}
           />
-          <Typography
+          <CustomTypography
             variant="h6"
-            sx={{ marginLeft: 1, fontWeight: "bold" }}
+            sx={{ marginLeft: 1, fontWeight: "bold" ,color: theme.palette.text.primary}}
             onClick={() => setModalOpen(true)}
           >
             {brand.title}
-          </Typography>
+          </CustomTypography>
         </Box>
         <Box sx={{ flexGrow: 1, textAlign: "center" }}>
-          <Typography
+          <CustomTypography
             variant="body2"
             sx={{ fontWeight: "bold", color: "#ff9800" }}
           >
             {averageRating.toFixed(1)} ⭐
-          </Typography>
+          </CustomTypography>
         </Box>
         <Box sx={{ textAlign: "right", display: "flex", alignItems: "center" }}>
-          <Typography
+          <CustomTypography
             variant="body2"
             sx={{ color: theme.palette.text.secondary, marginRight: 1 }}
           >
             {reviewCount} Review{reviewCount !== 1 ? "s" : ""}
-          </Typography>
+          </CustomTypography>
           {/* Icon button to submit a review */}
           <Tooltip title="Submit a Review">
             <IconButton

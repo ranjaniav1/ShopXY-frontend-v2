@@ -74,26 +74,27 @@ const Footer = () => {
               <div className="px-3 my-4">
                 <h1 className="my-4 text-xl font-medium">Contact Us</h1>
                 <ul className="space-y-2">
-                  <li className="text-gray-400">
+                  <li className="text-gray-700">
                     1234 Market St, San Francisco, CA
                   </li>
-                  <li className="text-gray-400">Email: support@ShopXY.com</li>
-                  <li className="text-gray-400">Phone: +1 (555) 123-4567</li>
+                  <li className="text-gray-700">Email: support@ShopXY.com</li>
+                  <li className="text-gray-700">Phone: +1 (555) 123-4567</li>
                   <div className="icons">
                     <li>
                       <div className="flex space-x-4 mt-4">
-                        <a href="#" className="hover:text-gray-300">
-                          <Facebook />
-                        </a>
-                        <a href="#" className="hover:text-gray-300">
-                          <Twitter />
-                        </a>
-                        <a href="#" className="hover:text-gray-300">
-                          <Instagram />
-                        </a>
-                        <a href="#" className="hover:text-gray-300">
-                          <LinkedIn />
-                        </a>
+                      <a href="#" aria-label="Facebook" className="hover:text-gray-300">
+  <Facebook />
+</a>
+<a href="#" aria-label="Twitter" className="hover:text-gray-300">
+  <Twitter />
+</a>
+<a href="#" aria-label="Instagram" className="hover:text-gray-300">
+  <Instagram />
+</a>
+<a href="#" aria-label="LinkedIn" className="hover:text-gray-300">
+  <LinkedIn />
+</a>
+
                       </div>
                     </li>
                   </div>
@@ -104,7 +105,7 @@ const Footer = () => {
         </div>
         <Divider />
         <div className="py-2 text-center">
-          <p className="text-gray-400">
+          <p className="text-gray-700">
             &copy; {new Date().getFullYear()} ShopXY. All rights reserved.
           </p>
         </div>

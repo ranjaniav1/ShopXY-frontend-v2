@@ -4,7 +4,7 @@ import Heading from "@/app/Common/Heading";
 import {
   Grid,
   Box,
-  Typography,
+  CustomTypography,
   Slider,
   useTheme,
 } from "@mui/material";
@@ -114,9 +114,9 @@ const Layout = () => {
 
             {/* Price Filter */}
             <Box my={2}>
-              <Typography fontWeight={600} fontSize="1rem">
+              <CustomTypography fontWeight={600} fontSize="1rem">
                 Price Range
-              </Typography>
+              </CustomTypography>
               <Slider
                 size="small"
                 min={minPrice}
@@ -127,16 +127,16 @@ const Layout = () => {
                 onChange={handlePriceRangeChange}
                 valueLabelDisplay="auto"
               />
-              <Typography fontSize="0.875rem">
+              <CustomTypography fontSize="0.875rem">
                 ₹{priceRange[0]} - ₹{priceRange[1]}
-              </Typography>
+              </CustomTypography>
             </Box>
 
             {/* Rating Filter */}
             <Box my={2}>
-              <Typography fontWeight={600} fontSize="1rem">
+              <CustomTypography fontWeight={600} fontSize="1rem">
                 Rating Range
-              </Typography>
+              </CustomTypography>
               <Slider
                 size="small"
                 min={minRating}
@@ -147,9 +147,9 @@ const Layout = () => {
                 onChange={handleRatingRangeChange}
                 valueLabelDisplay="auto"
               />
-              <Typography fontSize="0.875rem">
+              <CustomTypography fontSize="0.875rem">
                 {ratingRange[0]} - {ratingRange[1]} Stars
-              </Typography>
+              </CustomTypography>
             </Box>
           </Box>
         </Grid>
@@ -157,13 +157,13 @@ const Layout = () => {
         {/* PRODUCT LISTING */}
         <Grid item xs={12} md={9}>
           {loading ? (
-            <Typography variant="h6" color="text.secondary" mt={2}>
+            <CustomTypography variant="h6" color="text.secondary" mt={2}>
               Loading products...
-            </Typography>
+            </CustomTypography>
           ) : filteredProducts.length === 0 ? (
-            <Typography variant="h6" color="text.secondary" mt={2}>
+            <CustomTypography variant="h6" color="text.secondary" mt={2}>
               No products match the selected filters.
-            </Typography>
+            </CustomTypography>
           ) : (
             <FilterBasedProduct products={filteredProducts} />
           )}

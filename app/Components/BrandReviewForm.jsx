@@ -91,7 +91,7 @@ const BrandReviewForm = ({ brandId, onClose, productId,onSubmitSuccess }) => {
         label="Write your review"
         value={review}
         onChange={(e) => setReview(e.target.value)}
-        sx={{ marginBottom: 2 }}
+        sx={{ marginBottom: 2 ,color:theme.palette.text.primary}}
         InputProps={{
           style: { backgroundColor: theme.palette.background.default }
         }} // Use theme for background color

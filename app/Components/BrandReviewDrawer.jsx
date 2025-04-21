@@ -1,8 +1,9 @@
 import React from 'react';
-import { Box, Card, Typography, Avatar } from '@mui/material';
+import { Box, Card, Typography, Avatar, useTheme } from '@mui/material';
+import CustomTypography from '../Custom/CustomTypography';
 
 const BrandReviewDrawer = ({ brand, reviews, analytics }) => {
-
+const theme=useTheme()
     const starCounts = analytics?.starCounts || {};
     const totalReviews = analytics?.totalReviews || 0;
 
@@ -22,14 +23,14 @@ const BrandReviewDrawer = ({ brand, reviews, analytics }) => {
         <Box >
             {/* Rating Breakdown */}
             <Card sx={{ padding: 2, marginBottom: 2 }}>
-                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                <CustomTypography variant="h6" sx={{ fontWeight: 'bold',color:theme.palette.text.primary }}>
                     Rating Breakdown
-                </Typography>
+                </CustomTypography>
                 {Object.keys(starCounts).map((star) => (
                     <Box key={star} sx={{ display: 'flex', alignItems: 'center', marginBottom: 1 }}>
-                        <Typography sx={{ minWidth: '60px', color: starColors[star] || '#000' }}>
+                        <CustomTypography sx={{ minWidth: '60px', color: starColors[star] || '#000' }}>
                             {star} ⭐
-                        </Typography>
+                        </CustomTypography>
                         {/* Filled bar */}
                         <Box
                             sx={{
@@ -50,13 +51,13 @@ const BrandReviewDrawer = ({ brand, reviews, analytics }) => {
                             />
                         </Box>
                         {/* Number of reviews */}
-                        <Typography sx={{ marginLeft: 1 }}>
+                        <CustomTypography sx={{ marginLeft: 1 }}>
                             {starCounts[star]} Review{starCounts[star] !== 1 ? 's' : ''}
-                        </Typography> |
+                        </CustomTypography>
                           {/* Percentage display */}
-                          <Typography sx={{ marginLeft: 1, color: '#555' }}>
+                          <CustomTypography sx={{ marginLeft: 1, color: '#555' }}>
                             {getPercentage(starCounts[star]).toFixed(2)}%
-                        </Typography>
+                        </CustomTypography>
                     </Box>
                 ))}
             </Card>
@@ -67,27 +68,27 @@ const BrandReviewDrawer = ({ brand, reviews, analytics }) => {
                     <Card key={review._id} sx={{ padding: 2, marginBottom: 2 }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 1 }}>
                             <Avatar src={review.userAvatar} alt={review.userName} />
-                            <Typography variant="h6" sx={{ marginLeft: 2, fontWeight: 'bold' }}>
+                            <CustomTypography variant="h6" sx={{ marginLeft: 2, fontWeight: 'bold' }}>
                                 {review.userName}
-                            </Typography>
+                            </CustomTypography>
                         </Box>
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Typography variant="body2" sx={{ color: '#ff9800' }}>
+                            <CustomTypography variant="body2" sx={{ color: '#ff9800' }}>
                                 {review.rating} ⭐
-                            </Typography>
-                            <Typography variant="body2" sx={{ marginLeft: 2 }}>
+                            </CustomTypography>
+                            <CustomTypography variant="body2" sx={{ marginLeft: 2 }}>
                                 {new Date(review.createdAt).toLocaleDateString()}
-                            </Typography>
+                            </CustomTypography>
                         </Box>
-                        <Typography variant="body2" sx={{ marginTop: 1 }}>
+                        <CustomTypography variant="body2" sx={{ marginTop: 1 }}>
                             {review.review}
-                        </Typography>
+                        </CustomTypography>
                     </Card>
                 ))
             ) : (
-                <Typography variant="body2" sx={{ textAlign: 'center', marginTop: 2 }}>
+                <CustomTypography variant="body2" sx={{ textAlign: 'center', marginTop: 2 ,color:theme.palette.text.secondary}}>
                     No reviews available.
-                </Typography>
+                </CustomTypography>
             )}
         </Box>
     );

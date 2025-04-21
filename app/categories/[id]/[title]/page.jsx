@@ -7,9 +7,10 @@ import CustomSkeleton from '@/app/Custom/CustomSkeleton';
 import CustomCollectionCard from '@/app/Common/CustomCollectionCard';
 import Link from 'next/link';
 import { GetSingleCategories } from '@/app/Service/GetCategory';
-import Heading from '@/app/Common/Heading';
 import AOS from 'aos'; // Import AOS
 import 'aos/dist/aos.css'; // Import AOS styles
+import Heading from '@/app/Common/Heading';
+import CustomTypography from '@/app/Custom/CustomTypography';
 
 const Page = () => {
     const [categories, setCategories] = useState([]);
@@ -71,7 +72,7 @@ const Page = () => {
                     ))}
                 </Grid>
             ) : (
-                <Typography className="text-center text-gray-600">No categories found</Typography>
+                <CustomTypography className="text-center text-gray-600">No categories found</CustomTypography>
             )}
         </CustomBox>
     );

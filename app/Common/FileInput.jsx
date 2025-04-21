@@ -2,6 +2,7 @@
 import React from 'react';
 import { Box, IconButton, Typography } from '@mui/material';
 import { AddPhotoAlternate } from '@mui/icons-material';
+import CustomTypography from '../Custom/CustomTypography';
 
 const FileInput = ({ t, avatar, handleFileClick, handleFileChange }) => (
     <Box
@@ -18,9 +19,9 @@ const FileInput = ({ t, avatar, handleFileClick, handleFileChange }) => (
         <IconButton color="primary" component="span">
             <AddPhotoAlternate />
         </IconButton>
-        <Typography variant="body2" sx={{ ml: 2 }}>
+        <CustomTypography variant="body2" sx={{ ml: 2 }}>
             {avatar ? avatar.name : t('Upload Avatar')}
-        </Typography>
+        </CustomTypography>
     </Box>
 );
 

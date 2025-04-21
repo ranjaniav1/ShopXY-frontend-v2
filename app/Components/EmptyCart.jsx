@@ -2,6 +2,7 @@ import { Box, Typography } from '@mui/material'
 import React from 'react'
 import CustomButton from '../Custom/CustomButton'
 import Link from 'next/link'
+import CustomTypography from '../Custom/CustomTypography'
 
 const EmptyCart = () => {
   return (
@@ -29,10 +30,10 @@ const EmptyCart = () => {
                      }}
                    />
    
-                   <Typography>
+                   <CustomTypography>
                      Don&apos;t worry, you can add your products here. Simply click
                      on Start Shopping.
-                   </Typography>
+                   </CustomTypography>
    
                    <Link href="/categories/collections" passHref>
                      <CustomButton title="Start Shopping" />

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Menu, MenuItem, Button, Typography, Box, useTheme } from '@mui/material';
+import CustomTypography from './CustomTypography';
 
 const CustomMenu = ({
     anchorEl,
@@ -33,9 +34,9 @@ const CustomMenu = ({
                }}
             >
                 {title && (
-                    <Typography variant="body1" style={{ marginLeft: '8px' }}>
+                    <CustomTypography variant="body1" style={{ marginLeft: '8px' }}>
                         {title}
-                    </Typography>
+                    </CustomTypography>
                 )}
             </Button>
 

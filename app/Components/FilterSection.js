@@ -32,19 +32,19 @@ const FilterSection = ({
   ];
 
   return (
-    <Box
+    <Box role="region" aria-label="Filter Section"
       sx={{
         padding: 2,
         bgcolor: theme.palette.background.default,
         boxShadow: 1,
         borderRadius: "8px",
-        boxShadow: 1
       }}
     >
-      <Typography variant="h6">{t("Filters")}</Typography>
+<CustomTypography variant="h6" sx={{color:theme.palette.text.primary}}>{t("Filters")}</CustomTypography>
 
       {/* Price Range Slider */}
       <CustomTypography
+      id="price-slider-label"
         variant="subtitle1"
         gutterBottom
         color={theme.palette.text.secondary}
@@ -58,19 +58,20 @@ const FilterSection = ({
         valueLabelDisplay="auto"
         min={priceMinMax[0]}
         max={priceMinMax[1]}
+         aria-labelledby="price-slider-label"
         sx={{
           color: theme.palette.primary.main // Slider color based on theme
         }}
       />
 
       {/* Rating Filter */}
-      <Typography
+      <CustomTypography
         variant="subtitle1"
         gutterBottom
         color={theme.palette.text.secondary}
       >
         {t("Filter by Rating")}
-      </Typography>
+      </CustomTypography>
       <FormGroup>
         {ratingRanges.map((range, index) => (
           <FormControlLabel
@@ -88,6 +89,8 @@ const FilterSection = ({
                       );
                   setSelectedRatings(updatedRatings);
                 }}
+                inputProps={{ 'aria-label': `Rating from ${range[0]} to ${range[1]}` }}
+
                 sx={{
                   color: theme.palette.primary.main, // Checkbox color based on theme
                   "&.Mui-checked": {
@@ -96,8 +99,14 @@ const FilterSection = ({
                 }}
               />
             }
-            label={`${range[0]} - ${range[1]}`}
-          />
+            label={
+              range[0] === 0
+                ? t("Below") + " 2.5"
+                : range[1] === 5
+                ? t("Above") + " 4.5"
+                : `${range[0]} - ${range[1]}`
+            }
+                      />
         ))}
       </FormGroup>
 

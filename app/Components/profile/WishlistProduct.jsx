@@ -4,6 +4,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Link from "next/link";
 import { fetchWishlist, handleRemoveFromWishlist } from "@/app/helper/ProfileUtils";
 import CustomCollectionCard from "@/app/Common/CustomCollectionCard";
+import CustomTypography from "@/app/Custom/CustomTypography";
 
 
 const WishlistItem = ({ userId, activeTab }) => {
@@ -86,7 +87,7 @@ const WishlistItem = ({ userId, activeTab }) => {
           ))
         ) : (
           <Grid item xs={12}>
-            <Typography>No wishlist items found.</Typography>
+            <CustomTypography>No wishlist items found.</CustomTypography>
           </Grid>
         )}
       </Grid>
@@ -95,9 +96,9 @@ const WishlistItem = ({ userId, activeTab }) => {
         <Button onClick={() => setPage((p) => Math.max(p - 1, 1))} disabled={page <= 1}>
           Previous
         </Button>
-        <Typography variant="body2">
+        <CustomTypography variant="body2">
           Page {page} of {totalPages}
-        </Typography>
+        </CustomTypography>
         <Button onClick={() => setPage((p) => Math.min(p + 1, totalPages))} disabled={page >= totalPages}>
           Next
         </Button>

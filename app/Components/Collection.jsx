@@ -14,6 +14,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { Navigation, A11y } from 'swiper/modules';
+import CustomTypography from '../Custom/CustomTypography';
 
 const Collection = () => {
     const { t } = useTranslation();
@@ -45,7 +46,7 @@ const Collection = () => {
         <CustomBox>
             <Heading text={t("Our Top Collections")}>
                 {showArrowIcon && visibleCount < (collection?.length || 0) && (
-                    <Link href="/categories/collections" passHref>
+                    <Link href="/categories/collections" passHref aria-label="See all collections">
                   
                         <ArrowCircleRightOutlinedIcon fontSize='large' sx={{ color: "white" }} />
                   
@@ -81,6 +82,8 @@ const Collection = () => {
                                             image={category.collection_image}
                                             title={category.title}
                                             
+                                            
+                                            
                                         />
                                     </Link>
                                 </Grid>
@@ -114,7 +117,7 @@ const Collection = () => {
                         </Swiper>
                     )
                 ) : (
-                    <Typography textAlign="center">{t('no Collection Found')}</Typography>
+                    <CustomTypography textAlign="center">{t('no Collection Found')}</CustomTypography>
                 )}
             </Box>
         </CustomBox>

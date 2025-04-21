@@ -125,7 +125,7 @@ const ProductCard = ({
           <span className="text-gray-500 ml-1">({rating.toFixed(1)})</span>
         </div>
       )}
-      {description && <p className="text-gray-500 text-sm">{description}</p>}
+      {description && <p className="text-sm" style={{color:theme.palette.text.secondary}}>{description}</p>}
     </div>
   );
 };

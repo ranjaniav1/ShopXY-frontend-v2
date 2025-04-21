@@ -12,6 +12,7 @@ import {
   fetchUserNotifications,
   removeNotification,
 } from "@/app/helper/ProfileUtils";
+import CustomTypography from "@/app/Custom/CustomTypography";
 
 const UserNotify = ({ userId, activeTab }) => {
   const theme = useTheme();
@@ -64,7 +65,7 @@ const UserNotify = ({ userId, activeTab }) => {
             onMouseEnter={() => setHoveredNotificationId(notification._id)}
             onMouseLeave={() => setHoveredNotificationId(null)}
           >
-            <Typography
+            <CustomTypography
               variant="body1"
               sx={{
                 flexGrow: 1,
@@ -72,10 +73,10 @@ const UserNotify = ({ userId, activeTab }) => {
               }}
             >
               {notification.notify}
-            </Typography>
-            <Typography variant="body2" sx={{ ml: 2, minWidth: "120px" }}>
+            </CustomTypography>
+            <CustomTypography variant="body2" sx={{ ml: 2, minWidth: "120px" }}>
               {new Date(notification.timestamp).toLocaleString()}
-            </Typography>
+            </CustomTypography>
             {hoveredNotificationId === notification._id && (
               <IconButton
                 onClick={() => handleDelete(notification._id)}
@@ -93,9 +94,9 @@ const UserNotify = ({ userId, activeTab }) => {
           </Paper>
         ))
       ) : (
-        <Typography variant="body2" sx={{ color: theme.palette.text.secondary }}>
+        <CustomTypography variant="body2" sx={{ color: theme.palette.text.secondary }}>
           No notifications available.
-        </Typography>
+        </CustomTypography>
       )}
 
       {/* Pagination Controls */}
@@ -103,9 +104,9 @@ const UserNotify = ({ userId, activeTab }) => {
         <Button onClick={() => setPage((p) => Math.max(p - 1, 1))} disabled={page <= 1}>
           Previous
         </Button>
-        <Typography variant="body2">
+        <CustomTypography variant="body2">
           Page {page} of {totalPages}
-        </Typography>
+        </CustomTypography>
         <Button onClick={() => setPage((p) => Math.min(p + 1, totalPages))} disabled={page >= totalPages}>
           Next
         </Button>

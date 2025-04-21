@@ -66,7 +66,8 @@ const ProductDetails = ({
             )}{" "}
             {offer}% OFF
           </CustomTypography>
-          <CustomTypography variant="body2" className="mt-2">
+          <CustomTypography variant="body2" className="mt-2"             sx={{ color: theme.palette.text.secondary }}
+          >
             {t("Free Delivery")}
           </CustomTypography>
         </Card>

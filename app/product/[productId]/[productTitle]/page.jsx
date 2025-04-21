@@ -7,6 +7,7 @@ import { GetSingleProduct } from '@/app/Service/GetProduct';
 import ProductGallery from '@/app/Components/ProductGallery';
 import ProductDetails from '@/app/Components/ProductDetails';
 import CustomBox from '@/app/Custom/CustomBox';
+import CustomTypography from '@/app/Custom/CustomTypography';
 
 const Page = () => {
     const { productId } = useParams();
@@ -35,7 +36,7 @@ const Page = () => {
         fetchProduct();
     }, []);
 
-    if (loading) return <Typography variant="h6">Loading...</Typography>;
+    if (loading) return <CustomTypography variant="h6">Loading...</CustomTypography>;
 
     const handleImageClick = (img) => {
         setSelectedImage(img);
