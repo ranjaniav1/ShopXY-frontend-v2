@@ -7,9 +7,9 @@ import CustomSkeleton from '@/app/Custom/CustomSkeleton';
 import CustomCollectionCard from '@/app/Common/CustomCollectionCard';
 import Link from 'next/link';
 import { GetSingleCategories } from '@/app/Service/GetCategory';
-import Heading from '@/app/Common/Heading';
 import AOS from 'aos'; // Import AOS
 import 'aos/dist/aos.css'; // Import AOS styles
+import Heading from '@/app/Common/Heading';
 
 const Page = () => {
     const [categories, setCategories] = useState([]);
