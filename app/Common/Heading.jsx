@@ -14,7 +14,7 @@ const Heading = ({ text, className, children }) => {
       className={`font-semibold text-left btn pl-3 rounded-md text-xl pr-3`}
     >
       <CustomTypography
-        variant="h4" sx={{color:theme.palette.text.primary}}
+        variant="h4" sx={{color:theme.palette.button.color}}
         className={`font-bold text-left p-2`}
       >
         {text}

@@ -13,6 +13,7 @@ export const handleFileChange = (setAvatar) => (e) => {
 
 export const handleSubmit = async (formData, avatar, setLoading, onClose) => {
   setLoading(true);
+
   const formDataToSubmit = new FormData();
   Object.entries(formData).forEach(([key, value]) =>
     formDataToSubmit.append(key, value)
@@ -20,19 +21,20 @@ export const handleSubmit = async (formData, avatar, setLoading, onClose) => {
   if (avatar) formDataToSubmit.append("avatar", avatar);
 
   try {
-    await Register(formDataToSubmit);
-    toast.success(i18n.t("User registered successfully"));
-    onClose();
+    const res = await Register(formDataToSubmit); // Await backend call
+    if (res?.success) {
+      toast.success(res.message); // 🔥 Use message from backend
+      onClose();
+    } else {
+      toast.error(res?.message);
+    }
   } catch (error) {
-    console.error("Registration error:", error);
     const errorMessage =
-    error.response?.status === 409
-      ? i18n.t("Request failed with status code 409") // Custom message for 409 error
-      : error.response?.data?.message ||
-        error.message ||
-        i18n.t("An unexpected error occurred");
-
-  toast.error(errorMessage);
-  setLoading(false);
+      error?.response?.data?.message;
+    toast.error(errorMessage);
+  } finally {
+    setLoading(false);
   }
 };
+
+
