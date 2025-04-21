@@ -3,6 +3,7 @@ import React from "react";
 import { Typography, Box, Divider, useTheme } from "@mui/material";
 import CustomButton from "../Custom/CustomButton";
 import { useTranslation } from "react-i18next";
+import CustomTypography from "../Custom/CustomTypography";
 
 const PriceDetails = ({
   numberOfItems,
@@ -23,7 +24,7 @@ const PriceDetails = ({
     <Box sx={{ padding: 2 }}>
       <CustomTypography variant="h6" sx={{ marginBottom: 2, fontWeight: "bold" }}>
         {t(" Price Details")} ({numberOfItems} Items)
-      </CustomTypography
+      </CustomTypography>
 
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -33,14 +34,14 @@ const PriceDetails = ({
             sx={{ borderBottom: "1px dotted grey" }}
           >
             {t("Total Product Price")}:
-          </CustomTypography
+          </CustomTypography>
           <CustomTypography
             variant="body2"
             color="textSecondary"
             sx={{ fontWeight: "bold" }}
           >
             + ₹{formatPrice(totalProductPrice)}
-          </CustomTypography
+          </CustomTypography>
         </Box>
         <Box
           sx={{
@@ -54,8 +55,8 @@ const PriceDetails = ({
             sx={{ borderBottom: "1px dotted #22aa99" }}
           >
             {t("Total Discount")}:
-          </CustomTypography
-          <CustomTypography variant="body2">- ₹{totalDiscount}</CustomTypography
+          </CustomTypography>
+          <CustomTypography variant="body2">- ₹{totalDiscount}</CustomTypography>
         </Box>
         <Divider />
         <Box
@@ -66,8 +67,8 @@ const PriceDetails = ({
             color: theme.palette.text.primary
           }}
         >
-          <CustomTypography>{t("Order Total")}:</CustomTypography
-          <CustomTypography>₹{formatPrice(finalPrice())}</CustomTypography
+          <CustomTypography>{t("Order Total")}:</CustomTypography>
+          <CustomTypography>₹{formatPrice(finalPrice())}</CustomTypography>
         </Box>
         {totalDiscount > 0 && (
           <CustomTypography
@@ -81,7 +82,7 @@ const PriceDetails = ({
             }}
           >
             🎉 Yay! You saved ₹{totalDiscount} on your order!
-          </CustomTypography
+          </CustomTypography>
         )}
       </Box>
     </Box>

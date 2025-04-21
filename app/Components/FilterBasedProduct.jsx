@@ -3,6 +3,7 @@ import { Grid, Typography } from "@mui/material";
 import ProductCard from "./ProductCard";
 import CustomSkeleton from "../Custom/CustomSkeleton";
 import { useSelector } from "react-redux";
+import CustomTypography from "../Custom/CustomTypography";
 
 const FilterBasedProduct = ({ products }) => {
   console.log("props", products);
@@ -43,7 +44,7 @@ const FilterBasedProduct = ({ products }) => {
           sx={{ padding: "16px", textAlign: "center" }}
         >
           No products found.
-        </CustomTypography
+        </CustomTypography>
       )}
     </Grid>
   );

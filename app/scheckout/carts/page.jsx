@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { handleRemoveFromCart } from "@/app/helper/cartUtils";
 import { useSelector } from "react-redux";
+import CustomTypography from "@/app/Custom/CustomTypography";
 
 const CartPage = ({ handleNext, loadCart, cartData }) => {
   const [editDrawer, setEditDrawer] = useState(false);
@@ -47,7 +48,7 @@ const CartPage = ({ handleNext, loadCart, cartData }) => {
           cartData && cartData.products && cartData.products.length > 0 ? (
             <CustomTypography variant="h6" sx={{ marginBottom: 2, fontWeight: "bold" }}>
               {t("Product Details")}
-            </CustomTypography
+            </CustomTypography>
           ) : (
             <></>
           )

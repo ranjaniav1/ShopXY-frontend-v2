@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useMediaQuery } from "@mui/material";
 import { Add } from "@mui/icons-material"; // For add icon
 import CustomIconButton from "@/app/Custom/CustomIconButton";
+import CustomTypography from "@/app/Custom/CustomTypography";
 
 const Page = ({ handleNext, handleBack }) => {
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
@@ -135,7 +136,7 @@ const Page = ({ handleNext, handleBack }) => {
         alignItems="center"
         p={2}
       >
-        <CustomTypography>{t("Select Delivery Address")}</CustomTypography
+        <CustomTypography>{t("Select Delivery Address")}</CustomTypography>
 
         {isSmallScreen ? (
           <CustomIconButton
@@ -158,7 +159,7 @@ const Page = ({ handleNext, handleBack }) => {
 
       <Grid container spacing={2} p={2}>
   {loading ? (
-    <CustomTypography>Loading addresses...</CustomTypography
+    <CustomTypography>Loading addresses...</CustomTypography>
   ) : addresses.length > 0 ? (
     addresses.map((address) => (
       <Grid item xs={12} sm={6} md={6} key={address._id}>
@@ -176,7 +177,7 @@ const Page = ({ handleNext, handleBack }) => {
       <Box textAlign="center" py={5}>
         <CustomTypography variant="h6" color="text.secondary">
           {t("No address found. Please add one to proceed.")}
-        </CustomTypography
+        </CustomTypography>
       </Box>
     </Grid>
   )}
