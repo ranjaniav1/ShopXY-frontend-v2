@@ -5,9 +5,8 @@ import {
   Grid,
   Box,
   Typography,
-  Divider,
   Slider,
-  useTheme
+  useTheme,
 } from "@mui/material";
 import { useParams } from "next/navigation";
 import { GetSpecificProduct } from "@/app/Service/GetProduct";
@@ -18,9 +17,12 @@ const Layout = () => {
   const { collectionTitle, collectionId } = useParams();
   const [allProducts, setAllProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [priceRange, setPriceRange] = useState([0, 5000]);
+  const [priceRange, setPriceRange] = useState([0, 0]);
   const [ratingRange, setRatingRange] = useState([0, 5]);
-
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(0);
+  const [minRating, setMinRating] = useState(0);
+  const [maxRating, setMaxRating] = useState(5);
   const [loading, setLoading] = useState(true);
 
   const theme = useTheme();
@@ -28,8 +30,26 @@ const Layout = () => {
   const fetchProducts = async () => {
     try {
       const response = await GetSpecificProduct({ id: collectionId });
-      console.log("res", response);
       setAllProducts(response);
+
+      // Extract price and rating arrays
+      const prices = response.map((p) => p.actual_price || 0);
+      const ratings = response.map((p) => p.ratings || 0);
+
+      // Calculate min/max for price and rating
+      const min = Math.min(...prices);
+      const max = Math.max(...prices);
+      const minR = Math.min(...ratings);
+      const maxR = Math.max(...ratings);
+
+      setMinPrice(min);
+      setMaxPrice(max);
+      setPriceRange([min, max]);
+
+      setMinRating(minR);
+      setMaxRating(maxR);
+      setRatingRange([minR, maxR]);
+
       setLoading(false);
     } catch (error) {
       console.error("Failed to fetch products:", error);
@@ -56,7 +76,7 @@ const Layout = () => {
   const applyFilters = () => {
     if (!allProducts.length) return;
 
-  let filtered = [...allProducts];
+    let filtered = [...allProducts];
 
     // Filter by price range
     filtered = filtered.filter(
@@ -68,7 +88,8 @@ const Layout = () => {
     // Filter by rating range
     filtered = filtered.filter(
       (product) =>
-        product.ratings >= ratingRange[0] && product.ratings <= ratingRange[1]
+        product.ratings >= ratingRange[0] &&
+        product.ratings <= ratingRange[1]
     );
 
     setFilteredProducts(filtered);
@@ -77,60 +98,75 @@ const Layout = () => {
   return (
     <CustomBox>
       <Heading text={collectionTitle} />
-      <Grid container spacing={2} sx={{ marginTop: 2 }}>
+      <Grid container spacing={2} sx={{ px: { xs: 1, sm: 2 } }}>
         <Grid item xs={12} md={3}>
-          {/* Filters */}
           <Box
             sx={{
-              padding: "16px",
-              border: "1px solid #e0e0e0",
-              borderRadius: "10px",
-              boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-              background: theme.palette.background.main
+              backgroundColor: "white",
+              p: 2,
+              borderRadius: 2,
+              boxShadow: 1,
+              position: "sticky",
+              top: "100px",
             }}
           >
-            <Typography variant="h6">Filters</Typography>
-            <Divider sx={{ my: 2 }} />
+            <Heading text="Filter By" />
 
-            {/* Price Range Filter */}
-            <Box sx={{ mb: 3 }}>
-              <Typography variant="subtitle1">Price Range</Typography>
-              <Divider sx={{ my: 2 }} />
+            {/* Price Filter */}
+            <Box my={2}>
+              <Typography fontWeight={600} fontSize="1rem">
+                Price Range
+              </Typography>
               <Slider
-              size="small"
-defaultValue={100}
+                size="small"
+                min={minPrice}
+                max={maxPrice}
+                step={10}
+                marks
                 value={priceRange}
                 onChange={handlePriceRangeChange}
                 valueLabelDisplay="auto"
-                aria-label="Small"
               />
+              <Typography fontSize="0.875rem">
+                ₹{priceRange[0]} - ₹{priceRange[1]}
+              </Typography>
             </Box>
 
             {/* Rating Filter */}
-            <Box sx={{ mb: 3 }}>
-              <Typography variant="subtitle1">Ratings</Typography>
-              <Divider sx={{ my: 2 }} />
+            <Box my={2}>
+              <Typography fontWeight={600} fontSize="1rem">
+                Rating Range
+              </Typography>
               <Slider
-              size="small"
-              min={0}
-              max={5}
-              step={0.5}
-              value={ratingRange}
-              onChange={handleRatingRangeChange}
-              valueLabelDisplay="auto"
-              sx={{ mb: 2 }}
+                size="small"
+                min={minRating}
+                max={maxRating}
+                step={0.1}
+                marks
+                value={ratingRange}
+                onChange={handleRatingRangeChange}
+                valueLabelDisplay="auto"
               />
+              <Typography fontSize="0.875rem">
+                {ratingRange[0]} - {ratingRange[1]} Stars
+              </Typography>
             </Box>
           </Box>
         </Grid>
 
-        {/* Filtered Products */}
-        <Grid item xs={12} md={7}>
+        {/* PRODUCT LISTING */}
+        <Grid item xs={12} md={9}>
           {loading ? (
-            <Typography>Loading products...</Typography>
+            <Typography variant="h6" color="text.secondary" mt={2}>
+              Loading products...
+            </Typography>
+          ) : filteredProducts.length === 0 ? (
+            <Typography variant="h6" color="text.secondary" mt={2}>
+              No products match the selected filters.
+            </Typography>
           ) : (
             <FilterBasedProduct products={filteredProducts} />
-          )}{" "}
+          )}
         </Grid>
       </Grid>
     </CustomBox>

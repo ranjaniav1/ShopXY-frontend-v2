@@ -15,7 +15,6 @@ const SaleAndDiscount = () => {
   async function fetchCollection() {
     try {
       const result = await GetHomeScreenData();
-      console.log("sale and discount", result.sale_and_discount_product);
       setCollection(
         Array.isArray(result.sale_and_discount_product)
           ? result.sale_and_discount_product
@@ -47,8 +46,8 @@ const SaleAndDiscount = () => {
           </Grid>
         ) : collection?.length > 0 ? (
           <Grid container spacing={2}>
-            {collection.slice(0, 6).map((category, index) => (
-                <DiscountCard key={index}
+            {collection.slice(0, 6).map((category) => (
+                <DiscountCard key={category._id}
                   image={category.banner_image}
                   title={category.title}
                   alt={category.title}

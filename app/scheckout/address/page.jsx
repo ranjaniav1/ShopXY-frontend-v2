@@ -3,7 +3,6 @@ import AddressCard from "@/app/Components/AddressCard";
 import AddressDrawer from "@/app/Components/AddressDrawer";
 import CustomButton from "@/app/Custom/CustomButton";
 import CustomDrawer from "@/app/Custom/CustomDrawer";
-import { setMyAddress } from "@/app/redux/reducer/addressReducer";
 import {
   getAddress,
   removeAddress,
@@ -27,30 +26,53 @@ const Page = ({ handleNext, handleBack }) => {
   const [selectedAddressId, setSelectedAddressId] = useState(null);
   const [isEditing, setEditing] = useState(false);
   const [selectedAddressData, setSelectedAddressData] = useState(null);
+  const [addresses, setAddresses] = useState([]);
 
   const userId = useSelector((state) => state.auth.user.data.user._id);
-  const addressData = useSelector((state) => state.address.data?.data || []);
-  const dispatch = useDispatch();
   const { t } = useTranslation();
   const theme = useTheme();
   useEffect(() => {
-    fetchAddresses();
-  }, []);
+    if(userId){
+
+      fetchAddresses();
+    }
+  }, [userId]);
 
   const fetchAddresses = async () => {
     try {
       const response = await getAddress(userId);
-      dispatch(setMyAddress(response));
-
-      // Set the primary address ID
-      const primaryAddress = response.data.find((address) => address.isPrimary);
+      const fetchedAddresses = response.data || [];
+  
+      // If only one address and it's not set as primary
+      if (fetchedAddresses.length === 1 && !fetchedAddresses[0].isPrimary) {
+        const addr = fetchedAddresses[0];
+        await updateAddress(
+          userId,
+          addr._id,
+          addr.address,
+          addr.city,
+          addr.state,
+          addr.postalCode,
+          addr.country,
+          addr.phone,
+          true // set as primary
+        );
+        addr.isPrimary = true; // update locally
+      }
+  
+      const primaryAddress = fetchedAddresses.find((address) => address.isPrimary);
+  
+      setAddresses(fetchedAddresses);
       setSelectedAddressId(primaryAddress ? primaryAddress._id : null);
       setLoading(false);
     } catch (err) {
+      console.error(err);
       setLoading(false);
       setError("Failed to load addresses. Please try again.");
     }
   };
+  
+  
 
   const handleAddAddressClick = () => {
     setEditing(false);
@@ -61,9 +83,9 @@ const Page = ({ handleNext, handleBack }) => {
   const handleCloseDrawer = () => setOpen(false);
 
   const handleEditAddress = (addressId) => {
-    setOpen(true);
     setEditing(true);
-    const address = addressData.find((addr) => addr._id === addressId);
+    setOpen(true);
+    const address = addresses.find((addr) => addr._id === addressId);
     setSelectedAddressData(address);
   };
 
@@ -80,7 +102,7 @@ const Page = ({ handleNext, handleBack }) => {
   const handleAddressChange = async (addressId) => {
     try {
       // Update the primary status of the selected address
-      const selectedAddress = addressData.find(
+      const selectedAddress = addresses.find(
         (addr) => addr._id === addressId
       );
       if (selectedAddress) {
@@ -97,8 +119,6 @@ const Page = ({ handleNext, handleBack }) => {
         );
         // Update the selected address ID
         setSelectedAddressId(addressId);
-
-        // Fetch updated addresses
         await fetchAddresses();
       }
     } catch (err) {
@@ -137,22 +157,31 @@ const Page = ({ handleNext, handleBack }) => {
       </Box>
 
       <Grid container spacing={2} p={2}>
-        {addressData ? (
-          addressData.map((address) => (
-            <Grid item xs={12} sm={6} md={6} key={address._id}>
-              <AddressCard
-                address={address}
-                selectedAddressId={selectedAddressId}
-                handleEdit={handleEditAddress}
-                handleRemove={handleRemoveAddress}
-                handleChange={handleAddressChange}
-              />
-            </Grid>
-          ))
-        ) : (
-          <p>no address found</p>
-        )}
+  {loading ? (
+    <Typography>Loading addresses...</Typography>
+  ) : addresses.length > 0 ? (
+    addresses.map((address) => (
+      <Grid item xs={12} sm={6} md={6} key={address._id}>
+        <AddressCard
+          address={address}
+          selectedAddressId={selectedAddressId}
+          handleEdit={handleEditAddress}
+          handleRemove={handleRemoveAddress}
+          handleChange={handleAddressChange}
+        />
       </Grid>
+    ))
+  ) : (
+    <Grid item xs={12}>
+      <Box textAlign="center" py={5}>
+        <Typography variant="h6" color="text.secondary">
+          {t("No address found. Please add one to proceed.")}
+        </Typography>
+      </Box>
+    </Grid>
+  )}
+</Grid>
+
       <Container>
         <Box
           sx={{
@@ -200,7 +229,10 @@ const Page = ({ handleNext, handleBack }) => {
             onClose={handleCloseDrawer}
             isEditing={isEditing}
             addressData={selectedAddressData}
-          />
+            onAddressSaved={async () => {
+              await fetchAddresses(); // This is enough
+            }}
+                    />
         </CustomDrawer>
       )}
     </div>

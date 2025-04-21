@@ -1,8 +1,6 @@
 "use client";
 import CustomButton from "@/app/Custom/CustomButton";
 import CustomTypography from "@/app/Custom/CustomTypography";
-import { clearMyCart, setMyCart } from "@/app/redux/reducer/cartReducer";
-import { getCart } from "@/app/Service/Cart";
 import {
   cashOnDelivery,
   handleStripePayment,
@@ -21,45 +19,39 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import PaypalButton from "../../Common/PaypalButton";
-import { loadStripe } from "@stripe/stripe-js";
 
-const Page = ({ handleBack }) => {
+import { loadStripe } from "@stripe/stripe-js";
+import { httpAxios } from "@/app/httpAxios";
+
+const PaymentPage = ({ handleBack, cartData, loadCart }) => {
+  console.log("cart for pay",cartData)
   const userId = useSelector((state) => state.auth.user.data.user._id);
-  const cartId = useSelector((state) => state.cart.cart.data._id);
-  const cartData = useSelector((state) => state.cart.cart.data.products);
-  console.log("Cart Data from Redux:", cartData); // Modify based on your reducer structure
-  const [stripePromise, setStripePromise] = useState(null);
 
   const [promoCode, setPromoCode] = useState(""); // State to store promo code input
   const [promoError, setPromoError] = useState(""); // State to store promo code error
   const dispatch = useDispatch();
   const theme = useTheme();
   const router = useRouter();
-  useEffect(() => {
-    const stripe = loadStripe(
-      "pk_test_51PxLryRrN241bQ7Plo5ZmfXZqbcdcPPkaeMhCjYGPlr1kcCKvnWApXpNh1r9vfOTp6ZIWc0nOgv5sK4Ec3hbvVJj00vEdntnWT"
-    );
-    setStripePromise(stripe);
-  }, []);
+
   // Handle Cash on Delivery Payment
-  async function handleCodPay() {
+  async function handleCodPay(paymentType, cartId, userId) {
     try {
       const response = await cashOnDelivery(userId, cartId);
-      dispatch(clearMyCart());
-      toast.success("payment sucess");
+      console.log("COD Response:", response); // ✅ Now you’ll see the actual response
+      toast.success(response.message || "Order placed successfully");
       router.push("/");
     } catch (error) {
       console.error("Error during COD payment", error);
+      toast.error(error.response?.data?.message || "COD payment failed");
     }
   }
+  
 
   // Handle Promo Code Validation
   async function handlePromoCodeApply() {
     try {
-      const response = await promodCodes(promoCode, cartId);
-      const cart = await getCart(userId); // Send promo code and cart ID to backend
-      dispatch(setMyCart(cart)); // Update cart with applied discount
+      const response = await promodCodes(promoCode, cartData._id); // Send promo code to backend
+      await loadCart(userId)
       toast.success("coupon added!");
 
       console.log("Promo code applied successfully:", response);
@@ -71,32 +63,42 @@ const Page = ({ handleBack }) => {
       );
     }
   }
-  async function handleStripePay() {
-    try {
-      if (!stripePromise) {
-        toast.error("Stripe is not initialized");
-        return;
+  
+  async function handleStripePay(paymentType,cartId,userId) {
+    if (paymentType === "Stripe") {
+      console.log("Initiating Stripe...");
+      try {
+        // Create a checkout session by calling your backend API
+        const { data } = await httpAxios.post(
+          "/user/payment/order",
+          {
+            paymentMethod: "stripe",
+            metadata: {
+              userId,
+              cartId,
+            },
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+  
+        // Load Stripe and create an instance
+        const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+  
+        if (stripe) {
+          const result = await stripe.redirectToCheckout({ sessionId: data.id });
+          if (result.error) {
+            console.error("Stripe Checkout error:", result.error.message);
+          }
+        } else {
+          console.error("Stripe is not available.");
+        }
+      } catch (error) {
+        console.error("Error creating checkout session:", error.message);
       }
-
-      const stripe = await stripePromise;  // Access Stripe instance
-
-      const { id: sessionId } = await handleStripePayment(userId, cartId, cartData);  // Create Stripe session
-
-      if (!sessionId) {
-        toast.error("Failed to create Stripe session");
-        return;
-      }
-
-      // Redirect to Stripe Checkout
-      const { error } = await stripe.redirectToCheckout({ sessionId });
-
-      if (error) {
-        toast.error("Payment failed: " + error.message);
-        console.error("Error redirecting to Stripe checkout:", error);
-      }
-    } catch (error) {
-      console.error("Error during Stripe payment", error);
-      toast.error("Payment failed");
     }
   }
 
@@ -121,37 +123,46 @@ const Page = ({ handleBack }) => {
         gutterBottom
         sx={{ color: theme.palette.text.primary }}
       >
-        Payment Method: Cash on Delivery{" "}
+        Payment Methods: 
       </CustomTypography>
 
-      {/* Cash On Delivery Button */}
-      <CustomButton
-        title="Cash On Delivery"
-        sx={{
-          width: "100%",
-          mt: 1,
-          backgroundColor: theme.palette.button.background,
-          ":hover": {
-            backgroundColor: theme.palette.button.hover
-          }
-        }}
-        onClick={handleCodPay}
-      />
-      <PaypalButton />
+     {/* Payment Buttons Section */}
+<Box
+  sx={{
+    display: "flex",
+    flexDirection: { xs: "column", sm: "row" },
+    gap: 2,
+    width: "100%",
+    mt: 2,
+  }}
+>
+  {/* Cash On Delivery Button */}
+  <CustomButton
+    title="Cash On Delivery"
+    sx={{
+      flex: 1,
+      backgroundColor: theme.palette.button.background,
+      ":hover": {
+        backgroundColor: theme.palette.button.hover,
+      },
+    }}
+    onClick={() => handleCodPay("cod", cartData._id, userId)}
+  />
 
-      {/* Stripe Payment Button */}
-      <CustomButton
-        title="Pay with Stripe"
-        sx={{
-          width: "100%",
-          mt: 2,
-          backgroundColor: "#6772e5",
-          ":hover": {
-            backgroundColor: "#5469d4"
-          }
-        }}
-        onClick={handleStripePay}
-      />
+  {/* Stripe Payment Button */}
+  <CustomButton
+    title="Pay with Stripe"
+    sx={{
+      flex: 1,
+      backgroundColor: "#6772e5",
+      ":hover": {
+        backgroundColor: "#5469d4",
+      },
+    }}
+    onClick={() => handleStripePay("Stripe", cartData._id, userId)}
+  />
+</Box>
+
       {/* Promo Code Section */}
       <Box sx={{ width: "100%", mt: 4 }}>
         <Typography variant="h6" sx={{ color: theme.palette.text.primary }}>
@@ -217,4 +228,4 @@ const Page = ({ handleBack }) => {
   );
 };
 
-export default Page;
+export default PaymentPage;

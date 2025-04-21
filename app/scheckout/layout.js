@@ -17,39 +17,38 @@ import {
 } from "@mui/material";
 import PriceDetails from "@/app/Components/PriceDetail";
 import CustomBox from "@/app/Custom/CustomBox";
-import { setMyCart } from "../redux/reducer/cartReducer";
 import CustomButton from "../Custom/CustomButton";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useTranslation } from "react-i18next";
+import { fetchCart } from "../helper/cartUtils";
+import CartPage from "./carts/page";
+import AddressPage from "./address/page";
+import PaymentPage from "./payment/page";
+import EmptyCart from "../Components/EmptyCart";
 
 const Layout = ({ children }) => {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [activeStep, setActiveStep] = useState(0);
 
   const userId =
     useSelector((state) => state.auth?.user?.data?.user?._id) || "test";
-  const dispatch = useDispatch();
+  const [cartData, setCartData] = useState([]);
   const pathname = usePathname();
   const theme = useTheme();
-  const { t } = useTranslation();
-  const isCart = useSelector((state) => state.cart.cart.data);
-  const isXsScreen = useMediaQuery(theme.breakpoints.down("xs")); // Media query for xs screens
+  const isXsScreen = useMediaQuery(theme.breakpoints.down("xs"));
 
-  const fetchCartData = async () => {
+  const loadCart = async () => {
     try {
-      const response = await getCart(userId);
-      dispatch(setMyCart(response));
-    } catch (err) {
-      setError(err.message || "Error fetching cart data");
-    } finally {
-      setLoading(false);
+      const data = await fetchCart(userId);
+      console.log("Fetched cart data:", data); // Add log here
+      setCartData(data);
+    } catch (error) {
+      console.error("Error loading cart data:", error);
     }
   };
+
   useEffect(() => {
-    fetchCartData();
-  }, []);
+    loadCart();
+  }, [userId]);
 
   useEffect(() => {
     if (pathname === "/scheckout/carts") {
@@ -59,7 +58,7 @@ const Layout = ({ children }) => {
     } else if (pathname === "/scheckout/payment") {
       setActiveStep(2);
     }
-  }, [pathname]); // Listen to pathname changes
+  }, [pathname]);
 
   const steps = ["Cart", "Address", "Payment"];
 
@@ -74,40 +73,46 @@ const Layout = ({ children }) => {
       setActiveStep(activeStep - 1);
     }
   };
+
   return (
     <Box>
+     {cartData?.products?.length > 0 && (
       <Stepper
         sx={{
           ".Mui-completed .MuiStepIcon-root": {
             background: theme.palette.button.color,
             borderRadius: "50%",
-            color: theme.palette.button.background
+            color: theme.palette.button.background,
           },
           ".Mui-active .MuiStepIcon-root": {
-            color: "#22aa99" // Active step icon color
+            color: "#22aa99",
           },
           ".css-rxa01a-MuiSvgIcon-root-MuiStepIcon-root": {
-            color: "white"
-          }
+            color: "white",
+          },
         }}
         activeStep={activeStep}
         alternativeLabel
       >
-        {steps.map((label, index) => (
+        {steps.map((label) => (
           <Step key={label}>
             <StepLabel>{label}</StepLabel>
           </Step>
         ))}
       </Stepper>
+    )}
 
       <CustomBox>
         <Container maxWidth="xl">
           <Grid container spacing={4}>
-            {isCart && isCart.products.length > 0 ? (
+            {cartData &&  cartData.products && cartData.products.length>0  ? (
               <>
                 {/* Grid for children (cart items) */}
                 <Grid item xs={12} md={7}>
-                  {React.cloneElement(children, { handleNext, handleBack })}
+                  {/* cart component ne call kr and aema props pass kr */}
+                {pathname === "/scheckout/carts" && <CartPage loadCart={loadCart} cartData={cartData} />} 
+                {pathname === "/scheckout/address" && <AddressPage handleBack={handleBack} handleNext={handleNext} />} 
+                {pathname === "/scheckout/payment" && <PaymentPage loadCart={loadCart} cartData={cartData} />} 
                 </Grid>
 
                 {/* Vertical Divider */}
@@ -129,68 +134,22 @@ const Layout = ({ children }) => {
                       <Divider orientation="horizontal" flexItem />
                     ) : (
                       <Divider orientation="vertical" flexItem />
-                    )}{" "}
+                    )}
                   </Box>
                 </Grid>
 
                 {/* Price Details Section */}
                 <Grid item xs={12} md={4}>
                   <PriceDetails
-                    numberOfItems={isCart.products.length}
-                    totalProductPrice={isCart.totalPrice}
-                    totalDiscount={isCart.discountPrice}
-                    orderTotal={isCart.totalPrice}
+                    numberOfItems={cartData.products?.length || 0}
+                    totalProductPrice={cartData.totalPrice}
+                    totalDiscount={cartData.discountPrice}
+                    orderTotal={cartData.totalPrice}
                   />
                 </Grid>
               </>
             ) : (
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  height: "100%", // Adjust this value as needed
-                  width: "100%", // Adjust this value as needed
-                  textAlign: "center",
-                  paddingBottom: 2,
-                  paddingTop: 2
-                }}
-              >
-                <img
-                  src="https://cdn1.vectorstock.com/i/1000x1000/43/85/young-man-pushing-a-shopping-empty-cart-vector-13494385.jpg"
-                  alt="Your cart is empty"
-                  style={{
-                    height: "400px",
-                    maxWidth: "100%",
-                    objectFit: "cover",
-                    animation: "scale 2s infinite alternate" // Animation applied here
-                  }}
-                />
-
-                <Typography>
-                  Don&apos;t worry, you can add your products here. Simply click
-                  on Start Shopping.
-                </Typography>
-
-                <Link href="/categories/collections" passHref>
-                  <CustomButton title="Start Shopping" />
-                </Link>
-
-                {/* CSS Animation Styles */}
-                <style>
-                  {`
-                  @keyframes scale {
-                    0% {
-                      transform: scale(1);
-                    }
-                    100% {
-                      transform: scale(1.05);
-                    }
-                  }
-                `}
-                </style>
-              </Box>
+             <EmptyCart/>
             )}
           </Grid>
         </Container>

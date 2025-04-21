@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { Typography, CircularProgress, Divider, Box, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import toast, { Toaster } from 'react-hot-toast';
 import { PhoneAndroid, Google, Email, Person } from '@mui/icons-material';
 import CustomModal from '@/app/Custom/CustomModal';
 import CustomInput from '@/app/Custom/CustomInput';
@@ -10,7 +9,6 @@ import PasswordInput from '@/app/Common/PasswordInput';
 import FileInput from '@/app/Common/FileInput';
 import { handleChange, handleFileChange, handleSubmit } from '@/app/helper/RegisterUtils';
 import CustomButton from '@/app/Custom/CustomButton';
-import PhoneRegistrationModal from './PhoneRegistrationModal';
 import GoogleRegistrationModal from './GoogleRegistrationForm';
 
 const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
@@ -20,18 +18,8 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
     const [avatar, setAvatar] = useState(null);
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const [isPhoneModalOpen, setIsPhoneModalOpen] = useState(false);
     const [isGoogleModalOpen, setIsGoogleModalOpen] = useState(false); // State for Google Registration Modal
-    // Handler to open Phone Registration Modal
-    const handleOpenPhoneModal = () => {
-        setIsPhoneModalOpen(true);
-        onClose(); // Close the RegisterModal when opening the PhoneRegistrationModal
-    };
-
-    // Handler to close Phone Registration Modal
-    const handleClosePhoneModal = () => {
-        setIsPhoneModalOpen(false);
-    };// Handler to open Google Registration Modal
+   // Handler to open Google Registration Modal
     const handleOpenGoogleModal = () => {
         setIsGoogleModalOpen(true);
         onClose(); // Close the RegisterModal when opening the GoogleRegistrationModal
@@ -97,15 +85,7 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
                     />
                     <Divider sx={{ my: 1 }}>{t('OR')}</Divider>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                        <CustomButton
-                            background="#e58d4d"
-                            fullWidth
-                            onClick={handleOpenPhoneModal}
-                            startIcon={<PhoneAndroid />}
-                            title={t('Phone')}
-                            sx={{ flex: 1 }}
-                        />
-                        <Divider orientation="vertical" flexItem />
+                        
                         <CustomButton
                             background="#d62746"
                             fullWidth
@@ -126,8 +106,7 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
                     />
                 </form>
             </CustomModal>
-            {/* rendeer phone registrationmodal */}
-            <PhoneRegistrationModal open={isPhoneModalOpen} onClose={handleClosePhoneModal} />
+            
             <GoogleRegistrationModal open={isGoogleModalOpen} onClose={handleCloseGoogleModal} />
         </>
     );

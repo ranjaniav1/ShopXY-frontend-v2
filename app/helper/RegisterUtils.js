@@ -26,10 +26,13 @@ export const handleSubmit = async (formData, avatar, setLoading, onClose) => {
   } catch (error) {
     console.error("Registration error:", error);
     const errorMessage =
-      error.response?.data?.message ||
-      error.message ||
-      i18n.t('An unexpected error occurred');
-    toast.error(errorMessage);
-    setLoading(false);
+    error.response?.status === 409
+      ? i18n.t("Request failed with status code 409") // Custom message for 409 error
+      : error.response?.data?.message ||
+        error.message ||
+        i18n.t("An unexpected error occurred");
+
+  toast.error(errorMessage);
+  setLoading(false);
   }
 };

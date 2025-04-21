@@ -18,7 +18,8 @@ const FilterSection = ({
   setPriceRange,
   selectedRatings,
   setSelectedRatings,
-  handleResetFilters
+  handleResetFilters, priceMinMax,
+  ratingMinMax
 }) => {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -55,8 +56,8 @@ const FilterSection = ({
         value={priceRange}
         onChange={(e, newValue) => setPriceRange(newValue)}
         valueLabelDisplay="auto"
-        min={0}
-        max={1000}
+        min={priceMinMax[0]}
+        max={priceMinMax[1]}
         sx={{
           color: theme.palette.primary.main // Slider color based on theme
         }}

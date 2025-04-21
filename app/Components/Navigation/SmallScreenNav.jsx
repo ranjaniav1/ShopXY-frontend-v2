@@ -25,7 +25,7 @@ const SmallScreenNav = ({ setDrawerOpen }) => {
       {/* Logo */}
       <Link href="/" passHref>
         <div className="text-xl font-semibold">
-          <span style={{ color: "#22aa99" }}>s</span>hopxy
+          <span style={{ color: "#22aa99" }}>S</span>hopXY
         </div>
       </Link>
 
@@ -55,7 +55,7 @@ const SmallScreenNav = ({ setDrawerOpen }) => {
 
       {/* ✅ Render Modal only when open */}
       <CustomModal open={isSearchOpen} onClose={() => setIsSearchOpen(false)} height="450px" title="search">
-        <NavSearchBar/>
+        <NavSearchBar onClose={() => setIsSearchOpen(false)}/>
       </CustomModal>
     </Box>
   );

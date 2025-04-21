@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import CustomButton from "../Custom/CustomButton";
-import { LocationCity, PhoneCallback } from "@mui/icons-material";
-import { TextField, Box, Snackbar } from "@mui/material";
-import { CreateAddress, getAddress, updateAddress } from "../Service/Address";
-import { useDispatch, useSelector } from "react-redux";
-import { setMyAddress } from "../redux/reducer/addressReducer";
+import { TextField, Box } from "@mui/material";
+import { CreateAddress, updateAddress } from "../Service/Address";
+import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 
-const AddressDrawer = ({ onClose, isEditing, addressData }) => {
+const AddressDrawer = ({ onClose, isEditing, addressData, onAddressSaved = () => {} }) => {
   const userId = useSelector((state) => state.auth.user.data.user._id);
+
   const [name, setName] = useState("");
   const [contactNumber, setContactNumber] = useState("");
   const [houseNo, setHouseNo] = useState("");
@@ -16,18 +15,30 @@ const AddressDrawer = ({ onClose, isEditing, addressData }) => {
   const [pincode, setPincode] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
-  const dispatch = useDispatch();
+
   useEffect(() => {
     if (isEditing && addressData) {
-      setName(addressData.name);
-      setContactNumber(addressData.phone);
-      setHouseNo(addressData.address.split(" ")[0]);
-      setRoadName(addressData.address.split(" ").slice(1).join(" "));
-      setPincode(addressData.postalCode);
-      setCity(addressData.city);
-      setState(addressData.state);
+      setName(addressData.name || "");
+      setContactNumber(addressData.phone || "");
+      
+      // Try splitting using pipe first
+      let addressParts = addressData.address?.split("|");
+  
+      // If that gives less than 2 parts, fallback to space
+      if (!addressParts || addressParts.length < 2) {
+        addressParts = addressData.address?.split(" ") || [];
+        setHouseNo(addressParts[0] || "");
+        setRoadName(addressParts.slice(1).join(" ") || "");
+      } else {
+        setHouseNo(addressParts[0] || "");
+        setRoadName(addressParts[1] || "");
+      }
+  
+      setPincode(addressData.postalCode || "");
+      setCity(addressData.city || "");
+      setState(addressData.state || "");
     } else {
-      // Clear form when not editing
+      // Reset
       setName("");
       setContactNumber("");
       setHouseNo("");
@@ -37,159 +48,116 @@ const AddressDrawer = ({ onClose, isEditing, addressData }) => {
       setState("");
     }
   }, [isEditing, addressData]);
+  
 
-  const fetchAddresses = async () => {
-    try {
-      const response = await getAddress(userId);
-      return response;
-    } catch (err) {
-      console.error("Error fetching addresses", err);
-      return [];
-    }
-  };
   const validateFields = () => {
     if (!name) return "Name is required.";
-    if (!/^\d{10}$/.test(contactNumber))
-      return "Contact number must be 10 digits.";
+    if (!/^\d{10}$/.test(contactNumber)) return "Contact number must be 10 digits.";
     if (!houseNo) return "House number is required.";
     if (!/^\d{6}$/.test(pincode)) return "Pincode must be 6 digits.";
     if (!city) return "City is required.";
     if (!state) return "State is required.";
-    return ""; // No errors
+    return "";
   };
 
   const handleSaveAddress = async () => {
-    const validationError = validateFields();
-    if (validationError) {
-      toast.error(validationError);
+    const error = validateFields();
+    if (error) {
+      toast.error(error);
       return;
     }
+
+    const fullAddress = `${houseNo} ${roadName}`;
+    const payload = {
+      address: fullAddress,
+      city,
+      state,
+      postalCode: pincode,
+      country: "USA",
+      phone: contactNumber,
+      name,
+    };
+
     try {
-      const addressPayload = {
-        address: `${houseNo} ${roadName}`,
-        city,
-        state,
-        postalCode: pincode,
-        country: "USA",
-        phone: contactNumber,
-        isPrimary: false, // Adjust as needed
-        name
-      };
-      let addressResponse;
       if (isEditing && addressData?._id) {
-        addressResponse = await updateAddress(
+        await updateAddress(
           userId,
           addressData._id,
-          addressPayload.address,
-          addressPayload.city,
-          addressPayload.state,
-          addressPayload.postalCode,
-          addressPayload.country,
-          addressPayload.phone,
-          addressPayload.isPrimary
+          payload.address,
+          payload.city,
+          payload.state,
+          payload.postalCode,
+          payload.country,
+          payload.phone,
+          false // not primary by default
         );
+        toast.success("Address updated successfully!");
       } else {
-        addressResponse = await CreateAddress(
+        await CreateAddress(
           userId,
-          addressPayload.address,
-          addressPayload.city,
-          addressPayload.state,
-          addressPayload.postalCode,
-          addressPayload.country,
-          addressPayload.phone
+          payload.address,
+          payload.city,
+          payload.state,
+          payload.postalCode,
+          payload.country,
+          payload.phone
         );
+        toast.success("Address added successfully!");
       }
 
-      if (addressResponse) {
-        const updatedAddresses = await fetchAddresses();
-        dispatch(setMyAddress(updatedAddresses));
-        onClose();
-        toast.success("Address saved successfully!"); // Show success toast
-      } else {
-        console.error("Error: No response from the server.");
-        toast.error("Error saving address. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error saving address", error);
-      toast.error("An error occurred while saving the address.");
+      onAddressSaved(); // 🔄 Trigger refresh in parent
+      onClose(); // Close drawer after save
+    } catch (err) {
+      console.error("Failed to save address", err);
+      toast.error("Something went wrong. Please try again.");
     }
   };
 
   return (
-    <Box>
-      {/* Contact Details Section */}
-      <Box mb={2}>
-        <CustomButton title="Contact Details" startIcon={<PhoneCallback />} />
-      </Box>
-      <Box mb={2}>
-        <TextField
-          placeholder="Name"
-          variant="standard"
-          fullWidth
-          sx={{ mb: 1 }}
-          onChange={(e) => setName(e.target.value)}
-          value={name}
-        />
-        <TextField
-          placeholder="Contact Number"
-          variant="standard"
-          fullWidth
-          value={contactNumber}
-          onChange={(e) => setContactNumber(e.target.value)}
-        />
-      </Box>
-
-      {/* Address Section */}
-      <Box mb={2}>
-        <CustomButton title="Address" startIcon={<LocationCity />} />
-      </Box>
-      <Box mb={2}>
-        <TextField
-          placeholder="House no./ Building name"
-          variant="standard"
-          fullWidth
-          sx={{ mb: 1 }}
-          value={houseNo}
-          onChange={(e) => setHouseNo(e.target.value)}
-        />
-        <TextField
-          placeholder="Road name / Area / Colony"
-          variant="standard"
-          fullWidth
-          sx={{ mb: 1 }}
-          value={roadName}
-          onChange={(e) => setRoadName(e.target.value)}
-        />
-        <TextField
-          placeholder="Pincode"
-          variant="standard"
-          fullWidth
-          sx={{ mb: 1 }}
-          value={pincode}
-          onChange={(e) => setPincode(e.target.value)}
-        />
-        <TextField
-          placeholder="City"
-          variant="standard"
-          fullWidth
-          sx={{ mb: 1 }}
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-        />
-        <TextField
-          placeholder="State"
-          variant="standard"
-          fullWidth
-          value={state}
-          onChange={(e) => setState(e.target.value)}
-        />
-      </Box>
-      <Box mt={2}>
-        <CustomButton
-          title="Save Address and Continue"
-          onClick={handleSaveAddress}
-        />
-      </Box>
+    <Box display="flex" flexDirection="column" gap={2}>
+      <TextField
+        label="Name"
+        fullWidth
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <TextField
+        label="Contact Number"
+        fullWidth
+        value={contactNumber}
+        onChange={(e) => setContactNumber(e.target.value)}
+      />
+      <TextField
+        label="House No."
+        fullWidth
+        value={houseNo}
+        onChange={(e) => setHouseNo(e.target.value)}
+      />
+      <TextField
+        label="Road Name"
+        fullWidth
+        value={roadName}
+        onChange={(e) => setRoadName(e.target.value)}
+      />
+      <TextField
+        label="Pincode"
+        fullWidth
+        value={pincode}
+        onChange={(e) => setPincode(e.target.value)}
+      />
+      <TextField
+        label="City"
+        fullWidth
+        value={city}
+        onChange={(e) => setCity(e.target.value)}
+      />
+      <TextField
+        label="State"
+        fullWidth
+        value={state}
+        onChange={(e) => setState(e.target.value)}
+      />
+      <CustomButton title={isEditing ? "Update Address" : "Save Address"} onClick={handleSaveAddress} />
     </Box>
   );
 };

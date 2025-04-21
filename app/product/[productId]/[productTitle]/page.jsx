@@ -7,8 +7,6 @@ import { GetSingleProduct } from '@/app/Service/GetProduct';
 import ProductGallery from '@/app/Components/ProductGallery';
 import ProductDetails from '@/app/Components/ProductDetails';
 import CustomBox from '@/app/Custom/CustomBox';
-import { useDispatch } from 'react-redux';
-import { setMyCart } from '@/app/redux/reducer/cartReducer';
 
 const Page = () => {
     const { productId } = useParams();

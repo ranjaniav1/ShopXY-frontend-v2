@@ -1,28 +1,44 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Search } from "@mui/icons-material";
 import CustomInput from "@/app/Custom/CustomInput";
 import { searchProduct } from "@/app/Service/search";
 import { useRouter } from "next/navigation";
+import { useTheme } from "@mui/material";
 
-const NavSearchBar = () => {
+const NavSearchBar = ({ onClose }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-  const [disableSuggestions, setDisableSuggestions] = useState(false); // New state
+  const [disableSuggestions, setDisableSuggestions] = useState(false);
   const router = useRouter();
+  const theme = useTheme();
+  const searchRef = useRef(null); // 🔹 Ref for outside click detection
+
+  // 🔹 Detect clicks outside the component
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setSuggestions([]);
+        setDisableSuggestions(true);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     if (!disableSuggestions && searchQuery.trim().length > 0) {
       fetchSuggestions(searchQuery);
     } else {
-      setSuggestions([]); // Clear suggestions when input is empty or disabled
+      setSuggestions([]);
     }
   }, [searchQuery, disableSuggestions]);
 
   const fetchSuggestions = async (query) => {
     try {
-      console.log(query);
       const results = await searchProduct(query.trim());
-      console.log(results);
       setSuggestions(results.products);
     } catch (error) {
       console.error("Error fetching search suggestions:", error);
@@ -32,13 +48,14 @@ const NavSearchBar = () => {
   const handleSearch = () => {
     if (searchQuery.trim()) {
       router.push(`/search/${encodeURIComponent(searchQuery.trim())}`);
-      setSuggestions([]); // Hide suggestions after search
-      setDisableSuggestions(true); // Disable suggestions after search
+      setSuggestions([]);
+      setDisableSuggestions(true);
+      onClose?.();
     }
   };
 
   return (
-    <div className="relative flex-grow mx-4">
+    <div ref={searchRef} className="relative flex-grow mx-4">
       <CustomInput
         startIcon={<Search className="cursor-pointer" onClick={handleSearch} />}
         placeholder="Search for Products, Brands, and More"
@@ -46,7 +63,7 @@ const NavSearchBar = () => {
         value={searchQuery}
         onChange={(e) => {
           setSearchQuery(e.target.value);
-          setDisableSuggestions(false); // Enable suggestions when typing
+          setDisableSuggestions(false);
         }}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
@@ -55,16 +72,23 @@ const NavSearchBar = () => {
         }}
       />
       {suggestions.length > 0 && !disableSuggestions && (
-        <ul className="absolute left-0 w-full bg-white border border-gray-300 rounded-md shadow-lg mt-1 z-50 max-h-[300px] overflow-y-auto">
+        <ul
+          className="absolute left-0 w-full border border-gray-300 rounded-md shadow-lg mt-1 z-50 max-h-[300px] overflow-y-auto"
+          style={{
+            background: theme.palette.background.main,
+            color: theme.palette.text.primary,
+          }}
+        >
           {suggestions.map((item) => (
             <li
               key={item._id}
-              className="px-4 py-2 hover:bg-green-100 cursor-pointer transition-all"
+              className="px-4 py-2 cursor-pointer transition-all hover:bg-gray-100"
               onClick={() => {
                 setSearchQuery(item.name);
-                setSuggestions([]); // Hide suggestions after click
-                setDisableSuggestions(true); // Disable auto-suggestions after clicking
+                setSuggestions([]);
+                setDisableSuggestions(true);
                 router.push(`/product/${item._id}/${encodeURIComponent(item.slug)}`);
+                onClose?.();
               }}
             >
               {item.name}
