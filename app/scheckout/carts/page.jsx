@@ -44,15 +44,15 @@ const CartPage = ({ handleNext, loadCart, cartData }) => {
           borderRadius: 2,
         }}
       >
-        {
+        {/* {
           cartData && cartData.products && cartData.products.length > 0 ? (
-            <CustomTypography variant="h6" sx={{ marginBottom: 2, fontWeight: "bold" }}>
+            <CustomTypography variant="h2" sx={{ marginBottom: 2, fontWeight: "bold" }}>
               {t("Product Details")}
             </CustomTypography>
           ) : (
             <></>
           )
-        }
+        } */}
 
         {cartData && cartData.products && cartData.products.length > 0 ? (
           cartData.products.map((item) => (
@@ -92,7 +92,7 @@ const CartPage = ({ handleNext, loadCart, cartData }) => {
       </CustomDrawer>
 
       {cartData && cartData.products && cartData.products.length > 0 ? (
-        <Box sx={{ textAlign: "end", mt: 2 }}>
+        <Box sx={{ textAlign: "end" }}>
           <Link href="/scheckout/address">
             <CustomButton title="Next" onClick={handleNext} />
           </Link>

@@ -136,7 +136,7 @@ const Page = ({ handleNext, handleBack }) => {
         alignItems="center"
         p={2}
       >
-        <CustomTypography>{t("Select Delivery Address")}</CustomTypography>
+        <CustomTypography sx={{color:theme.palette.card.text}}>{t("Select Delivery Address")}</CustomTypography>
 
         {isSmallScreen ? (
           <CustomIconButton

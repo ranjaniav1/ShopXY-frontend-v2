@@ -59,9 +59,9 @@ const darkTheme = createTheme({
     },
     card: {
       border: "#0d7377",
-      hover: "#0d7377",
-      background: "#1b1b1b", // Slightly lighter than background for depth
-      text: "#f0f0f0" // Lighter for good readability
+       hover: "#14ffec",
+      background: "#1e1e1e",
+      text: "#f8f8f8"
     }
   }
 });

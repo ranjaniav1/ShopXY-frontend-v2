@@ -96,7 +96,7 @@ const WishlistItem = ({ userId, activeTab }) => {
         <Button onClick={() => setPage((p) => Math.max(p - 1, 1))} disabled={page <= 1}>
           Previous
         </Button>
-        <CustomTypography variant="body2">
+        <CustomTypography variant="body2" sx={{color:theme.palette.text.secondary }}>
           Page {page} of {totalPages}
         </CustomTypography>
         <Button onClick={() => setPage((p) => Math.min(p + 1, totalPages))} disabled={page >= totalPages}>
