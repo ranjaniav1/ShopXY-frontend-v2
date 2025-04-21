@@ -3,6 +3,7 @@ import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutl
 import { Box, Divider, FormControlLabel, Radio, Typography, useTheme } from '@mui/material';
 import React from 'react';
 import CustomIconButton from '../Custom/CustomIconButton';
+import CustomTypography from '../Custom/CustomTypography';
 
 const AddressCard = ({ address, selectedAddressId, handleEdit, handleRemove, handleChange }) => {
     const handleRadioChange = () => {
@@ -76,10 +77,10 @@ const AddressCard = ({ address, selectedAddressId, handleEdit, handleRemove, han
             </CustomTypography */}
                     <CustomTypography variant="body2" color="textSecondary">
                         {address.city}, {address.state}, {address.postalCode}
-                    </CustomTypography
+                    </CustomTypography>
                     <CustomTypography variant="body2" color="textSecondary" mt={0.5}>
                         {address.country} |  Phone: {address.phone}
-                    </CustomTypography
+                    </CustomTypography>
                 </Box>
             </Box>
 

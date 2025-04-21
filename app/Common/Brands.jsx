@@ -5,6 +5,7 @@ import { Box, Typography, Divider, Select, MenuItem, FormGroup, FormControlLabel
 import { useParams } from 'next/navigation';
 import { GetSingleBrands } from '../Service/GetBrands'; // Ensure this import is correct and matches your service file
 import { useTranslation } from 'react-i18next';
+import CustomTypography from '../Custom/CustomTypography';
 
 const Brands = ({ onBrandChange }) => {
     const [brands, setBrands] = useState([]);
@@ -30,14 +31,14 @@ const Brands = ({ onBrandChange }) => {
 
     return (
         <Box sx={{ width: '100%', padding: '16px', backgroundColor: theme.palette.background.main, border: '1px solid #e0e0e0', borderRadius: '4px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
-            <CustomTypography variant="h6">{t("Filters")}</CustomTypography
+            <CustomTypography variant="h6">{t("Filters")}</CustomTypography>
             <Divider sx={{ my: 2 }} />
 
             {/* Sort By Dropdown */}
             <Box sx={{ mb: 2 }}>
                 <CustomTypography variant="subtitle1" gutterBottom>
                     {t(" Sort By")}
-                </CustomTypography
+                </CustomTypography>
                 <Select sx={{ width: '100%' }}>
                     <MenuItem value="alphabetical">Alphabetical</MenuItem>
                     <MenuItem value="reverse-alphabetical">Reverse Alphabetical</MenuItem>
@@ -52,7 +53,7 @@ const Brands = ({ onBrandChange }) => {
             <Box sx={{ mb: 2 }}>
                 <CustomTypography variant="subtitle1" gutterBottom>
                     {t("Filter by Rating")}
-                </CustomTypography
+                </CustomTypography>
                 <Select sx={{ width: '100%' }}>
                     <MenuItem value="2-3">2.0 to 3.0</MenuItem>
                     <MenuItem value="3-4">3.0 to 4.0</MenuItem>
@@ -64,7 +65,7 @@ const Brands = ({ onBrandChange }) => {
             <Box>
                 <CustomTypography variant="subtitle1" gutterBottom>
                     {t("Brands")}
-                </CustomTypography
+                </CustomTypography>
                 <FormGroup>
                     {brands.length > 0 ? (
                         brands.map((brand) => (
@@ -80,7 +81,7 @@ const Brands = ({ onBrandChange }) => {
                             />
                         ))
                     ) : (
-                        <CustomTypography variant="body2">No brands available</CustomTypography
+                        <CustomTypography variant="body2">No brands available</CustomTypography>
                     )}
                 </FormGroup>
             </Box>

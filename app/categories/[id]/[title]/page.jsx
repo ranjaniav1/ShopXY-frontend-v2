@@ -10,6 +10,7 @@ import { GetSingleCategories } from '@/app/Service/GetCategory';
 import AOS from 'aos'; // Import AOS
 import 'aos/dist/aos.css'; // Import AOS styles
 import Heading from '@/app/Common/Heading';
+import CustomTypography from '@/app/Custom/CustomTypography';
 
 const Page = () => {
     const [categories, setCategories] = useState([]);

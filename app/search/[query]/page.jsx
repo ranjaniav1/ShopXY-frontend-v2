@@ -16,6 +16,7 @@ import { searchProduct } from "@/app/Service/search"; // Adjust the import based
 import ProductCard from "@/app/Components/ProductCard";
 import Link from "next/link";
 import { useSelector } from "react-redux";
+import CustomTypography from "@/app/Custom/CustomTypography";
 
 const SearchResults = () => {
   const { query } = useParams(); // Get the query from the URL
@@ -99,11 +100,11 @@ const SearchResults = () => {
       <Box width="20%" p={2} borderRight="1px solid #ddd">
         <CustomTypography variant="h6" mb={2}>
           Filters
-        </CustomTypography
+        </CustomTypography>
 
         <CustomTypography variant="body1" mb={1}>
           Price Range
-        </CustomTypography
+        </CustomTypography>
         <Slider
           value={filters.priceRange}
           onChange={handlePriceRangeChange}
@@ -116,7 +117,7 @@ const SearchResults = () => {
         <FormGroup mt={2}>
           <CustomTypography variant="body1" mb={1}>
             Categories
-          </CustomTypography
+          </CustomTypography>
           {categories.map((brand) => (
             <FormControlLabel
               key={brand}
@@ -148,7 +149,7 @@ const SearchResults = () => {
       <Box width="80%" p={2}>
         {loading && <CircularProgress />}
 
-        {error && <CustomTypography color="error">{error}</CustomTypography}
+        {error && <CustomTypography color="error">{error}</CustomTypography>}
 
         {filteredResults.length > 0 ? (
           <Grid container spacing={2}>
@@ -173,7 +174,7 @@ const SearchResults = () => {
             ))}
           </Grid>
         ) : (
-          <CustomTypography>No results found.</CustomTypography
+          <CustomTypography>No results found.</CustomTypography>
         )}
       </Box>
     </Box>

@@ -167,7 +167,7 @@ const PaymentPage = ({ handleBack, cartData, loadCart }) => {
       <Box sx={{ width: "100%", mt: 4 }}>
         <CustomTypography variant="h6" sx={{ color: theme.palette.text.primary }}>
           Enter Promo code
-        </CustomTypography
+        </CustomTypography>
         <TextField
           label="Promo Code"
           variant="outlined"
@@ -198,7 +198,7 @@ const PaymentPage = ({ handleBack, cartData, loadCart }) => {
         {promoError && (
           <CustomTypography color="error" mt={2}>
             {promoError}
-          </CustomTypography
+          </CustomTypography>
         )}
       </Box>
 
