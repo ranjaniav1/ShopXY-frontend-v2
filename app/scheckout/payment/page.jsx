@@ -34,15 +34,18 @@ const PaymentPage = ({ handleBack, cartData, loadCart }) => {
   const router = useRouter();
 
   // Handle Cash on Delivery Payment
-  async function handleCodPay() {
+  async function handleCodPay(paymentType, cartId, userId) {
     try {
       const response = await cashOnDelivery(userId, cartId);
-      toast.success("payment sucess");
+      console.log("COD Response:", response); // ✅ Now you’ll see the actual response
+      toast.success(response.message || "Order placed successfully");
       router.push("/");
     } catch (error) {
       console.error("Error during COD payment", error);
+      toast.error(error.response?.data?.message || "COD payment failed");
     }
   }
+  
 
   // Handle Promo Code Validation
   async function handlePromoCodeApply() {
@@ -120,37 +123,46 @@ const PaymentPage = ({ handleBack, cartData, loadCart }) => {
         gutterBottom
         sx={{ color: theme.palette.text.primary }}
       >
-        Payment Method: Cash on Delivery{" "}
+        Payment Methods: 
       </CustomTypography>
 
-      {/* Cash On Delivery Button */}
-      <CustomButton
-        title="Cash On Delivery"
-        sx={{
-          width: "100%",
-          mt: 1,
-          backgroundColor: theme.palette.button.background,
-          ":hover": {
-            backgroundColor: theme.palette.button.hover
-          }
-        }}
-        onClick={handleCodPay}
-      />
-     
+     {/* Payment Buttons Section */}
+<Box
+  sx={{
+    display: "flex",
+    flexDirection: { xs: "column", sm: "row" },
+    gap: 2,
+    width: "100%",
+    mt: 2,
+  }}
+>
+  {/* Cash On Delivery Button */}
+  <CustomButton
+    title="Cash On Delivery"
+    sx={{
+      flex: 1,
+      backgroundColor: theme.palette.button.background,
+      ":hover": {
+        backgroundColor: theme.palette.button.hover,
+      },
+    }}
+    onClick={() => handleCodPay("cod", cartData._id, userId)}
+  />
 
-      {/* Stripe Payment Button */}
-      <CustomButton
-        title="Pay with Stripe"
-        sx={{
-          width: "100%",
-          mt: 2,
-          backgroundColor: "#6772e5",
-          ":hover": {
-            backgroundColor: "#5469d4"
-          }
-        }}
-        onClick={()=>handleStripePay("Stripe", cartData._id, userId)}
-      />
+  {/* Stripe Payment Button */}
+  <CustomButton
+    title="Pay with Stripe"
+    sx={{
+      flex: 1,
+      backgroundColor: "#6772e5",
+      ":hover": {
+        backgroundColor: "#5469d4",
+      },
+    }}
+    onClick={() => handleStripePay("Stripe", cartData._id, userId)}
+  />
+</Box>
+
       {/* Promo Code Section */}
       <Box sx={{ width: "100%", mt: 4 }}>
         <Typography variant="h6" sx={{ color: theme.palette.text.primary }}>

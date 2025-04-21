@@ -4,22 +4,20 @@ import CartProductCard from "@/app/Components/CardProductCard";
 import { Box, Typography, useTheme } from "@mui/material";
 import CustomDrawer from "@/app/Custom/CustomDrawer";
 import EditCart from "@/app/Components/EditCart";
-import toast from "react-hot-toast";
 import CustomButton from "@/app/Custom/CustomButton";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import Image from "next/image";
-import { fetchCart, handleRemoveFromCart } from "@/app/helper/cartUtils";
+import { handleRemoveFromCart } from "@/app/helper/cartUtils";
 import { useSelector } from "react-redux";
 
-const CartPage = ({ handleNext,loadCart ,cartData}) => {
+const CartPage = ({ handleNext, loadCart, cartData }) => {
   const [editDrawer, setEditDrawer] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const theme = useTheme();
   const userId = useSelector((state) => state.auth.user.data.user._id);
   const { t } = useTranslation();
 
-console.log()
+  console.log()
   useEffect(() => {
     if (userId) {
       loadCart();
@@ -27,8 +25,8 @@ console.log()
   }, [userId]);
 
   const handleRemove = async (productId) => {
-    await handleRemoveFromCart({userId, productId});
-    loadCart(); 
+    await handleRemoveFromCart({ userId, productId });
+    loadCart();
   };
 
   const handleEdit = (item) => {
@@ -45,14 +43,20 @@ console.log()
           borderRadius: 2,
         }}
       >
-      
-
-        {cartData &&  cartData.products && cartData.products.length>0 ? (
-          cartData.products.map((item) => (
-            <>
+        {
+          cartData && cartData.products && cartData.products.length > 0 ? (
             <Typography variant="h6" sx={{ marginBottom: 2, fontWeight: "bold" }}>
-            {t("Product Details")}
-          </Typography>
+              {t("Product Details")}
+            </Typography>
+          ) : (
+            <></>
+          )
+        }
+
+        {cartData && cartData.products && cartData.products.length > 0 ? (
+          cartData.products.map((item) => (
+
+
             <CartProductCard
               key={item._id}
               image={item.product.image}
@@ -63,12 +67,12 @@ console.log()
               size={item.product.size}
               onEdit={() => handleEdit(item)}
               actual_price={item.product.actual_price}
-              discounted_price={item.product.discounted_price} 
+              discounted_price={item.product.discounted_price}
               onRemove={() => handleRemove(item.product._id)}
-            /></>
+            />
           ))
         ) : (
-         <></>
+          <></>
         )}
       </Box>
 
@@ -82,17 +86,17 @@ console.log()
             setEditDrawer(false);
             loadCart(); // Refresh the cart when closing the drawer
           }}
-          selectedProduct={selectedProduct} 
+          selectedProduct={selectedProduct}
         />
       </CustomDrawer>
 
-      {cartData &&  cartData.products && cartData.products.length>0 ?  (
+      {cartData && cartData.products && cartData.products.length > 0 ? (
         <Box sx={{ textAlign: "end", mt: 2 }}>
           <Link href="/scheckout/address">
             <CustomButton title="Next" onClick={handleNext} />
           </Link>
         </Box>
-      ):(<></>)}
+      ) : (<></>)}
     </Box>
   );
 };

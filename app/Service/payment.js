@@ -4,13 +4,13 @@ import { loadStripe } from "@stripe/stripe-js";
 
 export const cashOnDelivery = async (userId, cartId) => {
   try {
-    const response = await httpAxios.post("/user/payment/place-order-cod", {
+    const response = await httpAxios.post("/user/payment/order", {
       userId,
-      cartId,orderType:"cod"
+      cartId,paymentMethod:"cod"
     });
-    return response.data.data;
+    return response.data;
   } catch (error) {
-    console.log("Error adding to cart", error);
+    console.log("Error during COD payment", error);
     throw error;
   }
 };
