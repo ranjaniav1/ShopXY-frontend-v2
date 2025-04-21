@@ -3,6 +3,7 @@ import { Box, Grid, IconButton, Typography, useTheme, Button, Card, CardMedia, C
 import DeleteIcon from "@mui/icons-material/Delete";
 import Link from "next/link";
 import { fetchWishlist, handleRemoveFromWishlist } from "@/app/helper/ProfileUtils";
+import CustomCollectionCard from "@/app/Common/CustomCollectionCard";
 
 
 const WishlistItem = ({ userId, activeTab }) => {
@@ -41,6 +42,9 @@ const WishlistItem = ({ userId, activeTab }) => {
               <Card
                 sx={{
                   height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
                   position: "relative",
                   transition: "transform 0.3s",
                   "&:hover": {
@@ -49,6 +53,7 @@ const WishlistItem = ({ userId, activeTab }) => {
                   },
                 }}
               >
+
                 <IconButton
                   onClick={() => handleDeleteWishlist(wishlistItem.product._id)}
                   sx={{
@@ -70,42 +75,13 @@ const WishlistItem = ({ userId, activeTab }) => {
                   href={`/product/${wishlistItem.product._id}/${encodeURIComponent(wishlistItem.product.slug)}`}
                   passHref
                 >
-                  <CardMedia
-                    component="img"
-                    image={wishlistItem.product.image || "/placeholder-image.png"}
-                    alt={wishlistItem.product.title}
-                    height="200"
-                    sx={{
-                      objectFit: "cover",
-                      borderTopLeftRadius: "4px",
-                      borderTopRightRadius: "4px",
-                    }}
+                  <CustomCollectionCard
+                    id={wishlistItem.product._id}
+                    image={wishlistItem.product.image}
+
                   />
                 </Link>
-
-                <CardContent>
-                  <Typography
-                    variant="subtitle1"
-                    fontWeight={600}
-                    gutterBottom
-                    noWrap
-                  >
-                    {wishlistItem.product.title}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary" noWrap>
-                    {wishlistItem.product.description}
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    color="primary"
-                    fontWeight="bold"
-                    mt={1}
-                  >
-                    ${wishlistItem.product.discounted_price || "N/A"}
-                  </Typography>
-                </CardContent>
               </Card>
-
             </Grid>
           ))
         ) : (
