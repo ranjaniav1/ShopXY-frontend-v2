@@ -55,7 +55,7 @@ const SmallScreenNav = ({ setDrawerOpen }) => {
 
       {/* ✅ Render Modal only when open */}
       <CustomModal open={isSearchOpen} onClose={() => setIsSearchOpen(false)} height="450px" title="search">
-        <NavSearchBar/>
+        <NavSearchBar onClose={() => setIsSearchOpen(false)}/>
       </CustomModal>
     </Box>
   );
