@@ -48,7 +48,7 @@ const EditCart = ({ onClose, selectedProduct }) => {
   };
 
   if (!selectedProduct) {
-    return <Typography variant="body2" color="textSecondary">No product selected.</Typography>;
+    return <CustomTypography variant="body2" color="textSecondary">No product selected.</CustomTypography;
   }
 
   const totalPrice = (selectedProduct.product.discounted_price || 0) * localQuantity;
@@ -81,10 +81,10 @@ const EditCart = ({ onClose, selectedProduct }) => {
               }}
             />
             <Box sx={{ flex: 1 }}>
-              <Typography sx={{ fontWeight: 'bold' }}>{selectedProduct.product.name}</Typography>
-              <Typography variant="body2" color="textSecondary">
+              <CustomTypography sx={{ fontWeight: 'bold' }}>{selectedProduct.product.name}</CustomTypography
+              <CustomTypography variant="body2" color="textSecondary">
                 ₹{selectedProduct.product.actual_price}
-              </Typography>
+              </CustomTypography
               <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
                 <ButtonGroup sx={{ borderRadius: 2 }}>
                   <Button
@@ -93,7 +93,7 @@ const EditCart = ({ onClose, selectedProduct }) => {
                   >
                     <RemoveIcon />
                   </Button>
-                  <Typography variant="h6" sx={{ mx: 2 }}>{localQuantity}</Typography>
+                  <CustomTypography variant="h6" sx={{ mx: 2 }}>{localQuantity}</CustomTypography
                   <Button
                     onClick={handleIncrement}
                     sx={{ background: theme.palette.primary.main, color: 'white' }}
@@ -103,15 +103,15 @@ const EditCart = ({ onClose, selectedProduct }) => {
                 </ButtonGroup>
               </Box>
               {errorMessage && (
-                <Typography variant="body2" color="error" sx={{ mt: 1 }}>
+                <CustomTypography variant="body2" color="error" sx={{ mt: 1 }}>
                   {errorMessage}
-                </Typography>
+                </CustomTypography
               )}
             </Box>
           </Box>
 
           <Divider sx={{ my: 2 }} />
-          <Typography variant="body2">Total Price: ₹{totalPrice}</Typography>
+          <CustomTypography variant="body2">Total Price: ₹{totalPrice}</CustomTypography
           <CustomButton onClick={onClose} title="Continue" sx={{ mt: 2 }} />
         </>
       )}

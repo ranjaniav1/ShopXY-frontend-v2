@@ -5,6 +5,7 @@ import { Grid, Typography, useTheme } from "@mui/material";
 import ProductCard from "./ProductCard";
 import CustomSkeleton from "../Custom/CustomSkeleton";
 import { useSelector } from "react-redux";
+import CustomTypography from "../Custom/CustomTypography";
 
 const ProductList = ({ products, loading }) => {
   const { userId } = useSelector((state) => {
@@ -44,9 +45,9 @@ const ProductList = ({ products, loading }) => {
         ))
       ) : (
         <Grid item xs={12}>
-          <Typography variant="h6" align="center" color="textSecondary">
+          <CustomTypography variant="h6" align="center" color="textSecondary">
             No products found
-          </Typography>
+          </CustomTypography>
         </Grid>
       )}
     </Grid>

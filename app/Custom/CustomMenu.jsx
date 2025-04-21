@@ -33,9 +33,9 @@ const CustomMenu = ({
                }}
             >
                 {title && (
-                    <Typography variant="body1" style={{ marginLeft: '8px' }}>
+                    <CustomTypography variant="body1" style={{ marginLeft: '8px' }}>
                         {title}
-                    </Typography>
+                    </CustomTypography
                 )}
             </Button>
 

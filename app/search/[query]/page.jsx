@@ -97,13 +97,13 @@ const SearchResults = () => {
     <Box display="flex" p={2}>
       {/* Filter Sidebar */}
       <Box width="20%" p={2} borderRight="1px solid #ddd">
-        <Typography variant="h6" mb={2}>
+        <CustomTypography variant="h6" mb={2}>
           Filters
-        </Typography>
+        </CustomTypography
 
-        <Typography variant="body1" mb={1}>
+        <CustomTypography variant="body1" mb={1}>
           Price Range
-        </Typography>
+        </CustomTypography
         <Slider
           value={filters.priceRange}
           onChange={handlePriceRangeChange}
@@ -114,9 +114,9 @@ const SearchResults = () => {
         />
 
         <FormGroup mt={2}>
-          <Typography variant="body1" mb={1}>
+          <CustomTypography variant="body1" mb={1}>
             Categories
-          </Typography>
+          </CustomTypography
           {categories.map((brand) => (
             <FormControlLabel
               key={brand}
@@ -148,7 +148,7 @@ const SearchResults = () => {
       <Box width="80%" p={2}>
         {loading && <CircularProgress />}
 
-        {error && <Typography color="error">{error}</Typography>}
+        {error && <CustomTypography color="error">{error}</CustomTypography}
 
         {filteredResults.length > 0 ? (
           <Grid container spacing={2}>
@@ -173,7 +173,7 @@ const SearchResults = () => {
             ))}
           </Grid>
         ) : (
-          <Typography>No results found.</Typography>
+          <CustomTypography>No results found.</CustomTypography
         )}
       </Box>
     </Box>

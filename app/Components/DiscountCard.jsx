@@ -1,5 +1,6 @@
 import { Box, Grid, Typography, useTheme } from '@mui/material';
 import React from 'react';
+import CustomTypography from '../Custom/CustomTypography';
 
 const DiscountCard = ({ image, alt, title }) => {
     const theme = useTheme();
@@ -71,13 +72,12 @@ const DiscountCard = ({ image, alt, title }) => {
                         color: 'white',
                         padding: '8px',
                         textAlign: 'center',
-                        fontWeight: 'bold',
                         zIndex: 1,
                     }}
                 >
-                    <Typography variant="body1" component="p">
+                    <CustomTypography variant="body1"  sx={{color:theme.palette.text.primary}}>
                         {title}
-                    </Typography>
+                    </CustomTypography>
                 </Box>
             </Box>
         </Grid>

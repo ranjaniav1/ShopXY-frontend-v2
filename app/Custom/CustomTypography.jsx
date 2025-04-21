@@ -15,16 +15,28 @@ const typographyVariantMap = {
   overline: 'text-xs uppercase text-gray-700 tracking-wider',
 };
 
+const tagMap = {
+  h1: 'h1',
+  h2: 'h2',
+  h3: 'h3',
+  h4: 'h4',
+  h5: 'h5',
+  h6: 'h6',
+  body1: 'p',
+  body2: 'p',
+  caption: 'span',
+  overline: 'span',
+};
 
-const CustomTypography = ({ variant, children, className = '', sx = {} }) => {
-
-  const typographyClass = typographyVariantMap[variant];
+const CustomTypography = ({ variant = 'body1', children, className = '', sx = {} }) => {
+  const tag = tagMap[variant] || 'p';
+  const typographyClass = typographyVariantMap[variant] || '';
 
   return React.createElement(
-    variant.startsWith('h') ? variant : 'p', 
+    tag,
     {
-      className: `${typographyClass} ${className}`,
-      style: sx, 
+      className: `${typographyClass} ${className}`.trim(),
+      style: sx,
     },
     children
   );

@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Box, Typography, Avatar, Divider, Button } from "@mui/material";
 import Rating from "@mui/material/Rating";
+import CustomTypography from "../Custom/CustomTypography";
 
 const ReviewItem = ({ reviews = [], theme }) => {  // Ensure reviews is always an array
   const [visibleCount, setVisibleCount] = useState(1); // Initially show 1 review
@@ -22,19 +23,19 @@ const ReviewItem = ({ reviews = [], theme }) => {  // Ensure reviews is always a
                 {!review.userAvatar && (review.userName ? review.userName.charAt(0) : "?")}
               </Avatar>
               <Box>
-                <Typography variant="body2" fontWeight="bold">
+                <CustomTypography variant="body2" fontWeight="bold" sx={{color:theme.palette.text.primary}}>
                   {review.userName}
-                </Typography>
+                </CustomTypography>
                 <Rating value={review.rating} readOnly size="small" />
-                <Typography variant="body2" color="text.secondary">
+                <CustomTypography variant="body2"sx={{color:theme.palette.text.secondary}}>
                   {new Date(review.createdAt).toLocaleDateString()}
-                </Typography>
+                </CustomTypography>
               </Box>
             </Box>
 
-            <Typography variant="body2" mt={2}>
+            <CustomTypography variant="body2" mt={2} sx={{color:theme.palette.text.secondary}}>
               {review.review}
-            </Typography>
+            </CustomTypography>
 
             {review.media &&
               review.media.map((img, index) => (

@@ -6,6 +6,7 @@ import { Box, Grid, Skeleton, Typography } from "@mui/material";
 import DiscountCard from "./DiscountCard";
 import { useTranslation } from "react-i18next";
 import CustomBox from "../Custom/CustomBox";
+import CustomTypography from "../Custom/CustomTypography";
 
 const SaleAndDiscount = () => {
   const { t } = useTranslation();
@@ -55,7 +56,7 @@ const SaleAndDiscount = () => {
             ))}
           </Grid>
         ) : (
-          <Typography textAlign="center">{t("No collection found")}</Typography>
+          <CustomTypography textAlign="center">{t("No collection found")}</CustomTypography>
         )}
       </Box>
     </CustomBox>

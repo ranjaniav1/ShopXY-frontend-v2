@@ -135,7 +135,7 @@ const Page = ({ handleNext, handleBack }) => {
         alignItems="center"
         p={2}
       >
-        <Typography>{t("Select Delivery Address")}</Typography>
+        <CustomTypography>{t("Select Delivery Address")}</CustomTypography
 
         {isSmallScreen ? (
           <CustomIconButton
@@ -158,7 +158,7 @@ const Page = ({ handleNext, handleBack }) => {
 
       <Grid container spacing={2} p={2}>
   {loading ? (
-    <Typography>Loading addresses...</Typography>
+    <CustomTypography>Loading addresses...</CustomTypography
   ) : addresses.length > 0 ? (
     addresses.map((address) => (
       <Grid item xs={12} sm={6} md={6} key={address._id}>
@@ -174,9 +174,9 @@ const Page = ({ handleNext, handleBack }) => {
   ) : (
     <Grid item xs={12}>
       <Box textAlign="center" py={5}>
-        <Typography variant="h6" color="text.secondary">
+        <CustomTypography variant="h6" color="text.secondary">
           {t("No address found. Please add one to proceed.")}
-        </Typography>
+        </CustomTypography
       </Box>
     </Grid>
   )}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Button, Card, CardContent, CardMedia, Divider, Grid, Typography, useTheme, useMediaQuery } from '@mui/material';
 import CustomButton from '@/app/Custom/CustomButton';
 import { fetchOrder } from '@/app/helper/ProfileUtils';
+import CustomTypography from '@/app/Custom/CustomTypography';
 
 const UserOrders = ({ userId, activeTab }) => {
   const [order, setOrder] = useState([]);
@@ -54,7 +55,7 @@ const UserOrders = ({ userId, activeTab }) => {
                   alignItems={{ xs: 'flex-start', sm: 'center' }}
                 >
                   <Grid item>
-                    <Typography variant="h6">Order ID: {orderItem._id}</Typography>
+                    <CustomTypography variant="h6">Order ID: {orderItem._id}</CustomTypography>
                   </Grid>
                   <Grid item>
                     <CustomButton
@@ -74,18 +75,18 @@ const UserOrders = ({ userId, activeTab }) => {
                   justifyContent="space-between"
                 >
                   <Grid item>
-                    <Typography variant="body1" color={theme.palette.text.secondary}>
+                    <CustomTypography variant="body1" color={theme.palette.text.secondary}>
                       Order Status: {orderItem.orderStatus}
-                    </Typography>
+                    </CustomTypography>
                   </Grid>
                   <Grid item>
-                    <Typography
+                    <CustomTypography
                       variant="body1"
                       color={theme.palette.text.secondary}
                       sx={{ textAlign: { xs: 'left', sm: 'right' } }}
                     >
                       Order Date: {new Date(orderItem.createdAt).toLocaleDateString()}
-                    </Typography>
+                    </CustomTypography>
                   </Grid>
                 </Grid>
 
@@ -114,18 +115,18 @@ const UserOrders = ({ userId, activeTab }) => {
                         <CardContent sx={{ flexGrow: 1, width: '100%' }}>
                           <Grid container spacing={1}>
                             <Grid item xs={12} sm={6}>
-                              <Typography variant="h6">{item.product.name}</Typography>
-                              <Typography variant="body2" color={theme.palette.text.secondary}>
+                              <CustomTypography variant="h6">{item.product.name}</CustomTypography>
+                              <CustomTypography variant="body2" color={theme.palette.text.secondary}>
                                 {item.product.description}
-                              </Typography>
+                              </CustomTypography>
                             </Grid>
                             <Grid item xs={12} sm={6} container justifyContent="flex-end" alignItems="flex-start" direction="column">
-                              <Typography variant="body1" sx={{ color: theme.palette.primary.main }}>
+                              <CustomTypography variant="body1" sx={{ color: theme.palette.primary.main }}>
                                 Price: ₹{item.product.discounted_price.toFixed(2)}
-                              </Typography>
-                              <Typography variant="body2" color={theme.palette.text.secondary}>
+                              </CustomTypography>
+                              <CustomTypography variant="body2" color={theme.palette.text.secondary}>
                                 Qty: {item.quantity}
-                              </Typography>
+                              </CustomTypography>
                             </Grid>
                           </Grid>
                         </CardContent>
@@ -144,14 +145,14 @@ const UserOrders = ({ userId, activeTab }) => {
                   justifyContent="space-between"
                 >
                   <Grid item>
-                    <Typography variant="body2" color={theme.palette.text.secondary}>
+                    <CustomTypography variant="body2" color={theme.palette.text.secondary}>
                       Payment Type: {orderItem.paymentType}
-                    </Typography>
+                    </CustomTypography>
                   </Grid>
                   <Grid item>
-                    <Typography variant="body2" color={theme.palette.text.secondary}>
+                    <CustomTypography variant="body2" color={theme.palette.text.secondary}>
                       Total Price: ₹{orderItem.totalPrice}
-                    </Typography>
+                    </CustomTypography>
                   </Grid>
                 </Grid>
               </CardContent>
@@ -159,18 +160,18 @@ const UserOrders = ({ userId, activeTab }) => {
           </Box>
         ))
       ) : (
-        <Typography variant="body2" color="text.secondary" align="center">
+        <CustomTypography variant="body2" color="text.secondary" align="center">
           No orders found.
-        </Typography>
+        </CustomTypography>
       )}
 
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
         <Button onClick={() => setPage((p) => Math.max(p - 1, 1))} disabled={page <= 1}>
           Previous
         </Button>
-        <Typography variant="body2">
+        <CustomTypography variant="body2">
           Page {page} of {totalPages}
-        </Typography>
+        </CustomTypography>
         <Button onClick={() => setPage((p) => Math.min(p + 1, totalPages))} disabled={page >= totalPages}>
           Next
         </Button>

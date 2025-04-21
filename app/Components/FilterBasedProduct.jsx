@@ -38,12 +38,12 @@ const FilterBasedProduct = ({ products }) => {
           </Grid>
         ))
       ) : (
-        <Typography
+        <CustomTypography
           variant="body1"
           sx={{ padding: "16px", textAlign: "center" }}
         >
           No products found.
-        </Typography>
+        </CustomTypography
       )}
     </Grid>
   );

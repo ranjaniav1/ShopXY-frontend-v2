@@ -27,7 +27,7 @@ const CustomCollectionCard = ({ id, slug, image, title, tooltip }) => {
       <Tooltip title={tooltip} arrow>
         <Image
           src={image}
-          alt={title}
+          alt={`Collection image of ${title}`}
           width={500} // specify the width you want
           height={200} // specify the height you want
           className="w-full h-48 object-cover cursor-pointer"

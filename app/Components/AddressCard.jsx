@@ -71,15 +71,15 @@ const AddressCard = ({ address, selectedAddressId, handleEdit, handleRemove, han
                     sx={{ mr: 1 }}
                 />
                 <Box >
-                    {/* <Typography variant="body1" fontWeight="bold" sx={{ color: '#333', mb: '4px' }}>
+                    {/* <CustomTypography variant="body1" fontWeight="bold" sx={{ color: '#333', mb: '4px' }}>
                 {address.address}
-            </Typography> */}
-                    <Typography variant="body2" color="textSecondary">
+            </CustomTypography */}
+                    <CustomTypography variant="body2" color="textSecondary">
                         {address.city}, {address.state}, {address.postalCode}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" mt={0.5}>
+                    </CustomTypography
+                    <CustomTypography variant="body2" color="textSecondary" mt={0.5}>
                         {address.country} |  Phone: {address.phone}
-                    </Typography>
+                    </CustomTypography
                 </Box>
             </Box>
 

@@ -82,18 +82,19 @@ const Footer = () => {
                   <div className="icons">
                     <li>
                       <div className="flex space-x-4 mt-4">
-                        <a href="#" className="hover:text-gray-300">
-                          <Facebook />
-                        </a>
-                        <a href="#" className="hover:text-gray-300">
-                          <Twitter />
-                        </a>
-                        <a href="#" className="hover:text-gray-300">
-                          <Instagram />
-                        </a>
-                        <a href="#" className="hover:text-gray-300">
-                          <LinkedIn />
-                        </a>
+                      <a href="#" aria-label="Facebook" className="hover:text-gray-300">
+  <Facebook />
+</a>
+<a href="#" aria-label="Twitter" className="hover:text-gray-300">
+  <Twitter />
+</a>
+<a href="#" aria-label="Instagram" className="hover:text-gray-300">
+  <Instagram />
+</a>
+<a href="#" aria-label="LinkedIn" className="hover:text-gray-300">
+  <LinkedIn />
+</a>
+
                       </div>
                     </li>
                   </div>

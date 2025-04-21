@@ -3,6 +3,7 @@ import React from "react";
 import { Modal, Box, Typography, IconButton, useTheme } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import CustomIconButton from "./CustomIconButton";
+import CustomTypography from "./CustomTypography";
 
 const CustomModal = ({ open, onClose, title, children,height})=>{
   const theme = useTheme();
@@ -34,13 +35,13 @@ const CustomModal = ({ open, onClose, title, children,height})=>{
           alignItems="center"
           mb={2}
         >
-          <Typography
+          <CustomTypography
             variant="h6"
             component="h2"
             sx={{ color: theme.palette.text.primary }}
           >
             {title}
-          </Typography>
+          </CustomTypography>
           {/* Close Button */}
           <CustomIconButton onClick={onClose}>
             <CloseIcon />

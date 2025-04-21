@@ -9,6 +9,7 @@ import CustomSkeleton from "../Custom/CustomSkeleton";
 import CustomBox from "../Custom/CustomBox";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import CustomTypography from "../Custom/CustomTypography";
 
 const HomeProduct = () => {
   const [products, setProducts] = useState([]);
@@ -138,9 +139,9 @@ const HomeProduct = () => {
               ))}
             </Grid>
           ) : filteredProducts.length === 0 ? (
-            <Typography variant="h6" align="center">
+            <CustomTypography variant="h6" align="center">
               {t("No products found")}
-            </Typography>
+            </CustomTypography>
           ) : (
             <ProductList products={filteredProducts} loading={loading} />
           )}

@@ -71,7 +71,7 @@ const Page = () => {
                     ))}
                 </Grid>
             ) : (
-                <Typography className="text-center text-gray-600">No categories found</Typography>
+                <CustomTypography className="text-center text-gray-600">No categories found</CustomTypography>
             )}
         </CustomBox>
     );

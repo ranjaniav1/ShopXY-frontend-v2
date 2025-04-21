@@ -29,10 +29,10 @@ const EmptyCart = () => {
                      }}
                    />
    
-                   <Typography>
+                   <CustomTypography>
                      Don&apos;t worry, you can add your products here. Simply click
                      on Start Shopping.
-                   </Typography>
+                   </CustomTypography
    
                    <Link href="/categories/collections" passHref>
                      <CustomButton title="Start Shopping" />

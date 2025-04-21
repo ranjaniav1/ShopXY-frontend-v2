@@ -45,9 +45,9 @@ const CartPage = ({ handleNext, loadCart, cartData }) => {
       >
         {
           cartData && cartData.products && cartData.products.length > 0 ? (
-            <Typography variant="h6" sx={{ marginBottom: 2, fontWeight: "bold" }}>
+            <CustomTypography variant="h6" sx={{ marginBottom: 2, fontWeight: "bold" }}>
               {t("Product Details")}
-            </Typography>
+            </CustomTypography
           ) : (
             <></>
           )
