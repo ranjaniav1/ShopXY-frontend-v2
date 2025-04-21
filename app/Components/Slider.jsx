@@ -13,10 +13,9 @@ const Slider = () => {
     const [slider, setSlider] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    async function GetCategory() {
+    async function GetSliders() {
         try {
             const result = await GetHomeScreenData();
-            console.log("swiper", result);
             setSlider(result.swiper);
         } catch (error) {
             console.log("failed to fetch slider", error);
@@ -26,43 +25,37 @@ const Slider = () => {
     }
 
     useEffect(() => {
-        GetCategory();
+        GetSliders();
     }, []);
 
     return (
-        <div className='my-7'>
+        <div className="my-7 rounded overflow-hidden h-[200px] sm:h-[300px] md:h-[400px] lg:h-[500px]">
             <Swiper
                 navigation={true}
                 modules={[A11y, Navigation, Autoplay]}
                 slidesPerView={1}
                 scrollbar={{ draggable: true }}
                 autoplay={{ delay: 3000, disableOnInteraction: false }}
-                style={{ height: '400px', borderRadius: '5px' }}
+                className="h-full"
             >
                 {loading ? (
-                    <SwiperSlide>
-                        <CustomSkeleton type="image" width="100%" height="400px" />
+                    <SwiperSlide className="h-full">
+                        <CustomSkeleton type="image" width="100%" height="100%" />
                     </SwiperSlide>
+                ) : slider && slider.length > 0 ? (
+                    slider.map((slide) => (
+                        <SwiperSlide key={slide.id} className="h-full">
+                            <Link href={`/categories/${slide.id}/${slide.slug}`} className="block w-full h-full">
+                                <img
+                                    src={slide.slider_image}
+                                    alt={slide.title}
+                                    className="w-full h-full object-cover"
+                                />
+                            </Link>
+                        </SwiperSlide>
+                    ))
                 ) : (
-                    slider && slider.length > 0 ? (
-                        slider.map((slide) => (
-                            <SwiperSlide key={slide.id}>
-                                <Link href={`/categories/${slide.id}/${slide.slug}`}>
-                                    <img
-                                        src={slide.slider_image}
-                                        alt={slide.title}
-                                        style={{
-                                            width: '100%',
-                                            height: '100%',
-                                            objectFit: 'cover',
-                                        }}
-                                    />
-                                </Link>
-                            </SwiperSlide>
-                        ))
-                    ) : (
-                        <SwiperSlide>No slides available</SwiperSlide>
-                    )
+                    <SwiperSlide className="h-full">No slides available</SwiperSlide>
                 )}
             </Swiper>
         </div>
