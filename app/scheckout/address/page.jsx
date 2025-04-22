@@ -76,6 +76,10 @@ const Page = ({ handleNext, handleBack }) => {
   
 
   const handleAddAddressClick = () => {
+    if (addresses.length >= 5) {
+      toast.error("You can only add up to 5 addresses.");
+      return;
+    }
     setEditing(false);
     setSelectedAddressData(null);
     setOpen(true);

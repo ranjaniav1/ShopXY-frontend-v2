@@ -20,7 +20,6 @@ const PriceDetails = ({
     <Box
       sx={{
         p: 3,
-        mt: 2,
         borderRadius: 2,
         backgroundColor: theme.palette.card.background,
         border: `1px solid ${theme.palette.card.border}`,

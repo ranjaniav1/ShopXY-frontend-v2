@@ -109,7 +109,7 @@ const PaymentPage = ({ handleBack, cartData, loadCart }) => {
       alignItems="center"
       p={2}
       sx={{
-        backgroundColor: theme.palette.background.body,
+        backgroundColor: theme.palette.card.background,
         borderRadius: 2,
         boxShadow: theme.shadows[3],
         width: "100%",
@@ -121,7 +121,7 @@ const PaymentPage = ({ handleBack, cartData, loadCart }) => {
       <CustomTypography
         variant="h5"
         gutterBottom
-        sx={{ color: theme.palette.text.primary }}
+        sx={{ color: theme.palette.card.text }}
       >
         Payment Methods: 
       </CustomTypography>
