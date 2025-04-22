@@ -29,11 +29,11 @@ export const getCart = async (userId) => {
 export const removetoCart = async (userId, productId) => {
   try {
     const response = await httpAxios.delete("/user/cart/remove", {
-      params: { userId, productId }
+      data: { userId, productId }
     });
     return response.data;
   } catch (error) {
-    console.log("Error adding to cart", error);
+    console.log("Error removing from cart", error.response?.data || error.message);
     throw error;
   }
 };

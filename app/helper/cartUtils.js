@@ -32,7 +32,8 @@ export const handleAddToCart = async ({ userId, productId }) => {
 
   try {
     const response = await addtoCart(userId, productId, quantity);
-
+    console.log("add ",response);
+    
     if (response?.success || response?.status === 200) {
       toast.success("Item added!");
     } else {

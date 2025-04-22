@@ -79,16 +79,18 @@ const Category = () => {
                     alt={category.title}
                     className="w-20 h-20 rounded-full object-cover mb-2 mx-auto"
                     sx={{
-                      border: `2px solid ${theme.palette.card.border}`,
-                      backgroundColor: theme.palette.card.background,
+                      border: `2px solid ${theme.palette.primary.main}`,
                       "&:hover": {
-                        borderColor: theme.palette.primary.main
+                        borderColor: theme.palette.primary.main,
+                        transform: "scale(1.00)",
+                        transition: "transform 0.3s ease-in-out"
                       }
+
                     }}
                   />
                 </Tooltip>
               </Link>{" "}
-            
+
             </SwiperSlide>
           ))}
         </Swiper>

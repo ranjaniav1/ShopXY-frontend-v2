@@ -29,7 +29,7 @@ const Slider = () => {
     }, []);
 
     return (
-        <div className="my-7 rounded overflow-hidden h-[200px] sm:h-[300px] md:h-[400px] lg:h-[500px]">
+        <div className="my-7 rounded-md overflow-hidden h-[200px] sm:h-[300px] md:h-[400px] lg:h-[500px]">
             <Swiper
                 navigation={true}
                 modules={[A11y, Navigation, Autoplay]}

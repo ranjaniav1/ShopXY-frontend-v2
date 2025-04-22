@@ -38,30 +38,30 @@ const darkTheme = createTheme({
   palette: {
     mode: "dark",
     primary: {
-      main: "#0d7377" // Deep teal for modern dark contrast
+      main: "#22aa99", // keep the vibrant teal for consistency
     },
     background: {
-      default: "#0e0e0e", // True dark background for better contrast
-      main: "#1f1f1f",
-      secondary: "#16222a", // Darker secondary for better focus
-      nav: "#1f1f1f",
-      body: "#121212" // Deep black for body background
+      default: "#141414", // industry standard dark base
+      main: "#292f34", // main container bg
+      secondary: "#2a2a2a", // for cards, inputs etc.
+      nav: "#212529", // navbar area
+      body: "#1a1a1a" // body bg
     },
     button: {
-      color: "#fff",
+      color: "#ffffff",
       background: "#22aa99",
-      hover: "#22aa99"
+      hover: "#1e9b82" // darker on hover
     },
     text: {
-      primary: "#e4e4e4", // Light gray for primary text
-      secondary: "#b4b4b4", // Medium gray for secondary
-      disabled: "#7d7d7d" // Muted gray for disabled
+      primary: "#f1f1f1", // brighter for readability
+      secondary: "#cfcfcf", // softer but still visible
+      disabled: "#7a7a7a"
     },
     card: {
-      border: "#0d7377",
-       hover: "#14ffec",
-      background: "#1e1e1e",
-      text: "#f8f8f8"
+      border: "#2f2f2f",
+      hover: "#22aa99",
+      background: "#40454a",
+      text: "#eaeaea"
     }
   }
 });

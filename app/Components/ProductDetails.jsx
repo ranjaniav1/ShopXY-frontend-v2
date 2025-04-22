@@ -38,10 +38,10 @@ const ProductDetails = ({
     <Grid container spacing={4}>
       {/* Card 1: Product Description, Price */}
       <Grid item xs={12}>
-        <Card sx={{ p: 2, background: theme.palette.background.paper }}>
+        <Card sx={{ p: 2, background: theme.palette.card.background }}>
           <CustomTypography
             variant="h4"
-            sx={{ color: theme.palette.text.primary }}
+            sx={{ color: theme.palette.card.text }}
           >
             {name}
           </CustomTypography>
@@ -61,7 +61,7 @@ const ProductDetails = ({
                   color: theme.palette.error.main // Theme-based color for struck-through price
                 }}
               >
-                ₹{actual_price}
+                ₹{actual_price}             
               </span>
             )}{" "}
             {offer}% OFF

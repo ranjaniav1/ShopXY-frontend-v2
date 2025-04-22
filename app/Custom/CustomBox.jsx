@@ -2,10 +2,10 @@
 import { Box, useTheme } from '@mui/material'
 import React from 'react'
 
-const CustomBox = ({ children }) => {
+const CustomBox = ({ children ,sx}) => {
     const theme = useTheme()
     return (
-        <Box className="my-7 p-4  rounded-md " sx={{ background: theme.palette.background.main }}>{children}
+        <Box className="my-7   rounded-md "sx={{sx}}>{children}
         </Box>
     )
 }

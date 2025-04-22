@@ -123,7 +123,7 @@ const HomeProduct = () => {
               {filteredProducts.map((product) => (
                 <Grid item xs={12} sm={6} md={4} lg={3} key={product._id}>
                   <ProductCard
-                    className="h-40 w-full object-cover"
+                    className="h-40 w-full"
                     imgSrc={product.image}
                     title={product.name}
                     price={product.actual_price}

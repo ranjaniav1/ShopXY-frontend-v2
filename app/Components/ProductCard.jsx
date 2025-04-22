@@ -6,6 +6,7 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import { addWishlist, deleteWishlistItem } from "../Service/Profile";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import { handleAddToCart } from "../helper/cartUtils";
 
 const ProductCard = ({
   imgSrc,
@@ -13,9 +14,7 @@ const ProductCard = ({
   price,
   discountPrice,
   rating,
-  description,
   offer,
-  className,
   userId,
   productId,
   slug
@@ -23,24 +22,22 @@ const ProductCard = ({
   const theme = useTheme();
   const [isWished, setIsWished] = useState(false);
 
-  // Check if the product is already in the wishlist when the component mounts
   useEffect(() => {
     const savedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
     setIsWished(savedWishlist.includes(productId));
   }, [productId]);
 
   const handleAddToWishlist = async (e) => {
-    e.stopPropagation(); // Prevent navigation to product page
-    // Check if the user is authenticated
+    e.stopPropagation();
     if (!userId) {
       toast.error("Please login first to add to wishlist!");
-      return; // Exit the function if not authenticated
+      return;
     }
+
     const savedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
 
     try {
       if (!isWished) {
-        // Adding to wishlist
         await addWishlist(userId, productId);
         localStorage.setItem(
           "wishlist",
@@ -49,7 +46,6 @@ const ProductCard = ({
         setIsWished(true);
         toast.success("Product added to wishlist!");
       } else {
-        // Removing from wishlist
         await deleteWishlistItem(userId, productId);
         const updatedWishlist = savedWishlist.filter((id) => id !== productId);
         localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
@@ -62,70 +58,68 @@ const ProductCard = ({
     }
   };
 
-  // Function to render stars based on rating
   const renderStars = (rating) => {
-    const fullStars = Math.floor(rating);
-    const halfStar = rating - fullStars >= 0.5 ? 1 : 0;
-    const emptyStars = 5 - fullStars - halfStar;
-
     return (
-      <div className="flex items-center">
-        {"★".repeat(fullStars)}
-        {halfStar ? "☆" : ""}
-        {"☆".repeat(emptyStars)}
+      <div className="text-yellow-400 text-sm">
+        {"★".repeat(Math.floor(rating)) + "☆".repeat(5 - Math.floor(rating))}
       </div>
     );
   };
 
   return (
     <div
-      className="relative border border-gray-200 rounded-lg overflow-hidden shadow-md p-2"
-      style={{
-        background: theme.palette.card.background
-      }}
+      className="relative rounded-xl p-3 shadow-md transition hover:shadow-lg"
+      style={{ background: theme.palette.card.background }}
     >
-      {/* Ribbon-style offer display */}
+      {/* Offer Ribbon */}
       {offer && (
-        <div className="ribbon ribbon-top-right">
-          <span>{offer}% OFF</span>
+        <div className="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-1 rounded-md font-semibold z-10">
+          {offer}% OFF
         </div>
       )}
 
-      <Link href={`/product/${productId}/${encodeURIComponent(slug)}`} passHref>
+      {/* Product Image */}
+      <Link href={`/product/${productId}/${encodeURIComponent(slug)}`}>
         <img
           src={imgSrc}
           alt={title}
-          className={className}
-          style={{ cursor: "pointer" }}
+          className="w-full h-40 object-contain mb-2 rounded-lg cursor-pointer bg-white"
         />
       </Link>
-      <h3 className="text-sm font-bold truncate">{title}</h3>
-      <div className="mb-2">
-        {discountPrice ? (
-          <div className="flex justify-between items-baseline">
-            <p className="text-red-500 font-bold text-sm line-through">
-              ₹{price}
-            </p>
-            <p className="text-green-500 font-bold text-sm">₹{discountPrice}</p>
-          </div>
-        ) : (
-          <p className="text-green-500 font-bold text-lg">{price}</p>
-        )}
+
+      {/* Title */}
+      <h3
+        className="text-sm font-semibold truncate"
+        style={{ color: theme.palette.card.text }}
+      >
+        {title}
+      </h3>
+
+      {/* Rating */}
+      <div className="flex items-center gap-1 mt-1">
+        {renderStars(rating)}
+        <ThumbUpIcon
+          color={isWished ? "success" : "action"}
+          onClick={handleAddToWishlist}
+          sx={{ cursor: "pointer", fontSize: 18 }}
+        />
       </div>
-      {rating && (
-        <div className="flex items-center mb-2">
-          {renderStars(rating)}
 
-          <ThumbUpIcon
-            color={isWished ? "success" : "action"}
-            onClick={handleAddToWishlist}
-            sx={{ cursor: "pointer", marginLeft: "8px" }}
-          />
+      {/* Price Section */}
+      <div className="flex items-baseline gap-2 mt-2">
+        <span className="text-green-400 font-bold text-base">₹{discountPrice}</span>
+        <span className="line-through text-gray-400 text-sm">₹{price}</span>
 
-          <span className="text-gray-500 ml-1">({rating.toFixed(1)})</span>
-        </div>
-      )}
-      {description && <p className="text-sm" style={{color:theme.palette.text.secondary}}>{description}</p>}
+        {/* add to cart Button */}
+
+
+        <button
+          className="bg-green-600 hover:bg-green-700 text-white text-sm px-3 py-1 rounded-md flex items-center gap-1" onClick={() => handleAddToCart({ userId: userId, productId: productId })}
+        >
+          <span className="material-icons text-sm">Add</span>
+
+        </button>
+      </div>
     </div>
   );
 };

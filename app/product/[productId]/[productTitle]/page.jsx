@@ -10,7 +10,7 @@ import CustomBox from '@/app/Custom/CustomBox';
 import CustomTypography from '@/app/Custom/CustomTypography';
 
 const Page = () => {
-    const { productId } = useParams();
+    const { productId,productTitle } = useParams();
     const [product, setProduct] = useState(null);
     const [brand, setBrand] = useState(null);
     const [selectedImage, setSelectedImage] = useState('');
