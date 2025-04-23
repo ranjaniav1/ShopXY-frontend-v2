@@ -55,8 +55,7 @@ const Slider = () => {
                         </SwiperSlide>
                     ))
                 ) : (
-                    <SwiperSlide className="h-full">No slides available</SwiperSlide>
-                )}
+                    <CustomTypography textAlign="center" sx={{color:theme.palette.text.primary}}>{t('No Swipers Available')}</CustomTypography>                )}
             </Swiper>
         </div>
     );

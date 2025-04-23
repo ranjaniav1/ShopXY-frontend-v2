@@ -95,8 +95,7 @@ const Category = () => {
           ))}
         </Swiper>
       ) : (
-        <p>No categories found</p>
-      )}
+ <CustomTypography textAlign="center" sx={{color:theme.palette.text.primary}}>{t('no categories Found')}</CustomTypography>      )}
     </Box>
   );
 };

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import {
   Grid,
+  useTheme,
 } from "@mui/material";
 import { useParams } from "next/navigation";
 import { searchProduct } from "@/app/Service/search";
@@ -55,14 +56,12 @@ const SearchResults = () => {
     fetchResults();
   }, [query]);
 
-
-
-
-
+const theme=useTheme()
   return (
     <CustomBox>
       <Heading text={query} />
       <Grid container spacing={2}>
+      {filteredProducts.length > 0 && (
         <Grid item xs={12} md={3}>
           <FilterSidebar
             priceRange={priceRange}
@@ -75,10 +74,11 @@ const SearchResults = () => {
             maxRating={maxRating}
           />
         </Grid>
+      )}
 
         {/* Search Results */}
-        <Grid item xs={12} md={9} sx={{ mt: 3.5 }} data-aos="fade-left">
-          {loading && page === 1 ? (
+        <Grid item xs={12} md={filteredProducts.length > 0 ? 9 : 12} sx={{ mt: 3.5 }} data-aos="fade-left">
+        {loading && page === 1 ? (
             <Grid container spacing={2}>
               {Array.from({ length: 6 }).map((_, index) => (
                 <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
@@ -87,7 +87,7 @@ const SearchResults = () => {
               ))}
             </Grid>
           ) : filteredProducts.length === 0 ? (
-            <CustomTypography variant="h6" align="center">
+            <CustomTypography variant="h6" align="center" sx={{color:theme.palette.text.primary}}>
               No products found
             </CustomTypography>
           ) : (

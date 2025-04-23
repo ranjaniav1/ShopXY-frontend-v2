@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Heading from '../Common/Heading';
 import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOutlined';
-import { Grid, Box, Typography } from "@mui/material";
+import { Grid, Box, Typography, useTheme } from "@mui/material";
 import { usePathname, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
@@ -23,7 +23,7 @@ const Collection = () => {
     const [visibleCount, setVisibleCount] = useState(6);
     const pathname = usePathname();
     const showArrowIcon = pathname !== "/categories/collections";
-
+const theme=useTheme()
     const getCollection = async () => {
         const response = await GetCollection();
         setCollection(response);
@@ -117,7 +117,7 @@ const Collection = () => {
                         </Swiper>
                     )
                 ) : (
-                    <CustomTypography textAlign="center">{t('no Collection Found')}</CustomTypography>
+                    <CustomTypography textAlign="center" sx={{color:theme.palette.text.primary}}>{t('no Collection Found')}</CustomTypography>
                 )}
             </Box>
         </CustomBox>
