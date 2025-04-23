@@ -1,12 +1,11 @@
-import React, { useState } from "react";
-import { Menu, MenuItem, IconButton } from "@mui/material";
-import { useSelector, useDispatch } from "react-redux";
-import { useRouter } from "next/navigation";
-import { Logout } from "@/app/Service/User";
-import toast from "react-hot-toast";
-import { RemoveUser } from "@/app/redux/reducer/user/loginReducer";
+"use client"
+const { RemoveUser } = require("@/app/redux/reducer/user/loginReducer");
+const { Logout } = require("@/app/Service/User");
+const { IconButton, Menu, MenuItem } = require("@mui/material");
+const { useRouter } = require("next/navigation");
+const { useState } = require("react");
+const { useDispatch, useSelector } = require("react-redux");
 import Cookies from "js-cookie";
-
 const NavProfileMenu = () => {
   const user = useSelector((state) => state.auth?.user?.data?.user) || {};
   const dispatch = useDispatch();
@@ -22,6 +21,7 @@ const NavProfileMenu = () => {
   };
 
   const handleLogout = async () => {
+    handleCloseMenu(); // Close menu before logout
     try {
       await Logout({ userId: user._id });
       Cookies.remove("user");
@@ -33,17 +33,21 @@ const NavProfileMenu = () => {
     }
   };
 
+  const handleProfileClick = () => {
+    handleCloseMenu(); // Close menu before navigating
+    router.push("/user/profile");
+  };
+
   return (
     <>
       <IconButton onClick={handleOpenMenu}>
         <img src={user.avatar} alt="Avatar" className="w-8 h-8 rounded-full" />
       </IconButton>
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleCloseMenu}>
-        <MenuItem onClick={() => router.push("/user/profile")}>Profile</MenuItem>
+        <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </>
   );
 };
-
 export default NavProfileMenu;

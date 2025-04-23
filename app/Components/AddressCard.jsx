@@ -76,7 +76,10 @@ const AddressCard = ({ address, selectedAddressId, handleEdit, handleRemove, han
                 {address.address}
             </CustomTypography */}
                     <CustomTypography variant="body2" sx={{ color: theme.palette.text.secondary }}>
-                        {address.address},{address.city}, {address.state}, {address.postalCode}
+                        {address.address},{address.city}
+                    </CustomTypography>
+                    <CustomTypography variant="body2" sx={{ color: theme.palette.text.secondary }}>
+                    {address.state}, {address.postalCode}
                     </CustomTypography>
 
                     <CustomTypography variant="body2" sx={{ color: theme.palette.text.secondary }} mt={0.5}>

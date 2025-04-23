@@ -4,7 +4,6 @@ import { httpAxios } from "../httpAxios";
 export async function GetAllProducts(page,limit) {
   try {
     const response = await httpAxios.get(`/Get-product?page=${page}&limit=${limit}`);
-    console.log("product received", response.data);
     return response.data;
   } catch (error) {
     console.log("error in product", error);
@@ -15,7 +14,6 @@ export async function GetAllProducts(page,limit) {
 export async function GetSingleProduct({ id }) {
   try {
     const response = await httpAxios.get(`/Get-product/${id}`);
-    console.log("jnjdb", response.data.data);
     return response.data.data;
   } catch (error) {
     console.log("error in category", error);
