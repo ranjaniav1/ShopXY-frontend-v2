@@ -35,11 +35,11 @@ const WishlistItem = ({ userId, activeTab }) => {
 
 
   return (
-    <Box>
+    <>
       <Grid container spacing={2}>
         {wishlist.length > 0 ? (
           wishlist.map((wishlistItem) => (
-            <Grid key={wishlistItem._id} item xs={12} sm={6} md={4}>
+            <Grid key={wishlistItem._id} item xs={12} sm={6} md={4} lg={3}>
               <Card
                 sx={{
                   height: "100%",
@@ -78,7 +78,8 @@ const WishlistItem = ({ userId, activeTab }) => {
                 >
                   <CustomCollectionCard
                     id={wishlistItem.product._id}
-                    image={wishlistItem.product.image}
+                    image={wishlistItem.product.image} title={wishlistItem.product.name} tooltip={wishlistItem.product.name}
+                    slug={wishlistItem.product.slug}
 
                   />
                 </Link>
@@ -103,7 +104,7 @@ const WishlistItem = ({ userId, activeTab }) => {
           Next
         </Button>
       </Box>
-    </Box>
+    </>
   );
 };
 

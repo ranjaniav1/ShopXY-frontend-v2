@@ -1,4 +1,3 @@
-// hooks/useProductFilter.ts
 "use client";
 import { useEffect, useState } from "react";
 
@@ -15,36 +14,43 @@ export const useProductFilter = (products, useDiscounted = false) => {
     if (!products.length) return;
 
     const prices = products.map((p) =>
-      useDiscounted ? p.discounted_price || 0 : p.actual_price || 0
+       p.discounted_price 
     );
-    const ratings = products.map((p) => p.ratings || 0);
+    const ratings = products.map((p) => p.ratings ?? 0);
 
     const minP = Math.min(...prices);
     const maxP = Math.max(...prices);
     const minR = Math.min(...ratings);
     const maxR = Math.max(...ratings);
 
-    setMinPrice(minP);
-    setMaxPrice(maxP);
-    setPriceRange([minP, maxP]);
+    // Only update ranges if limits changed
+    if (minP !== minPrice || maxP !== maxPrice) {
+      setMinPrice(minP);
+      setMaxPrice(maxP);
+      setPriceRange([minP, maxP]);
+    }
 
-    setMinRating(minR);
-    setMaxRating(maxR);
-    setRatingRange([minR, maxR]);
+    if (minR !== minRating || maxR !== maxRating) {
+      setMinRating(minR);
+      setMaxRating(maxR);
+      setRatingRange([minR, maxR]);
+    }
   }, [products]);
 
   useEffect(() => {
     const filtered = products.filter((p) => {
-      const price = useDiscounted ? p.discounted_price : p.actual_price;
+      const price =  p.discounted_price;
+      const rating = p.ratings;
+
       return (
         price >= priceRange[0] &&
         price <= priceRange[1] &&
-        p.ratings >= ratingRange[0] &&
-        p.ratings <= ratingRange[1]
+        rating >= ratingRange[0] &&
+        rating <= ratingRange[1]
       );
     });
     setFilteredProducts(filtered);
-  }, [priceRange, ratingRange, products]);
+  }, [priceRange, ratingRange, products, useDiscounted]);
 
   return {
     filteredProducts,

@@ -33,6 +33,7 @@ export const handleSubmit = async (formData, avatar, setLoading, onClose) => {
       error?.response?.data?.message;
     toast.error(errorMessage);
   } finally {
+    
     setLoading(false);
   }
 };

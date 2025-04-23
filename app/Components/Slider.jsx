@@ -8,11 +8,13 @@ import { Navigation, A11y, Autoplay } from 'swiper/modules';
 import { GetHomeScreenData } from '../Service/GetHomeScreenData';
 import Link from 'next/link';
 import CustomSkeleton from '../Custom/CustomSkeleton';
+import CustomTypography from '../Custom/CustomTypography';
+import { useTheme } from '@mui/material';
 
 const Slider = () => {
     const [slider, setSlider] = useState([]);
     const [loading, setLoading] = useState(true);
-
+const theme=useTheme()
     async function GetSliders() {
         try {
             const result = await GetHomeScreenData();
@@ -29,7 +31,7 @@ const Slider = () => {
     }, []);
 
     return (
-        <div className="my-7 rounded overflow-hidden h-[200px] sm:h-[300px] md:h-[400px] lg:h-[500px]">
+        <div className="my-7 rounded-md overflow-hidden h-[200px] sm:h-[300px] md:h-[400px] lg:h-[500px]">
             <Swiper
                 navigation={true}
                 modules={[A11y, Navigation, Autoplay]}
@@ -55,8 +57,7 @@ const Slider = () => {
                         </SwiperSlide>
                     ))
                 ) : (
-                    <SwiperSlide className="h-full">No slides available</SwiperSlide>
-                )}
+                    <CustomTypography textAlign="center" sx={{color:theme.palette.text.primary}}>No Swipers Available</CustomTypography>                )}
             </Swiper>
         </div>
     );

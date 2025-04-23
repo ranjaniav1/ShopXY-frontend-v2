@@ -39,7 +39,6 @@ const Page = () => {
   const fetchProducts = async () => {
     try {
       const response = await GetSpecificProduct({ id: collectionId });
-      console.log("Fetched products:", response);
       
       setAllProducts(response);
       setLoading(false); 

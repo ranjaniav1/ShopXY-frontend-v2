@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import {
   Grid,
+  useTheme,
 } from "@mui/material";
 import { useParams } from "next/navigation";
 import { searchProduct } from "@/app/Service/search";
@@ -12,6 +13,7 @@ import CustomBox from "@/app/Custom/CustomBox";
 import Heading from "@/app/Common/Heading";
 import { useProductFilter } from "@/app/helper/useProductFilter";
 import FilterSidebar from "@/app/Components/FilterSidebar";
+import CustomSkeleton from "@/app/Custom/CustomSkeleton";
 
 const SearchResults = () => {
   const { query } = useParams();
@@ -55,14 +57,12 @@ const SearchResults = () => {
     fetchResults();
   }, [query]);
 
-
-
-
-
+const theme=useTheme()
   return (
     <CustomBox>
       <Heading text={query} />
       <Grid container spacing={2}>
+      {filteredProducts.length > 0 && (
         <Grid item xs={12} md={3}>
           <FilterSidebar
             priceRange={priceRange}
@@ -75,31 +75,47 @@ const SearchResults = () => {
             maxRating={maxRating}
           />
         </Grid>
+      )}
 
         {/* Search Results */}
-        <Grid item xs={12} md={9}>
-          <Grid container spacing={2}>
-            {filteredProducts.map((product) => (
-              <Grid item xs={12} sm={6} md={4} key={product._id}>
-                <ProductCard
-                  className="h-40 w-full object-cover"
-                  imgSrc={product.image}
-                  title={product.name}
-                  price={product.actual_price}
-                  discountPrice={product.discounted_price}
-                  rating={product.ratings}
-                  description={product.description}
-                  offer={product.offer}
-                  userId={userId}
-                  productId={product._id}
-                  slug={product.slug}
-                />
-              </Grid>
-            ))}
-          </Grid>
+        <Grid item xs={12} md={filteredProducts.length > 0 ? 9 : 12} sx={{ mt: 3.5 }} data-aos="fade-left">
+        {loading && page === 1 ? (
+            <Grid container spacing={2}>
+              {Array.from({ length: 6 }).map((_, index) => (
+                <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                  <CustomSkeleton type="card" width="96px" height="96px" />
+                </Grid>
+              ))}
+            </Grid>
+          ) : filteredProducts.length === 0 ? (
+            <CustomTypography variant="h6" align="center" sx={{color:theme.palette.text.primary}}>
+              No products found
+            </CustomTypography>
+          ) : (
+            <Grid container spacing={2}>
+              {filteredProducts.map((product) => (
+                <Grid item xs={12} sm={6} md={4} lg={3} key={product._id}>
+                  <ProductCard
+                    className="h-40 w-full object-cover"
+                    imgSrc={product.image}
+                    title={product.name}
+                    price={product.actual_price}
+                    discountPrice={product.discounted_price}
+                    rating={product.ratings}
+                    description={product.description}
+                    offer={product.offer}
+                    userId={userId}
+                    productId={product._id}
+                    slug={product.slug}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          )}
         </Grid>
+
       </Grid>
-    </CustomBox>
+    </CustomBox >
   );
 };
 

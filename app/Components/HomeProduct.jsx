@@ -13,11 +13,13 @@ import CustomTypography from "../Custom/CustomTypography";
 import FilterSidebar from "./FilterSidebar";
 import ProductCard from "./ProductCard";
 import { useProductFilter } from "../helper/useProductFilter";
+import { getWishlist } from "../Service/Profile";
 
 const HomeProduct = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [wishlist, setWishlist] = useState([]);
 
   const { t } = useTranslation();
 
@@ -62,6 +64,29 @@ const HomeProduct = () => {
     }
   };
 
+  const fetchWishlist = async () => {
+    if (!userId) return;
+    try {
+      const response = await getWishlist(userId);
+      console.log("wish res",response)
+      const wishlistIds = response?.products?.map(item => item.product._id) || [];
+      console.log("wish resndjs",wishlistIds)
+
+      setWishlist(wishlistIds);
+    } catch (err) {
+      console.error("Failed to fetch wishlist", err);
+      setWishlist([]); // fallback to empty array
+    }
+  };
+  
+
+  useEffect(() => {
+    if (userId) fetchWishlist();
+  }, [userId]);
+
+  const isInWishlist = (id) => wishlist.includes(id);
+  
+
   const handleScroll = useCallback(() => {
     const bottom =
       window.innerHeight + document.documentElement.scrollTop >=
@@ -102,6 +127,7 @@ const HomeProduct = () => {
             maxPrice={maxPrice}
             minRating={minRating}
             maxRating={maxRating}
+            
           />
         </Grid>
 
@@ -123,7 +149,7 @@ const HomeProduct = () => {
               {filteredProducts.map((product) => (
                 <Grid item xs={12} sm={6} md={4} lg={3} key={product._id}>
                   <ProductCard
-                    className="h-40 w-full object-cover"
+                    className="h-40 w-full"
                     imgSrc={product.image}
                     title={product.name}
                     price={product.actual_price}
@@ -134,6 +160,7 @@ const HomeProduct = () => {
                     userId={userId}
                     productId={product._id}
                     slug={product.slug}
+                    isInWishlist={isInWishlist(product._id)}
                   />
                 </Grid>
               ))}

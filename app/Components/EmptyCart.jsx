@@ -1,10 +1,11 @@
-import { Box, Typography } from '@mui/material'
+import { Box, useTheme } from '@mui/material'
 import React from 'react'
 import CustomButton from '../Custom/CustomButton'
 import Link from 'next/link'
 import CustomTypography from '../Custom/CustomTypography'
 
 const EmptyCart = () => {
+  const theme=useTheme()
   return (
     <Box
                    sx={{
@@ -16,7 +17,8 @@ const EmptyCart = () => {
                      width: "100%", // Adjust this value as needed
                      textAlign: "center",
                      paddingBottom: 2,
-                     paddingTop: 2
+                     paddingTop: 2,background:theme.palette.background.main,
+                     color:theme.palette.text.primary
                    }}
                  >
                    <img
@@ -30,7 +32,7 @@ const EmptyCart = () => {
                      }}
                    />
    
-                   <CustomTypography>
+                   <CustomTypography sx={{color:theme.palette.card.text}}>
                      Don&apos;t worry, you can add your products here. Simply click
                      on Start Shopping.
                    </CustomTypography>

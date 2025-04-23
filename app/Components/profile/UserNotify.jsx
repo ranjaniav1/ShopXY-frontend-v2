@@ -20,7 +20,7 @@ const UserNotify = ({ userId, activeTab }) => {
   const [hoveredNotificationId, setHoveredNotificationId] = useState(null);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
-  const limit = 7;
+  const limit = 8;
 
   useEffect(() => {
     if (activeTab === 0 && userId) {
@@ -46,7 +46,7 @@ const UserNotify = ({ userId, activeTab }) => {
   const totalPages = Math.ceil(total / limit);
 
   return (
-    <Box>
+    <>
       {notifications.length > 0 ? (
         notifications.map((notification) => (
           <Paper
@@ -111,7 +111,7 @@ const UserNotify = ({ userId, activeTab }) => {
           Next
         </Button>
       </Box>
-    </Box>
+    </>
   );
 };
 

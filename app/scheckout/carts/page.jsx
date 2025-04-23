@@ -37,14 +37,8 @@ const CartPage = ({ handleNext, loadCart, cartData }) => {
 
   return (
     <Box>
-      <Box
-        sx={{
-          background: theme.palette.card.background,
-          p: 2,
-          borderRadius: 2,
-        }}
-      >
-        {/* {
+
+      {/* {
           cartData && cartData.products && cartData.products.length > 0 ? (
             <CustomTypography variant="h2" sx={{ marginBottom: 2, fontWeight: "bold" }}>
               {t("Product Details")}
@@ -54,28 +48,27 @@ const CartPage = ({ handleNext, loadCart, cartData }) => {
           )
         } */}
 
-        {cartData && cartData.products && cartData.products.length > 0 ? (
-          cartData.products.map((item) => (
+      {cartData && cartData.products && cartData.products.length > 0 ? (
+        cartData.products.map((item) => (
 
 
-            <CartProductCard
-              key={item._id}
-              image={item.product.image}
-              offer={item.product.offer}
-              quantity={item.quantity}
-              name={item.product.name}
-              product={item.product}
-              size={item.product.size}
-              onEdit={() => handleEdit(item)}
-              actual_price={item.product.actual_price}
-              discounted_price={item.product.discounted_price}
-              onRemove={() => handleRemove(item.product._id)}
-            />
-          ))
-        ) : (
-          <></>
-        )}
-      </Box>
+          <CartProductCard
+            key={item._id}
+            image={item.product.image}
+            offer={item.product.offer}
+            quantity={item.quantity}
+            name={item.product.name}
+            product={item.product}
+            size={item.product.size}
+            onEdit={() => handleEdit(item)}
+            actual_price={item.product.actual_price}
+            discounted_price={item.product.discounted_price}
+            onRemove={() => handleRemove(item.product._id)}
+          />
+        ))
+      ) : (
+        <></>
+      )}
 
       <CustomDrawer
         open={editDrawer}

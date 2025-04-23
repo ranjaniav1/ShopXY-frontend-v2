@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import Categoy from "./Components/Categoy";
 import Collection from "./Components/Collection";
 import HomeProduct from "./Components/HomeProduct";
-import SaleAndDiscount from "./Components/SaleAndDiscount";
 import Slider from "./Components/Slider";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -34,9 +33,6 @@ export default function Home() {
       </div>
       <div data-aos="fade-up" data-aos-delay="100">
         <Collection />
-      </div>
-      <div data-aos="fade-up" data-aos-delay="100">
-        <SaleAndDiscount />
       </div>
       <div data-aos="fade-up" data-aos-delay="100">
         <HomeProduct />

@@ -7,7 +7,6 @@ const TabSection = ({ activeTab, handleTabChange }) => {
     <Box
       sx={{
         p: 2,
-        backgroundColor: "#fff",
         backgroundColor: theme.palette.background.main,
         color: theme.palette.text.primary,
         borderRadius: "8px",

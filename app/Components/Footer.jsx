@@ -1,9 +1,10 @@
 import { Facebook, Instagram, LinkedIn, Twitter } from "@mui/icons-material";
-import { Container, Divider, Grid, Link as MUILink } from "@mui/material";
+import { Container, Divider, Grid, Link as MUILink, useTheme } from "@mui/material";
 import React from "react";
 import CustomBox from "../Custom/CustomBox";
 
 const Footer = () => {
+  const theme=useTheme()
   // Define your categories here
   const categories = [
     { name: "Electronics", link: "/categories/1/electronics" },
@@ -71,14 +72,14 @@ const Footer = () => {
               </div>
             </Grid>
             <Grid item xs={12} md={3}>
-              <div className="px-3 my-4">
+              <div className="px-3 my-4" style={{color:theme.palette.card.text}}>
                 <h1 className="my-4 text-xl font-medium">Contact Us</h1>
                 <ul className="space-y-2">
-                  <li className="text-gray-700">
+                  <li >
                     1234 Market St, San Francisco, CA
                   </li>
-                  <li className="text-gray-700">Email: support@ShopXY.com</li>
-                  <li className="text-gray-700">Phone: +1 (555) 123-4567</li>
+                  <li >Email: support@ShopXY.com</li>
+                  <li >Phone: +1 (555) 123-4567</li>
                   <div className="icons">
                     <li>
                       <div className="flex space-x-4 mt-4">
@@ -104,8 +105,8 @@ const Footer = () => {
           </Grid>
         </div>
         <Divider />
-        <div className="py-2 text-center">
-          <p className="text-gray-700">
+        <div className="py-2 text-center" style={{color:theme.palette.card.text}}>
+          <p >
             &copy; {new Date().getFullYear()} ShopXY. All rights reserved.
           </p>
         </div>

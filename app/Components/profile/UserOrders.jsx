@@ -22,7 +22,6 @@ const UserOrders = ({ userId, activeTab }) => {
   const [total, setTotal] = useState(0);
 
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     if (userId) {
@@ -55,7 +54,7 @@ const UserOrders = ({ userId, activeTab }) => {
               mb: 3,
               px: 2,
               py: 2,
-              backgroundColor: theme.palette.background.paper,
+              backgroundColor: theme.palette.background.main,
               transition: '0.3s ease',
               '&:hover': {
                 boxShadow: 6,

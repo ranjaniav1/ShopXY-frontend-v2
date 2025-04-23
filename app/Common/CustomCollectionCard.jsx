@@ -10,17 +10,17 @@ const CustomCollectionCard = ({ id, slug, image, title, tooltip }) => {
   return (
     <Box
       key={id}
-      className="relative flex flex-col items-center rounded-md overflow-hidden shadow-lg"
+      className="relative flex flex-col items-center rounded-md overflow-hidden p-5 shadow-lg"
       sx={{
         border: `1px solid ${theme.palette.card.border}`,
         transition:
           "border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease",
         "&:hover": {
           borderColor: theme.palette.card.hover,
-          transform: "scale(1.05)",
+          // transform: "scale(1.05)",
           boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)"
         },
-        background: `${theme.palette.card.background}`,
+        background: theme.palette.card.background,
         overflow: "hidden"
       }}
     >
@@ -29,8 +29,8 @@ const CustomCollectionCard = ({ id, slug, image, title, tooltip }) => {
           src={image}
           alt={`Collection image of ${title}`}
           width={500} // specify the width you want
-          height={200} // specify the height you want
-          className="w-full h-48 object-cover cursor-pointer"
+          height={300} // specify the height you want
+          className="w-full h-40 object-contain mb-2 rounded-lg cursor-pointer "
         />
       </Tooltip>
       <Box
