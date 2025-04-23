@@ -7,7 +7,7 @@ const { useState } = require("react");
 const { useDispatch, useSelector } = require("react-redux");
 import Cookies from "js-cookie";
 const NavProfileMenu = () => {
-  const user = useSelector((state) => state.auth?.user?.data?.user) || {};
+  const user = useSelector((state) => state.auth?.user?.data?.user);
   const dispatch = useDispatch();
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -20,10 +20,11 @@ const NavProfileMenu = () => {
     setAnchorEl(null);
   };
 
+
   const handleLogout = async () => {
     handleCloseMenu(); // Close menu before logout
     try {
-      await Logout({ userId: user._id });
+      await Logout({ userId:user._id });
       Cookies.remove("user");
       dispatch(RemoveUser());
       toast.success("User logged out successfully.");
