@@ -8,11 +8,13 @@ import { Navigation, A11y, Autoplay } from 'swiper/modules';
 import { GetHomeScreenData } from '../Service/GetHomeScreenData';
 import Link from 'next/link';
 import CustomSkeleton from '../Custom/CustomSkeleton';
+import CustomTypography from '../Custom/CustomTypography';
+import { useTheme } from '@mui/material';
 
 const Slider = () => {
     const [slider, setSlider] = useState([]);
     const [loading, setLoading] = useState(true);
-
+const theme=useTheme()
     async function GetSliders() {
         try {
             const result = await GetHomeScreenData();
@@ -55,7 +57,7 @@ const Slider = () => {
                         </SwiperSlide>
                     ))
                 ) : (
-                    <CustomTypography textAlign="center" sx={{color:theme.palette.text.primary}}>{t('No Swipers Available')}</CustomTypography>                )}
+                    <CustomTypography textAlign="center" sx={{color:theme.palette.text.primary}}>No Swipers Available</CustomTypography>                )}
             </Swiper>
         </div>
     );

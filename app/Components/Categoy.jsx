@@ -8,6 +8,7 @@ import { GetCategories } from "../Service/GetCategory";
 import Link from "next/link";
 import { Box, Grid, Tooltip, Typography, useTheme } from "@mui/material";
 import CustomSkeleton from "../Custom/CustomSkeleton";
+import CustomTypography from "../Custom/CustomTypography";
 
 const Category = () => {
   const [categories, setCategories] = useState([]);
@@ -95,7 +96,7 @@ const Category = () => {
           ))}
         </Swiper>
       ) : (
- <CustomTypography textAlign="center" sx={{color:theme.palette.text.primary}}>{t('no categories Found')}</CustomTypography>      )}
+ <CustomTypography textAlign="center" sx={{color:theme.palette.text.primary}}>no categories Found</CustomTypography>      )}
     </Box>
   );
 };
