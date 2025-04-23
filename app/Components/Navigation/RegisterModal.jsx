@@ -18,8 +18,9 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
     const [avatar, setAvatar] = useState(null);
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const [isGoogleModalOpen, setIsGoogleModalOpen] = useState(false); // State for Google Registration Modal
-   // Handler to open Google Registration Modal
+    const [isGoogleModalOpen, setIsGoogleModalOpen] = useState(false);
+
+    // Handler to open Google Registration Modal
     const handleOpenGoogleModal = () => {
         setIsGoogleModalOpen(true);
         onClose(); // Close the RegisterModal when opening the GoogleRegistrationModal
@@ -29,13 +30,22 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
     const handleCloseGoogleModal = () => {
         setIsGoogleModalOpen(false);
     };
+
     return (
         <>
             <CustomModal open={open} onClose={onClose} title={t("Register")} sx={{ color: theme.palette.text.primary }}>
                 <form onSubmit={(e) => {
                     e.preventDefault();
                     handleSubmit(formData, avatar, setLoading, onClose);
-                }}>
+                }}> <CustomInput
+                        placeholder={t('Full Name')}
+                        name="fullname"
+                        value={formData.fullname}
+                        onChange={handleChange(setFormData)}
+                        startIcon={<Person />}
+                        className="mb-2"
+
+                    />
                     <CustomInput
                         placeholder={t('Email')}
                         name="email"
@@ -43,17 +53,9 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
                         onChange={handleChange(setFormData)}
                         startIcon={<Email />}
                         className="mb-2"
-                        required
+
                     />
-                    <CustomInput
-                        placeholder={t('Full Name')}
-                        name="fullname"
-                        value={formData.fullname}
-                        onChange={handleChange(setFormData)}
-                        startIcon={<Person />}
-                        className="mb-2"
-                        required
-                    />
+
                     <PasswordInput
                         t={t}
                         showPassword={showPassword}
@@ -68,7 +70,7 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
                         onChange={handleChange(setFormData)}
                         startIcon={<PhoneAndroid />}
                         className="mb-2"
-                        required
+
                     />
                     <FileInput
                         t={t}
@@ -85,7 +87,7 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
                     />
                     <Divider sx={{ my: 1 }}>{t('OR')}</Divider>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                        
+
                         <CustomButton
                             background="#d62746"
                             fullWidth
@@ -106,7 +108,7 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
                     />
                 </form>
             </CustomModal>
-            
+
             <GoogleRegistrationModal open={isGoogleModalOpen} onClose={handleCloseGoogleModal} />
         </>
     );
