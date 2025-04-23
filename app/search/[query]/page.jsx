@@ -13,6 +13,7 @@ import CustomBox from "@/app/Custom/CustomBox";
 import Heading from "@/app/Common/Heading";
 import { useProductFilter } from "@/app/helper/useProductFilter";
 import FilterSidebar from "@/app/Components/FilterSidebar";
+import CustomSkeleton from "@/app/Custom/CustomSkeleton";
 
 const SearchResults = () => {
   const { query } = useParams();
