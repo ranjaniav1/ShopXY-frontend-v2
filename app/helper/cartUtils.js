@@ -22,7 +22,7 @@ export const fetchCart = async (userId) => {
 };
 
 // 🛒 Add to Cart Handler
-export const handleAddToCart = async ({ userId, productId }) => {
+export const handleAddToCart = async ({ userId, productId, cartItems = [] }) => {
   const quantity = 1;
 
   if (!userId) {
@@ -30,20 +30,21 @@ export const handleAddToCart = async ({ userId, productId }) => {
     return;
   }
 
-  try {
-    // Use getCart directly to fetch the cart
-    const cartResponse = await getCart(userId);
-    console.log("Cart Response:", cartResponse); // 👈 Inspect structure
 
-    // Check if cart contains the product
-    const alreadyInCart = Array.isArray(cartResponse?.data?.products) && cartResponse.data.products.some((item) => {
-      return item.product._id === productId; // Compare the _id of the product in the cart with the productId
-    });
+  try {
+    // 🔄 Fetch the cart before adding
+    const cartItems = await getCart(userId);
+
+    const alreadyInCart = cartItems?.data?.products.some(item => item.product._id === productId);
+
+    console.log("already inc", alreadyInCart)
 
     if (alreadyInCart) {
-      toast.error("Already in your cart");
+      toast.error("Your item is already in your cart");
       return;
     }
+
+
 
     // Add the product to the cart if not already present
     const response = await addtoCart(userId, productId, quantity);
