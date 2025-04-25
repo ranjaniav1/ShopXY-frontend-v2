@@ -20,13 +20,13 @@ const UserProfile = ({ user }) => {
   return (
     <Box
       sx={{
-        position: "relative", // For positioning the edit icon
+        position: "relative", // For positioning the edit itcon
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         p: 3,
         mb: 4,
-        background: `linear-gradient(135deg, ${theme.palette.primary.light}, ${theme.palette.primary.main})`, // Theme-based background
+        background: `linear-gradient(135deg, ${theme.palette.card.background}, ${theme.palette.primary.main})`, // Theme-based background
         borderRadius: "12px",
         boxShadow: theme.shadows[3]
       }}

@@ -14,18 +14,16 @@ import Heading from "@/app/Common/Heading";
 import { useProductFilter } from "@/app/helper/useProductFilter";
 import FilterSidebar from "@/app/Components/FilterSidebar";
 import CustomSkeleton from "@/app/Custom/CustomSkeleton";
+import EmptyCart from "@/app/Components/EmptyCart";
 
 const SearchResults = () => {
   const { query } = useParams();
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const { userId } = useSelector((state) => {
-    const isAuth = state.auth.isAuthenticated;
-    return {
-      userId: isAuth ? state.auth.user?.data?.user?._id : null,
-    };
-  });
+ const userId=useSelector((state)=>state.auth?.user?._id) 
+ 
+
 
   const {
     filteredProducts,
@@ -88,9 +86,15 @@ const theme=useTheme()
               ))}
             </Grid>
           ) : filteredProducts.length === 0 ? (
-            <CustomTypography variant="h6" align="center" sx={{color:theme.palette.text.primary}}>
-              No products found
-            </CustomTypography>
+            <EmptyCart
+            title="We couldn’t find anything for your search. 😕"
+            subtitle="No worries — simply click below to explore our full collection or try searching again."
+            src="/search-not-found.png"
+            buttonText="Browse All Collections"
+            buttonHref="/categories/collections"
+          />
+          
+          
           ) : (
             <Grid container spacing={2}>
               {filteredProducts.map((product) => (

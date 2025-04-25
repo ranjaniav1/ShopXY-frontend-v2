@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 
 const AddressDrawer = ({ onClose, isEditing, addressData, onAddressSaved = () => {} }) => {
-  const userId = useSelector((state) => state.auth.user.data.user._id);
+  const userId = useSelector((state) => state.auth.user._id);
 
   const [name, setName] = useState("");
   const [contactNumber, setContactNumber] = useState("");
@@ -20,11 +20,8 @@ const AddressDrawer = ({ onClose, isEditing, addressData, onAddressSaved = () =>
     if (isEditing && addressData) {
       setName(addressData.name || "");
       setContactNumber(addressData.phone || "");
-      
-      // Try splitting using pipe first
+
       let addressParts = addressData.address?.split("|");
-  
-      // If that gives less than 2 parts, fallback to space
       if (!addressParts || addressParts.length < 2) {
         addressParts = addressData.address?.split(" ") || [];
         setHouseNo(addressParts[0] || "");
@@ -33,12 +30,11 @@ const AddressDrawer = ({ onClose, isEditing, addressData, onAddressSaved = () =>
         setHouseNo(addressParts[0] || "");
         setRoadName(addressParts[1] || "");
       }
-  
+
       setPincode(addressData.postalCode || "");
       setCity(addressData.city || "");
       setState(addressData.state || "");
     } else {
-      // Reset
       setName("");
       setContactNumber("");
       setHouseNo("");
@@ -48,7 +44,6 @@ const AddressDrawer = ({ onClose, isEditing, addressData, onAddressSaved = () =>
       setState("");
     }
   }, [isEditing, addressData]);
-  
 
   const validateFields = () => {
     if (!name) return "Name is required.";
@@ -80,32 +75,14 @@ const AddressDrawer = ({ onClose, isEditing, addressData, onAddressSaved = () =>
 
     try {
       if (isEditing && addressData?._id) {
-        await updateAddress(
-          userId,
-          addressData._id,
-          payload.address,
-          payload.city,
-          payload.state,
-          payload.postalCode,
-          payload.country,
-          payload.phone,
-          false // not primary by default
-        );
+        await updateAddress(userId, addressData._id, payload.address, payload.city, payload.state, payload.postalCode, payload.country, payload.phone, false);
         toast.success("Address updated successfully!");
       } else {
-        await CreateAddress(
-          userId,
-          payload.address,
-          payload.city,
-          payload.state,
-          payload.postalCode,
-          payload.country,
-          payload.phone
-        );
+        await CreateAddress(userId, payload.address, payload.city, payload.state, payload.postalCode, payload.country, payload.phone);
         toast.success("Address added successfully!");
       }
 
-      onAddressSaved(); // 🔄 Trigger refresh in parent
+      onAddressSaved(); // Trigger refresh in parent
       onClose(); // Close drawer after save
     } catch (err) {
       console.error("Failed to save address", err);
@@ -115,49 +92,18 @@ const AddressDrawer = ({ onClose, isEditing, addressData, onAddressSaved = () =>
 
   return (
     <Box display="flex" flexDirection="column" gap={2}>
-      <TextField
-        label="Name"
-        fullWidth
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <TextField
-        label="Contact Number"
-        fullWidth
-        value={contactNumber}
-        onChange={(e) => setContactNumber(e.target.value)}
-      />
-      <TextField
-        label="House No."
-        fullWidth
-        value={houseNo}
-        onChange={(e) => setHouseNo(e.target.value)}
-      />
-      <TextField
-        label="Road Name"
-        fullWidth
-        value={roadName}
-        onChange={(e) => setRoadName(e.target.value)}
-      />
-      <TextField
-        label="Pincode"
-        fullWidth
-        value={pincode}
-        onChange={(e) => setPincode(e.target.value)}
-      />
-      <TextField
-        label="City"
-        fullWidth
-        value={city}
-        onChange={(e) => setCity(e.target.value)}
-      />
-      <TextField
-        label="State"
-        fullWidth
-        value={state}
-        onChange={(e) => setState(e.target.value)}
-      />
-      <CustomButton title={isEditing ? "Update Address" : "Save Address"} onClick={handleSaveAddress} />
+      <TextField label="Name" fullWidth value={name} onChange={(e) => setName(e.target.value)} />
+      <TextField label="Contact Number" fullWidth value={contactNumber} onChange={(e) => setContactNumber(e.target.value)} />
+      <TextField label="House No." fullWidth value={houseNo} onChange={(e) => setHouseNo(e.target.value)} />
+      <TextField label="Road Name" fullWidth value={roadName} onChange={(e) => setRoadName(e.target.value)} />
+      <TextField label="Pincode" fullWidth value={pincode} onChange={(e) => setPincode(e.target.value)} />
+      <TextField label="City" fullWidth value={city} onChange={(e) => setCity(e.target.value)} />
+      <TextField label="State" fullWidth value={state} onChange={(e) => setState(e.target.value)} />
+
+      <Box display="flex" justifyContent="space-between">
+        <CustomButton title="Cancel" variant="outlined" onClick={onClose} />
+        <CustomButton title="Save Address" onClick={handleSaveAddress} />
+      </Box>
     </Box>
   );
 };

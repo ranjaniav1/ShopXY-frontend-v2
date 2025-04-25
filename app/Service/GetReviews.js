@@ -40,7 +40,6 @@ export async function SubmitBrandReview({ id, userId, rating, review, mediaFiles
         "Content-Type": "multipart/form-data", // Set the header for file uploads
       },
     });
-
     console.log("Review submitted successfully", response.data);
     return response.data; // Return success response
   } catch (error) {
@@ -70,6 +69,8 @@ export async function SubmitProductReview({ id, userId, rating, review, mediaFil
     });
 
     console.log("Review submitted successfully", response.data);
+    await GetSpecificProductReview(id)
+
     return response.data; // Return success response
   } catch (error) {
     console.error("Error submitting brand review", error);

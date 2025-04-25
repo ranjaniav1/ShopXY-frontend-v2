@@ -11,14 +11,10 @@ import NavSearchBar from "./NavSearchBar";
 
 const SmallScreenNav = ({ setDrawerOpen }) => {
   const isAuth = useSelector((state) => state.auth.isAuthenticated);
-  const user = useSelector((state) => state.auth?.user?.data?.user) || {};
+  const user = useSelector((state) => state.auth?.user) ;
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState(""); // State for search input
 
-  const handleSearch = () => {
-    console.log("Searching for:", searchQuery);
-    // Add your search logic here
-  };
 
   return (
     <Box display="flex" justifyContent="space-between" alignItems="center" p={2} sx={{ width: "100%" }}>

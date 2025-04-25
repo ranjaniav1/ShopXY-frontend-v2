@@ -10,6 +10,10 @@ export const CreateAddress = async (
   phone
 ) => {
   try {
+     // Step 1: Get existing addresses
+     const existing = await getAddress(userId);
+        // Step 2: If it's the first one, mark as primary
+    const isPrimary = existing?.length === 0;
     const response = await httpAxios.post("/user/address/create", {
       userId,
       address,
@@ -17,7 +21,8 @@ export const CreateAddress = async (
       state,
       postalCode,
       country,
-      phone
+      phone,
+      isPrimary,
     });
     return response.data;
   } catch (error) {
@@ -36,9 +41,7 @@ export const getAddress = async (userId) => {
 
 export const removeAddress = async (userId, addressId) => {
   try {
-    const response = await httpAxios.delete("/user/address/delete", {
-      data: { userId, addressId }
-    });
+    const response = await httpAxios.delete(`/user/address/delete/${userId}/${addressId}`);
     return response.data;
   } catch (error) {
     console.log("Error removing address:", error);

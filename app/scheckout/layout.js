@@ -28,8 +28,9 @@ import EmptyCart from "../Components/EmptyCart";
 const Layout = ({ children }) => {
   const [activeStep, setActiveStep] = useState(0);
 
-  const userId =
-    useSelector((state) => state.auth?.user?.data?.user?._id) || "test";
+  const userId=useSelector((state)=>state.auth?.user?._id) 
+  
+
   const [cartData, setCartData] = useState([]);
   const pathname = usePathname();
   const theme = useTheme();
@@ -75,43 +76,43 @@ const Layout = ({ children }) => {
 
   return (
     <Box>
-     {cartData?.products?.length > 0 && (
-      <Stepper
-        sx={{
-          ".Mui-completed .MuiStepIcon-root": {
-            background: theme.palette.button.color,
-            borderRadius: "50%",
-            color: theme.palette.button.background,
-          },
-          ".Mui-active .MuiStepIcon-root": {
-            color: "#22aa99",
-          },
-          ".css-rxa01a-MuiSvgIcon-root-MuiStepIcon-root": {
-            color: "white",
-          },
-        }}
-        activeStep={activeStep}
-        alternativeLabel
-      >
-        {steps.map((label) => (
-          <Step key={label}>
-            <StepLabel>{label}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-    )}
+     
+        <Stepper
+          sx={{
+            ".Mui-completed .MuiStepIcon-root": {
+              background: theme.palette.button.color,
+              borderRadius: "50%",
+              color: theme.palette.button.background,
+            },
+            ".Mui-active .MuiStepIcon-root": {
+              color: "#22aa99",
+            },
+            ".css-rxa01a-MuiSvgIcon-root-MuiStepIcon-root": {
+              color: "white",
+            },
+          }}
+          activeStep={activeStep}
+          alternativeLabel
+        >
+          {steps.map((label) => (
+            <Step key={label}>
+              <StepLabel>{label}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+      
 
       <CustomBox>
         <Container maxWidth="xl">
           <Grid container spacing={4}>
-            {cartData &&  cartData.products && cartData.products.length>0  ? (
+            {cartData && cartData.products && cartData.products.length > 0 ? (
               <>
                 {/* Grid for children (cart items) */}
                 <Grid item xs={12} md={7}>
                   {/* cart component ne call kr and aema props pass kr */}
-                {pathname === "/scheckout/carts" && <CartPage loadCart={loadCart} cartData={cartData} />} 
-                {pathname === "/scheckout/address" && <AddressPage handleBack={handleBack} handleNext={handleNext} />} 
-                {pathname === "/scheckout/payment" && <PaymentPage loadCart={loadCart} cartData={cartData} />} 
+                  {pathname === "/scheckout/carts" && <CartPage loadCart={loadCart} cartData={cartData} />}
+                  {pathname === "/scheckout/address" && <AddressPage handleBack={handleBack} handleNext={handleNext} />}
+                  {pathname === "/scheckout/payment" && <PaymentPage loadCart={loadCart} cartData={cartData} />}
                 </Grid>
 
                 {/* Vertical Divider */}
@@ -148,7 +149,7 @@ const Layout = ({ children }) => {
                 </Grid>
               </>
             ) : (
-             <EmptyCart/>
+              <EmptyCart src="/empty_cart.png" title="Don&apos;t worry, you can add your products here. Simply click on Start Shopping."/>
             )}
           </Grid>
         </Container>

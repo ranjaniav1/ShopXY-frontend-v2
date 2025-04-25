@@ -23,12 +23,9 @@ const HomeProduct = () => {
 
   const { t } = useTranslation();
 
-  const { userId } = useSelector((state) => {
-    const isAuth = state.auth.isAuthenticated;
-    return {
-      userId: isAuth ? state.auth.user?.data?.user?._id : null
-    };
-  });
+  const userId=useSelector((state)=>state.auth?.user?._id) 
+  
+console.log("userid",userId)
 
   const {
     filteredProducts,

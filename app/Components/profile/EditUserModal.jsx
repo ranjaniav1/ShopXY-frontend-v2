@@ -10,7 +10,10 @@ const EditUserModal = ({ user, onClose }) => {
   const dispatch = useDispatch();
   const [fullname, setFullname] = useState(user?.fullname || "");
   const [avatar, setAvatar] = useState(null); // Avatar will be a file object
-  const userId = useSelector((state) => state.auth?.user?.data?.user._id);
+  const userId=useSelector((state)=>state.auth?.user?._id) 
+  
+  
+
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];

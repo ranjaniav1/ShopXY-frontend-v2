@@ -23,8 +23,9 @@ import UserNotify from "@/app/Components/profile/UserNotify";
 
 const Layout = ({ children }) => {
   const dispatch = useDispatch();
-  const userId = useSelector((state) => state.auth?.user?.data?.user._id);
-  const user = useSelector((state) => state.auth?.user?.data?.user);
+
+  const user = useSelector((state) => state.auth?.user);
+  const userId = user?._id; 
   const [activeTab, setActiveTab] = useState(0);
   const [openDialog, setOpenDialog] = useState(false);
   const [openDeleteAccountDialog, setOpenDeleteAccountDialog] = useState(false);

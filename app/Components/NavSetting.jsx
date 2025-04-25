@@ -7,16 +7,16 @@ import { setLanguage } from '../redux/reducer/LanguageReducer';
 import i18n from '../i18n';
 import Cookies from 'js-cookie';
 
-const NavSetting = () => {
+const NavSetting = ({onClose}) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const currentTheme = useSelector(state => state.theme.theme);
-    const theme = useTheme();
     const selectedLanguage = useSelector(state => state.language.language);
 
-    const handleThemeChange = (event, newTheme) => {
+    const handleThemeChange = ( newTheme) => {
         if (newTheme !== null) {
             dispatch(setTheme(newTheme));
+            if(onClose) onClose()
         }
     };
 
@@ -25,6 +25,7 @@ const NavSetting = () => {
         dispatch(setLanguage(lang));
         i18n.changeLanguage(lang);
         Cookies.set("language", lang); 
+        if(onClose) onClose()
     };
     return (
         <>

@@ -12,7 +12,7 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import CustomButton from '@/app/Custom/CustomButton';
-import { fetchOrder } from '@/app/helper/ProfileUtils';
+import { DeleteAllOrder, fetchOrder } from '@/app/helper/ProfileUtils';
 import CustomTypography from '@/app/Custom/CustomTypography';
 import generateInvoice from './generateInvoice';
 
@@ -44,6 +44,16 @@ const UserOrders = ({ userId, activeTab }) => {
 
   return (
     <Box>
+      {order.length > 0 && (
+  <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+    <CustomButton
+      onClick={() => DeleteAllOrder(userId, setOrder)}
+      title="Delete All Orders"
+      className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded"
+    />
+  </Box>
+)}
+
       {order.length > 0 ? (
         order.map((orderItem) => (
           <Card
@@ -169,7 +179,7 @@ const UserOrders = ({ userId, activeTab }) => {
                 </Grid>
                 <Grid item>
                   <CustomTypography variant="body2" sx={{color:theme.palette.text.primary}}>
-                    Total Price: ₹{orderItem.totalPrice}
+                    Total Price: ₹{orderItem.discountedPrice.toFixed(2) || orderItem.totalPrice.toFixed(2)}
                   </CustomTypography>
                 </Grid>
               </Grid>

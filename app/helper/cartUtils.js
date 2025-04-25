@@ -22,7 +22,7 @@ export const fetchCart = async (userId) => {
 };
 
 // 🛒 Add to Cart Handler
-export const handleAddToCart = async ({ userId, productId, cartItems = [] }) => {
+export const handleAddToCart = async ({ userId, productId }) => {
   const quantity = 1;
 
   if (!userId) {
@@ -30,28 +30,36 @@ export const handleAddToCart = async ({ userId, productId, cartItems = [] }) => 
     return;
   }
 
+  let cartItems = null;
 
   try {
-    // 🔄 Fetch the cart before adding
-    const cartItems = await getCart(userId);
+    // Try to get the cart
+    cartItems = await getCart(userId);
+  } catch (error) {
+    if (error?.response?.status === 404) {
+      // No cart found, treat as empty cart
+      cartItems = { data: { products: [] } };
+    } else {
+      toast.error(`Failed to fetch cart: ${error?.message}`);
+      return;
+    }
+  }
 
-    const alreadyInCart = cartItems?.data?.products.some(item => item.product._id === productId);
-
-    console.log("already inc", alreadyInCart)
+  try {
+    const alreadyInCart = cartItems?.data?.products.some(
+      (item) => item.product._id === productId
+    );
 
     if (alreadyInCart) {
       toast.error("Your item is already in your cart");
       return;
     }
 
-
-
-    // Add the product to the cart if not already present
     const response = await addtoCart(userId, productId, quantity);
 
     if (response?.success || response?.status === 200) {
       toast.success("Item added!");
-      fetchCart(userId); // Fetch the updated cart after adding the item
+      fetchCart(userId);
     } else {
       throw new Error(response?.message || "Unknown error");
     }
@@ -59,6 +67,7 @@ export const handleAddToCart = async ({ userId, productId, cartItems = [] }) => 
     toast.error(`Failed to add product to cart: ${error?.message}`);
   }
 };
+
 
 
 

@@ -31,25 +31,55 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
   const handleSubmitEmail = async (e) => {
     e.preventDefault();
     setLoading(true); // Start loading
+  
+    if (!email) {
+      toast.error(t("Please fill email field"));
+      setLoading(false); // Stop loading
+      return;
+    }
+  
+    if (!password) {
+      toast.error(t("Please fill password field"));
+      setLoading(false); // Stop loading
+      return;
+    }
+  
     try {
       const response = await Login({ email, password });
-      if (response) {
-        dispatch(setUser(response));
+      console.log("Login response:", response); // Log to inspect
+  
+      // Check the statusCode from response
+      if (response?.statusCode === 200 && response?.success) {
+        const userData = response?.data?.user; // Access user data
+        dispatch(setUser(userData)); // Assuming setUser will store the user data in your state
         Cookies.set("user", true, { expires: 7 });
-        toast.success(t("Login successful"));
-        onClose();
+        toast.success(t(response?.message || "Login successful")); // Show success message
+        onClose(); // Close the modal or perform any action
+      } else {
+        toast.error(t(response?.message || "Login failed"));
       }
     } catch (error) {
-      toast.error(
-        t("Login failed. Please check your credentials and try again.")
-      );
       console.error("Login error", error);
+  
+      if (error?.response) {
+        // Handle error if response exists
+        if (error.response?.status === 404) {
+          toast.error(t("User not found"));
+        } else if (error.response?.status === 401) {
+          toast.error(t("Invalid password"));
+        } else {
+          toast.error(t(error.response?.data?.message || "Login failed"));
+        }
+      } else {
+        toast.error(t("An unexpected error occurred."));
+      }
     } finally {
-      setLoading(false);
+      setLoading(false); // Stop loading
     }
   };
-
-
+  
+  
+  
   const handleOpenGoogleModal = () => {
     setIsGoogleModalOpen(true);
     onClose(); // Close the LoginModal when opening the GoogleLoginModal

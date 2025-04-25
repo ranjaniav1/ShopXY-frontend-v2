@@ -10,7 +10,9 @@ const EditCart = ({ onClose, selectedProduct }) => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [localQuantity, setLocalQuantity] = useState(selectedProduct?.quantity || 1);
-  const userId = useSelector((state) => state.auth.user.data.user._id);
+  const userId=useSelector((state)=>state.auth?.user?._id) 
+  
+
   const theme = useTheme();
 
   useEffect(() => {

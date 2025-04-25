@@ -20,7 +20,7 @@ const BrandReviewForm = ({ brandId, onClose, productId,onSubmitSuccess }) => {
   const [review, setReview] = useState("");
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
-  const user = useSelector((state) => state.auth?.user?.data?.user) || {};
+const userId=useSelector((state)=>state.auth?.user?._id) 
 
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
@@ -38,7 +38,7 @@ const BrandReviewForm = ({ brandId, onClose, productId,onSubmitSuccess }) => {
     try {
       const reviewData = {
         id: productId || brandId, // Use productId if it exists, else use brandId
-        userId: user._id,
+        userId:userId,
         rating,
         review,
         mediaFiles: images

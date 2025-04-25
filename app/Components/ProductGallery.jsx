@@ -16,7 +16,8 @@ const ProductGallery = ({
   productName,
   productId
 }) => {
-  const userId = useSelector((state) => state?.auth?.user?.data?.user?._id);
+const userId=useSelector((state)=>state.auth?.user?._id) 
+
 // 🔹 Magnifier Effect
 const [lensPosition, setLensPosition] = useState({ x: 0, y: 0 });
 const [isHovering, setIsHovering] = useState(false);
