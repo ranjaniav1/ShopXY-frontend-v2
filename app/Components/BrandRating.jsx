@@ -15,15 +15,19 @@ import BrandReviewDrawer from "./BrandReviewDrawer";
 import { GetSpecificBrandReview } from "../Service/GetReviews";
 import CustomModal from "../Custom/CustomModal";
 import BrandReviewForm from "./BrandReviewForm";
-import RateReviewIcon from "@mui/icons-material/RateReview"; // Icon for submitting review
+import RateReviewIcon from "@mui/icons-material/RateReview"; 
 import CustomTypography from "../Custom/CustomTypography";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 const BrandRating = ({ brand, brandId }) => {
   const [reviews, setReviews] = useState([]);
   const [analytics, setAnalytics] = useState({});
   const theme = useTheme();
-  const [drawerOpen, setDrawerOpen] = useState(false); // For the drawer
-  const [modalOpen, setModalOpen] = useState(false); // For the modal
+  const [drawerOpen, setDrawerOpen] = useState(false); 
+  const [modalOpen, setModalOpen] = useState(false); 
+  const userId=useSelector((state)=>state.auth?.user?._id) 
+  
 
   const fetchReviews = async () => {
     try {
@@ -32,7 +36,7 @@ const BrandRating = ({ brand, brandId }) => {
 
       if (data && data.success) {
         setReviews(data.data.reviews);
-        setAnalytics(data.data.analytics.analytics); // Access the nested analytics object
+        setAnalytics(data.data.analytics.analytics);
       }
     } catch (error) {
       console.error("Error fetching reviews:", error);
@@ -55,7 +59,7 @@ const BrandRating = ({ brand, brandId }) => {
           boxShadow: 2,
           display: "flex",
           alignItems: "center",
-          background: theme.palette.background.paper,
+          background: theme.palette.card.background,
           cursor: "pointer" // Make the card clickable
         }}
         onClick={() => setDrawerOpen(true)}
@@ -66,7 +70,7 @@ const BrandRating = ({ brand, brandId }) => {
           />
           <CustomTypography
             variant="h6"
-            sx={{ marginLeft: 1, fontWeight: "bold" ,color: theme.palette.text.primary}}
+            sx={{ marginLeft: 1, fontWeight: "bold", color: theme.palette.text.primary }}
             onClick={() => setModalOpen(true)}
           >
             {brand.title}
@@ -91,7 +95,8 @@ const BrandRating = ({ brand, brandId }) => {
           <Tooltip title="Submit a Review">
             <IconButton
               onClick={(e) => {
-                e.stopPropagation(); // Prevents drawer from opening
+                e.stopPropagation();
+               
                 setModalOpen(true); // Open modal for submitting review
               }}
             >
@@ -118,7 +123,7 @@ const BrandRating = ({ brand, brandId }) => {
         onClose={() => setModalOpen(false)}
         title={`Review ${brand.title}`}
       >
-        <BrandReviewForm brandId={brandId} onClose={() => setModalOpen(false)} onSubmitSuccess={fetchReviews}/>
+        <BrandReviewForm brandId={brandId} onClose={() => setModalOpen(false)} onSubmitSuccess={fetchReviews} />
       </CustomModal>
     </>
   );

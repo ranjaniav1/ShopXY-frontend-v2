@@ -17,6 +17,7 @@ import CustomTypography from "../Custom/CustomTypography";
 import RateReviewIcon from "@mui/icons-material/RateReview"; // Icon for submitting review
 import CustomModal from "../Custom/CustomModal";
 import BrandReviewForm from "./BrandReviewForm";
+import toast from "react-hot-toast";
 
 const ProductDetails = ({
   name,
@@ -28,7 +29,7 @@ const ProductDetails = ({
   special_offer,
   gst_type,
   productId,
-  brand
+  brand, userId
 }) => {
   const theme = useTheme();
   const { t } = useTranslation();
@@ -61,21 +62,21 @@ const ProductDetails = ({
                   color: theme.palette.error.main // Theme-based color for struck-through price
                 }}
               >
-                ₹{actual_price}             
+                ₹{actual_price}
               </span>
             )}{" "}
             {offer}% OFF
           </CustomTypography>
-          <CustomTypography variant="body2" className="mt-2"             sx={{ color: theme.palette.text.secondary }}
+          <CustomTypography variant="body2" className="mt-2" sx={{ color: theme.palette.text.secondary }}
           >
             {t("Free Delivery")}
           </CustomTypography>
         </Card>
       </Grid>
 
-      {/* Card 3: Product Details */}
+      {/* Card 2: Product Details */}
       <Grid item xs={12}>
-        <Card sx={{ p: 2, background: theme.palette.background.paper }}>
+        <Card sx={{ p: 2, background: theme.palette.card.background }}>
           <CustomTypography
             variant="h4"
             sx={{ color: theme.palette.text.primary }} // Theme-based text color
@@ -97,21 +98,21 @@ const ProductDetails = ({
           </CustomTypography>
           <CustomTypography
             variant="body2"
-            sx={{ color: theme.palette.text.secondary }} // Theme-based text color
+            sx={{ color: theme.palette.text.secondary }}
           >
             {t("GST Type")}: {gst_type}
           </CustomTypography>
         </Card>
       </Grid>
-      {/* card 4 brand rating review */}
+      {/* card 3 brand rating review */}
       <Grid item xs={12}>
         <BrandRating brand={brand} brandId={productId} sx={{ p: 2 }} />
       </Grid>
-      {/* Card 5: Ratings and Reviews */}
+      {/* Card 4: Ratings and Reviews */}
       <Grid item xs={12}>
         <Card
           theme={theme}
-          sx={{ p: 2, background: theme.palette.background.paper }}
+          sx={{ p: 2, background: theme.palette.card.background }}
         >
           <Box
             display="flex"
@@ -127,7 +128,8 @@ const ProductDetails = ({
             <Tooltip title="Submit a Review">
               <IconButton
                 onClick={(e) => {
-                  e.stopPropagation(); // Prevents drawer from opening
+                  e.stopPropagation();
+                 
                   setModalOpen(true); // Open modal for submitting review
                 }}
                 sx={{ color: theme.palette.primary.main }}

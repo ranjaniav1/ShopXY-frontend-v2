@@ -25,7 +25,9 @@ import { httpAxios } from "@/app/httpAxios";
 
 const PaymentPage = ({ handleBack, cartData, loadCart }) => {
   console.log("cart for pay",cartData)
-  const userId = useSelector((state) => state.auth.user.data.user._id);
+  const userId=useSelector((state)=>state.auth?.user?._id) 
+  
+
 
   const [promoCode, setPromoCode] = useState(""); // State to store promo code input
   const [promoError, setPromoError] = useState(""); // State to store promo code error

@@ -5,10 +5,12 @@ import FullScreenNav from './Navigation/FullScreenNav';
 import SmallScreenNav from './Navigation/SmallScreenNav';
 import CustomDrawer from '../Custom/CustomDrawer';
 import NavSetting from './NavSetting';
+import { useSelector } from 'react-redux';
 
 const Navigation = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const theme = useTheme();
+    const user = useSelector((state) => state.auth.user);
 
     return (
         <Box className="nav "  style={{
@@ -21,7 +23,7 @@ const Navigation = () => {
             <Container maxWidth="xl">
                 {/* Only visible on larger screens */}
                 <Box display={{ xs: 'none', md: 'block' }}>
-                    <FullScreenNav setDrawerOpen={setDrawerOpen} />
+                    <FullScreenNav setDrawerOpen={setDrawerOpen} user={user}/>
                 </Box>
                 {/* Only visible on smaller screens */}
                 <Box display={{ xs: 'flex', md: 'none' }}>
@@ -30,7 +32,7 @@ const Navigation = () => {
             </Container>
             <Box width={350}>
                 <CustomDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} title="Settings">
-                    <NavSetting />
+                    <NavSetting onClose={()=>setDrawerOpen(false)}/>
                 </CustomDrawer>
             </Box> {/* Register Modal */}
            

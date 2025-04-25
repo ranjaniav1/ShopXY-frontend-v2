@@ -4,10 +4,9 @@ const { Logout } = require("@/app/Service/User");
 const { IconButton, Menu, MenuItem } = require("@mui/material");
 const { useRouter } = require("next/navigation");
 const { useState } = require("react");
-const { useDispatch, useSelector } = require("react-redux");
+const { useDispatch } = require("react-redux");
 import Cookies from "js-cookie";
-const NavProfileMenu = () => {
-  const user = useSelector((state) => state.auth?.user?.data?.user);
+const NavProfileMenu = ({user}) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState(null);

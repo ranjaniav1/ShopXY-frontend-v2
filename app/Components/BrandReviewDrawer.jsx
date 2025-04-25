@@ -68,7 +68,7 @@ const theme=useTheme()
                     <Card key={review._id} sx={{ padding: 2, marginBottom: 2 }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 1 }}>
                             <Avatar src={review.userAvatar} alt={review.userName} />
-                            <CustomTypography variant="h6" sx={{ marginLeft: 2, fontWeight: 'bold' }}>
+                            <CustomTypography variant="h6" sx={{ marginLeft: 2, fontWeight: 'bold' ,color:theme.palette.text.primary}}>
                                 {review.userName}
                             </CustomTypography>
                         </Box>
@@ -76,11 +76,11 @@ const theme=useTheme()
                             <CustomTypography variant="body2" sx={{ color: '#ff9800' }}>
                                 {review.rating} ⭐
                             </CustomTypography>
-                            <CustomTypography variant="body2" sx={{ marginLeft: 2 }}>
+                            <CustomTypography variant="body2" sx={{ marginLeft: 2 ,color:theme.palette.text.primary}}>
                                 {new Date(review.createdAt).toLocaleDateString()}
                             </CustomTypography>
                         </Box>
-                        <CustomTypography variant="body2" sx={{ marginTop: 1 }}>
+                        <CustomTypography variant="body2" sx={{ marginTop: 1 ,color:theme.palette.text.primary}}>
                             {review.review}
                         </CustomTypography>
                     </Card>

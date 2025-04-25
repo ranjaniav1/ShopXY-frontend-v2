@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Box, Grid, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
 import { useParams } from 'next/navigation';
 import { GetSingleProduct } from '@/app/Service/GetProduct';
 import ProductGallery from '@/app/Components/ProductGallery';
@@ -10,7 +10,7 @@ import CustomBox from '@/app/Custom/CustomBox';
 import CustomTypography from '@/app/Custom/CustomTypography';
 
 const Page = () => {
-    const { productId,productTitle } = useParams();
+    const { productId } = useParams();
     const [product, setProduct] = useState(null);
     const [brand, setBrand] = useState(null);
     const [selectedImage, setSelectedImage] = useState('');
@@ -43,13 +43,13 @@ const Page = () => {
     };
     return (
         <CustomBox>
-            <Grid container spacing={3}>
+            <Grid container spacing={2}>
 
 
                 {/* Left side: Image gallery */}
                 <Grid item xs={12} md={4}>
                     <ProductGallery
-                        detailImages={product?.detail_image || []} // Add a fallback to an empty array to avoid undefined errors
+                        detailImages={product?.detail_image || []}
                         selectedImage={selectedImage}
                         onImageClick={handleImageClick}
                         productName={product.name}

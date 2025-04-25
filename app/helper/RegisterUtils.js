@@ -12,14 +12,14 @@ export const handleFileChange = (setAvatar) => (e) => {
 export const handleSubmit = async (formData, avatar, setLoading, onClose) => {
   const { email, fullname, password, phone } = formData;
   // Validate full name
-  if (!fullname) {
+  if (!fullname?.trim()) {
     return toast.error("Please fill in the full name.");
   }
   if (fullname.trim().length < 3) {
     return toast.error("Full name must be at least 3 characters.");
   }
   // Validate email
-  if (!email) {
+  if (!email.trim()) {
     return toast.error("Please fill in the email.");
   }
 
@@ -28,16 +28,19 @@ export const handleSubmit = async (formData, avatar, setLoading, onClose) => {
     return toast.error("Invalid email format.");
   }
 
-  // Validate password
-  if (!password) {
-    return toast.error("Please fill in the password.");
-  }
-  if (password.length < 6) {
-    return toast.error("Password must be at least 6 characters.");
-  }
+ // Validate password (backend requires uppercase, lowercase, number, min 6)
+ if (!password) {
+  return toast.error("Please fill in the password.");
+}
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
+if (!passwordRegex.test(password)) {
+  return toast.error(
+    "Password must be at least 6 characters and include uppercase, lowercase, and a number."
+  );
+}
 
   // Validate phone number
-  if (!phone) {
+  if (!phone?.trim()) {
     return toast.error("Please fill in the phone number.");
   }
 
@@ -48,11 +51,11 @@ export const handleSubmit = async (formData, avatar, setLoading, onClose) => {
 
   // If all validations pass, proceed to submit
   setLoading(true);
-
   const formDataToSubmit = new FormData();
-  Object.entries(formData).forEach(([key, value]) =>
-    formDataToSubmit.append(key, value)
-  );
+
+  Object.entries(formData).forEach(([key, value]) => {
+    formDataToSubmit.append(key, typeof value === "string" ? value.trim() : value);
+  });
   if (avatar) formDataToSubmit.append("avatar", avatar);
 
   try {
@@ -64,9 +67,15 @@ export const handleSubmit = async (formData, avatar, setLoading, onClose) => {
       toast.error(res?.message);
     }
   } catch (error) {
-    const errorMessage = error?.response?.data?.message || "Something went wrong";
+    const errorMessage =
+      error?.response?.data?.message ||
+      error?.response?.data?.error || // if backend uses `.error`
+      error?.message ||
+      "Something went wrong";
+  
     toast.error(errorMessage);
-  } finally {
+  }
+   finally {
     setLoading(false);
   }
 };

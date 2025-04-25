@@ -72,11 +72,55 @@ export const DeleteNotifications = async (userId, notificationId) => {
     throw error;
   }
 };
+
+// Delete all notifications for a user
+export const DeleteAllNotifications = async (userId) => {
+  if (!userId) {
+    throw new Error("Missing userId for deleting all notifications.");
+  }
+
+  try {
+    const response = await httpAxios.delete(
+      `/user/profile/notification/${userId}`
+    ); // Assuming this is the route you set up
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting all notifications:", error);
+    throw error;
+  }
+};
+// Delete all notifications for a user
+export const DeleteAllWishists = async (userId) => {
+  if (!userId) {
+    throw new Error("Missing userId for deleting all wishlists.");
+  }
+
+  try {
+    const response = await httpAxios.delete(
+      `/user/profile/delete-all-wishlist/${userId}`
+    ); // Assuming this is the route you set up
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting all wishlists:", error);
+    throw error;
+  }
+};
+
 // Function to get order for a user
 export const getOrder = async (userId,page=1,limit=1) => {
   try {
     const response = await httpAxios.get(`/user/payment/get-order/${userId}?page=${page}&limit=${limit}`); // Pass userId in URL path
     return response.data.data;
+  } catch (error) {
+    console.error("Error fetching notifications:", error);
+    throw error;
+  }
+};
+// Function to get order for a user
+export const deleteAllOrder = async (userId) => {
+  try {
+    const response = await httpAxios.delete(`/order/delete-all/${userId}`); // Pass userId in URL path
+    return response.data;
   } catch (error) {
     console.error("Error fetching notifications:", error);
     throw error;

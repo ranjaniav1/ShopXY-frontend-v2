@@ -1,13 +1,10 @@
 "use client";
+
 import AddressCard from "@/app/Components/AddressCard";
 import AddressDrawer from "@/app/Components/AddressDrawer";
 import CustomButton from "@/app/Custom/CustomButton";
 import CustomDrawer from "@/app/Custom/CustomDrawer";
-import {
-  getAddress,
-  removeAddress,
-  updateAddress
-} from "@/app/Service/Address";
+import { getAddress, removeAddress, updateAddress } from "@/app/Service/Address";
 import { Box, Container, Grid, Typography, useTheme } from "@mui/material";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -18,6 +15,7 @@ import { useMediaQuery } from "@mui/material";
 import { Add } from "@mui/icons-material"; // For add icon
 import CustomIconButton from "@/app/Custom/CustomIconButton";
 import CustomTypography from "@/app/Custom/CustomTypography";
+import CustomBox from "@/app/Custom/CustomBox";
 
 const Page = ({ handleNext, handleBack }) => {
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
@@ -29,51 +27,43 @@ const Page = ({ handleNext, handleBack }) => {
   const [selectedAddressData, setSelectedAddressData] = useState(null);
   const [addresses, setAddresses] = useState([]);
 
-  const userId = useSelector((state) => state.auth.user.data.user._id);
+  const userId = useSelector((state) => state.auth.user._id);
   const { t } = useTranslation();
   const theme = useTheme();
-  useEffect(() => {
-    if(userId){
 
+  useEffect(() => {
+    if (userId) {
       fetchAddresses();
     }
   }, [userId]);
 
   const fetchAddresses = async () => {
+    setLoading(true);
+    setError(null); // Reset error before fetching
     try {
       const response = await getAddress(userId);
       const fetchedAddresses = response.data || [];
-  
-      // If only one address and it's not set as primary
-      if (fetchedAddresses.length === 1 && !fetchedAddresses[0].isPrimary) {
+      const primaryExists = fetchedAddresses.some((addr) => addr.isPrimary);
+
+      if (!primaryExists && fetchedAddresses.length > 0) {
         const addr = fetchedAddresses[0];
-        await updateAddress(
-          userId,
-          addr._id,
-          addr.address,
-          addr.city,
-          addr.state,
-          addr.postalCode,
-          addr.country,
-          addr.phone,
-          true // set as primary
-        );
-        addr.isPrimary = true; // update locally
+        await updateAddress(userId, addr._id, addr.address, addr.city, addr.state, addr.postalCode, addr.country, addr.phone, true);
+        addr.isPrimary = true;
       }
-  
-      const primaryAddress = fetchedAddresses.find((address) => address.isPrimary);
-  
-      setAddresses(fetchedAddresses);
+
+      const updatedResponse = await getAddress(userId);
+      const updatedAddresses = updatedResponse.data || [];
+      const primaryAddress = updatedAddresses.find((addr) => addr.isPrimary);
+
+      setAddresses(updatedAddresses);
       setSelectedAddressId(primaryAddress ? primaryAddress._id : null);
-      setLoading(false);
     } catch (err) {
-      console.error(err);
-      setLoading(false);
+      console.error("Failed to load addresses", err);
       setError("Failed to load addresses. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
-  
-  
 
   const handleAddAddressClick = () => {
     if (addresses.length >= 5) {
@@ -106,23 +96,9 @@ const Page = ({ handleNext, handleBack }) => {
 
   const handleAddressChange = async (addressId) => {
     try {
-      // Update the primary status of the selected address
-      const selectedAddress = addresses.find(
-        (addr) => addr._id === addressId
-      );
+      const selectedAddress = addresses.find((addr) => addr._id === addressId);
       if (selectedAddress) {
-        await updateAddress(
-          userId,
-          addressId,
-          selectedAddress.address,
-          selectedAddress.city,
-          selectedAddress.state,
-          selectedAddress.postalCode,
-          selectedAddress.country,
-          selectedAddress.phone,
-          true //set this address as a primary
-        );
-        // Update the selected address ID
+        await updateAddress(userId, addressId, selectedAddress.address, selectedAddress.city, selectedAddress.state, selectedAddress.postalCode, selectedAddress.country, selectedAddress.phone, true);
         setSelectedAddressId(addressId);
         await fetchAddresses();
       }
@@ -133,114 +109,67 @@ const Page = ({ handleNext, handleBack }) => {
   };
 
   return (
-    <div>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        p={2}
-      >
-        <CustomTypography sx={{color:theme.palette.card.text}}>{t("Select Delivery Address")}</CustomTypography>
+    <CustomBox>
+      <Box display="flex" justifyContent="space-between" alignItems="center" p={2}>
+        <CustomTypography sx={{ color: theme.palette.card.text }}>{t("Select Delivery Address")}</CustomTypography>
 
         {isSmallScreen ? (
-          <CustomIconButton
-            onClick={handleAddAddressClick}
-            sx={{
-              background: theme.palette.button.background,
-              color: theme.palette.button.color
-            }}
-          >
-            {" "}
+          <CustomIconButton onClick={handleAddAddressClick} sx={{ background: theme.palette.button.background, color: theme.palette.button.color }}>
             <Add />
           </CustomIconButton>
         ) : (
-          <CustomButton
-            title={t("Add Address")} // Show full button for larger devices
-            onClick={handleAddAddressClick}
-          />
+          <CustomButton title={t("Add Address")} onClick={handleAddAddressClick} />
         )}
       </Box>
 
       <Grid container spacing={2} p={2}>
-  {loading ? (
-    <CustomTypography>Loading addresses...</CustomTypography>
-  ) : addresses.length > 0 ? (
-    addresses.map((address) => (
-      <Grid item xs={12} sm={6} md={6} key={address._id}>
-        <AddressCard
-          address={address}
-          selectedAddressId={selectedAddressId}
-          handleEdit={handleEditAddress}
-          handleRemove={handleRemoveAddress}
-          handleChange={handleAddressChange}
-        />
+        {loading ? (
+          <CustomTypography>Loading addresses...</CustomTypography>
+        ) : addresses.length > 0 ? (
+          addresses.map((address) => (
+            <Grid item xs={12} sm={6} md={6} key={address._id}>
+              <AddressCard
+                address={address}
+                selectedAddressId={selectedAddressId}
+                handleEdit={handleEditAddress}
+                handleRemove={handleRemoveAddress}
+                handleChange={handleAddressChange}
+              />
+            </Grid>
+          ))
+        ) : (
+          <Grid item xs={12}>
+            <Box textAlign="center" py={5}>
+              <CustomTypography variant="h6" color="text.secondary">
+                {t("No address found. Please add one to proceed.")}
+              </CustomTypography>
+            </Box>
+          </Grid>
+        )}
       </Grid>
-    ))
-  ) : (
-    <Grid item xs={12}>
-      <Box textAlign="center" py={5}>
-        <CustomTypography variant="h6" color="text.secondary">
-          {t("No address found. Please add one to proceed.")}
-        </CustomTypography>
-      </Box>
-    </Grid>
-  )}
-</Grid>
 
       <Container>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between", // Aligns buttons to start and end
-            padding: "16px 0" // Optional: Adjust padding as needed
-          }}
-        >
+        <Box sx={{ display: "flex", justifyContent: "space-between", padding: "16px 0" }}>
           <Link href="/scheckout/carts">
-            <CustomButton
-              title="Back"
-              onClick={handleBack}
-              variant="outlined"
-            />
+            <CustomButton title="Back" onClick={handleBack} variant="outlined" />
           </Link>
 
           {selectedAddressId ? (
             <Link href="/scheckout/payment">
-              <CustomButton
-                title="Next"
-                variant="outlined"
-                onClick={handleNext}
-              />
+              <CustomButton title="Next" variant="outlined" onClick={handleNext} />
             </Link>
           ) : (
-            <CustomButton
-              title="Next"
-              variant="outlined"
-              disabled // Disable button if no address is selected
-              onClick={() =>
-                toast.error(t("Please add an address before proceeding."))
-              } // Optional: Show a toast when clicked
-            />
+            <CustomButton title="Next" variant="outlined" disabled onClick={() => toast.error(t("Please add an address before proceeding."))} />
           )}
         </Box>
       </Container>
 
       {open && (
-        <CustomDrawer
-          open={open}
-          onClose={handleCloseDrawer}
-          title={isEditing ? "Edit Address" : "Add Address"}
-        >
-          <AddressDrawer
-            onClose={handleCloseDrawer}
-            isEditing={isEditing}
-            addressData={selectedAddressData}
-            onAddressSaved={async () => {
-              await fetchAddresses(); // This is enough
-            }}
-                    />
+        <CustomDrawer open={open} onClose={handleCloseDrawer} title={isEditing ? "Edit Address" : "Add Address"}>
+          <AddressDrawer onClose={handleCloseDrawer} isEditing={isEditing} addressData={selectedAddressData} onAddressSaved={fetchAddresses} />
         </CustomDrawer>
       )}
-    </div>
+    </CustomBox>
   );
 };
 
