@@ -25,7 +25,7 @@ import { httpAxios } from "@/app/httpAxios";
 
 const PaymentPage = ({ handleBack, cartData, loadCart }) => {
   console.log("cart for pay",cartData)
-  const userId=useSelector((state)=>state.auth?.user?._id) 
+ const userId=useSelector((state)=>state.auth?.user?.user?._id) 
   
 
 

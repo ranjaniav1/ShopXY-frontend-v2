@@ -17,6 +17,7 @@ import { Login } from "@/app/Service/User";
 import { setUser } from "@/app/redux/reducer/user/loginReducer";
 import { useDispatch } from "react-redux";
 import Cookies from "js-cookie";
+import { GoogleSignupButton } from "@/app/helper/RegisterUtils";
 
 const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
   const theme = useTheme();
@@ -26,7 +27,6 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false); // Loading state
-  const [isGoogleModalOpen, setIsGoogleModalOpen] = useState(false); // State for Google Login Modal
 
   const handleSubmitEmail = async (e) => {
     e.preventDefault();
@@ -78,18 +78,7 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
     }
   };
   
-  
-  
-  const handleOpenGoogleModal = () => {
-    setIsGoogleModalOpen(true);
-    onClose(); // Close the LoginModal when opening the GoogleLoginModal
-  };
 
- 
-
-  const handleCloseGoogleModal = () => {
-    setIsGoogleModalOpen(false);
-  };
 
   return (
     <>
@@ -127,7 +116,7 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
          
           <CustomButton
             fullWidth
-            onClick={handleOpenGoogleModal}
+            onClick={() => GoogleSignupButton(dispatch, onClose)}
             startIcon={<Google />}
             title={t("Google")}
             sx={{ flex: 1, backgroundColor: theme.palette.error.main }}
@@ -144,11 +133,7 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
         />
       </CustomModal>{" "}
      
-      {/* Render GoogleLoginModal */}
-      <GoogleRegistrationModal
-        open={isGoogleModalOpen}
-        onClose={handleCloseGoogleModal}
-      />
+    
     </>
   );
 };

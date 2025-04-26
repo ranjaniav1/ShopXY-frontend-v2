@@ -18,7 +18,7 @@ const Page = () => {
   const { collectionTitle, collectionId } = useParams();
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-const userId=useSelector((state)=>state.auth?.user?._id) 
+const userId=useSelector((state)=>state.auth?.user?.user?._id) 
   const {
     filteredProducts,
     priceRange,

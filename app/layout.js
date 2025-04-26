@@ -11,6 +11,7 @@ import { I18nextProvider } from "react-i18next";
 import i18n from "./i18n";
 import Footer from "./Components/Footer";
 import { Toaster } from "react-hot-toast";
+import NavigationEventsHandler from "./Common/NavigationEventHandler";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,6 +24,7 @@ export default function RootLayout({ children }) {
           <I18nextProvider i18n={i18n}>
             <ThemeSelector>
               <CssBaseline />
+              {/* <NavigationEventsHandler /> */}
               <Navigation />
               <Container
                 maxWidth="xl"

@@ -28,7 +28,7 @@ import EmptyCart from "../Components/EmptyCart";
 const Layout = ({ children }) => {
   const [activeStep, setActiveStep] = useState(0);
 
-  const userId=useSelector((state)=>state.auth?.user?._id) 
+ const userId=useSelector((state)=>state.auth?.user?.user?._id) 
   
 
   const [cartData, setCartData] = useState([]);

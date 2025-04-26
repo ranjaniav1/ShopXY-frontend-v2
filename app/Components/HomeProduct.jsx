@@ -23,7 +23,7 @@ const HomeProduct = () => {
 
   const { t } = useTranslation();
 
-  const userId=useSelector((state)=>state.auth?.user?._id) 
+  const userId=useSelector((state)=>state.auth?.user?.user?._id) 
   
 console.log("userid",userId)
 

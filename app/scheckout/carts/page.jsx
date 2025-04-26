@@ -15,7 +15,7 @@ const CartPage = ({ handleNext, loadCart, cartData }) => {
   const [editDrawer, setEditDrawer] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const theme = useTheme();
-  const userId=useSelector((state)=>state.auth?.user?._id) 
+  const userId=useSelector((state)=>state.auth?.user?.user?._id) 
   
 
   const { t } = useTranslation();

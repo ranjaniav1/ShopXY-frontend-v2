@@ -1,5 +1,9 @@
 import toast from "react-hot-toast";
-import { Register } from "../Service/User";
+import { Register, SignupWithGoogle } from "../Service/User";
+import { signInWithPopup } from "firebase/auth";
+import { setUser } from "../redux/reducer/user/loginReducer";
+import Cookies from "js-cookie";
+import { auth, provider } from "../firebase/fireConfig";
 
 export const handleChange = (setFormData) => (e) => {
   setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -28,16 +32,16 @@ export const handleSubmit = async (formData, avatar, setLoading, onClose) => {
     return toast.error("Invalid email format.");
   }
 
- // Validate password (backend requires uppercase, lowercase, number, min 6)
- if (!password) {
-  return toast.error("Please fill in the password.");
-}
-const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
-if (!passwordRegex.test(password)) {
-  return toast.error(
-    "Password must be at least 6 characters and include uppercase, lowercase, and a number."
-  );
-}
+  // Validate password (backend requires uppercase, lowercase, number, min 6)
+  if (!password) {
+    return toast.error("Please fill in the password.");
+  }
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
+  if (!passwordRegex.test(password)) {
+    return toast.error(
+      "Password must be at least 6 characters and include uppercase, lowercase, and a number."
+    );
+  }
 
   // Validate phone number
   if (!phone?.trim()) {
@@ -72,10 +76,10 @@ if (!passwordRegex.test(password)) {
       error?.response?.data?.error || // if backend uses `.error`
       error?.message ||
       "Something went wrong";
-  
+
     toast.error(errorMessage);
   }
-   finally {
+  finally {
     setLoading(false);
   }
 };
@@ -84,4 +88,22 @@ if (!passwordRegex.test(password)) {
 
 
 
+export const GoogleSignupButton = async (dispatch,onClose) => {
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+    console.log("User info:", user);
+    // You can now use the user object to store user info in your app
+    const saveUserInfo = await SignupWithGoogle(user);
+    console.log("User info saved", saveUserInfo);
+    dispatch(setUser({ user: saveUserInfo.data }));
+    toast.success(saveUserInfo.message);
+    // close modal after google signup
+    Cookies.set("user", true);
+    onClose()
+  } catch (error) {
+    console.error("Error signing in with Google: ", error);
+    toast.error("Google signup failed.");
+  }
 
+}

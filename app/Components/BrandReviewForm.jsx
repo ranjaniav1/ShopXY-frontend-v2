@@ -20,7 +20,7 @@ const BrandReviewForm = ({ brandId, onClose, productId,onSubmitSuccess }) => {
   const [review, setReview] = useState("");
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
-const userId=useSelector((state)=>state.auth?.user?._id) 
+const userId=useSelector((state)=>state.auth?.user?.user?._id) 
 
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
