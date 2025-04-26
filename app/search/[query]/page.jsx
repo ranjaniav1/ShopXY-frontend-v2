@@ -21,7 +21,7 @@ const SearchResults = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
- const userId=useSelector((state)=>state.auth?.user?._id) 
+ const userId=useSelector((state)=>state.auth?.user?.user?._id) 
  
 
 

@@ -3,8 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 // Define the initial state for the user slice
 const initialState = {
-  user: null, // No user is logged in initially
-  isAuthenticated: false // User is not authenticated initially
+  isAuthenticated: false,
+  user: {},
+  loading: false,
 };
 
 // Create the user slice
@@ -14,14 +15,14 @@ const userSlice = createSlice({
   reducers: {
     // Action to set user data
     setUser: (state, action) => {
-      state.user = action.payload; // Set the user data
-      state.isAuthenticated = true; // Set the user as authenticated
+      state.isAuthenticated = true;
+      state.user = action.payload.user;
     },
 
     // Action to log out user
     RemoveUser: (state) => {
-      state.user = null; // Clear the user data
-      state.isAuthenticated = false; // Set user as unauthenticated
+      state.isAuthenticated = false;
+      state.user = {};
     }
   }
 });

@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-import { DeleteAllNotifications, deleteAllOrder, DeleteAllWishists, DeleteNotifications, deleteWishlistItem, getNotifications, getOrder, getWishlist } from "../Service/Profile";
+import { DeleteAllNotifications, DeleteAllWishists, DeleteNotifications, deleteWishlistItem, getNotifications, getOrder, getWishlist } from "../Service/Profile";
 
 export const fetchUserNotifications = async (userId, page, limit, setNotifications) => {
   try {
@@ -88,17 +88,4 @@ export  const fetchOrder = async (userId,page,limit,setOrder) => {
       console.log(error);
     }
   };
-  export const DeleteAllOrder = async (userId, setOrder) => {
-    if (!userId) return toast.error("User ID missing. Cannot delete all.");
-  
-    try {
-      await deleteAllOrder(userId);
-      // Refetch orders after deletion
-      await fetchOrder(userId, 1, 1, setOrder);  // Assuming page 1 and limit 1, adjust based on your use case
-      toast.success("All Orders removed.");
-    } catch (error) {
-      console.log(error);
-      toast.error("Failed to delete all orders.");
-    }
-  };
-  
+ 

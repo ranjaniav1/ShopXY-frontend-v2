@@ -44,15 +44,7 @@ const UserOrders = ({ userId, activeTab }) => {
 
   return (
     <Box>
-      {order.length > 0 && (
-  <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
-    <CustomButton
-      onClick={() => DeleteAllOrder(userId, setOrder)}
-      title="Delete All Orders"
-      className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded"
-    />
-  </Box>
-)}
+     
 
       {order.length > 0 ? (
         order.map((orderItem) => (
@@ -80,7 +72,7 @@ const UserOrders = ({ userId, activeTab }) => {
                 alignItems="center"
               >
                 <Grid item xs={12} sm="auto">
-                  <CustomTypography variant="h6" fontWeight="bold" sx={{color:theme.palette.text.primary}}>
+                  <CustomTypography variant="h6" fontWeight="bold" sx={{ color: theme.palette.text.primary }}>
                     Order ID: {orderItem._id}
                   </CustomTypography>
                 </Grid>
@@ -89,7 +81,7 @@ const UserOrders = ({ userId, activeTab }) => {
                     onClick={() => generateInvoice(orderItem)}
                     title="Download Invoice"
                     className="px-4 py-2 rounded-md transition-all duration-200"
-                    />
+                  />
                 </Grid>
               </Grid>
 
@@ -97,12 +89,12 @@ const UserOrders = ({ userId, activeTab }) => {
 
               <Grid container justifyContent="space-between">
                 <Grid item xs={12} sm="auto">
-                  <CustomTypography sx={{color:theme.palette.text.secondary}}>
+                  <CustomTypography sx={{ color: theme.palette.text.secondary }}>
                     Order Status: {orderItem.orderStatus}
                   </CustomTypography>
                 </Grid>
                 <Grid item xs={12} sm="auto">
-                  <CustomTypography sx={{color:theme.palette.text.secondary}} textAlign="right">
+                  <CustomTypography sx={{ color: theme.palette.text.secondary }} textAlign="right">
                     Order Date: {new Date(orderItem.createdAt).toLocaleDateString()}
                   </CustomTypography>
                 </Grid>
@@ -143,7 +135,7 @@ const UserOrders = ({ userId, activeTab }) => {
                             <CustomTypography variant="subtitle1" fontWeight="bold">
                               {item.product.name}
                             </CustomTypography>
-                            <CustomTypography variant="body2" sx={{color:theme.palette.text.secondary}}>
+                            <CustomTypography variant="body2" sx={{ color: theme.palette.text.secondary }}>
                               {item.product.description}
                             </CustomTypography>
                           </Grid>
@@ -156,10 +148,10 @@ const UserOrders = ({ userId, activeTab }) => {
                             direction="column"
                             alignItems="flex-end"
                           >
-                            <CustomTypography  fontWeight="bold" sx={{color:theme.palette.text.secondary}}>
+                            <CustomTypography fontWeight="bold" sx={{ color: theme.palette.text.secondary }}>
                               ₹{item.product.discounted_price.toFixed(2)}
                             </CustomTypography>
-                            <CustomTypography variant="body2" sx={{color:theme.palette.text.primary}}>
+                            <CustomTypography variant="body2" sx={{ color: theme.palette.text.primary }}>
                               Qty: {item.quantity}
                             </CustomTypography>
                           </Grid>
@@ -173,13 +165,13 @@ const UserOrders = ({ userId, activeTab }) => {
 
               <Grid container justifyContent="space-between" mt={2}>
                 <Grid item>
-                  <CustomTypography variant="body2" sx={{color:theme.palette.text.primary}}>
+                  <CustomTypography variant="body2" sx={{ color: theme.palette.text.primary }}>
                     Payment Type: {orderItem.paymentType}
                   </CustomTypography>
                 </Grid>
                 <Grid item>
-                  <CustomTypography variant="body2" sx={{color:theme.palette.text.primary}}>
-                    Total Price: ₹{orderItem.discountedPrice.toFixed(2) || orderItem.totalPrice.toFixed(2)}
+                  <CustomTypography variant="body2" sx={{ color: theme.palette.text.primary }}>
+                    Total Price: ₹{orderItem.discountedPrice.toFixed(2) > 0 ? orderItem.discountedPrice.toFixed(2) : orderItem.totalPrice.toFixed(2)}
                   </CustomTypography>
                 </Grid>
               </Grid>
@@ -187,7 +179,7 @@ const UserOrders = ({ userId, activeTab }) => {
           </Card>
         ))
       ) : (
-        <CustomTypography variant="body2" sx={{color:theme.palette.text.primary}} align="center" mt={3}>
+        <CustomTypography variant="body2" sx={{ color: theme.palette.text.primary }} align="center" mt={3}>
           No orders found.
         </CustomTypography>
       )}
@@ -208,7 +200,7 @@ const UserOrders = ({ userId, activeTab }) => {
         >
           Previous
         </Button>
-        <CustomTypography variant="body2" sx={{color:theme.palette.text.secondary}}>
+        <CustomTypography variant="body2" sx={{ color: theme.palette.text.secondary }}>
           Page {page} of {totalPages}
         </CustomTypography>
         <Button

@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 const Navigation = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const theme = useTheme();
-    const user = useSelector((state) => state.auth.user);
+    const user = useSelector((state) => state.auth.user.user);
 
     return (
         <Box className="nav "  style={{

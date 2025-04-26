@@ -26,7 +26,7 @@ const BrandRating = ({ brand, brandId }) => {
   const theme = useTheme();
   const [drawerOpen, setDrawerOpen] = useState(false); 
   const [modalOpen, setModalOpen] = useState(false); 
-  const userId=useSelector((state)=>state.auth?.user?._id) 
+  const userId=useSelector((state)=>state.auth?.user?.user?._id) 
   
 
   const fetchReviews = async () => {

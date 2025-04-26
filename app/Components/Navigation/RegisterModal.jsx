@@ -7,9 +7,9 @@ import CustomModal from '@/app/Custom/CustomModal';
 import CustomInput from '@/app/Custom/CustomInput';
 import PasswordInput from '@/app/Common/PasswordInput';
 import FileInput from '@/app/Common/FileInput';
-import { handleChange, handleFileChange, handleSubmit } from '@/app/helper/RegisterUtils';
+import { GoogleSignupButton, handleChange, handleFileChange, handleSubmit } from '@/app/helper/RegisterUtils';
 import CustomButton from '@/app/Custom/CustomButton';
-import GoogleRegistrationModal from './GoogleRegistrationForm';
+import { useDispatch } from 'react-redux';
 
 const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
     const { t } = useTranslation();
@@ -18,18 +18,8 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
     const [avatar, setAvatar] = useState(null);
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const [isGoogleModalOpen, setIsGoogleModalOpen] = useState(false);
-
-    // Handler to open Google Registration Modal
-    const handleOpenGoogleModal = () => {
-        setIsGoogleModalOpen(true);
-        onClose(); // Close the RegisterModal when opening the GoogleRegistrationModal
-    };
-
-    // Handler to close Google Registration Modal
-    const handleCloseGoogleModal = () => {
-        setIsGoogleModalOpen(false);
-    };
+const dispatch=useDispatch()
+  
 
     return (
         <>
@@ -91,7 +81,7 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
                         <CustomButton
                             background="#d62746"
                             fullWidth
-                            onClick={handleOpenGoogleModal}
+                            onClick={() => GoogleSignupButton(dispatch, onClose)}
                             startIcon={<Google />}
                             title={t('Google')}
                             sx={{ flex: 1 }}
@@ -108,8 +98,6 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
                     />
                 </form>
             </CustomModal>
-
-            <GoogleRegistrationModal open={isGoogleModalOpen} onClose={handleCloseGoogleModal} />
         </>
     );
 };

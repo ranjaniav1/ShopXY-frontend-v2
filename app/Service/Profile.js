@@ -116,13 +116,4 @@ export const getOrder = async (userId,page=1,limit=1) => {
     throw error;
   }
 };
-// Function to get order for a user
-export const deleteAllOrder = async (userId) => {
-  try {
-    const response = await httpAxios.delete(`/order/delete-all/${userId}`); // Pass userId in URL path
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching notifications:", error);
-    throw error;
-  }
-};
+

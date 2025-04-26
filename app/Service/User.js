@@ -81,3 +81,17 @@ export async function EditUser(formData) {
     throw error;
   }
 }
+
+// singup/login with google
+export async function SignupWithGoogle(user) {
+  const response = await httpAxios.post(
+    "/user/auth/google-signup",
+    {
+      email: user.email,
+      avatar: user.photoURL,
+      fullname: user.displayName,
+    },
+    { withCredentials: true }
+  );
+  return response.data;
+}
