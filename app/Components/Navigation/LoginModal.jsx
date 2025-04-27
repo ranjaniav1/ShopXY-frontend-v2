@@ -51,7 +51,7 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
       // Check the statusCode from response
       if (response?.statusCode === 200 && response?.success) {
         const userData = response?.data?.user; // Access user data
-        dispatch(setUser(userData)); // Assuming setUser will store the user data in your state
+        dispatch(setUser(userData)); // Pass userData directly to setUser
         Cookies.set("user", true, { expires: 7 });
         toast.success(t(response?.message || "Login successful")); // Show success message
         onClose(); // Close the modal or perform any action
@@ -77,6 +77,7 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
       setLoading(false); // Stop loading
     }
   };
+  
   
 
 

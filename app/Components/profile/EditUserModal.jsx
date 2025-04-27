@@ -38,7 +38,7 @@ const EditUserModal = ({ user, onClose }) => {
     try {
       const response = await EditUser(formData);
       console.log("response of edit user",response)
-      dispatch(setUser(response)); // Update the user state
+      dispatch(setUser(response?.data?.user)); // Update the user state
       toast.success("Profile updated successfully");
       onClose(); // Close modal after success
     } catch (error) {

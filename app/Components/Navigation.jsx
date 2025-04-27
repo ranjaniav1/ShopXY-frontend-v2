@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 const Navigation = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const theme = useTheme();
-    const user = useSelector((state) => state.auth.user.user);
+    const user = useSelector((state) => state?.auth?.user?.user);
 
     return (
         <Box className="nav "  style={{
@@ -27,7 +27,7 @@ const Navigation = () => {
                 </Box>
                 {/* Only visible on smaller screens */}
                 <Box display={{ xs: 'flex', md: 'none' }}>
-                    <SmallScreenNav setDrawerOpen={setDrawerOpen} />
+                    <SmallScreenNav setDrawerOpen={setDrawerOpen} user={user}/>
                 </Box>
             </Container>
             <Box width={350}>

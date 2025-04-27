@@ -16,8 +16,9 @@ import { Add } from "@mui/icons-material"; // For add icon
 import CustomIconButton from "@/app/Custom/CustomIconButton";
 import CustomTypography from "@/app/Custom/CustomTypography";
 import CustomBox from "@/app/Custom/CustomBox";
+import { usePathname } from "next/navigation";
 
-const Page = ({ handleNext, handleBack }) => {
+const AddressPage = ({ handleNext, handleBack }) => {
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -26,8 +27,10 @@ const Page = ({ handleNext, handleBack }) => {
   const [isEditing, setEditing] = useState(false);
   const [selectedAddressData, setSelectedAddressData] = useState(null);
   const [addresses, setAddresses] = useState([]);
-
-  const userId = useSelector((state) => state.auth.user._id);
+  const pathname = usePathname();
+  const isCheckoutAddressRoute = pathname === "/scheckout/address";
+    console.log("path",isCheckoutAddressRoute)
+  const userId = useSelector((state) => state.auth?.user?.user?._id);
   const { t } = useTranslation();
   const theme = useTheme();
 
@@ -42,7 +45,7 @@ const Page = ({ handleNext, handleBack }) => {
     setError(null); // Reset error before fetching
     try {
       const response = await getAddress(userId);
-      const fetchedAddresses = response.data || [];
+      const fetchedAddresses = response?.data || [];
       const primaryExists = fetchedAddresses.some((addr) => addr.isPrimary);
 
       if (!primaryExists && fetchedAddresses.length > 0) {
@@ -52,12 +55,13 @@ const Page = ({ handleNext, handleBack }) => {
       }
 
       const updatedResponse = await getAddress(userId);
-      const updatedAddresses = updatedResponse.data || [];
+      const updatedAddresses = updatedResponse?.data || [];
       const primaryAddress = updatedAddresses.find((addr) => addr.isPrimary);
 
       setAddresses(updatedAddresses);
       setSelectedAddressId(primaryAddress ? primaryAddress._id : null);
     } catch (err) {
+      setAddresses([])
       console.error("Failed to load addresses", err);
       setError("Failed to load addresses. Please try again.");
     } finally {
@@ -147,7 +151,7 @@ const Page = ({ handleNext, handleBack }) => {
           </Grid>
         )}
       </Grid>
-
+      {isCheckoutAddressRoute && (
       <Container>
         <Box sx={{ display: "flex", justifyContent: "space-between", padding: "16px 0" }}>
           <Link href="/scheckout/carts">
@@ -163,7 +167,7 @@ const Page = ({ handleNext, handleBack }) => {
           )}
         </Box>
       </Container>
-
+)}
       {open && (
         <CustomDrawer open={open} onClose={handleCloseDrawer} title={isEditing ? "Edit Address" : "Add Address"}>
           <AddressDrawer onClose={handleCloseDrawer} isEditing={isEditing} addressData={selectedAddressData} onAddressSaved={fetchAddresses} />
@@ -173,4 +177,4 @@ const Page = ({ handleNext, handleBack }) => {
   );
 };
 
-export default Page;
+export default AddressPage;

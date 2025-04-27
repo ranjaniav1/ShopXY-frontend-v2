@@ -41,7 +41,7 @@ const NavProfileMenu = ({user}) => {
   return (
     <>
       <IconButton onClick={handleOpenMenu}>
-        <img src={user.avatar} alt="Avatar" className="w-8 h-8 rounded-full" />
+        <img src={user?.avatar} alt="Avatar" className="w-8 h-8 rounded-full" />
       </IconButton>
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleCloseMenu}>
         <MenuItem onClick={handleProfileClick}>Profile</MenuItem>

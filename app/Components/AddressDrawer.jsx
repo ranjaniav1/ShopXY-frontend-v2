@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 
 const AddressDrawer = ({ onClose, isEditing, addressData, onAddressSaved = () => {} }) => {
-  const userId = useSelector((state) => state.auth.user._id);
+  const userId = useSelector((state) => state.auth?.user?.user?._id);
 
   const [name, setName] = useState("");
   const [contactNumber, setContactNumber] = useState("");

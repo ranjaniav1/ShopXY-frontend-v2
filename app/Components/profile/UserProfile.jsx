@@ -17,6 +17,7 @@ const UserProfile = ({ user }) => {
   const handleClose = () => {
     setOpen(false);
   };
+  console.log("avatar",user?.avatar)
   return (
     <Box
       sx={{
@@ -44,16 +45,19 @@ const UserProfile = ({ user }) => {
       >
         <EditIcon />
       </IconButton>
-      <Avatar
-        src={user?.avatar || "/default-avatar.png"}
-        alt={user?.fullname || "User Avatar"}
-        sx={{
-          width: 130,
-          height: 130,
-          mb: 2,
-          border: `2px solid ${theme.palette.secondary.main}` // Theme-based border color
+      <img
+        src={user?.avatar}
+        alt={user?.fullname || "Avatar"}
+        style={{
+          width: "130px",
+          height: "130px",
+          marginBottom: "16px",
+          border: `2px solid ${theme.palette.secondary.main}`,
+          borderRadius: "50%",
+          objectFit: "cover", // important
         }}
       />
+
       <CustomTypography
         variant="h5"
         sx={{ fontWeight: "bold", color: theme.palette.text.primary }}

@@ -9,9 +9,7 @@ import NavAuthButtons from "./NavAuthButtons";
 import CustomModal from "@/app/Custom/CustomModal";
 import NavSearchBar from "./NavSearchBar";
 
-const SmallScreenNav = ({ setDrawerOpen }) => {
-  const isAuth = useSelector((state) => state.auth.isAuthenticated);
-  const user = useSelector((state) => state.auth?.user) ;
+const SmallScreenNav = ({ setDrawerOpen,user }) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState(""); // State for search input
 
@@ -32,10 +30,10 @@ const SmallScreenNav = ({ setDrawerOpen }) => {
         </IconButton>
 
         {/* Login/Account Button */}
-        {isAuth ? (
+        {user ? (
           <>
             <Link href="/user/profile" passHref>
-              <img src={user.avatar} alt="Avatar" className="w-8 h-8 rounded-md object-cover" />
+              <img src={user?.avatar} alt="Avatar" className="w-8 h-8 rounded-md object-cover" />
             </Link>
             <NavCartButton />
           </>
