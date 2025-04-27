@@ -17,14 +17,14 @@ import UserProfile from "@/app/Components/profile/UserProfile";
 import TabSection from "@/app/Components/profile/TabSection";
 import WishlistItem from "@/app/Components/profile/WishlistProduct";
 import Cookies from "js-cookie";
-import { fetchWishlist } from "@/app/helper/ProfileUtils";
 import UserOrders from "@/app/Components/profile/UserOrders";
 import UserNotify from "@/app/Components/profile/UserNotify";
+import AddressPage from "@/app/scheckout/address/page";
 
 const Layout = ({ children }) => {
   const dispatch = useDispatch();
 
-  const user = useSelector((state) => state.auth?.user);
+  const user = useSelector((state) => state.auth?.user?.user);
   const userId = user?._id; 
   const [activeTab, setActiveTab] = useState(0);
   const [openDialog, setOpenDialog] = useState(false);
@@ -33,17 +33,17 @@ const Layout = ({ children }) => {
   const theme = useTheme();
 
   const handleTabChange = (event, newValue) => {
-    setActiveTab(newValue);
-
-    if (newValue === 3) {
+    if (newValue === 4) {
       setOpenDialog(true);
-    } else if (newValue === 4) {
+    } else if (newValue === 5) {
       setOpenDeleteAccountDialog(true);
     } else {
+      setActiveTab(newValue);
       setOpenDialog(false);
       setOpenDeleteAccountDialog(false);
     }
   };
+  
 
   const handleLogoutConfirm = async () => {
     try {
@@ -95,6 +95,8 @@ const Layout = ({ children }) => {
             {activeTab === 0 && <UserNotify userId={userId} activeTab={activeTab} />}
             {activeTab === 1 && <WishlistItem userId={userId} activeTab={activeTab}/>}
             {activeTab === 2 && <UserOrders userId={userId} activeTab={activeTab}/>}
+            {activeTab === 3 && <AddressPage />} {/* Render AddressPage */}
+
           </Box>
         </Grid>
       </Grid>

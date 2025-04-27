@@ -40,7 +40,7 @@ const FilterSidebar = ({
           size="small"
           min={minPrice}
           max={maxPrice}
-          step={100}
+          step={1}
           marks
           value={priceRange}
           onChange={(_, newValue) => setPriceRange(newValue)}

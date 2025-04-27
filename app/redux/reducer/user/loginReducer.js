@@ -1,11 +1,9 @@
-// src/redux/userSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
 // Define the initial state for the user slice
 const initialState = {
-  isAuthenticated: false,
-  user: {},
-  loading: false,
+  isAuthenticated: false, // Tracks whether the user is logged in or not
+  user: {}, // Stores the user data
 };
 
 // Create the user slice
@@ -15,14 +13,14 @@ const userSlice = createSlice({
   reducers: {
     // Action to set user data
     setUser: (state, action) => {
-      state.isAuthenticated = true;
-      state.user = action.payload.user;
+      state.isAuthenticated = true; // Set authenticated status to true
+      state.user = { user: action.payload };  // Store the user data (from the payload)
     },
 
     // Action to log out user
     RemoveUser: (state) => {
-      state.isAuthenticated = false;
-      state.user = {};
+      state.isAuthenticated = false; // Set authenticated status to false
+      state.user = {}; // Clear user data
     }
   }
 });
