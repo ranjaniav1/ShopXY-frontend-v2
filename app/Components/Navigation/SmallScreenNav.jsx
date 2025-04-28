@@ -33,7 +33,7 @@ const SmallScreenNav = ({ setDrawerOpen,user }) => {
         {user ? (
           <>
             <Link href="/user/profile" passHref>
-              <img src={user?.avatar} alt="Avatar" className="w-8 h-8 rounded-md object-cover" />
+              <img  src={`${user?.avatar}?sz=64`}alt="Avatar" className="w-8 h-8 rounded-md object-cover" />
             </Link>
             <NavCartButton />
           </>
