@@ -16,6 +16,8 @@ const NavSetting = ({onClose}) => {
     const handleThemeChange = ( newTheme) => {
         if (newTheme !== null) {
             dispatch(setTheme(newTheme));
+            Cookies.set("theme", newTheme);  // <-- Save to Cookies
+
             if(onClose) onClose()
         }
     };

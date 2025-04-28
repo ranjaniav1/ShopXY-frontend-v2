@@ -1,6 +1,6 @@
 import { httpAxios } from "../httpAxios";
 
-export async function GetSpecificProductReview({ id }) {
+export async function GetSpecificProductReview(id) {
   try {
     const response = await httpAxios.get(`/user/review/product/${id}`);
     console.log("product review", response.data);

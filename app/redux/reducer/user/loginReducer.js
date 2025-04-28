@@ -14,7 +14,7 @@ const userSlice = createSlice({
     // Action to set user data
     setUser: (state, action) => {
       state.isAuthenticated = true; // Set authenticated status to true
-      state.user = { user: action.payload };  // Store the user data (from the payload)
+      state.user = { user: action.payload.user };  // Store the user data (from the payload)
     },
 
     // Action to log out user

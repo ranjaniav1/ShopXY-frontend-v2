@@ -12,7 +12,7 @@ const ReviewComponents = ({ productId }) => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const { data } = await GetSpecificProductReview({ id: productId });
+        const { data } = await GetSpecificProductReview(productId);
         if (data && Array.isArray(data.reviews)) {  // Ensure reviews is an array
           setReviews(data.reviews);
         }

@@ -1,17 +1,26 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Container, useTheme } from '@mui/material';
 import FullScreenNav from './Navigation/FullScreenNav';
 import SmallScreenNav from './Navigation/SmallScreenNav';
 import CustomDrawer from '../Custom/CustomDrawer';
 import NavSetting from './NavSetting';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setTheme } from '../redux/reducer/ThemeReducer';
+import Cookies from 'js-cookie';
 
 const Navigation = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const theme = useTheme();
     const user = useSelector((state) => state?.auth?.user?.user);
+    const dispatch = useDispatch();
 
+    useEffect(() => {
+        const savedTheme = Cookies.get('theme'); // Read from Cookies
+        if (savedTheme) {
+            dispatch(setTheme(savedTheme));
+        }
+    }, [dispatch]);
     return (
         <Box className="nav "  style={{
             background: theme.palette.background.nav,
