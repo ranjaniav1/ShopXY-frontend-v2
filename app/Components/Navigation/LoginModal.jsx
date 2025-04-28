@@ -50,7 +50,8 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
   
       // Check the statusCode from response
       if (response?.statusCode === 200 && response?.success) {
-        const userData = response?.data?.user; // Access user data
+        const userData = response?.data; // Access user data
+        console.log("login user",userData)
         dispatch(setUser(userData)); // Pass userData directly to setUser
         Cookies.set("user", true, { expires: 7 });
         toast.success(t(response?.message || "Login successful")); // Show success message

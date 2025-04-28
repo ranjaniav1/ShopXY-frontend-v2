@@ -6,6 +6,7 @@ const { useRouter } = require("next/navigation");
 const { useState } = require("react");
 const { useDispatch } = require("react-redux");
 import Cookies from "js-cookie";
+import toast from "react-hot-toast";
 const NavProfileMenu = ({user}) => {
   const dispatch = useDispatch();
   const router = useRouter();
