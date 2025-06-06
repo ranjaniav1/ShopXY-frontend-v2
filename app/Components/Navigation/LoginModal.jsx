@@ -13,7 +13,7 @@ import CustomModal from "@/app/Custom/CustomModal";
 import CustomInput from "@/app/Custom/CustomInput";
 import CustomButton from "@/app/Custom/CustomButton";
 import GoogleRegistrationModal from "./GoogleRegistrationForm";
-import { Login } from "@/app/Service/User";
+import { GetCurrentUser, Login } from "@/app/Service/User";
 import { setUser } from "@/app/redux/reducer/user/loginReducer";
 import { useDispatch } from "react-redux";
 import Cookies from "js-cookie";
@@ -31,36 +31,35 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
   const handleSubmitEmail = async (e) => {
     e.preventDefault();
     setLoading(true); // Start loading
-  
+
     if (!email) {
       toast.error(t("Please fill email field"));
       setLoading(false); // Stop loading
       return;
     }
-  
+
     if (!password) {
       toast.error(t("Please fill password field"));
       setLoading(false); // Stop loading
       return;
     }
-  
+
     try {
       const response = await Login({ email, password });
       console.log("Login response:", response); // Log to inspect
-  
+
       // Check the statusCode from response
       if (response?.statusCode === 200 && response?.success) {
-        const userData = response?.data; // Access user data
-        console.log("login user",userData)
-        dispatch(setUser(userData)); // Pass userData directly to setUser
-        toast.success(t(response?.message || "Login successful")); // Show success message
-        onClose(); // Close the modal or perform any action
+        const userData = await GetCurrentUser(); // ✅ fetch fresh user
+        dispatch(setUser(userData?.data)); // ✅ set to redux
+        toast.success(t(response?.message || "Login successful"));
+        onClose();
       } else {
         toast.error(t(response?.message || "Login failed"));
       }
     } catch (error) {
       console.error("Login error", error);
-  
+
       if (error?.response) {
         // Handle error if response exists
         if (error.response?.status === 404) {
@@ -77,8 +76,8 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
       setLoading(false); // Stop loading
     }
   };
-  
-  
+
+
 
 
   return (
@@ -114,7 +113,7 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
         {/* "OR" Separator */}
         <Divider sx={{ my: 2 }}>{t("OR")}</Divider>
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-         
+
           <CustomButton
             fullWidth
             onClick={() => GoogleSignupButton(dispatch, onClose)}
@@ -133,8 +132,8 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
           sx={{ mt: 2, backgroundColor: theme.palette.primary.main }}
         />
       </CustomModal>{" "}
-     
-    
+
+
     </>
   );
 };
