@@ -18,7 +18,7 @@ const theme=useTheme()
     async function GetSliders() {
         try {
             const result = await GetHomeScreenData();
-            setSlider(result.swiper);
+            setSlider(result?.sliders);
         } catch (error) {
             console.log("failed to fetch slider", error);
         } finally {

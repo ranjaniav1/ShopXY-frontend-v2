@@ -53,7 +53,6 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
         const userData = response?.data; // Access user data
         console.log("login user",userData)
         dispatch(setUser(userData)); // Pass userData directly to setUser
-        Cookies.set("user", true, { expires: 7 });
         toast.success(t(response?.message || "Login successful")); // Show success message
         onClose(); // Close the modal or perform any action
       } else {
