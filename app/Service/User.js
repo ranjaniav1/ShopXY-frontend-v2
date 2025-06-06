@@ -95,3 +95,14 @@ export async function SignupWithGoogle(user) {
   );
   return response.data;
 }
+
+
+export async function GetCurrentUser() {
+  try {
+    const res = await httpAxios.get("/user/auth/me");
+    return res.data; // uses ApiResponse format
+  } catch (error) {
+    console.error("Error getting user", error);
+    throw error;
+  }
+}

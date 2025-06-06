@@ -1,7 +1,7 @@
-// middleware.ts
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
 export function middleware(req) {
+
   const token = req.cookies.get('accessToken')?.value ;
   console.log('Access Token from cookies:', token);
 
@@ -13,5 +13,5 @@ export function middleware(req) {
 }
 
 export const config = {
-  matcher: ['/scheckout/:path*', '/user/:path*'],
+  matcher: ["/scheckout/:path*", "/user/:path*"],
 };
