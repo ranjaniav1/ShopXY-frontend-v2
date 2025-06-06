@@ -99,7 +99,6 @@ export const GoogleSignupButton = async (dispatch,onClose) => {
     dispatch(setUser({ user: saveUserInfo.data.user }));
     toast.success(saveUserInfo.message);
     // close modal after google signup
-    Cookies.set("user", true);
     onClose()
   } catch (error) {
     console.error("Error signing in with Google: ", error);

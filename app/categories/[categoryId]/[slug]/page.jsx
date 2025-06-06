@@ -6,23 +6,26 @@ import CustomBox from '@/app/Custom/CustomBox';
 import CustomSkeleton from '@/app/Custom/CustomSkeleton';
 import CustomCollectionCard from '@/app/Common/CustomCollectionCard';
 import Link from 'next/link';
-import { GetSingleCategories } from '@/app/Service/GetCategory';
 import AOS from 'aos'; // Import AOS
 import 'aos/dist/aos.css'; // Import AOS styles
 import Heading from '@/app/Common/Heading';
 import CustomTypography from '@/app/Custom/CustomTypography';
+import { GetSingleCollection } from '@/app/Service/GetCollection';
 
 const Page = () => {
+    const params = useParams();
+    const categoryId = params?.categoryId;
+    const slug = params?.slug;
+
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
-    const { id } = useParams();
-    const { title } = useParams();
+
 
     async function fetchCategory() {
         try {
-            const result = await GetSingleCategories({ id });
+            const result = await GetSingleCollection({ categoryId });
             console.log("collections", result);
-            setCategories(result);
+            setCategories(result?.collections);
         } catch (error) {
             console.log("Failed to fetch categories", error);
         } finally {
@@ -31,10 +34,10 @@ const Page = () => {
     }
 
     useEffect(() => {
-        if (id) {
+        if (categoryId) {
             fetchCategory();
         }
-    }, [id]);
+    }, [categoryId]);
 
     useEffect(() => {
         AOS.init({
@@ -46,7 +49,7 @@ const Page = () => {
 
     return (
         <CustomBox>
-            <Heading text={title} />
+            <Heading text={slug} />
             {loading ? (
                 <Grid container spacing={2} className="p-4">
                     {Array.from({ length: categories.length || 9 }).map((_, index) => (
@@ -58,11 +61,11 @@ const Page = () => {
             ) : categories && categories.length > 0 ? (
                 <Grid container spacing={2}>
                     {categories.map((category) => (
-                        <Grid item xs={6} sm={4} md={3} lg={2} key={category.id} data-aos="fade-up">
-                            <Link href={`/categories/collections/${category.id}/${encodeURIComponent(category.slug)}`} passHref>
+                        <Grid item xs={6} sm={4} md={3} lg={2} key={category._id} data-aos="fade-up">
+                            <Link href={`/categories/collections/${category._id}/${encodeURIComponent(category.slug)}`} passHref>
                                 <CustomCollectionCard
                                     tooltip={category.title}
-                                    id={category.id}
+                                    id={category._id}
                                     slug={category.slug}
                                     image={category.collection_image}
                                     title={category.title}

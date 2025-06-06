@@ -1,18 +1,20 @@
-import { NextResponse } from "next/server";
+// middleware.ts
+import { NextResponse } from 'next/server';
 
 export function middleware(req) {
-  // Get the access token from cookies
-  const accessToken = req.cookies.get("user")?.value; // Adjust the key to match your cookie name
+  const authHeader = req.headers.get('authorization');
+  const accessToken = authHeader?.replace('Bearer ', '');
+  const token = req.cookies.get('accessToken')?.value || accessToken;
+  console.log('Access Token from cookies:', token);
+  console.log('Access Token in middleware:', accessToken);
 
-  // If access token is missing, redirect to login
   if (!accessToken) {
-    return NextResponse.redirect(new URL("/", req.url)); // Redirect to the login page
+    return NextResponse.redirect(new URL('/', req.url));
   }
 
-  // If access token is present, allow the request to proceed
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/scheckout/:path*", "/user/:path*"] // Apply the middleware to specific routes
+  matcher: ['/scheckout/:path*', '/user/:path*'],
 };

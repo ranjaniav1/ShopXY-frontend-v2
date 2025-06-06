@@ -26,7 +26,7 @@ const Collection = () => {
 const theme=useTheme()
     const getCollection = async () => {
         const response = await GetCollection();
-        setCollection(response);
+        setCollection(response?.collections);
         setLoading(false);
     };
 

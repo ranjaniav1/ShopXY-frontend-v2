@@ -17,7 +17,7 @@ const Category = () => {
   async function GetCategory() {
     try {
       const result = await GetCategories();
-      setCategories(result);
+      setCategories(result?.categories);
     } catch (error) {
       console.log("failed to fetch categories", error);
     } finally {
@@ -72,7 +72,7 @@ const Category = () => {
         >
           {categories.map((category, index) => (
             <SwiperSlide key={index} className="text-center">
-              <Link href={`/categories/${category.id}/${category.slug}`}>
+              <Link href={`/categories/${category._id}/${category.slug}`}>
                 <Tooltip title={category.title}>
                   <Box
                     component="img"
