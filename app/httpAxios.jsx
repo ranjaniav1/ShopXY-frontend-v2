@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:9000/api/v2";
+const BASE_URL = "https://eshop-backend-tau.vercel.app/api/v2";
 
 // Helper to get cookies from the browser
 function getCookie(name) {
