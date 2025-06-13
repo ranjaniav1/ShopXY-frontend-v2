@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Slider, useTheme } from "@mui/material";
+import { Box, Slider } from "@mui/material";
 import CustomTypography from "@/app/Custom/CustomTypography";
 import Heading from "@/app/Common/Heading";
 
@@ -14,26 +14,23 @@ const FilterSidebar = ({
   minRating,
   maxRating,
 }) => {
-  const theme = useTheme();
 
   return (
-    <Box
+    <Box className="bg-body text-secondary border border-secondary"
       sx={{
         p: 2,
         borderRadius: 2,
         boxShadow: 1,
         position: "sticky",
         top: "100px",
-        backgroundColor: theme.palette.background.main,
-        color: theme.palette.text.primary,
-        border: `1px solid ${theme.palette.card.border}`,
+
       }}
     >
       <Heading text="Filter By" />
-      
+
       {/* Price Filter */}
       <Box my={2}>
-        <CustomTypography fontWeight={600} sx={{color: theme.palette.text.primary}}fontSize="1rem">
+        <CustomTypography fontWeight={600} className="text-primary" fontSize="1rem">
           Price Range
         </CustomTypography>
         <Slider
@@ -45,18 +42,16 @@ const FilterSidebar = ({
           value={priceRange}
           onChange={(_, newValue) => setPriceRange(newValue)}
           valueLabelDisplay="auto"
-          sx={{
-            color: theme.palette.primary.main,
-          }}
+          className="text-primary"
         />
-        <CustomTypography fontSize="0.875rem" sx={{color: theme.palette.text.primary}}>
+        <CustomTypography fontSize="0.875rem" className="text-primary">
           ₹{priceRange[0]} - ₹{priceRange[1]}
         </CustomTypography>
       </Box>
 
       {/* Rating Filter */}
       <Box my={2}>
-        <CustomTypography fontWeight={600} fontSize="1rem" sx={{color: theme.palette.text.primary}}>
+        <CustomTypography fontWeight={600} fontSize="1rem" className="text-primary">
           Rating Range
         </CustomTypography>
         <Slider
@@ -68,11 +63,9 @@ const FilterSidebar = ({
           value={ratingRange}
           onChange={(_, newValue) => setRatingRange(newValue)}
           valueLabelDisplay="auto"
-          sx={{
-            color: theme.palette.primary.main,
-          }}
+          className="text-primary"
         />
-        <CustomTypography fontSize="0.875rem" sx={{color: theme.palette.text.primary}}>
+        <CustomTypography fontSize="0.875rem" className="text-primary">
           {ratingRange[0]} - {ratingRange[1]} Stars
         </CustomTypography>
       </Box>

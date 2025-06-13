@@ -12,14 +12,15 @@ import { useProductFilter } from "@/app/helper/useProductFilter";
 import FilterSidebar from "@/app/Components/FilterSidebar";
 import ProductCard from "@/app/Components/ProductCard";
 import CustomSkeleton from "@/app/Custom/CustomSkeleton";
-import { useSelector } from "react-redux";
+import { useUser } from "@/app/context/UserContext";
 
 const Page = () => {
   const { collectionTitle, collectionId } = useParams();
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-const userId=useSelector((state)=>state.auth?.user?.user?._id) 
-  const {
+  const { user } = useUser(); // 👈 Get user from context
+  const userId = user?._id;
+   const {
     filteredProducts,
     priceRange,
     setPriceRange,
@@ -34,11 +35,11 @@ const userId=useSelector((state)=>state.auth?.user?.user?._id)
   const fetchProducts = async () => {
     try {
       const response = await GetSpecificProduct({ id: collectionId });
-      
-      setAllProducts(response);
-      setLoading(false); 
 
-     
+      setAllProducts(response?.product);
+      setLoading(false);
+
+
     } catch (error) {
       console.error("Failed to fetch products:", error);
       setLoading(false);
@@ -49,7 +50,7 @@ const userId=useSelector((state)=>state.auth?.user?.user?._id)
     fetchProducts();
   }, [collectionId]);
 
- 
+
 
 
   return (

@@ -74,10 +74,10 @@ const theme=useTheme()
                         <Grid container spacing={2}>
                             {collection.map((category, index) => (
                                 <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                                    <Link href={`/categories/collections/${category.id}/${category.slug}`} passHref>
+                                    <Link href={`/categories/collections/${category._id}/${category.slug}`} passHref>
                                         <CustomCollectionCard
                                             tooltip={category.title}
-                                            id={category.id}
+                                            id={category._id}
                                             slug={category.slug}
                                             image={category.collection_image}
                                             title={category.title}
@@ -103,10 +103,10 @@ const theme=useTheme()
                         >
                             {collection.slice(0, visibleCount).map((category, index) => (
                                 <SwiperSlide key={index}>
-                                    <Link href={`/categories/collections/${category.id}/${category.slug}`} passHref>
+                                    <Link href={`/categories/collections/${category._id}/${category.slug}`} passHref>
                                         <CustomCollectionCard
                                             tooltip={category.title}
-                                            id={category.id}
+                                            id={category._id}
                                             slug={category.slug}
                                             image={category.collection_image}
                                             title={category.title}

@@ -15,7 +15,7 @@ const CustomCollectionCard = ({ id, slug, image, title, tooltip }) => {
           src={image}
           alt={`Collection image of ${title}`}
           fill
-          className="object-contain "
+          className="object-contain h-40"
           title={tooltip}
         />
       </div>

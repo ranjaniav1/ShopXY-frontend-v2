@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import ImageIcon from "@mui/icons-material/Image";
 import DeleteIcon from "@mui/icons-material/Delete"; // Import DeleteIcon
 import { useSelector } from "react-redux";
+import { useUser } from "../context/UserContext";
 
 const BrandReviewForm = ({ brandId, onClose, productId,onSubmitSuccess }) => {
   const theme = useTheme(); // Access the theme
@@ -20,8 +21,8 @@ const BrandReviewForm = ({ brandId, onClose, productId,onSubmitSuccess }) => {
   const [review, setReview] = useState("");
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
-const userId=useSelector((state)=>state.auth?.user?.user?._id) 
-
+ const { user } = useUser(); // 👈 Get user from context
+    const userId = user?._id;
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
     setImages(files);

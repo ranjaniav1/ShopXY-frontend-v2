@@ -11,15 +11,18 @@ import Heading from '@/app/Common/Heading';
 import CustomTypography from '@/app/Custom/CustomTypography';
 import { GetProductByCatId } from '@/app/Service/GetProduct';
 import ProductCard from '@/app/Components/ProductCard';
+import { useUser } from '@/app/context/UserContext';
+import { getWishlist } from '@/app/Service/Profile';
 
 const Page = () => {
     const params = useParams();
     const categoryId = params?.categoryId;
     const slug = params?.slug;
-
+    const { user } = useUser(); // 👈 Get user from context
+    const userId = user?._id;
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
-
+    const [wishlist, setWishlist] = useState([])
 
     async function fetchCategory() {
         try {
@@ -38,7 +41,27 @@ const Page = () => {
             fetchCategory();
         }
     }, [categoryId]);
+    const fetchWishlist = async () => {
+        if (!userId) return;
+        try {
+            const response = await getWishlist(userId);
+            console.log("wish res", response)
+            const wishlistIds = response?.products?.map(item => item.product._id) || [];
+            console.log("wish resndjs", wishlistIds)
 
+            setWishlist(wishlistIds);
+        } catch (err) {
+            console.error("Failed to fetch wishlist", err);
+            setWishlist([]); // fallback to empty array
+        }
+    };
+
+
+    useEffect(() => {
+        if (userId) fetchWishlist();
+    }, [userId]);
+
+    const isInWishlist = (id) => wishlist.includes(id);
     useEffect(() => {
         AOS.init({
             duration: 600, // Animation duration
@@ -62,7 +85,7 @@ const Page = () => {
                 <Grid container spacing={2}>
                     {categories.map((product) => (
                         <Grid item xs={6} sm={4} md={3} lg={2} key={product._id} data-aos="fade-up">
-                            <Link href={`/product/${product._id}/${encodeURIComponent(category.slug)}`} passHref>
+                            <Link href={`/product/${product._id}/${encodeURIComponent(product.slug)}`} passHref>
                                 <ProductCard
                                     className="h-40 w-full"
                                     imgSrc={product.detail_image[0]}

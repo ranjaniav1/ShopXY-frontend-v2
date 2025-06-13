@@ -1,19 +1,18 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Grid, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import AOS from "aos";
-import "aos/dist/aos.css";
+
 
 import Heading from "../Common/Heading";
 import { GetAllProducts } from "../Service/GetProduct";
 import CustomSkeleton from "../Custom/CustomSkeleton";
 import CustomBox from "../Custom/CustomBox";
 import CustomTypography from "../Custom/CustomTypography";
-// import FilterSidebar from "./FilterSidebar";
+import FilterSidebar from "./FilterSidebar";
 import ProductCard from "./ProductCard";
 import { useProductFilter } from "../helper/useProductFilter";
 import { getWishlist } from "../Service/Profile";
+import { useUser } from "../context/UserContext";
 
 const HomeProduct = () => {
   const [products, setProducts] = useState([]);
@@ -23,8 +22,8 @@ const HomeProduct = () => {
 
   const { t } = useTranslation();
 
-  const userId = useSelector((state) => state.auth?.user?.user?._id)
-
+ const { user } = useUser(); // 👈 Get user from context
+    const userId = user?._id;
   console.log("userid", userId)
 
   const {
@@ -102,20 +101,14 @@ const HomeProduct = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
-  useEffect(() => {
-    AOS.init({
-      duration: 600,
-      easing: "ease-in-out",
-      once: true,
-    });
-  }, []);
+
 
   return (
     <CustomBox>
       <Heading text={t("Products For You")} />
       <Grid container spacing={2}>
         <Grid item xs={12} md={3} sx={{ mt: 3.5 }} data-aos="fade-right">
-          {/* <FilterSidebar
+          <FilterSidebar
             priceRange={priceRange}
             setPriceRange={setPriceRange}
             ratingRange={ratingRange}
@@ -125,7 +118,7 @@ const HomeProduct = () => {
             minRating={minRating}
             maxRating={maxRating}
             
-          /> */}
+          />
         </Grid>
 
         <Grid item xs={12} md={9} sx={{ mt: 3.5 }} data-aos="fade-left">

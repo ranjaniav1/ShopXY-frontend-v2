@@ -22,7 +22,7 @@ const Navigation = () => {
         }
     }, [dispatch]);
     return (
-        <Box className="bg-secondary "  style={{
+        <Box className="bg-body border-b border-secondary"  style={{
             position: 'fixed', // Fix the nav at the top
             top: 0, // Align to the top
             left: 0,

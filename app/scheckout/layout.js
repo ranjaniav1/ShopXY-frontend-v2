@@ -24,12 +24,13 @@ import CartPage from "./carts/page";
 import AddressPage from "./address/page";
 import PaymentPage from "./payment/page";
 import EmptyCart from "../Components/EmptyCart";
+import { useUser } from "../context/UserContext";
 
 const Layout = ({ children }) => {
   const [activeStep, setActiveStep] = useState(0);
 
- const userId=useSelector((state)=>state.auth?.user?.user?._id) 
-  
+ const { user } = useUser(); // 👈 Get user from context
+    const userId = user?._id;  
 
   const [cartData, setCartData] = useState([]);
   const pathname = usePathname();

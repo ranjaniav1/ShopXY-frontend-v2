@@ -15,14 +15,15 @@ import { useProductFilter } from "@/app/helper/useProductFilter";
 import FilterSidebar from "@/app/Components/FilterSidebar";
 import CustomSkeleton from "@/app/Custom/CustomSkeleton";
 import EmptyCart from "@/app/Components/EmptyCart";
+import { useUser } from "@/app/context/UserContext";
 
 const SearchResults = () => {
   const { query } = useParams();
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
- const userId=useSelector((state)=>state.auth?.user?.user?._id) 
- 
+ const { user } = useUser(); // 👈 Get user from context
+    const userId = user?._id; 
 
 
   const {

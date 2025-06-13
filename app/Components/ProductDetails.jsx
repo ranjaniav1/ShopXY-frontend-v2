@@ -5,18 +5,17 @@ import {
   Typography,
   Box,
   Grid,
-  useTheme,
   Card,
   IconButton,
   Tooltip
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import ReviewComponents from "./RatindReview";
-import BrandRating from "./BrandRating";
+// import BrandRating from "./BrandRating";
 import CustomTypography from "../Custom/CustomTypography";
 import RateReviewIcon from "@mui/icons-material/RateReview"; // Icon for submitting review
 import CustomModal from "../Custom/CustomModal";
-import BrandReviewForm from "./BrandReviewForm";
+// import BrandReviewForm from "./BrandReviewForm";
 import toast from "react-hot-toast";
 
 const ProductDetails = ({
@@ -31,7 +30,6 @@ const ProductDetails = ({
   productId,
   brand, userId
 }) => {
-  const theme = useTheme();
   const { t } = useTranslation();
   const [modalOpen, setModalOpen] = useState(false); // For the modal
 
@@ -39,17 +37,16 @@ const ProductDetails = ({
     <Grid container spacing={4}>
       {/* Card 1: Product Description, Price */}
       <Grid item xs={12}>
-        <Card sx={{ p: 2, background: theme.palette.card.background }}>
+        <Card className="bg-body">
           <CustomTypography
             variant="h4"
-            sx={{ color: theme.palette.card.text }}
+            className="text-secondary"
           >
             {name}
           </CustomTypography>
           <CustomTypography
             variant="body2"
-            sx={{ color: theme.palette.text.secondary }}
-          >
+            className="text-secondary"          >
             {description}
           </CustomTypography>
           <CustomTypography variant="h5" className="text-green-600 mb-2">
@@ -59,7 +56,7 @@ const ProductDetails = ({
                 style={{
                   textDecoration: "line-through",
                   marginLeft: "8px",
-                  color: theme.palette.error.main // Theme-based color for struck-through price
+                  color: "red"// Theme-based color for struck-through price
                 }}
               >
                 ₹{actual_price}
@@ -67,7 +64,7 @@ const ProductDetails = ({
             )}{" "}
             {offer}% OFF
           </CustomTypography>
-          <CustomTypography variant="body2" className="mt-2" sx={{ color: theme.palette.text.secondary }}
+          <CustomTypography variant="body2" className="mt-2 text-secondary"
           >
             {t("Free Delivery")}
           </CustomTypography>
@@ -76,43 +73,38 @@ const ProductDetails = ({
 
       {/* Card 2: Product Details */}
       <Grid item xs={12}>
-        <Card sx={{ p: 2, background: theme.palette.card.background }}>
+        <Card sx={{ p: 2, }} className="text-body">
           <CustomTypography
             variant="h4"
-            sx={{ color: theme.palette.text.primary }} // Theme-based text color
-          >
+            className="text-secondary"          >
             {t("Product details")}:
           </CustomTypography>
 
           <CustomTypography
             variant="body2"
-            sx={{ color: theme.palette.text.secondary }} // Theme-based text color
-          >
+            className="text-secondary"          >
             {t("Description")}: {full_description}
           </CustomTypography>
           <CustomTypography
             variant="body2"
-            sx={{ color: theme.palette.text.secondary }} // Theme-based text color
-          >
+            className="text-secondary"          >
             {t("Special Offer")}: {special_offer}
           </CustomTypography>
           <CustomTypography
             variant="body2"
-            sx={{ color: theme.palette.text.secondary }}
-          >
+            className="text-secondary"          >
             {t("GST Type")}: {gst_type}
           </CustomTypography>
         </Card>
       </Grid>
       {/* card 3 brand rating review */}
       <Grid item xs={12}>
-        <BrandRating brand={brand} brandId={productId} sx={{ p: 2 }} />
+        {/* <BrandRating brand={brand} brandId={productId} sx={{ p: 2 }} /> */}
       </Grid>
       {/* Card 4: Ratings and Reviews */}
       <Grid item xs={12}>
         <Card
-          theme={theme}
-          sx={{ p: 2, background: theme.palette.card.background }}
+          sx={{ p: 2 }} className="text-secondary"
         >
           <Box
             display="flex"
@@ -121,18 +113,17 @@ const ProductDetails = ({
           >
             <CustomTypography
               variant="h4"
-              sx={{ color: theme.palette.text.primary }}
-            >
+              className="text-secondary"            >
               {t("Rating & Reviews")}
             </CustomTypography>
             <Tooltip title="Submit a Review">
               <IconButton
                 onClick={(e) => {
                   e.stopPropagation();
-                 
+
                   setModalOpen(true); // Open modal for submitting review
                 }}
-                sx={{ color: theme.palette.primary.main }}
+                className="text-primary"
               >
                 <RateReviewIcon />
               </IconButton>
@@ -146,10 +137,10 @@ const ProductDetails = ({
         onClose={() => setModalOpen(false)}
         title={`Review ${name}`}
       >
-        <BrandReviewForm
+        {/* <BrandReviewForm
           productId={productId}
           onClose={() => setModalOpen(false)}
-        />
+        /> */}
       </CustomModal>
     </Grid>
   );

@@ -12,9 +12,9 @@ export async function GetAllProducts(page,limit) {
 }
 
 // collection based product
-export async function GetSingleProduct({ id }) {
+export async function GetSingleProduct({ slug }) {
   try {
-    const response = await httpAxios.get(`/products/${id}`);
+    const response = await httpAxios.get(`/products/${slug}`);
     return response.data.data;
   } catch (error) {
     console.log("error in category", error);

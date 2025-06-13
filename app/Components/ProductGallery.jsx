@@ -8,6 +8,7 @@ import CustomButton from "../Custom/CustomButton";
 import { useSelector } from "react-redux";
 import { handleAddToCart } from "../helper/cartUtils";
 import Link from "next/link";
+import { useUser } from "../context/UserContext";
 
 const ProductGallery = ({
   detailImages,
@@ -16,8 +17,8 @@ const ProductGallery = ({
   productName,
   productId
 }) => {
-const userId=useSelector((state)=>state.auth?.user?.user?._id) 
-
+ const { user } = useUser(); // 👈 Get user from context
+    const userId = user?._id;
 // 🔹 Magnifier Effect
 const [lensPosition, setLensPosition] = useState({ x: 0, y: 0 });
 const [isHovering, setIsHovering] = useState(false);
