@@ -91,6 +91,7 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="mb-2"
+            required
           />
           <CustomInput
             placeholder={t("Password")}
@@ -100,6 +101,7 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
             endIcon={showPassword ? <VisibilityOff /> : <Visibility />}
             onClickEndIcon={() => setShowPassword(!showPassword)}
             className="mb-2"
+            required
           />
           <CustomButton
             variant="contained"
