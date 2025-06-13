@@ -17,7 +17,7 @@ export function middleware(req) {
     // Redirect to login page on frontend
     const loginUrl = new URL("/", req.url);
     return NextResponse.redirect(loginUrl);
-  }
+ 
 
   // Otherwise continue
   return NextResponse.next();
