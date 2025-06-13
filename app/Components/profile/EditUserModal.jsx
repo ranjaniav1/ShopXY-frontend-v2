@@ -5,13 +5,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { Edit as EditIcon } from "@mui/icons-material"; // Import edit icon
 import { setUser } from "@/app/redux/reducer/user/loginReducer";
 import toast from "react-hot-toast";
+import { useUser } from "@/app/context/UserContext";
 
 const EditUserModal = ({ user, onClose }) => {
   const dispatch = useDispatch();
   const [fullname, setFullname] = useState(user?.fullname || "");
   const [avatar, setAvatar] = useState(null); // Avatar will be a file object
-  const userId=useSelector((state)=>state.auth?.user?.user?._id) 
-  
+ const { user } = useUser(); // 👈 Get user from context
+    const userId = user?._id;  
   
 
 

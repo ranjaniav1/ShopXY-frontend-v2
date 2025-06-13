@@ -1,104 +1,83 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/navigation";
-import { A11y } from "swiper/modules";
+import { Box, Grid, Typography, useTheme } from "@mui/material";
 import { GetCategories } from "../Service/GetCategory";
 import Link from "next/link";
-import { Box, Grid, Tooltip, Typography, useTheme } from "@mui/material";
 import CustomSkeleton from "../Custom/CustomSkeleton";
-import CustomTypography from "../Custom/CustomTypography";
+import Heading from "../Common/Heading";
 
-const Category = () => {
+const bgColors = [
+  "bg-red-100",
+  "bg-blue-100",
+  "bg-green-100",
+  "bg-yellow-100",
+  "bg-purple-100",
+  "bg-pink-100",
+  "bg-indigo-100",
+  "bg-orange-100",
+  "bg-teal-100",
+  "bg-cyan-100"
+];
+
+const CategorySection = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  async function GetCategory() {
-    try {
-      const result = await GetCategories();
-      setCategories(result?.categories);
-    } catch (error) {
-      console.log("failed to fetch categories", error);
-    } finally {
-      setLoading(false);
-    }
-  }
-
   useEffect(() => {
-    GetCategory();
+    (async () => {
+      try {
+        const result = await GetCategories();
+        setCategories(result?.categories || []);
+      } catch (err) {
+        console.error("Failed to fetch categories", err);
+      } finally {
+        setLoading(false);
+      }
+    })();
   }, []);
 
-  const theme = useTheme();
-
   return (
-    <Box
-      className="p-4 rounded-md "
-      style={{
-        background: theme.palette.background.main,
-        color: theme.palette.text.primary
-      }}
-    >
+    <Box >
+      <Heading text="Shop by Category" />
+
       {loading ? (
-        <Grid container spacing={2} className="p-4">
-          {Array.from({ length: categories.length || 9 }).map((_, index) => (
-            <Grid item xs={4} sm={3} md={2} lg={1} key={index}>
-              <CustomSkeleton
-                type="rounded"
-                width={100}
-                height={100}
-                className="mx-auto"
-              />
+        <Grid container spacing={2}>
+          {Array.from({ length: 10 }).map((_, idx) => (
+            <Grid item xs={6} sm={4} md={3} lg={2} key={idx}>
+              <CustomSkeleton width="100%" height={120} type="card" />
             </Grid>
           ))}
         </Grid>
-      ) : categories && categories.length > 0 ? (
-        <Swiper
-          modules={[A11y]}
-          spaceBetween={10}
-          slidesPerView={2}
-          breakpoints={{
-            640: {
-              slidesPerView: 4
-            },
-            768: {
-              slidesPerView: 5
-            },
-            1024: {
-              slidesPerView: 9,
-              spaceBetween: 30
-            }
-          }}
-        >
-          {categories.map((category, index) => (
-            <SwiperSlide key={index} className="text-center">
+      ) : (
+        <Grid container spacing={3}>
+          {categories.map((category, idx) => (
+            <Grid item xs={6} sm={4} md={3} lg={2} key={category._id}>
               <Link href={`/categories/${category._id}/${category.slug}`}>
-                <Tooltip title={category.title}>
-                  <Box
-                    component="img"
+                <Box
+                  className={`
+                    group rounded-xl p-4 flex flex-col items-center text-center cursor-pointer hover:shadow-md transition
+                    ${bgColors[idx % bgColors.length]}
+                  `}
+                >
+                  <img
                     src={category.category_icon}
                     alt={category.title}
-                    className="w-20 h-20 rounded-full object-cover mb-2 mx-auto"
-                    sx={{
-                      border: `2px solid ${theme.palette.primary.main}`,
-                      "&:hover": {
-                        borderColor: theme.palette.primary.main,
-                        transform: "scale(1.00)",
-                        transition: "transform 0.3s ease-in-out"
-                      }
-
-                    }}
+                    className="w-16 h-16 object-contain mb-2 group-hover:scale-105 transition-transform"
                   />
-                </Tooltip>
-              </Link>{" "}
-
-            </SwiperSlide>
+                  <Typography
+                    variant="subtitle2"
+                    className="text-sm font-semibold text-gray-700 group-hover:text-primary"
+                  >
+                    {category.title}
+                  </Typography>
+                </Box>
+              </Link>
+            </Grid>
           ))}
-        </Swiper>
-      ) : (
- <CustomTypography textAlign="center" sx={{color:theme.palette.text.primary}}>no categories Found</CustomTypography>      )}
+        </Grid>
+      )}
     </Box>
   );
 };
 
-export default Category;
+export default CategorySection;

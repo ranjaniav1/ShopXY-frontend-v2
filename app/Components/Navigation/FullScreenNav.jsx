@@ -7,9 +7,12 @@ import NavSearchBar from "./NavSearchBar";
 import NavProfileMenu from "./NavProfileMenu";
 import NavCartButton from "./NavCartButton";
 import NavAuthButtons from "./NavAuthButtons";
+import { useTheme } from "@/app/context/ThemeContext";
 
-const FullScreenNav = ({ setDrawerOpen,user }) => {
-
+const FullScreenNav = ({ setDrawerOpen, user }) => {
+  const { webSettings } = useTheme()
+  console.log("ndn",webSettings?.logo)
+  console.log("ndssdn",webSettings)
   return (
     <Box
       display="flex"
@@ -19,9 +22,7 @@ const FullScreenNav = ({ setDrawerOpen,user }) => {
     >
       {/* Logo */}
       <Link href="/">
-        <div className="text-xl font-semibold">
-          <span style={{ color: "#22aa99" }}>S</span>hopXY
-        </div>
+        <img src={webSettings?.logo} alt="Site Logo" className="h-10 w-auto object-contain" />
       </Link>
 
       {/* Search Field */}
@@ -30,7 +31,7 @@ const FullScreenNav = ({ setDrawerOpen,user }) => {
       {/* Account and Cart Menu */}
       <div className="flex space-x-2">
         {user ? (<>
-          <NavProfileMenu user={user}/>  <NavCartButton /> </>
+          <NavProfileMenu user={user} />  <NavCartButton /> </>
         ) : (
           <NavAuthButtons />
         )}

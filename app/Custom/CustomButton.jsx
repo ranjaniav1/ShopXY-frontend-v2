@@ -1,60 +1,54 @@
-'use client';
-import React from 'react';
-import { Button, useTheme } from '@mui/material';
+"use client";
+import React from "react";
+import clsx from "clsx"; // Optional: for cleaner conditional class handling
 
 const CustomButton = ({
-    startIcon,
-    endIcon,
-    onClick,
-    className,
-    variant = 'contained', // Default variant is 'contained'
-    size = 'medium',       // Default size is 'medium'
-    title,
-    type = 'button',       // Default type is 'button'
-    background,            // Optionally overriding the background
-    ...props
+  startIcon,
+  endIcon,
+  onClick,
+  className = "",
+  variant = "contained",
+  size = "medium",
+  title,
+  type = "button",
+  ...props
 }) => {
-    const theme = useTheme();
+  const baseClasses = `
+    inline-flex items-center justify-center 
+    font-semibold rounded px-4 py-2 
+    transition duration-200 ease-in-out 
+    focus:outline-none focus:ring-2 focus:ring-primary
+  `;
 
-    const getStyles = (variant) => {
-        if (variant === 'contained') {
-            return {
-                background: background || theme.palette.button.background, // Use prop background or theme color
-                color: theme.palette.button.color,
-            };
-        } else if (variant === 'outlined') {
-            return {
-                color: theme.palette.button.background,
-                border: `1px solid ${theme.palette.button.background}`, // Outlined border
+  const sizeClasses = {
+    small: "text-sm px-3 py-1",
+    medium: "text-base px-4 py-2",
+    large: "text-lg px-5 py-3",
+  };
 
-            };
-        } else if (variant === 'text') {
-            return {
-                background: 'transparent',
-                // color: theme.palette[color].main,
-                '&:hover': {
-                    background: theme.palette.action.hover,
-                },
-            };
-        }
-        return {};
-    };
+  const variantClasses = {
+    contained: "bg-primary text-white hover:opacity-90",
+    outlined: "border border-primary text-primary bg-transparent hover:bg-primary hover:text-white",
+    text: "bg-transparent text-primary hover:underline",
+  };
 
-    return (
-        <Button
-            startIcon={startIcon}
-            endIcon={endIcon}
-            onClick={onClick}
-            className={className}
-            variant={variant}
-            size={size}
-            type={type}
-            {...props}
-            sx={getStyles(variant)} // Apply styles based on the variant
-        >
-            {title}
-        </Button>
-    );
+  return (
+    <button
+      type={type}
+      onClick={onClick}
+      className={clsx(
+        baseClasses,
+        sizeClasses[size],
+        variantClasses[variant],
+        className
+      )}
+      {...props}
+    >
+      {startIcon && <span className="mr-2">{startIcon}</span>}
+      {title}
+      {endIcon && <span className="ml-2">{endIcon}</span>}
+    </button>
+  );
 };
 
 export default CustomButton;

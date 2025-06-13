@@ -1,26 +1,14 @@
+"use client";
 import React from "react";
-import { Box, Typography } from "@mui/material";
-import CustomTypography from "../Custom/CustomTypography";
-import { useTheme } from "@emotion/react";
 
-const Heading = ({ text, className, children }) => {
-  const theme = useTheme();
+const Heading = ({ text, className = "", children }) => {
   return (
-    <Box
-      display="flex"
-      justifyContent="space-between"
-      alignItems="center"
-      mb={2}
-      className={`font-semibold text-left btn pl-3 rounded-md text-xl pr-3`}
+    <div
+      className={`flex justify-between items-center mb-2 text-secondary px-3 py-2 rounded-md font-semibold text-xl ${className}`}
     >
-      <CustomTypography
-        variant="h4" sx={{color:theme.palette.button.color}}
-        className={`font-bold text-left p-2`}
-      >
-        {text}
-      </CustomTypography>
+      <h2 className="font-bold">{text}</h2>
       {children && <div className="ml-4">{children}</div>}
-    </Box>
+    </div>
   );
 };
 

@@ -22,8 +22,7 @@ const Navigation = () => {
         }
     }, [dispatch]);
     return (
-        <Box className="nav "  style={{
-            background: theme.palette.background.nav,
+        <Box className="bg-body border-b border-secondary"  style={{
             position: 'fixed', // Fix the nav at the top
             top: 0, // Align to the top
             left: 0,
@@ -36,7 +35,7 @@ const Navigation = () => {
                 </Box>
                 {/* Only visible on smaller screens */}
                 <Box display={{ xs: 'flex', md: 'none' }}>
-                    <SmallScreenNav setDrawerOpen={setDrawerOpen} user={user}/>
+                    {/* <SmallScreenNav setDrawerOpen={setDrawerOpen} user={user}/> */}
                 </Box>
             </Container>
             <Box width={350}>

@@ -10,25 +10,30 @@ import CustomBox from '@/app/Custom/CustomBox';
 import CustomTypography from '@/app/Custom/CustomTypography';
 
 const Page = () => {
-    const { productId } = useParams();
+    const params = useParams();
+    const productId = params?.productId;
+    const productTitle = params?.productTitle;
     const [product, setProduct] = useState(null);
     const [brand, setBrand] = useState(null);
     const [selectedImage, setSelectedImage] = useState('');
     const [loading, setLoading] = useState(true);
     async function fetchProduct() {
+        if (!productTitle) return;
         try {
-            const result = await GetSingleProduct({ id: productId });
+            const result = await GetSingleProduct({ slug: productTitle });
             const productData = result.product;
 
             setProduct(productData);
             setBrand(result.brand);
 
             if (productData) {
-                setSelectedImage(productData.image); // Set the default selected image to the main image
+                setSelectedImage(productData.detail_image[0]); // Set the default selected image to the main image
             }
-            setLoading(false);
         } catch (error) {
             console.log("Failed to fetch product", error);
+        }
+        finally {
+            setLoading(false);
         }
     }
 

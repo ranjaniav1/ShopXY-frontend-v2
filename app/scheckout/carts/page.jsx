@@ -10,13 +10,14 @@ import { useTranslation } from "react-i18next";
 import { handleRemoveFromCart } from "@/app/helper/cartUtils";
 import { useSelector } from "react-redux";
 import CustomTypography from "@/app/Custom/CustomTypography";
+import { useUser } from "@/app/context/UserContext";
 
 const CartPage = ({ handleNext, loadCart, cartData }) => {
   const [editDrawer, setEditDrawer] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const theme = useTheme();
-  const userId=useSelector((state)=>state.auth?.user?.user?._id) 
-  
+ const { user } = useUser(); // 👈 Get user from context
+    const userId = user?._id;  
 
   const { t } = useTranslation();
 

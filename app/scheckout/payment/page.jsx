@@ -22,11 +22,12 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { loadStripe } from "@stripe/stripe-js";
 import { httpAxios } from "@/app/httpAxios";
+import { useUser } from "@/app/context/UserContext";
 
 const PaymentPage = ({ handleBack, cartData, loadCart }) => {
   console.log("cart for pay",cartData)
- const userId=useSelector((state)=>state.auth?.user?.user?._id) 
-  
+ const { user } = useUser(); // 👈 Get user from context
+    const userId = user?._id;  
 
 
   const [promoCode, setPromoCode] = useState(""); // State to store promo code input

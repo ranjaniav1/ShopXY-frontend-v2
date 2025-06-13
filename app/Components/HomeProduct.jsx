@@ -1,9 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Grid, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import AOS from "aos";
-import "aos/dist/aos.css";
+
 
 import Heading from "../Common/Heading";
 import { GetAllProducts } from "../Service/GetProduct";
@@ -14,6 +12,7 @@ import FilterSidebar from "./FilterSidebar";
 import ProductCard from "./ProductCard";
 import { useProductFilter } from "../helper/useProductFilter";
 import { getWishlist } from "../Service/Profile";
+import { useUser } from "../context/UserContext";
 
 const HomeProduct = () => {
   const [products, setProducts] = useState([]);
@@ -23,9 +22,9 @@ const HomeProduct = () => {
 
   const { t } = useTranslation();
 
-  const userId=useSelector((state)=>state.auth?.user?.user?._id) 
-  
-console.log("userid",userId)
+ const { user } = useUser(); // 👈 Get user from context
+    const userId = user?._id;
+  console.log("userid", userId)
 
   const {
     filteredProducts,
@@ -43,7 +42,7 @@ console.log("userid",userId)
     setLoading(true);
     try {
       const result = await GetAllProducts(page, 10);
-      const newProducts = result.data.products;
+      const newProducts = result.products;
 
       if (page === 1) {
         setProducts(newProducts);
@@ -65,9 +64,9 @@ console.log("userid",userId)
     if (!userId) return;
     try {
       const response = await getWishlist(userId);
-      console.log("wish res",response)
+      console.log("wish res", response)
       const wishlistIds = response?.products?.map(item => item.product._id) || [];
-      console.log("wish resndjs",wishlistIds)
+      console.log("wish resndjs", wishlistIds)
 
       setWishlist(wishlistIds);
     } catch (err) {
@@ -75,14 +74,14 @@ console.log("userid",userId)
       setWishlist([]); // fallback to empty array
     }
   };
-  
+
 
   useEffect(() => {
     if (userId) fetchWishlist();
   }, [userId]);
 
   const isInWishlist = (id) => wishlist.includes(id);
-  
+
 
   const handleScroll = useCallback(() => {
     const bottom =
@@ -102,13 +101,7 @@ console.log("userid",userId)
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
-  useEffect(() => {
-    AOS.init({
-      duration: 600,
-      easing: "ease-in-out",
-      once: true,
-    });
-  }, []);
+
 
   return (
     <CustomBox>
@@ -147,7 +140,7 @@ console.log("userid",userId)
                 <Grid item xs={12} sm={6} md={4} lg={3} key={product._id}>
                   <ProductCard
                     className="h-40 w-full"
-                    imgSrc={product.image}
+                    imgSrc={product.detail_image[0]}
                     title={product.name}
                     price={product.actual_price}
                     discountPrice={product.discounted_price}
@@ -158,6 +151,7 @@ console.log("userid",userId)
                     productId={product._id}
                     slug={product.slug}
                     isInWishlist={isInWishlist(product._id)}
+                    inStock={product.inStock > 0}
                   />
                 </Grid>
               ))}

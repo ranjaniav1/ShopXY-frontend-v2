@@ -26,17 +26,18 @@ export async function Login({ email, password }) {
     const response = await httpAxios.post("/user/auth/login", {
       email,
       password
-    });
+    }, { withCredentials: true }
+    );
     return response.data;
   } catch (error) {
     console.error("Error in login:", error);
     throw error; // Rethrow error for handling in the component
   }
-} 
+}
 // Logout user
 export async function Logout({ userId }) {
   try {
-    const response = await httpAxios.post("/user/auth/logout", { userId },{ withCredentials: true });
+    const response = await httpAxios.post("/user/auth/logout", { userId }, { withCredentials: true });
 
     if (response.status === 200) {
       console.log("Logout successful:", response.data);
@@ -99,7 +100,7 @@ export async function SignupWithGoogle(user) {
 
 export async function GetCurrentUser() {
   try {
-    const res = await httpAxios.get("/user/auth/me");
+    const res = await httpAxios.get("/user/auth/me",{withCredentials: true});
     return res.data; // uses ApiResponse format
   } catch (error) {
     console.error("Error getting user", error);

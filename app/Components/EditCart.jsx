@@ -5,13 +5,14 @@ import { EdittoCart } from '../Service/Cart';
 import CustomButton from '../Custom/CustomButton';
 import { useSelector } from 'react-redux';
 import CustomTypography from '../Custom/CustomTypography';
+import { useUser } from '../context/UserContext';
 
 const EditCart = ({ onClose, selectedProduct }) => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [localQuantity, setLocalQuantity] = useState(selectedProduct?.quantity || 1);
- const userId=useSelector((state)=>state.auth?.user?.user?._id) 
-  
+ const { user } = useUser(); // 👈 Get user from context
+    const userId = user?._id;  
 
   const theme = useTheme();
 

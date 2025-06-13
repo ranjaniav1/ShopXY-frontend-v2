@@ -15,19 +15,19 @@ import BrandReviewDrawer from "./BrandReviewDrawer";
 import { GetSpecificBrandReview } from "../Service/GetReviews";
 import CustomModal from "../Custom/CustomModal";
 import BrandReviewForm from "./BrandReviewForm";
-import RateReviewIcon from "@mui/icons-material/RateReview"; 
+import RateReviewIcon from "@mui/icons-material/RateReview";
 import CustomTypography from "../Custom/CustomTypography";
 import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
+import { useUser } from "../context/UserContext";
 
 const BrandRating = ({ brand, brandId }) => {
   const [reviews, setReviews] = useState([]);
   const [analytics, setAnalytics] = useState({});
   const theme = useTheme();
-  const [drawerOpen, setDrawerOpen] = useState(false); 
-  const [modalOpen, setModalOpen] = useState(false); 
-  const userId=useSelector((state)=>state.auth?.user?.user?._id) 
-  
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const { user } = useUser(); // 👈 Get user from context
+  const userId = user?._id;
 
   const fetchReviews = async () => {
     try {
@@ -59,18 +59,18 @@ const BrandRating = ({ brand, brandId }) => {
           boxShadow: 2,
           display: "flex",
           alignItems: "center",
-          background: theme.palette.card.background,
           cursor: "pointer" // Make the card clickable
         }}
+        className="text-body"
         onClick={() => setDrawerOpen(true)}
       >
         <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
           <StorefrontIcon
-            sx={{ fontSize: 50, color: theme.palette.button.background }}
+            sx={{ fontSize: 50, }} className="text-primary"
           />
           <CustomTypography
             variant="h6"
-            sx={{ marginLeft: 1, fontWeight: "bold", color: theme.palette.text.primary }}
+            sx={{ marginLeft: 1, fontWeight: "bold" }} className="text-primary"
             onClick={() => setModalOpen(true)}
           >
             {brand.title}
@@ -86,8 +86,8 @@ const BrandRating = ({ brand, brandId }) => {
         </Box>
         <Box sx={{ textAlign: "right", display: "flex", alignItems: "center" }}>
           <CustomTypography
-            variant="body2"
-            sx={{ color: theme.palette.text.secondary, marginRight: 1 }}
+            variant="body2" className="text-secondary"
+            sx={{ marginRight: 1 }}
           >
             {reviewCount} Review{reviewCount !== 1 ? "s" : ""}
           </CustomTypography>
@@ -96,11 +96,11 @@ const BrandRating = ({ brand, brandId }) => {
             <IconButton
               onClick={(e) => {
                 e.stopPropagation();
-               
+
                 setModalOpen(true); // Open modal for submitting review
               }}
             >
-              <RateReviewIcon sx={{ color: theme.palette.primary.main }} />
+              <RateReviewIcon className="text-primary" />
             </IconButton>
           </Tooltip>
         </Box>

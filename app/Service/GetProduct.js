@@ -4,16 +4,17 @@ import { httpAxios } from "../httpAxios";
 export async function GetAllProducts(page,limit) {
   try {
     const response = await httpAxios.get(`/products?page=${page}&limit=${limit}`);
-    return response.data;
+    console.log("ndjaj",response)
+    return response.data.data;
   } catch (error) {
     console.log("error in product", error);
   }
 }
 
 // collection based product
-export async function GetSingleProduct({ id }) {
+export async function GetSingleProduct({ slug }) {
   try {
-    const response = await httpAxios.get(`/-products/${id}`);
+    const response = await httpAxios.get(`/products/${slug}`);
     return response.data.data;
   } catch (error) {
     console.log("error in category", error);
@@ -28,5 +29,15 @@ export async function GetSpecificProduct({ id }) {
     console.log("error in category", error);
   }
 }
+// based on category id 
+export async function GetProductByCatId({categoryId }) {
+  try {
+    const response = await httpAxios.get(`/products/category/${categoryId}`);
+    return response.data.data;
+  } catch (error) {
+    console.log("error in category", error);
+  }
+}
+
 
 

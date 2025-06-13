@@ -1,9 +1,8 @@
 "use client";
 
-import { useTheme } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import { addWishlist, deleteWishlistItem, getWishlist } from "../Service/Profile";
+import { addWishlist, deleteWishlistItem } from "../Service/Profile";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import { handleAddToCart } from "../helper/cartUtils";
@@ -18,15 +17,14 @@ const ProductCard = ({
   userId,
   productId,
   slug,
-  isInWishlist: isWishlistedFromParent
+  isInWishlist: isWishlistedFromParent,
+  inStock,
 }) => {
-  const theme = useTheme();
   const [isWished, setIsWished] = useState(isWishlistedFromParent);
 
   useEffect(() => {
     setIsWished(isWishlistedFromParent);
   }, [isWishlistedFromParent]);
-
 
   const handleAddToWishlist = async (e) => {
     e.stopPropagation();
@@ -45,7 +43,6 @@ const ProductCard = ({
       }
       setIsWished(!isWished);
     } catch (err) {
-      console.error("Wishlist update error:", err);
       toast.error("Something went wrong!");
     }
   };
@@ -57,54 +54,63 @@ const ProductCard = ({
   );
 
   return (
-    <div
-      className="relative rounded-xl p-3 shadow-md transition hover:shadow-lg"
-      style={{ background: theme.palette.card.background }}
-    >
-      {/* Offer Ribbon */}
+    <div className="relative rounded-md p-3  border border-secondary bg-body">
+      {/* Offer Badge */}
       {offer && (
-        <div className="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-1 rounded-md font-semibold z-10">
+        <div className="absolute top-2 left-2 bg-red-600 text-white text-[10px] px-2 py-1 rounded-md font-semibold z-10">
           {offer}% OFF
         </div>
       )}
 
+      {/* Wishlist Icon */}
+      <div className="absolute top-2 right-2 z-10">
+        <ThumbUpIcon
+          color={isWished ? "success" : "action"}
+          onClick={handleAddToWishlist}
+          sx={{ cursor: "pointer", fontSize: 20 }}
+        />
+      </div>
+
       {/* Product Image */}
       <Link href={`/product/${productId}/${encodeURIComponent(slug)}`}>
-        <img
-          src={imgSrc}
-          alt={title}
-          className="w-full h-40 object-contain mb-2 rounded-lg cursor-pointer bg-white"
-        />
+        <div className="w-full h-full bg-white rounded-md  flex items-center justify-center mb-3">
+          <img
+            src={imgSrc}
+            alt={title}
+            className="object-contain w-full h-full transition-transform duration-300 hover:scale-105"
+          />
+        </div>
       </Link>
 
       {/* Title */}
-      <h3 className="text-sm font-semibold truncate" style={{ color: theme.palette.card.text }}>
+      <h3 className="text-[13px] sm:text-sm font-semibold truncate text-secondary">
         {title}
       </h3>
 
       {/* Rating */}
-      <div className="flex items-center gap-1 mt-1">
-        {renderStars(rating)}
-        <ThumbUpIcon
-          color={isWished ? "success" : "action"}
-          onClick={handleAddToWishlist}
-          sx={{ cursor: "pointer", fontSize: 18 }}
-        />
+      <div className="flex items-center gap-1 mt-1">{renderStars(rating)}</div>
 
-      </div>
+      {/* Price & Add to Cart */}
+      <div className="flex items-center justify-between mt-2">
+        <div>
+          <span className="text-green-600 font-bold text-sm sm:text-base">
+            ₹{discountPrice}
+          </span>
+          <span className="line-through text-gray-400 text-xs ml-2">
+            ₹{price}
+          </span>
+        </div>
 
-      {/* Price Section */}
-      <div className="flex items-baseline gap-2 mt-2">
-        <span className="text-green-400 font-bold text-base">₹{discountPrice}</span>
-        <span className="line-through text-gray-400 text-sm">₹{price}</span>
-
-        {/* Add to Cart Button */}
-        <button
-          className="bg-green-600 hover:bg-green-700 text-white text-sm px-3 py-1 rounded-md flex items-center gap-1"
-          onClick={() => handleAddToCart({ userId, productId })}
-        >
-          <span className="material-icons text-sm">Add</span>
-        </button>
+        {inStock == true ? (
+          <button
+            className="bg-green-600 hover:bg-green-700 text-white text-[10px] sm:text-xs px-2 sm:px-3 py-[5px] rounded-md"
+            onClick={() => handleAddToCart({ userId, productId })}
+          >
+            Add
+          </button>
+        ) : (
+          <span className="text-red-500 text-xs font-medium">Out of Stock</span>
+        )}
       </div>
     </div>
   );
