@@ -1,5 +1,6 @@
+"use client";
 import React from "react";
-import { InputBase, IconButton, InputAdornment, useTheme } from "@mui/material";
+import { InputBase, IconButton, InputAdornment } from "@mui/material";
 
 const CustomInput = ({
   placeholder,
@@ -10,27 +11,23 @@ const CustomInput = ({
   className,
   onClickStartIcon,
   onClickEndIcon,
-
   ...props
 }) => {
-  const theme = useTheme();
-
   return (
     <InputBase
       placeholder={placeholder}
       value={value}
       onChange={onChange}
-      className={`border-btn custom-input ${className}`}
-      sx={{
-        backgroundColor: theme.palette.background.default, // Background color from theme
-        color: theme.palette.text.primary, // Text color from theme
-        borderRadius: "4px",
-        padding: "4px",
-        width: "100%",
-        "& .MuiInputBase-input": {
-          color: theme.palette.text.primary // Input text color from theme
-        }
-      }} // Apply custom and border styles
+      className={`
+        custom-input 
+        w-full 
+        bg-body 
+        border border-secondary 
+        rounded px-2 py-1 
+        text-gray-800
+        focus:outline-none focus:ring-2 focus:ring-primary 
+        ${className}
+      `}
       {...props}
       startAdornment={
         startIcon && (
@@ -38,15 +35,11 @@ const CustomInput = ({
             <IconButton
               tabIndex={-1}
               onClick={onClickStartIcon}
-              sx={{
-                borderRadius: "3px", // Square button
-                padding: "3px", // Adjust padding as needed
-                color: theme.palette.button.color, // Icon color from theme
-                backgroundColor: theme.palette.button.background, // Background color from theme
-                "&:hover": {
-                  backgroundColor: theme.palette.button.hover // Background color on hover
-                }
-              }}
+              className="
+                bg-primary text-white 
+                hover:opacity-90 
+                rounded-sm p-1
+              "
             >
               {startIcon}
             </IconButton>
@@ -59,15 +52,11 @@ const CustomInput = ({
             <IconButton
               tabIndex={-1}
               onClick={onClickEndIcon}
-              sx={{
-                borderRadius: "3px", // Square button
-                padding: "4px", // Adjust padding as needed
-                color: theme.palette.button.color, // Icon color from theme
-                backgroundColor: theme.palette.button.background, // Background color from theme
-                "&:hover": {
-                  backgroundColor: theme.palette.button.hover // Background color on hover
-                }
-              }}
+              className="
+                bg-primary text-white 
+                hover:opacity-90 
+                rounded-sm p-1
+              "
             >
               {endIcon}
             </IconButton>

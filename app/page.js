@@ -1,20 +1,13 @@
 "use client";
-import { useEffect } from "react";
 import Categoy from "./Components/Categoy";
 import Collection from "./Components/Collection";
+import Brands from "./Components/Brands";
 import HomeProduct from "./Components/HomeProduct";
 import Slider from "./Components/Slider";
-import AOS from "aos";
-import "aos/dist/aos.css";
+
 import Head from "next/head";
 export default function Home() {
-  useEffect(() => {
-    AOS.init({
-      duration: 600, // Animation duration
-      easing: "ease-in-out", // Animation easing
-      once: true // Whether animation should happen only once - while scrolling down
-    });
-  }, []);
+ 
   return (
     <>
       <Head>
@@ -25,18 +18,11 @@ export default function Home() {
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <div data-aos="fade-up">
-        <Categoy />
-      </div>
-      <div data-aos="fade-up" data-aos-delay="100">
         <Slider />
-      </div>
-      <div data-aos="fade-up" data-aos-delay="100">
+        <Categoy />
         <Collection />
-      </div>
-      <div data-aos="fade-up" data-aos-delay="100">
+        <Brands/>
         <HomeProduct />
-      </div>
     </>
   );
 }

@@ -10,7 +10,7 @@ import { GetAllProducts } from "../Service/GetProduct";
 import CustomSkeleton from "../Custom/CustomSkeleton";
 import CustomBox from "../Custom/CustomBox";
 import CustomTypography from "../Custom/CustomTypography";
-import FilterSidebar from "./FilterSidebar";
+// import FilterSidebar from "./FilterSidebar";
 import ProductCard from "./ProductCard";
 import { useProductFilter } from "../helper/useProductFilter";
 import { getWishlist } from "../Service/Profile";
@@ -23,9 +23,9 @@ const HomeProduct = () => {
 
   const { t } = useTranslation();
 
-  const userId=useSelector((state)=>state.auth?.user?.user?._id) 
-  
-console.log("userid",userId)
+  const userId = useSelector((state) => state.auth?.user?.user?._id)
+
+  console.log("userid", userId)
 
   const {
     filteredProducts,
@@ -43,7 +43,7 @@ console.log("userid",userId)
     setLoading(true);
     try {
       const result = await GetAllProducts(page, 10);
-      const newProducts = result.data.products;
+      const newProducts = result.products;
 
       if (page === 1) {
         setProducts(newProducts);
@@ -65,9 +65,9 @@ console.log("userid",userId)
     if (!userId) return;
     try {
       const response = await getWishlist(userId);
-      console.log("wish res",response)
+      console.log("wish res", response)
       const wishlistIds = response?.products?.map(item => item.product._id) || [];
-      console.log("wish resndjs",wishlistIds)
+      console.log("wish resndjs", wishlistIds)
 
       setWishlist(wishlistIds);
     } catch (err) {
@@ -75,14 +75,14 @@ console.log("userid",userId)
       setWishlist([]); // fallback to empty array
     }
   };
-  
+
 
   useEffect(() => {
     if (userId) fetchWishlist();
   }, [userId]);
 
   const isInWishlist = (id) => wishlist.includes(id);
-  
+
 
   const handleScroll = useCallback(() => {
     const bottom =
@@ -115,7 +115,7 @@ console.log("userid",userId)
       <Heading text={t("Products For You")} />
       <Grid container spacing={2}>
         <Grid item xs={12} md={3} sx={{ mt: 3.5 }} data-aos="fade-right">
-          <FilterSidebar
+          {/* <FilterSidebar
             priceRange={priceRange}
             setPriceRange={setPriceRange}
             ratingRange={ratingRange}
@@ -125,7 +125,7 @@ console.log("userid",userId)
             minRating={minRating}
             maxRating={maxRating}
             
-          />
+          /> */}
         </Grid>
 
         <Grid item xs={12} md={9} sx={{ mt: 3.5 }} data-aos="fade-left">
@@ -147,7 +147,7 @@ console.log("userid",userId)
                 <Grid item xs={12} sm={6} md={4} lg={3} key={product._id}>
                   <ProductCard
                     className="h-40 w-full"
-                    imgSrc={product.image}
+                    imgSrc={product.detail_image[0]}
                     title={product.name}
                     price={product.actual_price}
                     discountPrice={product.discounted_price}
@@ -158,6 +158,7 @@ console.log("userid",userId)
                     productId={product._id}
                     slug={product.slug}
                     isInWishlist={isInWishlist(product._id)}
+                    inStock={product.inStock > 0}
                   />
                 </Grid>
               ))}

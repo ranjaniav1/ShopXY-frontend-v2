@@ -1,7 +1,4 @@
-// _variables.scss
-
-$btn-color: #22aa99;
-$primary-color: #ffffff;
-$secondary-color: #f2f1f0;
-$skeleton-primary-color: #e0e0e0; 
-
+$btn-color: var(--primary);
+$primary-color: var(--body);
+$secondary-color: var(--secondary);
+$skeleton-primary-color: var(--secondary);
