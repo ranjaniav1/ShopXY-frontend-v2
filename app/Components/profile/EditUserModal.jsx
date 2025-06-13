@@ -11,8 +11,8 @@ const EditUserModal = ({ user, onClose }) => {
   const dispatch = useDispatch();
   const [fullname, setFullname] = useState(user?.fullname || "");
   const [avatar, setAvatar] = useState(null); // Avatar will be a file object
- const { user } = useUser(); // 👈 Get user from context
-    const userId = user?._id;  
+ const { user:contextUser } = useUser(); // 👈 Get user from context
+    const userId = contextUser?._id;  
   
 
 
