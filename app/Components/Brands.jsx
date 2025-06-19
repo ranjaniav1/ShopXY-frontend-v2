@@ -13,6 +13,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation, A11y } from "swiper/modules";
 import { GetBrands } from "../Service/GetBrands";
+import CustomBrandCard from "../Common/CustomBrandCard";
 
 const BrandSection = () => {
   const { t } = useTranslation();
@@ -75,27 +76,13 @@ const BrandSection = () => {
             <Grid container spacing={2}>
               {brands.map((brand, index) => (
                 <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                  <Link
-                    href={`/categories/collections/${brand._id}/${brand.slug}`}
-                    passHref
-                  >
-                    <Box className="group flex flex-col items-center justify-center gap-2 cursor-pointer">
-                      <Box className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden bg-white shadow-md border border-gray-200 transition-transform duration-300 group-hover:scale-105">
-                        <img
-                          src={brand.brand_image}
-                          alt={brand.title}
-                          title={brand.title}
-                          className="w-full h-full object-contain opacity-60 group-hover:opacity-100 transition-opacity duration-300"
-                        />
-                      </Box>
-                      <Typography
-                        component="h3"
-                        className="text-sm text-center font-medium text-primary truncate"
-                      >
-                        {brand.title}
-                      </Typography>
-                    </Box>
-                  </Link>
+                  <CustomBrandCard
+                    id={brand._id}
+                    slug={brand.slug}
+                    image={brand.brand_image}
+                    title={brand.title}
+                  />
+
                 </Grid>
               ))}
             </Grid>
@@ -112,27 +99,12 @@ const BrandSection = () => {
             >
               {brands.slice(0, visibleCount).map((brand, index) => (
                 <SwiperSlide key={index}>
-                  <Link
-                    href={`/categories/collections/${brand._id}/${brand.slug}`}
-                    passHref
-                  >
-                    <Box className="group flex flex-col items-center justify-center gap-2 cursor-pointer">
-                      <Box className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden bg-white shadow-md border border-gray-200 transition-transform duration-300 group-hover:scale-105">
-                        <img
-                          src={brand.brand_image}
-                          alt={brand.title}
-                          title={brand.title}
-                          className="w-full h-full object-contain opacity-60 group-hover:opacity-100 transition-opacity duration-300"
-                        />
-                      </Box>
-                      <Typography
-                        component="h3"
-                        className="text-sm text-center font-medium text-primary truncate"
-                      >
-                        {brand.title}
-                      </Typography>
-                    </Box>
-                  </Link>
+                  <CustomBrandCard
+                    id={brand._id}
+                    slug={brand.slug}
+                    image={brand.brand_image}
+                    title={brand.title}
+                  />
                 </SwiperSlide>
               ))}
             </Swiper>

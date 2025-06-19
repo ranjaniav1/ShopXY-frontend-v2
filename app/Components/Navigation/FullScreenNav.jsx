@@ -19,8 +19,8 @@ const FullScreenNav = ({ setDrawerOpen, user }) => {
       p={2}
     >
       {/* Logo */}
-      <Link href="/">
-        <img src={webSettings?.logo} alt="Site Logo" className="h-10 w-auto object-contain" />
+      <Link href="/" className="flex item-center">
+        <img src={webSettings?.logo} alt="Site Logo" className="h-16 w-auto object-contain" />
       </Link>
 
       {/* Search Field */}

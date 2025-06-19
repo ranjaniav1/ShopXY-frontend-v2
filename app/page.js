@@ -2,12 +2,12 @@
 import Categoy from "./Components/Categoy";
 import Collection from "./Components/Collection";
 import Brands from "./Components/Brands";
-// import HomeProduct from "./Components/HomeProduct";
+import HomeProduct from "./Components/HomeProduct";
 import Slider from "./Components/Slider";
 
 import Head from "next/head";
 export default function Home() {
- 
+
   return (
     <>
       <Head>
@@ -18,11 +18,11 @@ export default function Home() {
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-        <Slider />
-        <Categoy />
-        <Collection />
-        <Brands/>
-        {/* <HomeProduct /> */}
+      <Slider />
+      <Categoy />
+      <Collection />
+      <Brands />
+      <HomeProduct />
     </>
   );
 }
