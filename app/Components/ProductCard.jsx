@@ -20,6 +20,7 @@ const ProductCard = ({
   isInWishlist: isWishlistedFromParent,
   inStock,
 }) => {
+  console.log("init")
   const [isWished, setIsWished] = useState(isWishlistedFromParent);
 
   useEffect(() => {
@@ -54,10 +55,10 @@ const ProductCard = ({
   );
 
   return (
-    <div className="relative rounded-md p-3  border border-secondary bg-body">
+    <div className="relative rounded-lg p-2 bg-white shadow-sm border hover:shadow-md transition duration-200">
       {/* Offer Badge */}
       {offer && (
-        <div className="absolute top-2 left-2 bg-red-600 text-white text-[10px] px-2 py-1 rounded-md font-semibold z-10">
+        <div className="absolute top-2 left-2 bg-red-500 text-white text-[10px] px-2 py-[2px] rounded font-semibold z-10">
           {offer}% OFF
         </div>
       )}
@@ -67,49 +68,51 @@ const ProductCard = ({
         <ThumbUpIcon
           color={isWished ? "success" : "action"}
           onClick={handleAddToWishlist}
-          sx={{ cursor: "pointer", fontSize: 20 }}
+          sx={{ cursor: "pointer", fontSize: 18 }}
         />
       </div>
 
       {/* Product Image */}
       <Link href={`/product/${productId}/${encodeURIComponent(slug)}`}>
-        <div className="w-full h-full bg-white rounded-md  flex items-center justify-center mb-3">
+        <div className="w-full h-36 bg-gray-50 rounded-md overflow-hidden flex items-center justify-center mb-2">
           <img
             src={imgSrc}
             alt={title}
-            className="object-contain w-full h-full transition-transform duration-300 hover:scale-105"
+            className="object-contain w-full h-full transition-transform duration-200 hover:scale-105"
           />
         </div>
       </Link>
 
       {/* Title */}
-      <h3 className="text-[13px] sm:text-sm font-semibold truncate text-secondary">
+      <h3 className="text-xs font-medium text-gray-800 line-clamp-2 mb-1 min-h-[32px]">
         {title}
       </h3>
 
       {/* Rating */}
-      <div className="flex items-center gap-1 mt-1">{renderStars(rating)}</div>
+      {rating > 0 && <div>{renderStars(rating)}</div>}
 
-      {/* Price & Add to Cart */}
+      {/* Price + Add */}
       <div className="flex items-center justify-between mt-2">
         <div>
-          <span className="text-green-600 font-bold text-sm sm:text-base">
+          <span className="text-green-600 font-semibold text-sm">
             ₹{discountPrice}
           </span>
-          <span className="line-through text-gray-400 text-xs ml-2">
+          <span className="line-through text-gray-400 text-xs ml-1">
             ₹{price}
           </span>
         </div>
 
-        {inStock == true ? (
+        {inStock ? (
           <button
-            className="bg-green-600 hover:bg-green-700 text-white text-[10px] sm:text-xs px-2 sm:px-3 py-[5px] rounded-md"
+            className="bg-green-600 hover:bg-green-700 text-white text-[10px] px-3 py-[3px] rounded"
             onClick={() => handleAddToCart({ userId, productId })}
           >
             Add
           </button>
         ) : (
-          <span className="text-red-500 text-xs font-medium">Out of Stock</span>
+          <span className="text-red-500 text-[10px] font-medium">
+            Out of Stock
+          </span>
         )}
       </div>
     </div>

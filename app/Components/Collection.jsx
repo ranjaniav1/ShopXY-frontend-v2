@@ -72,15 +72,15 @@ const theme=useTheme()
                     pathname === "/categories/collections" ? (
                         // Display all collections in a grid if on /categories/collections
                         <Grid container spacing={2}>
-                            {collection.map((category, index) => (
+                            {collection.map((col, index) => (
                                 <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                                    <Link href={`/categories/collections/${category._id}/${category.slug}`} passHref>
+                                    <Link href={`/${"collection"}/${col._id}/${col.slug}`} passHref>
                                         <CustomCollectionCard
-                                            tooltip={category.title}
-                                            id={category._id}
-                                            slug={category.slug}
-                                            image={category.collection_image}
-                                            title={category.title}
+                                            tooltip={col.title}
+                                            id={col._id}
+                                            slug={col.slug}
+                                            image={col.collection_image}
+                                            title={col.title}
                                             
                                             
                                             
@@ -101,15 +101,15 @@ const theme=useTheme()
                                 1024: { slidesPerView: 6, spaceBetween: 30 },
                             }}
                         >
-                            {collection.slice(0, visibleCount).map((category, index) => (
+                            {collection.slice(0, visibleCount).map((col, index) => (
                                 <SwiperSlide key={index}>
-                                    <Link href={`/categories/collections/${category._id}/${category.slug}`} passHref>
+                                    <Link href={`/${"collection"}/${col._id}/${col.slug}`} passHref>
                                         <CustomCollectionCard
-                                            tooltip={category.title}
-                                            id={category._id}
-                                            slug={category.slug}
-                                            image={category.collection_image}
-                                            title={category.title}
+                                            tooltip={col.title}
+                                            id={col._id}
+                                            slug={col.slug}
+                                            image={col.collection_image}
+                                            title={col.title}
                                         />
                                     </Link>
                                 </SwiperSlide>
@@ -117,7 +117,7 @@ const theme=useTheme()
                         </Swiper>
                     )
                 ) : (
-                    <CustomTypography textAlign="center" sx={{color:theme.palette.text.primary}}>{t('no Collection Found')}</CustomTypography>
+                    <CustomTypography textAlign="center" sx={{color:theme.palette.text.primary}}>{t('no products Found')}</CustomTypography>
                 )}
             </Box>
         </CustomBox>

@@ -1,37 +1,38 @@
 "use client";
+
 import React from "react";
-import Image from "next/image";
+import Link from "next/link";
 import CustomTypography from "../Custom/CustomTypography";
 
 const CustomCollectionCard = ({ id, slug, image, title, tooltip }) => {
   return (
-    <div
-      key={id}
-      className="group relative flex flex-col items-center rounded-md overflow-hidden bg-secondary border border-secondary shadow-md hover:shadow-xl transition duration-300"
+    <Link
+      href={`/collection/${slug}`}
+      className="group relative flex flex-col rounded-xl overflow-hidden shadow-sm border border-gray-200 bg-white hover:shadow-xl hover:border-primary transition-all duration-300 ease-in-out"
     >
-      {/* Fixed Image Box */}
-      <div className="relative w-full h-48 sm:h-56 md:h-64 bg-body flex items-center justify-center p-4">
-        <Image
+      {/* Image */}
+      <div className="relative h-44 bg-gray-100 flex items-center justify-center overflow-hidden">
+        <img
           src={image}
-          alt={`Collection image of ${title}`}
-          fill
-          className="object-contain h-40"
-          title={tooltip}
+          alt={title}
+          loading="lazy"
+          className="object-fill w-full h-full scale-100 group-hover:scale-105 transition-transform duration-300 ease-in-out"
         />
+        {/* Subtle overlay effect */}
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition duration-300" />
       </div>
 
       {/* Title */}
-      <div className="w-full bg-body text-center p-3">
+      <div className="p-4 text-center">
         <CustomTypography
           component="h3"
-          className="text-lg font-semibold text-primary truncate"
+          className="text-primary transition-colors duration-200 truncate"
+          title={tooltip || title}
         >
           {title}
         </CustomTypography>
       </div>
-
-    
-    </div>
+    </Link>
   );
 };
 

@@ -16,7 +16,6 @@ export const ThemeProvider = ({ children }) => {
       setThemeState(savedTheme);
 
       const settingsResponse = await getWebSetting();
-      console.log("sdnjsn",settingsResponse)
       const webSettingsData = settingsResponse?.webSettings;
 
       setWebSettings(webSettingsData);
