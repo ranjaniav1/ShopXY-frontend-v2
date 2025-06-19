@@ -2,7 +2,7 @@
 import Categoy from "./Components/Categoy";
 import Collection from "./Components/Collection";
 import Brands from "./Components/Brands";
-import HomeProduct from "./Components/HomeProduct";
+// import HomeProduct from "./Components/HomeProduct";
 import Slider from "./Components/Slider";
 
 import Head from "next/head";
@@ -22,7 +22,7 @@ export default function Home() {
         <Categoy />
         <Collection />
         <Brands/>
-        <HomeProduct />
+        {/* <HomeProduct /> */}
     </>
   );
 }

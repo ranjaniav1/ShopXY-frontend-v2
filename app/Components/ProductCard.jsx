@@ -20,6 +20,7 @@ const ProductCard = ({
   isInWishlist: isWishlistedFromParent,
   inStock,
 }) => {
+  console.log("init")
   const [isWished, setIsWished] = useState(isWishlistedFromParent);
 
   useEffect(() => {
@@ -55,6 +56,7 @@ const ProductCard = ({
 
   return (
     <div className="relative rounded-md p-3  border border-secondary bg-body">
+      <h1>ii</h1>
       {/* Offer Badge */}
       {offer && (
         <div className="absolute top-2 left-2 bg-red-600 text-white text-[10px] px-2 py-1 rounded-md font-semibold z-10">

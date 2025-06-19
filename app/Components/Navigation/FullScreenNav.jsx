@@ -11,8 +11,6 @@ import { useTheme } from "@/app/context/ThemeContext";
 
 const FullScreenNav = ({ setDrawerOpen, user }) => {
   const { webSettings } = useTheme()
-  console.log("ndn",webSettings?.logo)
-  console.log("ndssdn",webSettings)
   return (
     <Box
       display="flex"

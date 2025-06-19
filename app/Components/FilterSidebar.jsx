@@ -39,7 +39,7 @@ const FilterSidebar = ({
           max={maxPrice}
           step={1}
           marks
-          value={priceRange}
+          value={Array.isArray(priceRange) && priceRange.length === 2 && priceRange.every(v => typeof v === 'number') ? priceRange : [minPrice, maxPrice]}
           onChange={(_, newValue) => setPriceRange(newValue)}
           valueLabelDisplay="auto"
           className="text-primary"
@@ -60,7 +60,7 @@ const FilterSidebar = ({
           max={maxRating}
           step={0.1}
           marks
-          value={ratingRange}
+          value={Array.isArray(ratingRange) && ratingRange.length === 2 && ratingRange.every(v => typeof v === 'number') ? ratingRange : [minRating, maxRating]}
           onChange={(_, newValue) => setRatingRange(newValue)}
           valueLabelDisplay="auto"
           className="text-primary"
