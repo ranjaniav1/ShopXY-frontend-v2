@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* globals.css */
+:root {
+  --body: #f9fafb;
+  --primary: #0d6efd;
+  --secondary: #6c757d;
+}
+
+[data-theme="dark"] {
+  --body: #121212;
+  --primary: #0d6efd;
+  --secondary: #adb5bd;
+}
+
+
+@font-face {
+  font-family: "Circular Std";
+  src: url("/fonts/circular-std.woff2") format("woff2"),
+       url("/fonts/circular-std.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
