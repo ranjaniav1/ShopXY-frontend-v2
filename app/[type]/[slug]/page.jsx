@@ -13,9 +13,10 @@ import ProductCard from '@/app/Components/ProductCard';
 import { useUser } from '@/app/context/UserContext';
 import { getWishlist } from '@/app/Service/Profile';
 import { GetFilteredProduct } from '@/app/Service/GetProduct';
+import EmptyCart from '@/app/Components/EmptyCart';
 
 const Page = () => {
-    const { id, slug } = useParams();
+    const { slug } = useParams();
     const pathname = usePathname();
     const { user } = useUser(); // 👈 Get user from context
     const userId = user?._id;
@@ -28,19 +29,19 @@ const Page = () => {
     const [wishlist, setWishlist] = useState([])
 
     useEffect(() => {
-        if (!id || !type) return;
+        if ( !type) return;
         (async () => {
             try {
-                const data = await GetFilteredProduct({ type, id });
-                console.log(data.products)
-                setProducts(data.products || []);
+                const data = await GetFilteredProduct({ type: "product", search: slug });
+                console.log(data)
+                setProducts(data.filters || []);
             } catch (err) {
                 console.error(`❌ Failed to fetch ${type}`, err);
             } finally {
                 setLoading(false);
             }
         })();
-    }, [id, type]);
+    }, [ type]);
 
     const fetchWishlist = async () => {
         if (!userId) return;
@@ -76,10 +77,17 @@ const Page = () => {
                         </Grid>
                     ))}
                 </Grid>
+            ) : products.length === 0 ? (
+                <EmptyCart
+                    title="No products found"
+                    subtitle="We couldn't find any products matching this category or brand. Try exploring other collections!"
+                    buttonHref="/"
+                    buttonText="Explore Products"
+                />
             ) : (
                 <Grid container spacing={2}>
                     {products.map((product) => (
-                        <Grid item xs={6} sm={4} md={3} lg={2} key={product._id} >
+                        <Grid item xs={6} sm={4} md={3} lg={2} key={product._id}>
                             <Link href={`/product/${product._id}/${encodeURIComponent(product.slug)}`} passHref>
                                 <ProductCard
                                     className="h-40 w-full"
@@ -100,7 +108,8 @@ const Page = () => {
                         </Grid>
                     ))}
                 </Grid>
-            ) }
+            )}
+
         </CustomBox>
     );
 };

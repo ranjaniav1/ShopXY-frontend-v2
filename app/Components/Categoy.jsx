@@ -53,7 +53,7 @@ const CategorySection = () => {
         <Grid container spacing={3}>
           {categories.map((category, idx) => (
             <Grid item xs={6} sm={4} md={3} lg={2} key={category._id}>
-              <Link href={`/${'category'}/${category._id}/${category.slug}`}>
+              <Link href={`/category/${category.slug}`}>
                 <Box
                   className={`
                     group rounded-xl p-4 flex flex-col items-center text-center cursor-pointer hover:shadow-md transition

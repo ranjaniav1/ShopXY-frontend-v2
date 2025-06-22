@@ -18,6 +18,7 @@ import {
 import CustomTypography from "@/app/Custom/CustomTypography";
 import CustomCollectionCard from "@/app/Common/CustomCollectionCard";
 import EmptyCart from "../EmptyCart";
+import { deleteWishlistItem, getWishlist } from "@/app/Service/Profile";
 
 const WishlistItem = ({ userId, activeTab }) => {
   const theme = useTheme();
@@ -25,12 +26,19 @@ const WishlistItem = ({ userId, activeTab }) => {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
 
+  async function fetchWishlist() {
+    try {
+      const data = await getWishlist(page, 6);
+      setWishlist(data?.wishlists)
+      setTotal(data?.totalResults)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   useEffect(() => {
     if (userId) {
-      fetchWishlist(userId, page, 6, (data) => {
-        setWishlist(data.products || []);
-        setTotal(data.total || 0);
-      });
+      fetchWishlist()
     }
   }, [userId, page]);
 
@@ -41,7 +49,7 @@ const WishlistItem = ({ userId, activeTab }) => {
   }, [activeTab]);
 
   const handleDeleteWishlist = async (productId) => {
-    await handleRemoveFromWishlist(productId, setWishlist, userId, wishlist);
+    await deleteWishlistItem(productId);
   };
 
   const totalPages = Math.ceil(total / 6);
@@ -101,17 +109,17 @@ const WishlistItem = ({ userId, activeTab }) => {
                 </IconButton>
 
                 <Link
-                  href={`/product/${wishlistItem.product._id}/${encodeURIComponent(
-                    wishlistItem.product.slug
+                  href={`/product/${wishlistItem._id}/${encodeURIComponent(
+                    wishlistItem.slug
                   )}`}
                   passHref
                 >
                   <CustomCollectionCard
-                    id={wishlistItem.product._id}
-                    image={wishlistItem.product.image}
-                    title={wishlistItem.product.name}
-                    tooltip={wishlistItem.product.name}
-                    slug={wishlistItem.product.slug}
+                    id={wishlistItem._id}
+                    image={wishlistItem.detail_image[0]}
+                    title={wishlistItem.name}
+                    tooltip={wishlistItem.name}
+                    slug={wishlistItem.slug}
                   />
                 </Link>
               </Card>
@@ -124,7 +132,7 @@ const WishlistItem = ({ userId, activeTab }) => {
           title="Your wishlist is empty"
           subtitle="Looks like you haven’t added anything to your wishlist yet."
           buttonText="Browse Products"
-          buttonHref="/categories/collections"
+          buttonHref="/"
         />
       )}
 

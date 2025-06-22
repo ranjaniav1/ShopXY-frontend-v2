@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useEffect, useState } from "react";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import { addWishlist, deleteWishlistItem } from "../Service/Profile";
@@ -20,7 +18,6 @@ const ProductCard = ({
   isInWishlist: isWishlistedFromParent,
   inStock,
 }) => {
-  console.log("init")
   const [isWished, setIsWished] = useState(isWishlistedFromParent);
 
   useEffect(() => {
@@ -28,7 +25,9 @@ const ProductCard = ({
   }, [isWishlistedFromParent]);
 
   const handleAddToWishlist = async (e) => {
+    e.preventDefault();
     e.stopPropagation();
+
     if (!userId) {
       toast.error("Please login first to use wishlist!");
       return;
@@ -36,10 +35,10 @@ const ProductCard = ({
 
     try {
       if (isWished) {
-        await deleteWishlistItem({ userId, productId });
+        await deleteWishlistItem(productId);
         toast.success("Removed from wishlist!");
       } else {
-        await addWishlist(userId, productId);
+        await addWishlist(productId);
         toast.success("Added to wishlist!");
       }
       setIsWished(!isWished);
@@ -64,7 +63,7 @@ const ProductCard = ({
       )}
 
       {/* Wishlist Icon */}
-      <div className="absolute top-2 right-2 z-10">
+      <div className="absolute top-2 right-2 z-20">
         <ThumbUpIcon
           color={isWished ? "success" : "action"}
           onClick={handleAddToWishlist}
@@ -72,7 +71,7 @@ const ProductCard = ({
         />
       </div>
 
-      {/* Product Image */}
+      {/* Product Image (Link) */}
       <Link href={`/product/${productId}/${encodeURIComponent(slug)}`}>
         <div className="w-full h-36 bg-gray-50 rounded-md overflow-hidden flex items-center justify-center mb-2">
           <img
@@ -83,10 +82,12 @@ const ProductCard = ({
         </div>
       </Link>
 
-      {/* Title */}
-      <h3 className="text-xs font-medium text-gray-800 line-clamp-2 mb-1 min-h-[32px]">
-        {title}
-      </h3>
+      {/* Title (Link) */}
+      <Link href={`/product/${productId}/${encodeURIComponent(slug)}`}>
+        <h3 className="text-xs font-medium text-gray-800 line-clamp-2 mb-1 min-h-[32px] hover:underline">
+          {title}
+        </h3>
+      </Link>
 
       {/* Rating */}
       {rating > 0 && <div>{renderStars(rating)}</div>}
@@ -105,7 +106,11 @@ const ProductCard = ({
         {inStock ? (
           <button
             className="bg-green-600 hover:bg-green-700 text-white text-[10px] px-3 py-[3px] rounded"
-            onClick={() => handleAddToCart({ userId, productId })}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleAddToCart({ userId, productId });
+            }}
           >
             Add
           </button>
