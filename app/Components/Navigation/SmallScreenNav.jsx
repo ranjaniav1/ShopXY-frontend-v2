@@ -8,19 +8,29 @@ import NavCartButton from "./NavCartButton";
 import NavAuthButtons from "./NavAuthButtons";
 import CustomModal from "@/app/Custom/CustomModal";
 import NavSearchBar from "./NavSearchBar";
+import { useTheme } from "@/app/context/ThemeContext";
+import { useRouter } from "next/navigation";
 
-const SmallScreenNav = ({ setDrawerOpen,user }) => {
+const SmallScreenNav = ({ setDrawerOpen, user }) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState(""); // State for search input
+  const { webSettings } = useTheme()
+  const router = useRouter();
 
-
+  const handleSearch = () => {
+    const query = searchQuery.trim();
+    if (query) {
+      setIsSearchOpen(false); // ✅ Close modal first
+      setTimeout(() => {
+        router.push(`/product/${encodeURIComponent(query)}`);
+      }, 100); // slight delay ensures modal is removed first
+    }
+  };
   return (
     <Box display="flex" justifyContent="space-between" alignItems="center" p={2} sx={{ width: "100%" }}>
       {/* Logo */}
       <Link href="/" passHref>
-        <div className="text-xl font-semibold">
-          <span style={{ color: "#22aa99" }}>S</span>hopXY
-        </div>
+        <img src={webSettings?.logo} alt="Site Logo" className="h-16 w-auto object-contain" />
       </Link>
 
       <Box display="flex" alignItems="center">
@@ -33,7 +43,7 @@ const SmallScreenNav = ({ setDrawerOpen,user }) => {
         {user ? (
           <>
             <Link href="/user/profile" passHref>
-              <img  src={`${user?.avatar}?sz=64`}alt="Avatar" className="w-8 h-8 rounded-md object-cover" />
+              <img src={`${user?.avatar}?sz=64`} alt="Avatar" className="w-8 h-8 rounded-md object-cover" />
             </Link>
             <NavCartButton />
           </>
@@ -49,8 +59,11 @@ const SmallScreenNav = ({ setDrawerOpen,user }) => {
 
       {/* ✅ Render Modal only when open */}
       <CustomModal open={isSearchOpen} onClose={() => setIsSearchOpen(false)} height="450px" title="search">
-        <NavSearchBar onClose={() => setIsSearchOpen(false)}/>
-      </CustomModal>
+        <NavSearchBar
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          onSearch={handleSearch}
+        />      </CustomModal>
     </Box>
   );
 };

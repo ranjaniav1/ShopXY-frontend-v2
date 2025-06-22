@@ -1,9 +1,9 @@
 import { httpAxios } from "../httpAxios";
 
 // all product display
-export async function GetAllProducts(page, limit) {
+export async function GetAllProducts() {
   try {
-    const response = await httpAxios.get(`/products?page=${page}&limit=${limit}`);
+    const response = await httpAxios.get(`/products`);
     console.log("ndjaj", response)
     return response.data.data;
   } catch (error) {

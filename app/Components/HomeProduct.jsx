@@ -1,11 +1,10 @@
-// HomeProduct.tsx
 "use client";
 
 import React, { useEffect, useState, useCallback } from "react";
 import { Grid } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import Heading from "../Common/Heading";
-import { GetFilteredProduct } from "../Service/GetProduct";
+import { GetFilteredProduct, GetAllProducts } from "../Service/GetProduct";
 import CustomSkeleton from "../Custom/CustomSkeleton";
 import CustomBox from "../Custom/CustomBox";
 import CustomTypography from "../Custom/CustomTypography";
@@ -13,26 +12,28 @@ import FilterSidebar from "./FilterSidebar";
 import ProductCard from "./ProductCard";
 import { getWishlist } from "../Service/Profile";
 import { useUser } from "../context/UserContext";
-import { GetBrands } from "../Service/GetBrands";
 import { GetCategories } from "../Service/GetCategory";
+import { GetCollectionsByCategory } from "../Service/GetCollection";
+import { GetBrandsByCollection } from "../Service/GetBrands";
 
 const HomeProduct = () => {
   const [products, setProducts] = useState([]);
   const [wishlist, setWishlist] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [isFilterLoading, setIsFilterLoading] = useState(false);
+  const [isFilterApplied, setIsFilterApplied] = useState(false);
 
   const [priceRange, setPriceRange] = useState([0, 1000]);
   const [ratingRange, setRatingRange] = useState([0, 5]);
   const [inStock, setInStock] = useState(false);
   const [onlyDiscounted, setOnlyDiscounted] = useState(false);
   const [sort, setSort] = useState("");
-  const [page, setPage] = useState(1);
-  const limit = 12;
+ 
 
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCollection, setSelectedCollection] = useState("");
   const [selectedBrand, setSelectedBrand] = useState("");
   const [categories, setCategories] = useState([]);
+  const [collections, setCollections] = useState([]);
   const [brands, setBrands] = useState([]);
 
   const { t } = useTranslation();
@@ -41,16 +42,61 @@ const HomeProduct = () => {
 
   const fetchMetaData = async () => {
     try {
-      const [categoryData, brandData] = await Promise.all([
-        GetCategories(),
-        GetBrands()
-      ]);
+      const categoryData = await GetCategories();
       setCategories(Array.isArray(categoryData) ? categoryData : categoryData?.categories || []);
-      setBrands(Array.isArray(brandData) ? brandData : brandData?.brands || []);
     } catch (err) {
       console.error("Failed to fetch metadata", err);
     }
   };
+
+  const fetchCollections = async (categorySlug) => {
+    if (!categorySlug) {
+      setCollections([]);
+      return;
+    }
+
+    // ✅ Get the _id from the selected category's slug
+    const category = categories.find((cat) => cat.slug === categorySlug);
+    const categoryId = category?._id;
+
+    if (!categoryId) {
+      setCollections([]);
+      return;
+    }
+
+    try {
+      const res = await GetCollectionsByCategory({ categoryId });
+      setCollections(res?.collections || []);
+    } catch (err) {
+      console.error("Failed to fetch collections", err);
+    }
+  };
+
+
+
+  const fetchBrands = async (collectionSlug) => {
+    if (!collectionSlug) {
+      setBrands([]);
+      return;
+    }
+
+    // ✅ Get the _id from the selected collection's slug
+    const collection = collections.find((col) => col.slug === collectionSlug);
+    const collectionId = collection?._id;
+
+    if (!collectionId) {
+      setBrands([]);
+      return;
+    }
+
+    try {
+      const res = await GetBrandsByCollection({ brand_id: collectionId });
+      setBrands(res?.brands || []);
+    } catch (err) {
+      console.error("Failed to fetch brands", err);
+    }
+  };
+
 
   const fetchWishlist = async () => {
     if (!userId) return;
@@ -66,28 +112,61 @@ const HomeProduct = () => {
 
   const isInWishlist = (id) => wishlist.includes(id);
 
+  const checkIfFiltersApplied = () => {
+    return (
+      selectedCategory ||
+      selectedCollection ||
+      selectedBrand ||
+      priceRange[0] !== 0 ||
+      priceRange[1] !== 1000 ||
+      ratingRange[0] !== 0 ||
+      ratingRange[1] !== 5 ||
+      inStock ||
+      onlyDiscounted ||
+      sort
+    );
+  };
+
   const handleFilterChange = useCallback(async () => {
+    const filtersUsed = checkIfFiltersApplied();
+    setIsFilterApplied(filtersUsed);
     setIsFilterLoading(true);
+
     try {
-      const res = await GetFilteredProduct({
-        category: selectedCategory || undefined,
-        brand: selectedBrand || undefined,
-        minPrice: priceRange[0],
-        maxPrice: priceRange[1],
-        rating: ratingRange[0],
-        inStock: inStock ? true : undefined,
-        specialOffer: onlyDiscounted ? true : undefined,
-        sort: sort,
-        page: page,
-        limit: limit,
-      });
-      setProducts(res.products || []);
+      if (filtersUsed) {
+        const res = await GetFilteredProduct({
+          type: "product",
+          category: selectedCategory || undefined,
+          collection: selectedCollection || undefined,
+          brand: selectedBrand || undefined,
+          minPrice: priceRange[0],
+          maxPrice: priceRange[1],
+          rating: ratingRange[0],
+          inStock: inStock ? true : undefined,
+          specialOffer: onlyDiscounted ? true : undefined,
+          sort,
+        
+        });
+        setProducts(res?.filters || []);
+      } else {
+        const res = await GetAllProducts();
+        setProducts(res?.products || []);
+      }
     } catch (error) {
-      console.error("Filter fetch failed", error);
+      console.error("Product fetch failed", error);
     } finally {
       setIsFilterLoading(false);
     }
-  }, [selectedCategory, selectedBrand, priceRange, ratingRange, inStock, onlyDiscounted, sort, page]);
+  }, [
+    selectedCategory,
+    selectedCollection,
+    selectedBrand,
+    priceRange,
+    ratingRange,
+    inStock,
+    onlyDiscounted,
+    sort,
+  ]);
 
   useEffect(() => {
     fetchMetaData();
@@ -97,6 +176,17 @@ const HomeProduct = () => {
   useEffect(() => {
     handleFilterChange();
   }, [handleFilterChange]);
+
+  useEffect(() => {
+    setSelectedCollection("");
+    setSelectedBrand("");
+    fetchCollections(selectedCategory);
+  }, [selectedCategory]);
+
+  useEffect(() => {
+    setSelectedBrand("");
+    fetchBrands(selectedCollection);
+  }, [selectedCollection]);
 
   return (
     <CustomBox>
@@ -118,9 +208,12 @@ const HomeProduct = () => {
             setOnlyDiscounted={setOnlyDiscounted}
             selectedCategory={selectedCategory}
             setSelectedCategory={setSelectedCategory}
+            selectedCollection={selectedCollection}
+            setSelectedCollection={setSelectedCollection}
             selectedBrand={selectedBrand}
             setSelectedBrand={setSelectedBrand}
             categories={categories}
+            collections={collections}
             brands={brands}
           />
         </Grid>

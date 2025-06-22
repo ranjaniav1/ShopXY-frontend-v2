@@ -9,10 +9,10 @@ export async function GetBrands() {
   }                              
 }
 
-export async function GetSingleBrands({brand_id}) {
+export async function GetBrandsByCollection({brand_id}) {
   try {
-    const response = await httpAxios.get(`/Get-brands/${brand_id}`);
-    return response.data;
+    const response = await httpAxios.get(`/brands/collection/${brand_id}`);
+    return response.data.data;
   } catch (error) {
     console.log("error in category", error);
   }                              

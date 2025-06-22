@@ -1,27 +1,16 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { Search } from "@mui/icons-material";
 import CustomInput from "@/app/Custom/CustomInput";
-import { useRouter } from "next/navigation";
 
-const NavSearchBar = ({ onClose }) => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const router = useRouter();
-
-  const handleSearch = () => {
-    if (searchQuery.trim()) {
-      router.push(`/product/${encodeURIComponent(searchQuery.trim())}`);
-      onClose?.(); // optional: close modal or drawer if needed
-    }
-  };
-
+const NavSearchBar = ({ searchQuery, setSearchQuery, onSearch }) => {
   return (
     <div className="relative flex-grow mx-4">
       <CustomInput
         startIcon={
           <Search
             className="cursor-pointer text-primary"
-            onClick={handleSearch}
+            onClick={onSearch}
           />
         }
         placeholder="Search for Products, Brands, and More"
@@ -29,7 +18,7 @@ const NavSearchBar = ({ onClose }) => {
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         onKeyDown={(e) => {
-          if (e.key === "Enter") handleSearch();
+          if (e.key === "Enter") onSearch();
         }}
       />
     </div>

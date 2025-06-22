@@ -5,11 +5,9 @@ import FullScreenNav from './Navigation/FullScreenNav';
 import SmallScreenNav from './Navigation/SmallScreenNav';
 import CustomDrawer from '../Custom/CustomDrawer';
 import NavSetting from './NavSetting';
-import { useUser } from '../context/UserContext';
 
 const Navigation = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
-    const { user } = useUser()
 
     return (
         <Box className="bg-body border-b border-secondary" style={{
@@ -22,11 +20,11 @@ const Navigation = () => {
             <Container maxWidth="xl">
                 {/* Only visible on larger screens */}
                 <Box display={{ xs: 'none', md: 'block' }}>
-                    <FullScreenNav setDrawerOpen={setDrawerOpen} user={user} />
+                    <FullScreenNav setDrawerOpen={setDrawerOpen} />
                 </Box>
                 {/* Only visible on smaller screens */}
                 <Box display={{ xs: 'flex', md: 'none' }}>
-                    {/* <SmallScreenNav setDrawerOpen={setDrawerOpen} user={user}/> */}
+                    <SmallScreenNav setDrawerOpen={setDrawerOpen} />
                 </Box>
             </Container>
             <Box width={350}>
