@@ -1,9 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Heading from '../Common/Heading';
-import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOutlined';
 import { Grid, Box, Typography, useTheme } from "@mui/material";
-import { usePathname, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import CustomBox from '../Custom/CustomBox';
@@ -20,10 +18,8 @@ const Collection = () => {
     const { t } = useTranslation();
     const [collection, setCollection] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [visibleCount, setVisibleCount] = useState(6);
-    const pathname = usePathname();
-    const showArrowIcon = pathname !== "/categories/collections";
-const theme=useTheme()
+
+    const theme = useTheme()
     const getCollection = async () => {
         const response = await GetCollection();
         setCollection(response?.collections);
@@ -34,76 +30,40 @@ const theme=useTheme()
         getCollection();
     }, []);
 
-    useEffect(() => {
-        // If on /categories/collections, display all collections
-        if (pathname === "/categories/collections") {
-            setVisibleCount(collection?.length || 0);
-        }
-    }, [pathname, collection]);
 
 
     return (
         <CustomBox>
-            <Heading text={t("Our Top Collections")}>
-                {showArrowIcon && visibleCount < (collection?.length || 0) && (
-                    <Link href="/categories/collections" passHref aria-label="See all collections">
-                  
-                        <ArrowCircleRightOutlinedIcon fontSize='large' sx={{ color: "white" }} />
-                  
-                    </Link>
-                )}
-            </Heading>
-
+            <Heading text={t("Our Top Collections")} />
             <Box>
                 {loading ? (
                     <Grid container spacing={2}>
                         {Array.from({ length: 6 }).map((_, index) => (
-                            <CustomSkeleton 
-                                gridItem 
-                                gridProps={{ xs: 12, sm: 6, md: 4, lg: 3 }} 
-                                key={index} 
-                                type="card" 
-                                width="96px" 
-                                height="96px" 
+                            <CustomSkeleton
+                                gridItem
+                                gridProps={{ xs: 12, sm: 6, md: 4, lg: 3 }}
+                                key={index}
+                                type="card"
+                                width="96px"
+                                height="96px"
                             />
                         ))}
                     </Grid>
-                ) : collection && collection.length > 0 ? (
-                    pathname === "/categories/collections" ? (
-                        // Display all collections in a grid if on /categories/collections
-                        <Grid container spacing={2}>
-                            {collection.map((col, index) => (
-                                <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                                    <Link href={`/${"collection"}/${col._id}/${col.slug}`} passHref>
-                                        <CustomCollectionCard
-                                            tooltip={col.title}
-                                            id={col._id}
-                                            slug={col.slug}
-                                            image={col.collection_image}
-                                            title={col.title}
-                                            
-                                            
-                                            
-                                        />
-                                    </Link>
-                                </Grid>
-                            ))}
-                        </Grid>
-                    ) : (
-                        // Use Swiper for other pages
-                        <Swiper
-                            modules={[Navigation, A11y]}
-                            spaceBetween={10}
-                            slidesPerView={2}
-                            breakpoints={{
-                                640: { slidesPerView: 2 },
-                                768: { slidesPerView: 4 },
-                                1024: { slidesPerView: 6, spaceBetween: 30 },
-                            }}
-                        >
-                            {collection.slice(0, visibleCount).map((col, index) => (
+                ) : collection?.length > 0 ? (
+                    <Swiper
+                        modules={[Navigation, A11y]}
+                        spaceBetween={10}
+                        slidesPerView={2}
+                        breakpoints={{
+                            640: { slidesPerView: 2 },
+                            768: { slidesPerView: 4 },
+                            1024: { slidesPerView: 6, spaceBetween: 30 },
+                        }}
+                    >
+                        {collection.map((col, index) => {
+                            return (
                                 <SwiperSlide key={index}>
-                                    <Link href={`/${"collection"}/${col._id}/${col.slug}`} passHref>
+                                    <Link href={`/collection/${col.slug}`}>
                                         <CustomCollectionCard
                                             tooltip={col.title}
                                             id={col._id}
@@ -113,13 +73,17 @@ const theme=useTheme()
                                         />
                                     </Link>
                                 </SwiperSlide>
-                            ))}
-                        </Swiper>
-                    )
+                            );
+                        })}
+
+                    </Swiper>
                 ) : (
-                    <CustomTypography textAlign="center" sx={{color:theme.palette.text.primary}}>{t('no products Found')}</CustomTypography>
+                    <CustomTypography textAlign="center" sx={{ color: theme.palette.text.primary }}>
+                        {t('No collections found')}
+                    </CustomTypography>
                 )}
             </Box>
+
         </CustomBox>
     );
 };

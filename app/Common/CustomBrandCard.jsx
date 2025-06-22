@@ -8,7 +8,7 @@ import Link from "next/link";
 
 const CustomBrandCard = ({ id, slug, image, title }) => {
     return (
-        <Link href={`/categories/collections/${id}/${slug}`} passHref>
+        <>
             <Box className="group flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300">
                 {/* Brand Logo */}
                 <Box className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden bg-white shadow-sm border border-gray-200 group-hover:shadow-md group-hover:border-primary transition duration-300 ease-in-out">
@@ -29,7 +29,7 @@ const CustomBrandCard = ({ id, slug, image, title }) => {
                     {title}
                 </Typography>
             </Box>
-        </Link>
+        </>
     );
 };
 
