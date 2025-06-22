@@ -9,10 +9,10 @@ export async function GetCollection() {
   }
 }
 
-export async function GetSingleCollection({ categoryId }) {
+export async function GetCollectionsByCategory({ categoryId }) {
   try {
     const response = await httpAxios.get(
-      `/collection/${categoryId}`
+      `/collection/category/${categoryId}`
     );
     console.log("col", response.data.data);
     return response.data.data;

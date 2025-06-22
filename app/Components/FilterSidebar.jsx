@@ -30,9 +30,12 @@ const FilterSidebar = ({
   setOnlyDiscounted,
   selectedCategory,
   setSelectedCategory,
+  selectedCollection,
+  setSelectedCollection,
   selectedBrand,
   setSelectedBrand,
   categories,
+  collections,
   brands,
 }) => {
   const validPrice = Array.isArray(priceRange) && priceRange.length === 2 ? priceRange : [minPrice, maxPrice];
@@ -40,7 +43,7 @@ const FilterSidebar = ({
 
   return (
     <Box
-      className="bg-white border border-gray-200 text-secondary"
+      className=" border border-gray-200 text-secondary"
       sx={{
         p: 2,
         borderRadius: 2,
@@ -64,6 +67,24 @@ const FilterSidebar = ({
           {categories.map((cat) => (
             <MenuItem key={cat._id} value={cat.slug}>
               {cat.title}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      {/* Collection Filter */}
+      <FormControl fullWidth margin="normal" size="small">
+        <InputLabel id="collection-select-label">Collection</InputLabel>
+        <Select
+          labelId="collection-select-label"
+          value={selectedCollection}
+          label="Collection"
+          onChange={(e) => setSelectedCollection(e.target.value)}
+        >
+          <MenuItem value="">All</MenuItem>
+          {collections.map((col) => (
+            <MenuItem key={col._id} value={col.slug}>
+              {col.title}
             </MenuItem>
           ))}
         </Select>
