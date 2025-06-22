@@ -15,7 +15,7 @@ import { getWishlist } from '@/app/Service/Profile';
 import { GetFilteredProduct } from '@/app/Service/GetProduct';
 
 const Page = () => {
-    const { id, slug } = useParams();
+    const { id, slug} = useParams();
     const pathname = usePathname();
     const { user } = useUser(); // 👈 Get user from context
     const userId = user?._id;
@@ -31,9 +31,8 @@ const Page = () => {
         if (!id || !type) return;
         (async () => {
             try {
-                const data = await GetFilteredProduct({ type, id });
-                console.log(data.products)
-                setProducts(data.products || []);
+                const data = await GetFilteredProduct({ type:"product", search:slug });
+                setProducts(data.filters || []);
             } catch (err) {
                 console.error(`❌ Failed to fetch ${type}`, err);
             } finally {
