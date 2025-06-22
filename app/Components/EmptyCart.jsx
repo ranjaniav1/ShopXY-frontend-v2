@@ -13,8 +13,8 @@ const EmptyCart = ({ src, title, buttonHref = "/categories/collections", buttonT
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        height: "100%", 
-        width: "100%", 
+        height: "100%",
+        width: "100%",
         textAlign: "center",
         paddingBottom: 10,
         paddingTop: 2,
@@ -26,13 +26,13 @@ const EmptyCart = ({ src, title, buttonHref = "/categories/collections", buttonT
         src={src}
         alt="empty content"
         style={{
-          height:"250px",
+          height: "250px",
           objectFit: "cover",
-          animation: "scale 2s infinite alternate" 
+          animation: "scale 2s infinite alternate"
         }}
       />
 
-      <CustomTypography variant="h6" sx={{ color: theme.palette.card.text, mb: 1 }}>
+      <CustomTypography variant="h6" sx={{ mb: 1 }}>
         {title}
       </CustomTypography>
       {subtitle && (

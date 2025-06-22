@@ -69,7 +69,7 @@ const UserNotify = ({ userId, activeTab }) => {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              backgroundColor: theme.palette.card.background,
+             
               borderLeft: `4px solid ${theme.palette.primary.main}`,
               boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.1)",
               position: "relative",

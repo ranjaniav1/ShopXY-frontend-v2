@@ -1,17 +1,16 @@
 "use client"
-const { RemoveUser } = require("@/app/redux/reducer/user/loginReducer");
 const { Logout } = require("@/app/Service/User");
 const { IconButton, Menu, MenuItem } = require("@mui/material");
 const { useRouter } = require("next/navigation");
 const { useState } = require("react");
-const { useDispatch } = require("react-redux");
-import Cookies from "js-cookie";
+import { useUser } from "@/app/context/UserContext";
 import toast from "react-hot-toast";
-const NavProfileMenu = ({user}) => {
-  const dispatch = useDispatch();
+const NavProfileMenu = () => {
+  const { setUser, user } = useUser()
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState(null);
 
+  console.log("users", user)
   const handleOpenMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -24,9 +23,8 @@ const NavProfileMenu = ({user}) => {
   const handleLogout = async () => {
     handleCloseMenu(); // Close menu before logout
     try {
-      await Logout({ userId:user._id });
-      Cookies.remove("user");
-      dispatch(RemoveUser());
+      await Logout({ userId: user._id });
+      setUser(null)
       toast.success("User logged out successfully.");
       router.push("/");
     } catch (error) {

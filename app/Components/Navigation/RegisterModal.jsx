@@ -9,7 +9,7 @@ import PasswordInput from '@/app/Common/PasswordInput';
 import FileInput from '@/app/Common/FileInput';
 import { GoogleSignupButton, handleChange, handleFileChange, handleSubmit } from '@/app/helper/RegisterUtils';
 import CustomButton from '@/app/Custom/CustomButton';
-import { useDispatch } from 'react-redux';
+import { useUser } from '@/app/context/UserContext';
 
 const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
     const { t } = useTranslation();
@@ -18,9 +18,8 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
     const [avatar, setAvatar] = useState(null);
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-const dispatch=useDispatch()
-  
 
+    const { setUser } = useUser()
     return (
         <>
             <CustomModal open={open} onClose={onClose} title={t("Register")} sx={{ color: theme.palette.text.primary }}>
@@ -81,7 +80,7 @@ const dispatch=useDispatch()
                         <CustomButton
                             background="#d62746"
                             fullWidth
-                            onClick={() => GoogleSignupButton(dispatch, onClose)}
+                            onClick={() => GoogleSignupButton(setUser, onClose)}
                             startIcon={<Google />}
                             title={t('Google')}
                             sx={{ flex: 1 }}

@@ -1,8 +1,6 @@
 import toast from "react-hot-toast";
 import { Register, SignupWithGoogle } from "../Service/User";
 import { signInWithPopup } from "firebase/auth";
-import { setUser } from "../redux/reducer/user/loginReducer";
-import Cookies from "js-cookie";
 import { auth, provider } from "../firebase/fireConfig";
 
 export const handleChange = (setFormData) => (e) => {
@@ -88,7 +86,7 @@ export const handleSubmit = async (formData, avatar, setLoading, onClose) => {
 
 
 
-export const GoogleSignupButton = async (dispatch,onClose) => {
+export const GoogleSignupButton = async (setUser,onClose) => {
   try {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
@@ -96,7 +94,7 @@ export const GoogleSignupButton = async (dispatch,onClose) => {
     // You can now use the user object to store user info in your app
     const saveUserInfo = await SignupWithGoogle(user);
     console.log("User info saved", saveUserInfo);
-    dispatch(setUser({ user: saveUserInfo.data.user }));
+   setUser({ user: saveUserInfo.data.user });
     toast.success(saveUserInfo.message);
     // close modal after google signup
     onClose()

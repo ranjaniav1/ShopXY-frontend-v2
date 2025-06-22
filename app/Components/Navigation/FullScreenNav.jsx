@@ -1,7 +1,6 @@
 import React from "react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Box, IconButton } from "@mui/material";
-import { useSelector } from "react-redux";
 import Link from "next/link";
 import NavSearchBar from "./NavSearchBar";
 import NavProfileMenu from "./NavProfileMenu";
@@ -20,7 +19,7 @@ const FullScreenNav = ({ setDrawerOpen, user }) => {
     >
       {/* Logo */}
       <Link href="/" className="flex item-center">
-        <img src={webSettings?.logo} alt="Site Logo" className="h-16 w-auto object-contain" />
+        <img src={webSettings?.logo} alt="Site Logo" className="h-16 w-auto object-contain" /> 
       </Link>
 
       {/* Search Field */}
