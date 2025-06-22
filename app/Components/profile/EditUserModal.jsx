@@ -1,19 +1,16 @@
 import React, { useState } from "react";
 import { TextField, Button, Avatar, Box, IconButton } from "@mui/material";
 import { EditUser } from "@/app/Service/User";
-import { useSelector, useDispatch } from "react-redux";
 import { Edit as EditIcon } from "@mui/icons-material"; // Import edit icon
-import { setUser } from "@/app/redux/reducer/user/loginReducer";
 import toast from "react-hot-toast";
 import { useUser } from "@/app/context/UserContext";
 
 const EditUserModal = ({ user, onClose }) => {
-  const dispatch = useDispatch();
   const [fullname, setFullname] = useState(user?.fullname || "");
   const [avatar, setAvatar] = useState(null); // Avatar will be a file object
- const { user:contextUser } = useUser(); // 👈 Get user from context
-    const userId = contextUser?._id;  
-  
+  const { user: contextUser, setUser } = useUser(); // 👈 Get user from context
+  const userId = contextUser?._id;
+
 
 
   const handleAvatarChange = (e) => {
@@ -33,13 +30,13 @@ const EditUserModal = ({ user, onClose }) => {
     formData.append("fullname", fullname); // Append full name
     // Only append avatar if it's selected
     if (avatar) {
-      formData.append("avatar", avatar); 
+      formData.append("avatar", avatar);
     }
-  
+
     try {
       const response = await EditUser(formData);
-      console.log("response of edit user",response)
-      dispatch(setUser({user: response?.data?.user})); // Update the user state
+      console.log("response of edit user", response)
+      setUser({ user: response?.data?.user }); // Update the user state
       toast.success("Profile updated successfully");
       onClose(); // Close modal after success
     } catch (error) {
@@ -47,8 +44,8 @@ const EditUserModal = ({ user, onClose }) => {
       alert("Error updating profile");
     }
   };
-  
-  
+
+
 
   return (
     <Box

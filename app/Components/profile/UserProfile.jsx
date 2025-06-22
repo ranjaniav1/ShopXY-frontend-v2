@@ -27,7 +27,7 @@ const UserProfile = ({ user }) => {
         alignItems: "center",
         p: 3,
         mb: 4,
-        background: `linear-gradient(135deg, ${theme.palette.card.background}, ${theme.palette.primary.main})`, // Theme-based background
+        background: `linear-gradient(135deg)`, // Theme-based background
         borderRadius: "12px",
         boxShadow: theme.shadows[3]
       }}

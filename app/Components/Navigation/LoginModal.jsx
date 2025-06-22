@@ -12,21 +12,18 @@ import {
 import CustomModal from "@/app/Custom/CustomModal";
 import CustomInput from "@/app/Custom/CustomInput";
 import CustomButton from "@/app/Custom/CustomButton";
-import GoogleRegistrationModal from "./GoogleRegistrationForm";
 import { GetCurrentUser, Login } from "@/app/Service/User";
-import { setUser } from "@/app/redux/reducer/user/loginReducer";
-import { useDispatch } from "react-redux";
-import Cookies from "js-cookie";
 import { GoogleSignupButton } from "@/app/helper/RegisterUtils";
+import { useUser } from "@/app/context/UserContext";
 
 const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
   const theme = useTheme();
   const { t } = useTranslation();
-  const dispatch = useDispatch(); // Initialize useDispatch
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false); // Loading state
+  const { setUser } = useUser()
 
   const handleSubmitEmail = async (e) => {
     e.preventDefault();
@@ -51,7 +48,7 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
       // Check the statusCode from response
       if (response?.statusCode === 200 && response?.success) {
         const userData = await GetCurrentUser(); // ✅ fetch fresh user
-        dispatch(setUser(userData?.data)); // ✅ set to redux
+        setUser(userData?.data?.user); // ✅ set to redux
         toast.success(t(response?.message || "Login successful"));
         onClose();
       } else {
@@ -118,7 +115,7 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
 
           <CustomButton
             fullWidth
-            onClick={() => GoogleSignupButton(dispatch, onClose)}
+            onClick={() => GoogleSignupButton(setUser, onClose)}
             startIcon={<Google />}
             title={t("Google")}
             sx={{ flex: 1, backgroundColor: theme.palette.error.main }}

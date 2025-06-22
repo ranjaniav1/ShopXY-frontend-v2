@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { DeleteAccount, Logout } from "@/app/Service/User";
 import {
   Box,
@@ -11,21 +10,20 @@ import {
 import CustomBox from "@/app/Custom/CustomBox";
 import { toast } from "react-hot-toast";
 import DialogBox from "@/app/Custom/CustomDialog";
-import { RemoveUser } from "../../redux/reducer/user/loginReducer";
+
 import { useRouter } from "next/navigation";
 import UserProfile from "@/app/Components/profile/UserProfile";
 import TabSection from "@/app/Components/profile/TabSection";
 import WishlistItem from "@/app/Components/profile/WishlistProduct";
-import Cookies from "js-cookie";
 import UserOrders from "@/app/Components/profile/UserOrders";
 import UserNotify from "@/app/Components/profile/UserNotify";
 import AddressPage from "@/app/scheckout/address/page";
+import { useUser } from "@/app/context/UserContext";
 
 const Layout = ({ children }) => {
-  const dispatch = useDispatch();
-
-  const user = useSelector((state) => state.auth?.user?.user);
-  const userId = user?._id; 
+  const { user, setUser } = useUser()
+  const userId = user?._id;
+  console.log(user)
   const [activeTab, setActiveTab] = useState(0);
   const [openDialog, setOpenDialog] = useState(false);
   const [openDeleteAccountDialog, setOpenDeleteAccountDialog] = useState(false);
@@ -43,13 +41,12 @@ const Layout = ({ children }) => {
       setOpenDeleteAccountDialog(false);
     }
   };
-  
+
 
   const handleLogoutConfirm = async () => {
     try {
       await Logout({ userId });
-      Cookies.remove("user");
-      dispatch(RemoveUser());
+      setUser(null)
       toast.success("User logged out successfully.");
       router.push("/");
     } catch (error) {
@@ -62,8 +59,7 @@ const Layout = ({ children }) => {
   const handleDeleteAccount = async () => {
     try {
       await DeleteAccount(userId);
-      Cookies.remove("user");
-      dispatch(RemoveUser());
+      setUser(null)
       toast.success("Account deleted successfully.");
       router.push("/");
     } catch (error) {
@@ -93,8 +89,8 @@ const Layout = ({ children }) => {
             }}
           >
             {activeTab === 0 && <UserNotify userId={userId} activeTab={activeTab} />}
-            {activeTab === 1 && <WishlistItem userId={userId} activeTab={activeTab}/>}
-            {activeTab === 2 && <UserOrders userId={userId} activeTab={activeTab}/>}
+            {activeTab === 1 && <WishlistItem userId={userId} activeTab={activeTab} />}
+            {activeTab === 2 && <UserOrders userId={userId} activeTab={activeTab} />}
             {activeTab === 3 && <AddressPage />} {/* Render AddressPage */}
 
           </Box>

@@ -1,26 +1,22 @@
 // middleware.js
 const { NextResponse } = require("next/server");
 
-function middleware(req) {
-  const token = req.cookies.get("accessToken")?.value;
+export default function middleware(req) {
+  const token = req.cookies.get("user")?.value;
 
   console.log("Access Token from cookie:", token);
 
-  const protectedPaths = ["/scheckout", "/user"];
-  if (
-    protectedPaths.some((path) => req.nextUrl.pathname.startsWith(path)) &&
-    !token
-  ) {
-    const loginUrl = new URL("/", req.url);
-    return NextResponse.redirect(loginUrl);
+  if (!token) {
+
+    return NextResponse.redirect(new URL("/", req.url));
   }
 
   return NextResponse.next();
 }
 
-module.exports = {
-  middleware,
-  config: {
-    matcher: ["/scheckout/:path*", "/user/:path*"],
-  },
+
+
+export const config = {
+  matcher: ["/scheckout/:path*", "/user/:path*"],
+
 };

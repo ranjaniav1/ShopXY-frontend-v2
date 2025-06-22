@@ -10,13 +10,14 @@ import { useUser } from '../context/UserContext';
 const Navigation = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const { user } = useUser()
+
     return (
         <Box className="bg-body border-b border-secondary" style={{
             position: 'fixed', // Fix the nav at the top
             top: 0, // Align to the top
             left: 0,
             right: 0,
-            zIndex: 1000, height: "80px"
+            zIndex: 1000
         }}>
             <Container maxWidth="xl">
                 {/* Only visible on larger screens */}
