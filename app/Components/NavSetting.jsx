@@ -1,18 +1,15 @@
 'use client';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
-import { setLanguage } from '../redux/reducer/LanguageReducer';
 import i18n from '../i18n';
 import Cookies from 'js-cookie';
 import { useTheme } from '../context/ThemeContext'; // 👈 Your custom hook
+import { useLanguage } from '../context/LanguageContext';
 
 const NavSetting = ({ onClose }) => {
     const { t } = useTranslation();
-    const dispatch = useDispatch();
-    const selectedLanguage = useSelector(state => state.language.language);
-
     const { theme, switchTheme } = useTheme(); // 👈 from your context
+    const { language, setLanguage } = useLanguage();
 
     const handleThemeChange = (e) => {
         const newTheme = e.target.value;
@@ -25,9 +22,7 @@ const NavSetting = ({ onClose }) => {
 
     const handleLanguageChange = (event) => {
         const lang = event.target.value;
-        dispatch(setLanguage(lang));
-        i18n.changeLanguage(lang);
-        Cookies.set('language', lang);
+        setLanguage(lang); // uses your context
         if (onClose) onClose();
     };
 
@@ -68,7 +63,7 @@ const NavSetting = ({ onClose }) => {
                                 type="radio"
                                 name="language"
                                 value={lang}
-                                checked={selectedLanguage === lang}
+                                checked={language === lang}
                                 onChange={handleLanguageChange}
                             />
                             {lang === 'en' ? 'English' :
