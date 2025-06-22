@@ -11,6 +11,7 @@ import Footer from "./Components/Footer";
 import { Toaster } from "react-hot-toast";
 import { ThemeProvider } from "./context/ThemeContext";
 import { UserProvider } from "./context/UserContext";
+import { LanguageProvider } from "./context/LanguageContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,29 +23,32 @@ export default function RootLayout({ children }) {
         <UserProvider>
 
           <ThemeProvider>
-            <ProviderStore>
-              <Toaster position="bottom-center" />
-              <I18nextProvider i18n={i18n}>
-                {/* <NavigationEventsHandler /> */}
-                <Navigation />
-                <Container
-                  maxWidth="xl"
-                  sx={{
-                    marginY: {
-                      xs: "12%",//mobile devices
-                      sm: "7%",// tablets
-                      md: "6%", // small desktops
-                      lg: "6%",//medium desktops
-                      xl: "4%", // large desktops
-                    },
-                    paddingTop: "30px", // adjust based on the height of your nav
-                  }}
-                >
-                  {children}
-                </Container>
-                {/* <Footer /> */}
-              </I18nextProvider>
-            </ProviderStore>
+            <LanguageProvider>
+
+              <ProviderStore>
+                <Toaster position="bottom-center" />
+                <I18nextProvider i18n={i18n}>
+                  {/* <NavigationEventsHandler /> */}
+                  <Navigation />
+                  <Container
+                    maxWidth="xl"
+                    sx={{
+                      marginY: {
+                        xs: "12%",//mobile devices
+                        sm: "7%",// tablets
+                        md: "6%", // small desktops
+                        lg: "6%",//medium desktops
+                        xl: "4%", // large desktops
+                      },
+                      paddingTop: "30px", // adjust based on the height of your nav
+                    }}
+                  >
+                    {children}
+                  </Container>
+                  {/* <Footer /> */}
+                </I18nextProvider>
+              </ProviderStore>
+            </LanguageProvider>
           </ThemeProvider>
         </UserProvider>
 
