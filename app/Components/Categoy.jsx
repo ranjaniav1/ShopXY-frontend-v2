@@ -5,6 +5,7 @@ import { GetCategories } from "../Service/GetCategory";
 import Link from "next/link";
 import CustomSkeleton from "../Custom/CustomSkeleton";
 import Heading from "../Common/Heading";
+import { useTranslation } from "react-i18next";
 
 const bgColors = [
   "bg-red-100",
@@ -22,7 +23,7 @@ const bgColors = [
 const CategorySection = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const { t } = useTranslation();
   useEffect(() => {
     (async () => {
       try {
@@ -38,7 +39,7 @@ const CategorySection = () => {
 
   return (
     <Box >
-      <Heading text="Shop by Category" />
+      <Heading text={t("Shop by Category")} />
 
       {loading ? (
         <Grid container spacing={2}>
