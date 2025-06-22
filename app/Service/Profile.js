@@ -1,10 +1,9 @@
 import { httpAxios } from "../httpAxios";
 
 // Function to add an item to the wishlist
-export const addWishlist = async (userId, productId) => {
+export const addWishlist = async (productId) => {
   try {
-    const response = await httpAxios.post(`/user/profile/add-wishlist`, {
-      userId,
+    const response = await httpAxios.post(`/user/wishlist`, {
       productId
     });
     return response.data.data;
@@ -15,11 +14,10 @@ export const addWishlist = async (userId, productId) => {
 };
 
 // Function to get the wishlist
-export const getWishlist = async (userId,page=1,limit=10) => {
+export const getWishlist = async (page = 1, limit = 10) => {
   try {
-    const response = await httpAxios.get(`/user/profile/get-wishlist?page=${page}&limit=${limit}`, {
-      params: { userId }
-    });
+    const response = await httpAxios.get(`/user/wishlist?page=${page}&limit=${limit}`);
+    console.log(response)
     return response.data.data;
   } catch (error) {
     console.error("Error fetching wishlist:", error);
@@ -28,11 +26,10 @@ export const getWishlist = async (userId,page=1,limit=10) => {
 };
 
 // Function to delete an item from the wishlist
-export const deleteWishlistItem = async ({ userId, productId }) => {
+export const deleteWishlistItem = async (productId) => {
   try {
-    const response = await httpAxios.delete(`/user/profile/delete-wishlist`, {
+    const response = await httpAxios.delete(`/user/wishlist`, {
       data: {
-        userId,
         productId
       }
     });
@@ -107,7 +104,7 @@ export const DeleteAllWishists = async (userId) => {
 };
 
 // Function to get order for a user
-export const getOrder = async (userId,page=1,limit=1) => {
+export const getOrder = async (userId, page = 1, limit = 1) => {
   try {
     const response = await httpAxios.get(`/user/payment/get-order/${userId}?page=${page}&limit=${limit}`); // Pass userId in URL path
     return response.data.data;
