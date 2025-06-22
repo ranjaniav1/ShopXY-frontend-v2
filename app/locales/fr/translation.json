@@ -3,7 +3,7 @@
   "Best Discount Products": "Meilleurs Produits en Réduction",
   "Products For You": "Produits pour Vous",
   "Filters": "Filtres",
-  "Price Range": "Gamme de Prix",
+  "PriceRange": "Gamme de Prix",
   "Filter By Rating": "Filtrer par Note",
   "SortBy": "Trier par",
   "Brands": "Marques",
@@ -22,5 +22,9 @@
   "Size": "Taille",
   "Quantity": "Quantité",
   "Select Delivery Address": "Sélectionner une Adresse de Livraison",
-  "Add New Address": "Ajouter une Nouvelle Adresse"
+  "Add New Address": "Ajouter une Nouvelle Adresse",
+  "Shop by Category": "Acheter par Catégorie",
+  "Our Top Brands": "Nos Meilleures Marques",
+  "Filter By": "Filtrer Par",
+  "Rating Range": "Plage de Notes"
 }
