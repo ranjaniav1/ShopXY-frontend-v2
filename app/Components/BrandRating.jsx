@@ -73,7 +73,7 @@ const BrandRating = ({ brand, brandId }) => {
             sx={{ marginLeft: 1, fontWeight: "bold" }} className="text-primary"
             onClick={() => setModalOpen(true)}
           >
-            {brand.title}
+            {brand?.title}
           </CustomTypography>
         </Box>
         <Box sx={{ flexGrow: 1, textAlign: "center" }}>
@@ -109,7 +109,7 @@ const BrandRating = ({ brand, brandId }) => {
       <CustomDrawer
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
-        title={`Reviews for ${brand.title}`}
+        title={`Reviews for ${brand?.title}`}
       >
         <BrandReviewDrawer
           brand={brand}
@@ -121,7 +121,7 @@ const BrandRating = ({ brand, brandId }) => {
       <CustomModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
-        title={`Review ${brand.title}`}
+        title={`Review ${brand?.title}`}
       >
         <BrandReviewForm brandId={brandId} onClose={() => setModalOpen(false)} onSubmitSuccess={fetchReviews} />
       </CustomModal>

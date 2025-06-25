@@ -1,95 +1,54 @@
-import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
-import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
-import { Box, Divider, FormControlLabel, Radio, Typography, useTheme } from '@mui/material';
-import React from 'react';
-import CustomIconButton from '../Custom/CustomIconButton';
-import CustomTypography from '../Custom/CustomTypography';
+"use client";
+
+import React from "react";
+import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
+import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
+import CustomIconButton from "../Custom/CustomIconButton";
+import CustomTypography from "../Custom/CustomTypography";
 
 const AddressCard = ({ address, selectedAddressId, handleEdit, handleRemove, handleChange }) => {
-    const handleRadioChange = () => {
-        handleChange(address._id);
-    };
-    const theme = useTheme()
-    return (
-        <Box
-            sx={{
-                alignItems: 'center',
-                border: `1px solid ${theme.palette.card.border}`,
-                backgroundColor: theme.palette.card.background,
-                borderRadius: 2,
-                padding: '16px',
-                marginBottom: 2,
-                boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
-                position: 'relative',
-            }}
-        >
+  const handleRadioChange = () => {
+    handleChange(address._id);
+  };
 
-            {/* Edit and delete buttons placed at the top-right corner */}
-            <Box
-                sx={{
-                    position: 'absolute',
-                    top: 8,
-                    right: 8,
-                    display: 'flex',
-                    alignItems: 'center',
-                    border: '1px solid #ededed',
-                    borderRadius: 2,
-                    padding: '2px',
-                }}
-            >
-                <CustomIconButton
-                    onClick={() => handleEdit(address._id)}
-                    sx={{ padding: '4px' }}
-                >
-                    <ModeEditOutlineOutlinedIcon fontSize="small" />
-                </CustomIconButton>
+  return (
+    <div className="relative bg-body border border-tsecondary rounded-xl p-4 shadow-md">
+      {/* Edit & Delete Buttons */}
+      <div className="absolute top-2 right-2 flex items-center border border-gray-300 rounded-lg px-1 py-0.5 bg-white">
+        <CustomIconButton onClick={() => handleEdit(address._id)} className="p-1">
+          <ModeEditOutlineOutlinedIcon fontSize="small" />
+        </CustomIconButton>
 
-                <Divider orientation='vertical' flexItem sx={{ height: 34, mx: 1 }} />
+        <div className="h-6 w-px bg-gray-300 mx-1" />
 
-                <CustomIconButton
-                    onClick={() => handleRemove(address._id)}
-                    sx={{ padding: '4px' }}
-                >
-                    <DeleteForeverOutlinedIcon sx={{ color: 'red' }} fontSize='small' />
-                </CustomIconButton>
-            </Box>
-            <Box display="flex" alignItems="flex-start" mt={1}>
-                <FormControlLabel
-                    control={
-                        <Radio
-                            checked={address._id === selectedAddressId}
-                            value={address._id}
-                            onChange={handleRadioChange}
-                            sx={{
-                                color: '#22aa99', // Meesho's pink color for active radio button
-                                '&.Mui-checked': {
-                                    color: '#22aa99', // Pink color for checked radio
-                                },
-                            }}
-                        />
-                    }
-                    label=""
-                    sx={{ mr: 1 }}
-                />
-                <Box >
-                    {/* <CustomTypography variant="body1" fontWeight="bold" sx={{ color: '#333', mb: '4px' }}>
-                {address.address}
-            </CustomTypography */}
-                    <CustomTypography variant="body2" sx={{ color: theme.palette.text.secondary }}>
-                        {address.address},{address.city}
-                    </CustomTypography>
-                    <CustomTypography variant="body2" sx={{ color: theme.palette.text.secondary }}>
-                    {address.state}, {address.postalCode}
-                    </CustomTypography>
+        <CustomIconButton onClick={() => handleRemove(address._id)} className="p-1">
+          <DeleteForeverOutlinedIcon fontSize="small" className="text-red-600" />
+        </CustomIconButton>
+      </div>
 
-                    <CustomTypography variant="body2" sx={{ color: theme.palette.text.secondary }} mt={0.5}>
-                        {address.country} |  Phone: {address.phone}
-                    </CustomTypography>
-                </Box>
-            </Box>
+      {/* Address Info with Radio */}
+      <div className="flex mt-2 items-start">
+        <input
+          type="radio"
+          checked={address._id === selectedAddressId}
+          onChange={handleRadioChange}
+          className="accent-[--primary] mt-1 mr-2 w-4 h-4"
+        />
 
-        </Box >
-    );
+        <div className="text-tsecondary text-sm">
+          <CustomTypography variant="body2" className="mb-1">
+            {address.address}, {address.city}
+          </CustomTypography>
+          <CustomTypography variant="body2" className="mb-1">
+            {address.state}, {address.postalCode}
+          </CustomTypography>
+          <CustomTypography variant="body2">
+            {address.country} | Phone: {address.phone}
+          </CustomTypography>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default AddressCard;

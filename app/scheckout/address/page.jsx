@@ -17,9 +17,9 @@ import CustomIconButton from "@/app/Custom/CustomIconButton";
 import CustomTypography from "@/app/Custom/CustomTypography";
 import CustomBox from "@/app/Custom/CustomBox";
 import { usePathname } from "next/navigation";
+import { useUser } from "@/app/context/UserContext";
 
 const AddressPage = ({ handleNext, handleBack }) => {
-  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -29,10 +29,10 @@ const AddressPage = ({ handleNext, handleBack }) => {
   const [addresses, setAddresses] = useState([]);
   const pathname = usePathname();
   const isCheckoutAddressRoute = pathname === "/scheckout/address";
-    console.log("path",isCheckoutAddressRoute)
-  const userId = useSelector((state) => state.auth?.user?.user?._id);
+  console.log("path", isCheckoutAddressRoute)
+  const { user } = useUser()
+  const userId = user._id;
   const { t } = useTranslation();
-  const theme = useTheme();
 
   useEffect(() => {
     if (userId) {
@@ -114,66 +114,91 @@ const AddressPage = ({ handleNext, handleBack }) => {
 
   return (
     <CustomBox>
-      <Box display="flex" justifyContent="space-between" alignItems="center" p={2}>
-        <CustomTypography sx={{ color: theme.palette.card.text }}>{t("Select Delivery Address")}</CustomTypography>
+      {/* Header */}
+      <div className="flex justify-between items-center px-4 py-2">
+        <CustomTypography className="text-tprimary font-medium text-lg">
+          {t("Select Delivery Address")}
+        </CustomTypography>
 
-        {isSmallScreen ? (
-          <CustomIconButton onClick={handleAddAddressClick} sx={{ background: theme.palette.button.background, color: theme.palette.button.color }}>
+        <div className="block sm:hidden">
+          <CustomIconButton
+            onClick={handleAddAddressClick}
+            className="bg-primary text-white p-2 rounded-md"
+          >
             <Add />
           </CustomIconButton>
-        ) : (
-          <CustomButton title={t("Add Address")} onClick={handleAddAddressClick} />
-        )}
-      </Box>
+        </div>
 
-      <Grid container spacing={2} p={2}>
+        <div className="hidden sm:block">
+          <CustomButton title={t("Add Address")} onClick={handleAddAddressClick} />
+        </div>
+      </div>
+
+      {/* Address List */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4">
         {loading ? (
-          <CustomTypography>Loading addresses...</CustomTypography>
+          <CustomTypography>{t("Loading addresses...")}</CustomTypography>
         ) : addresses.length > 0 ? (
           addresses.map((address) => (
-            <Grid item xs={12} sm={6} md={6} key={address._id}>
-              <AddressCard
-                address={address}
-                selectedAddressId={selectedAddressId}
-                handleEdit={handleEditAddress}
-                handleRemove={handleRemoveAddress}
-                handleChange={handleAddressChange}
-              />
-            </Grid>
+            <AddressCard
+              key={address._id}
+              address={address}
+              selectedAddressId={selectedAddressId}
+              handleEdit={handleEditAddress}
+              handleRemove={handleRemoveAddress}
+              handleChange={handleAddressChange}
+            />
           ))
         ) : (
-          <Grid item xs={12}>
-            <Box textAlign="center" py={5}>
-              <CustomTypography variant="h6" color="text.secondary">
-                {t("No address found. Please add one to proceed.")}
-              </CustomTypography>
-            </Box>
-          </Grid>
+          <div className="col-span-full text-center py-8">
+            <CustomTypography variant="h6" className="text-tsecondary">
+              {t("No address found. Please add one to proceed.")}
+            </CustomTypography>
+          </div>
         )}
-      </Grid>
-      {isCheckoutAddressRoute && (
-      <Container>
-        <Box sx={{ display: "flex", justifyContent: "space-between", padding: "16px 0" }}>
-          <Link href="/scheckout/carts">
-            <CustomButton title="Back" onClick={handleBack} variant="outlined" />
-          </Link>
+      </div>
 
-          {selectedAddressId ? (
-            <Link href="/scheckout/payment">
-              <CustomButton title="Next" variant="outlined" onClick={handleNext} />
+      {/* Navigation for Checkout Flow */}
+      {isCheckoutAddressRoute && (
+        <div className="container mx-auto px-4">
+          <div className="flex justify-between py-4">
+            <Link href="/scheckout/carts">
+              <CustomButton title="Back" onClick={handleBack} variant="outlined" />
             </Link>
-          ) : (
-            <CustomButton title="Next" variant="outlined" disabled onClick={() => toast.error(t("Please add an address before proceeding."))} />
-          )}
-        </Box>
-      </Container>
-)}
+
+            {selectedAddressId ? (
+              <Link href="/scheckout/payment">
+                <CustomButton title="Next" variant="outlined" onClick={handleNext} />
+              </Link>
+            ) : (
+              <CustomButton
+                title="Next"
+                variant="outlined"
+                disabled
+                onClick={() => toast.error(t("Please add an address before proceeding."))}
+              />
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Drawer */}
       {open && (
-        <CustomDrawer open={open} onClose={handleCloseDrawer} title={isEditing ? "Edit Address" : "Add Address"}>
-          <AddressDrawer onClose={handleCloseDrawer} isEditing={isEditing} addressData={selectedAddressData} onAddressSaved={fetchAddresses} />
+        <CustomDrawer
+          open={open}
+          onClose={handleCloseDrawer}
+          title={isEditing ? "Edit Address" : "Add Address"}
+        >
+          <AddressDrawer
+            onClose={handleCloseDrawer}
+            isEditing={isEditing}
+            addressData={selectedAddressData}
+            onAddressSaved={fetchAddresses}
+          />
         </CustomDrawer>
       )}
     </CustomBox>
+
   );
 };
 

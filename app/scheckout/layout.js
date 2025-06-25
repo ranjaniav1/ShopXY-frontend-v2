@@ -78,12 +78,12 @@ const Layout = ({ children }) => {
   return (
     <Box>
      
-        <Stepper
+        <Stepper 
           sx={{
             ".Mui-completed .MuiStepIcon-root": {
-              background: theme.palette.button.color,
+              // background: theme.palette.button.color,
               borderRadius: "50%",
-              color: theme.palette.button.background,
+              // color: theme.palette.button.background,
             },
             ".Mui-active .MuiStepIcon-root": {
               color: "#22aa99",
