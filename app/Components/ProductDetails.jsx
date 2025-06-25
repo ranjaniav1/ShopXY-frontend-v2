@@ -11,12 +11,12 @@ import {
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import ReviewComponents from "./RatindReview";
-// import BrandRating from "./BrandRating";
 import CustomTypography from "../Custom/CustomTypography";
 import RateReviewIcon from "@mui/icons-material/RateReview"; // Icon for submitting review
 import CustomModal from "../Custom/CustomModal";
-// import BrandReviewForm from "./BrandReviewForm";
+import BrandReviewForm from "./BrandReviewForm";
 import toast from "react-hot-toast";
+import BrandRating from "./BrandRating";
 
 const ProductDetails = ({
   name,
@@ -99,7 +99,7 @@ const ProductDetails = ({
       </Grid>
       {/* card 3 brand rating review */}
       <Grid item xs={12}>
-        {/* <BrandRating brand={brand} brandId={productId} sx={{ p: 2 }} /> */}
+        <BrandRating brand={brand} brandId={productId} sx={{ p: 2 }} />
       </Grid>
       {/* Card 4: Ratings and Reviews */}
       <Grid item xs={12}>
@@ -137,10 +137,10 @@ const ProductDetails = ({
         onClose={() => setModalOpen(false)}
         title={`Review ${name}`}
       >
-        {/* <BrandReviewForm
+        <BrandReviewForm
           productId={productId}
           onClose={() => setModalOpen(false)}
-        /> */}
+        />
       </CustomModal>
     </Grid>
   );
