@@ -1,6 +1,6 @@
+"use client";
 import React, { useState } from "react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { Box, IconButton } from "@mui/material";
 import Link from "next/link";
 import NavSearchBar from "./NavSearchBar";
 import NavProfileMenu from "./NavProfileMenu";
@@ -11,45 +11,54 @@ import { useRouter } from "next/navigation";
 import { useUser } from "@/app/context/UserContext";
 
 const FullScreenNav = ({ setDrawerOpen }) => {
-  const { webSettings } = useTheme()
+  const { webSettings } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
-  const { user } = useUser()
+  const { user } = useUser();
+
   const handleSearch = () => {
     const query = searchQuery.trim();
     if (query) {
       router.push(`/product/${encodeURIComponent(query)}`);
     }
   };
+
   return (
-    <Box
-      display="flex"
-      justifyContent="space-between"
-      alignItems="center"
-      p={2}
-    >
+    <div className="flex justify-between items-center py-2 px-4">
       {/* Logo */}
-      <Link href="/" className="flex item-center">
-        <img src={webSettings?.logo} alt="Site Logo" className="h-16 w-auto object-contain" />
+      <Link href="/" className="flex items-center">
+        <img
+          src={webSettings?.logo}
+          alt="Site Logo"
+          className="h-16 w-auto object-contain"
+        />
       </Link>
 
       {/* Search Field */}
-      <NavSearchBar searchQuery={searchQuery}
+      <NavSearchBar
+        searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
-        onSearch={handleSearch} />
+        onSearch={handleSearch}
+      />
 
-      {/* Account and Cart Menu */}
-      <div className="flex space-x-2">
-        {user ? (<>
-          <NavProfileMenu  />  <NavCartButton /> </>
+      {/* Account + Cart + Drawer Button */}
+      <div className="flex items-center gap-2">
+        {user ? (
+          <>
+            <NavProfileMenu />
+            <NavCartButton />
+          </>
         ) : (
           <NavAuthButtons />
         )}
-        <IconButton size="small">
-          <MoreVertIcon onClick={() => setDrawerOpen(true)} />
-        </IconButton>
+        <button
+          onClick={() => setDrawerOpen(true)}
+          className="p-2 hover:bg-secondary/20 rounded"
+        >
+          <MoreVertIcon className="text-primary" />
+        </button>
       </div>
-    </Box>
+    </div>
   );
 };
 

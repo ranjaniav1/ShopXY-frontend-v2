@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${inter.className} bg-body text-white min-h-screen`}>
+        className={`${inter.className} bg-body  min-h-screen`}>
         <UserProvider>
 
           <ThemeProvider>
