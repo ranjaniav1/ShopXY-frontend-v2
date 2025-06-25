@@ -8,12 +8,13 @@ import NavCartButton from "./NavCartButton";
 import NavAuthButtons from "./NavAuthButtons";
 import { useTheme } from "@/app/context/ThemeContext";
 import { useRouter } from "next/navigation";
+import { useUser } from "@/app/context/UserContext";
 
-const FullScreenNav = ({ setDrawerOpen, user }) => {
+const FullScreenNav = ({ setDrawerOpen }) => {
   const { webSettings } = useTheme()
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
-
+  const { user } = useUser()
   const handleSearch = () => {
     const query = searchQuery.trim();
     if (query) {
@@ -40,7 +41,7 @@ const FullScreenNav = ({ setDrawerOpen, user }) => {
       {/* Account and Cart Menu */}
       <div className="flex space-x-2">
         {user ? (<>
-          <NavProfileMenu user={user} />  <NavCartButton /> </>
+          <NavProfileMenu  />  <NavCartButton /> </>
         ) : (
           <NavAuthButtons />
         )}
