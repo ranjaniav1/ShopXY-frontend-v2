@@ -39,7 +39,7 @@ const BrandReviewForm = ({ brandId, onClose, productId,onSubmitSuccess }) => {
     try {
       const reviewData = {
         id: productId || brandId, // Use productId if it exists, else use brandId
-        userId:userId,
+       
         rating,
         review,
         mediaFiles: images
