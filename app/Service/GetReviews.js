@@ -2,7 +2,7 @@ import { httpAxios } from "../httpAxios";
 
 export async function GetSpecificProductReview(id) {
   try {
-    const response = await httpAxios.get(`/user/review/product/${id}`);
+    const response = await httpAxios.get(`/user/review/${id}?type=products`);
     console.log("product review", response.data);
     return response.data;
   } catch (error) {
@@ -13,7 +13,7 @@ export async function GetSpecificProductReview(id) {
 
 export async function GetSpecificBrandReview({ id }) {
   try {
-    const response = await httpAxios.get(`/user/review/brand/${id}`);
+    const response = await httpAxios.get(`/user/review/${id}?type=brands`);
     console.log("brand review", response.data);
     return response.data;
   } catch (error) {
@@ -22,11 +22,11 @@ export async function GetSpecificBrandReview({ id }) {
 }
 
 
-export async function SubmitBrandReview({ id, userId, rating, review, mediaFiles }) {
+export async function SubmitBrandReview({ id, rating, review, mediaFiles }) {
   try {
     const formData = new FormData();
-    formData.append("id", id);       // Brand ID
-    formData.append("userId", userId); // User ID
+    formData.append("_id", id);       // Brand ID
+    formData.append("reviewType", "brands"); // User ID
     formData.append("rating", rating); // Review rating
     formData.append("review", review); // Review text
 
@@ -35,7 +35,7 @@ export async function SubmitBrandReview({ id, userId, rating, review, mediaFiles
       mediaFiles.forEach((file) => formData.append("media", file));
     }
 
-    const response = await httpAxios.post(`/user/review/brand`, formData, {
+    const response = await httpAxios.post(`/user/review`, formData, {
       headers: {
         "Content-Type": "multipart/form-data", // Set the header for file uploads
       },
@@ -49,11 +49,11 @@ export async function SubmitBrandReview({ id, userId, rating, review, mediaFiles
 }
 
 
-export async function SubmitProductReview({ id, userId, rating, review, mediaFiles }) {
+export async function SubmitProductReview({ id, rating, review, mediaFiles }) {
   try {
     const formData = new FormData();
-    formData.append("id", id);       // Brand ID
-    formData.append("userId", userId); // User ID
+    formData.append("_id", id);       // Brand ID
+    formData.append("reviewType", "products"); // type
     formData.append("rating", rating); // Review rating
     formData.append("review", review); // Review text
 
@@ -62,7 +62,7 @@ export async function SubmitProductReview({ id, userId, rating, review, mediaFil
       mediaFiles.forEach((file) => formData.append("media", file));
     }
 
-    const response = await httpAxios.post(`/user/review/product`, formData, {
+    const response = await httpAxios.post(`/user/review`, formData, {
       headers: {
         "Content-Type": "multipart/form-data", // Set the header for file uploads
       },
