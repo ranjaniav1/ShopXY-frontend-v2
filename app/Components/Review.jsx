@@ -17,23 +17,23 @@ const ReviewItem = ({ reviews = [], theme }) => {  // Ensure reviews is always a
       {/* Loop through the visible reviews */}
       {reviews.slice(0, visibleCount).map((review, index) => (
         <Box key={review.id}>
-          <Box sx={{ p: 2, backgroundColor: theme.palette.card.background, mb: 2 }}>
+          <Box sx={{ p: 2, mb: 2 }}>
             <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
               <Avatar src={review.userAvatar} alt={review.userName}>
                 {!review.userAvatar && (review.userName ? review.userName.charAt(0) : "?")}
               </Avatar>
               <Box>
-                <CustomTypography variant="body2" fontWeight="bold" sx={{color:theme.palette.text.primary}}>
+                <CustomTypography variant="body2" fontWeight="bold" sx={{ color: theme.palette.text.primary }}>
                   {review.userName}
                 </CustomTypography>
                 <Rating value={review.rating} readOnly size="small" />
-                <CustomTypography variant="body2"sx={{color:theme.palette.text.secondary}}>
+                <CustomTypography variant="body2" sx={{ color: theme.palette.text.secondary }}>
                   {new Date(review.createdAt).toLocaleDateString()}
                 </CustomTypography>
               </Box>
             </Box>
 
-            <CustomTypography variant="body2" mt={2} sx={{color:theme.palette.text.secondary}}>
+            <CustomTypography variant="body2" mt={2} sx={{ color: theme.palette.text.secondary }}>
               {review.review}
             </CustomTypography>
 
