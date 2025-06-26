@@ -4,10 +4,10 @@ import React from "react";
 const Heading = ({ text, className = "", children }) => {
   return (
     <div
-      className={`flex justify-between items-center mb-2 text-secondary px-3 py-2 rounded-md font-semibold text-xl ${className}`}
+      className={`flex justify-between items-center mb-4 px-3 py-2 rounded-md font-semibold text-xl  ${className}`}
     >
-      <h2 className="font-bold">{text}</h2>
-      {children && <div className="ml-4">{children}</div>}
+      <h2 className="text-tprimary font-bold">{text}</h2>
+      {children}
     </div>
   );
 };

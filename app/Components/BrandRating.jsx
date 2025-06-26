@@ -1,40 +1,26 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Button,
-  Card,
-  IconButton,
-  Tooltip,
-  Typography,
-  useTheme
-} from "@mui/material";
-import StorefrontIcon from "@mui/icons-material/Storefront";
-import CustomDrawer from "../Custom/CustomDrawer";
-import BrandReviewDrawer from "./BrandReviewDrawer";
-import { GetSpecificBrandReview } from "../Service/GetReviews";
-import CustomModal from "../Custom/CustomModal";
-import BrandReviewForm from "./BrandReviewForm";
-import RateReviewIcon from "@mui/icons-material/RateReview";
-import CustomTypography from "../Custom/CustomTypography";
+import { Store, MessageSquare } from "lucide-react";
 import toast from "react-hot-toast";
+import CustomDrawer from "../Custom/CustomDrawer";
+import CustomModal from "../Custom/CustomModal";
+import BrandReviewDrawer from "./BrandReviewDrawer";
+import BrandReviewForm from "./BrandReviewForm";
+import { GetSpecificBrandReview } from "../Service/GetReviews";
 import { useUser } from "../context/UserContext";
 
 const BrandRating = ({ brand, brandId }) => {
   const [reviews, setReviews] = useState([]);
   const [analytics, setAnalytics] = useState({});
-  const theme = useTheme();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-  const { user } = useUser(); // 👈 Get user from context
+  const { user } = useUser();
   const userId = user?._id;
 
   const fetchReviews = async () => {
     try {
       const data = await GetSpecificBrandReview({ id: brandId });
-      console.log("Fetched data:", data);
-
-      if (data && data.success) {
+      if (data?.success) {
         setReviews(data.data.reviews);
         setAnalytics(data.data.analytics.analytics);
       }
@@ -47,64 +33,44 @@ const BrandRating = ({ brand, brandId }) => {
     fetchReviews();
   }, [brandId]);
 
-  // Extract rating and review count safely
   const averageRating = analytics.averageRating || 0;
   const reviewCount = analytics.totalReviews || 0;
 
   return (
     <>
-      <Card
-        sx={{
-          padding: 2,
-          boxShadow: 2,
-          display: "flex",
-          alignItems: "center",
-          cursor: "pointer" // Make the card clickable
-        }}
-        className="text-body"
+      <div
+        className="flex items-center justify-between bg-body  p-4 rounded shadow cursor-pointer hover:shadow-md transition"
         onClick={() => setDrawerOpen(true)}
       >
-        <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
-          <StorefrontIcon
-            sx={{ fontSize: 50, }} className="text-primary"
-          />
-          <CustomTypography
-            variant="h6"
-            sx={{ marginLeft: 1, fontWeight: "bold" }} className="text-primary"
-            onClick={() => setModalOpen(true)}
+        <div className="flex items-center gap-3">
+          <Store className="text-primary w-6 h-6" />
+          <h3
+            className="font-bold text-tprimary text-lg"
+            onClick={(e) => {
+              e.stopPropagation();
+              setModalOpen(true);
+            }}
           >
             {brand?.title}
-          </CustomTypography>
-        </Box>
-        <Box sx={{ flexGrow: 1, textAlign: "center" }}>
-          <CustomTypography
-            variant="body2"
-            sx={{ fontWeight: "bold", color: "#ff9800" }}
+          </h3>
+        </div>
+        <div className="text-center text-yellow-500 font-semibold">
+          {averageRating.toFixed(1)} ⭐
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-tsecondary">{reviewCount} Review{reviewCount !== 1 ? "s" : ""}</span>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setModalOpen(true);
+            }}
+            className="p-1 rounded hover:bg-gray-100 text-tactive"
+            title="Submit a Review"
           >
-            {averageRating.toFixed(1)} ⭐
-          </CustomTypography>
-        </Box>
-        <Box sx={{ textAlign: "right", display: "flex", alignItems: "center" }}>
-          <CustomTypography
-            variant="body2" className="text-secondary"
-            sx={{ marginRight: 1 }}
-          >
-            {reviewCount} Review{reviewCount !== 1 ? "s" : ""}
-          </CustomTypography>
-          {/* Icon button to submit a review */}
-          <Tooltip title="Submit a Review">
-            <IconButton
-              onClick={(e) => {
-                e.stopPropagation();
-
-                setModalOpen(true); // Open modal for submitting review
-              }}
-            >
-              <RateReviewIcon className="text-primary" />
-            </IconButton>
-          </Tooltip>
-        </Box>
-      </Card>
+            <MessageSquare className="w-5 h-5" />
+          </button>
+        </div>
+      </div>
 
       <CustomDrawer
         open={drawerOpen}
@@ -123,7 +89,11 @@ const BrandRating = ({ brand, brandId }) => {
         onClose={() => setModalOpen(false)}
         title={`Review ${brand?.title}`}
       >
-        <BrandReviewForm brandId={brandId} onClose={() => setModalOpen(false)} onSubmitSuccess={fetchReviews} />
+        <BrandReviewForm
+          brandId={brandId}
+          onClose={() => setModalOpen(false)}
+          onSubmitSuccess={fetchReviews}
+        />
       </CustomModal>
     </>
   );

@@ -79,8 +79,8 @@ const Page = () => {
                         size={product.size}
                         tags={product.tags}
                         gst_type={product.gst_type}
-                        brand={brand}
-                        product_id={product.product_id}
+                        brand={product.brand}
+                        product_id={product._id}
                         product={product}
 
                     />

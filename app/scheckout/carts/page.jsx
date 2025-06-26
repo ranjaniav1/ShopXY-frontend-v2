@@ -1,31 +1,26 @@
-'use client';
+"use client";
+
 import React, { useEffect, useState } from "react";
 import CartProductCard from "@/app/Components/CardProductCard";
-import { Box, Typography, useTheme } from "@mui/material";
 import CustomDrawer from "@/app/Custom/CustomDrawer";
 import EditCart from "@/app/Components/EditCart";
 import CustomButton from "@/app/Custom/CustomButton";
+import CustomTypography from "@/app/Custom/CustomTypography";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { handleRemoveFromCart } from "@/app/helper/cartUtils";
-import { useSelector } from "react-redux";
-import CustomTypography from "@/app/Custom/CustomTypography";
 import { useUser } from "@/app/context/UserContext";
+import { ShoppingCart } from "lucide-react";
 
 const CartPage = ({ handleNext, loadCart, cartData }) => {
   const [editDrawer, setEditDrawer] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const theme = useTheme();
- const { user } = useUser(); // 👈 Get user from context
-    const userId = user?._id;  
-
   const { t } = useTranslation();
+  const { user } = useUser();
+  const userId = user?._id;
 
-  console.log()
   useEffect(() => {
-    if (userId) {
-      loadCart();
-    }
+    if (userId) loadCart();
   }, [userId]);
 
   const handleRemove = async (productId) => {
@@ -39,62 +34,60 @@ const CartPage = ({ handleNext, loadCart, cartData }) => {
   };
 
   return (
-    <Box>
+    <div className="min-h-screen bg-body px-4 py-6 md:px-8">
+     
 
-      {/* {
-          cartData && cartData.products && cartData.products.length > 0 ? (
-            <CustomTypography variant="h2" sx={{ marginBottom: 2, fontWeight: "bold" }}>
-              {t("Product Details")}
-            </CustomTypography>
-          ) : (
-            <></>
-          )
-        } */}
+      {/* Cart Items */}
+      <div className="grid grid-cols-1">
+        {cartData?.products?.length > 0 ? (
+          cartData.products.map((item) => (
 
-      {cartData && cartData.products && cartData.products.length > 0 ? (
-        cartData.products.map((item) => (
+            <CartProductCard
+              image={item.product.image}
+              offer={item.product.offer}
+              quantity={item.quantity}
+              name={item.product.name}
+              product={item.product}
+              size={item.product.size}
+              actual_price={item.product.actual_price}
+              discounted_price={item.product.discounted_price}
+              onEdit={() => handleEdit(item)}
+              onRemove={() => handleRemove(item.product._id)}
+            />
 
+          ))
+        ) : (
+          <div className="flex flex-col items-center justify-center py-12 text-tsecondary">
+            <ShoppingCart className="w-10 h-10 mb-3" />
+            <CustomTypography>{t("Your cart is empty")}</CustomTypography>
+          </div>
+        )}
+      </div>
 
-          <CartProductCard
-            key={item._id}
-            image={item.product.image}
-            offer={item.product.offer}
-            quantity={item.quantity}
-            name={item.product.name}
-            product={item.product}
-            size={item.product.size}
-            onEdit={() => handleEdit(item)}
-            actual_price={item.product.actual_price}
-            discounted_price={item.product.discounted_price}
-            onRemove={() => handleRemove(item.product._id)}
-          />
-        ))
-      ) : (
-        <></>
-      )}
-
+      {/* Drawer to edit product */}
       <CustomDrawer
         open={editDrawer}
         onClose={() => setEditDrawer(false)}
-        title="Edit Product"
+        title={t("Edit Product")}
       >
         <EditCart
           onClose={() => {
             setEditDrawer(false);
-            loadCart(); // Refresh the cart when closing the drawer
+            loadCart();
           }}
           selectedProduct={selectedProduct}
         />
       </CustomDrawer>
 
-      {cartData && cartData.products && cartData.products.length > 0 ? (
-        <Box sx={{ textAlign: "end" }}>
+      {/* Footer Buttons */}
+      {cartData?.products?.length > 0 && (
+        <div className="flex justify-end mt-8">
           <Link href="/scheckout/address">
-            <CustomButton title="Next" onClick={handleNext} />
+            <CustomButton title={t("Next")} onClick={handleNext} />
           </Link>
-        </Box>
-      ) : (<></>)}
-    </Box>
+        </div>
+      )}
+    </div>
   );
 };
 

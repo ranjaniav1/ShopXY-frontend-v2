@@ -2,7 +2,7 @@ import axios from "axios";
 
 const BASE_URL = "https://eshop-backend-tau.vercel.app/api/v2";
 
-// Helper to get cookies from the browser
+// 🔁 Helper to get cookies from the browser
 function getCookie(name) {
   if (typeof document === "undefined") return null;
   const value = `; ${document.cookie}`;
@@ -11,22 +11,25 @@ function getCookie(name) {
   return null;
 }
 
-
+// 📦 Axios instance
 export const httpAxios = axios.create({
   baseURL: BASE_URL,
-  withCredentials: true,
+  withCredentials: true, // ⬅️ Required to send cookies
 });
 
-// Add the access token from cookie to every request
-httpAxios.interceptors.request.use((config) => {
-  const accessToken = getCookie("accessToken");
-  if (accessToken) {
-    config.headers["Authorization"] = `Bearer ${accessToken}`;
-  }
-  return config;
-});
+// ✅ Request interceptor to attach accessToken to header (if needed)
+httpAxios.interceptors.request.use(
+  (config) => {
+    const accessToken = getCookie("accessToken");
+    if (accessToken) {
+      config.headers["Authorization"] = `Bearer ${accessToken}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
-// Refresh logic
+// 🛠️ Refresh token logic
 let isRefreshing = false;
 let failedQueue = [];
 
@@ -41,16 +44,20 @@ const processQueue = (error, token = null) => {
   failedQueue = [];
 };
 
-// Response interceptor to handle token refresh
+// 🔁 Response interceptor for token auto-refresh
 httpAxios.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    // ✅ Only retry once
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !originalRequest.url.includes("/refresh-token") // ⛔️ Prevent infinite loop
+    ) {
       originalRequest._retry = true;
 
-      // Queue handling if multiple 401s
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({
@@ -58,7 +65,7 @@ httpAxios.interceptors.response.use(
               originalRequest.headers["Authorization"] = `Bearer ${token}`;
               resolve(httpAxios(originalRequest));
             },
-            reject: (err) => reject(err),
+            reject: reject,
           });
         });
       }
@@ -71,19 +78,24 @@ httpAxios.interceptors.response.use(
           { withCredentials: true }
         );
 
+        // ✅ Correct way to extract and store token (from cookie OR optional body)
         const newAccessToken = res.data?.accessToken;
 
         if (newAccessToken) {
-          // Save new token in cookie (client-side use only)
+          // Update the cookie (if needed client-side)
           document.cookie = `accessToken=${newAccessToken}; path=/`;
 
-          // Retry original request
+          // Retry the original request with new token
           originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
           processQueue(null, newAccessToken);
           return httpAxios(originalRequest);
+        } else {
+          throw new Error("Access token not received");
         }
       } catch (err) {
         processQueue(err, null);
+        // Optional: redirect to login
+        // window.location.href = '/login';
         return Promise.reject(err);
       } finally {
         isRefreshing = false;
@@ -93,5 +105,3 @@ httpAxios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
-

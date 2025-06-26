@@ -1,22 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  Typography,
-  Box,
-  Grid,
-  Card,
-  IconButton,
-  Tooltip
-} from "@mui/material";
 import { useTranslation } from "react-i18next";
 import ReviewComponents from "./RatindReview";
-import CustomTypography from "../Custom/CustomTypography";
-import RateReviewIcon from "@mui/icons-material/RateReview"; // Icon for submitting review
-import CustomModal from "../Custom/CustomModal";
 import BrandReviewForm from "./BrandReviewForm";
-import toast from "react-hot-toast";
 import BrandRating from "./BrandRating";
+import CustomModal from "../Custom/CustomModal";
+import { MessageSquare } from "lucide-react"; // Lucide icon
 
 const ProductDetails = ({
   name,
@@ -28,110 +18,77 @@ const ProductDetails = ({
   special_offer,
   gst_type,
   productId,
-  brand, userId
+  brand,
+  userId,
 }) => {
   const { t } = useTranslation();
-  const [modalOpen, setModalOpen] = useState(false); // For the modal
+  const [modalOpen, setModalOpen] = useState(false);
 
   return (
-    <Grid container spacing={4}>
-      {/* Card 1: Product Description, Price */}
-      <Grid item xs={12}>
-        <Card className="bg-body">
-          <CustomTypography
-            variant="h4"
-            className="text-secondary"
-          >
-            {name}
-          </CustomTypography>
-          <CustomTypography
-            variant="body2"
-            className="text-secondary"          >
-            {description}
-          </CustomTypography>
-          <CustomTypography variant="h5" className="text-green-600 mb-2">
-            ₹{discounted_price}{" "}
-            {discounted_price && (
-              <span
-                style={{
-                  textDecoration: "line-through",
-                  marginLeft: "8px",
-                  color: "red"// Theme-based color for struck-through price
-                }}
-              >
-                ₹{actual_price}
-              </span>
-            )}{" "}
-            {offer}% OFF
-          </CustomTypography>
-          <CustomTypography variant="body2" className="mt-2 text-secondary"
-          >
-            {t("Free Delivery")}
-          </CustomTypography>
-        </Card>
-      </Grid>
+    <div className="grid grid-cols-1 gap-6">
+      {/* Basic Info */}
+      <div className="bg-body p-4 rounded shadow">
+        <h2 className="text-xl font-bold text-tprimary mb-2">{name}</h2>
+        <p className="text-sm text-tsecondary mb-4">{description}</p>
 
-      {/* Card 2: Product Details */}
-      <Grid item xs={12}>
-        <Card sx={{ p: 2, }} className="text-body">
-          <CustomTypography
-            variant="h4"
-            className="text-secondary"          >
-            {t("Product details")}:
-          </CustomTypography>
+        <div className="text-sm mb-2">
+          <span className="text-green-600 font-semibold text-base">
+            ₹{discounted_price}
+          </span>
+          {actual_price && (
+            <span className="line-through text-red-500 text-sm ml-2">
+              ₹{actual_price}
+            </span>
+          )}
+          {offer && (
+            <span className="ml-2 text-xs font-medium bg-red-100 text-red-600 px-2 py-1 rounded">
+              {offer}% OFF
+            </span>
+          )}
+        </div>
 
-          <CustomTypography
-            variant="body2"
-            className="text-secondary"          >
-            {t("Description")}: {full_description}
-          </CustomTypography>
-          <CustomTypography
-            variant="body2"
-            className="text-secondary"          >
-            {t("Special Offer")}: {special_offer}
-          </CustomTypography>
-          <CustomTypography
-            variant="body2"
-            className="text-secondary"          >
-            {t("GST Type")}: {gst_type}
-          </CustomTypography>
-        </Card>
-      </Grid>
-      {/* card 3 brand rating review */}
-      <Grid item xs={12}>
-        <BrandRating brand={brand} brandId={productId} sx={{ p: 2 }} />
-      </Grid>
-      {/* Card 4: Ratings and Reviews */}
-      <Grid item xs={12}>
-        <Card
-          sx={{ p: 2 }} className="text-secondary"
-        >
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
+        <p className="text-xs text-tactive">{t("Free Delivery")}</p>
+      </div>
+
+      {/* Product Details */}
+      <div className="bg-body p-4 rounded shadow space-y-2">
+        <h3 className="text-lg font-semibold text-tprimary mb-2">
+          {t("Product details")}:
+        </h3>
+        <p className="text-sm text-tsecondary">
+          <span className="font-medium">{t("Description")}:</span>{" "}
+          {full_description}
+        </p>
+        <p className="text-sm text-tsecondary">
+          <span className="font-medium">{t("Special Offer")}:</span>{" "}
+          {special_offer ? "Yes" : "No"}
+        </p>
+        <p className="text-sm text-tsecondary">
+          <span className="font-medium">{t("GST Type")}:</span> {gst_type}
+        </p>
+      </div>
+
+      {/* Brand Rating */}
+      <BrandRating brand={brand} brandId={productId} />
+
+      {/* Reviews */}
+      <div className="bg-body p-4 rounded shadow">
+        <div className="flex justify-between items-center mb-2">
+          <h3 className="text-lg font-semibold text-tprimary">
+            {t("Rating & Reviews")}
+          </h3>
+          <button
+            onClick={() => setModalOpen(true)}
+            className="flex items-center text-sm text-tactive hover:text-primary transition"
           >
-            <CustomTypography
-              variant="h4"
-              className="text-secondary"            >
-              {t("Rating & Reviews")}
-            </CustomTypography>
-            <Tooltip title="Submit a Review">
-              <IconButton
-                onClick={(e) => {
-                  e.stopPropagation();
+            <MessageSquare className="w-4 h-4 mr-1" />
+            {t("Write a Review")}
+          </button>
+        </div>
+        <ReviewComponents productId={productId} />
+      </div>
 
-                  setModalOpen(true); // Open modal for submitting review
-                }}
-                className="text-primary"
-              >
-                <RateReviewIcon />
-              </IconButton>
-            </Tooltip>
-          </Box>
-          <ReviewComponents productId={productId} sx={{ p: 2 }} />
-        </Card>
-      </Grid>
+      {/* Review Modal */}
       <CustomModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
@@ -142,7 +99,7 @@ const ProductDetails = ({
           onClose={() => setModalOpen(false)}
         />
       </CustomModal>
-    </Grid>
+    </div>
   );
 };
 

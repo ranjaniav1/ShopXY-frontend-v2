@@ -17,7 +17,7 @@ const CustomInput = ({
       {startIcon && (
         <div
           onClick={onClickStartIcon}
-          className="cursor-pointer pr-2 text-primary"
+          className="cursor-pointer pr-2 text-tprimary"
         >
           {startIcon}
         </div>
@@ -28,13 +28,13 @@ const CustomInput = ({
         value={value}
         onChange={onChange}
         {...props}
-        className="bg-body flex-1 focus:outline-none text-primary py-1"
+        className="bg-body flex-1 focus:outline-none text-tprimary py-1"
         onKeyDown={(e) => e.key === "Enter" && props.onKeyDown?.(e)}
       />
       {endIcon && (
         <div
           onClick={onClickEndIcon}
-          className="cursor-pointer pl-2 text-primary"
+          className="cursor-pointer pl-2 text-tprimary"
         >
           {endIcon}
         </div>

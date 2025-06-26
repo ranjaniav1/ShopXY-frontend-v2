@@ -1,141 +1,118 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
 import AddressCard from "@/app/Components/AddressCard";
 import AddressDrawer from "@/app/Components/AddressDrawer";
 import CustomButton from "@/app/Custom/CustomButton";
 import CustomDrawer from "@/app/Custom/CustomDrawer";
 import { getAddress, removeAddress, updateAddress } from "@/app/Service/Address";
-import { Box, Container, Grid, Typography, useTheme } from "@mui/material";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
-import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { useMediaQuery } from "@mui/material";
-import { Add } from "@mui/icons-material"; // For add icon
 import CustomIconButton from "@/app/Custom/CustomIconButton";
 import CustomTypography from "@/app/Custom/CustomTypography";
 import CustomBox from "@/app/Custom/CustomBox";
+import Link from "next/link";
+import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import { usePathname } from "next/navigation";
 import { useUser } from "@/app/context/UserContext";
+import { Plus } from "lucide-react";
 
 const AddressPage = ({ handleNext, handleBack }) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [selectedAddressId, setSelectedAddressId] = useState(null);
   const [isEditing, setEditing] = useState(false);
   const [selectedAddressData, setSelectedAddressData] = useState(null);
   const [addresses, setAddresses] = useState([]);
   const pathname = usePathname();
   const isCheckoutAddressRoute = pathname === "/scheckout/address";
-  console.log("path", isCheckoutAddressRoute)
-  const { user } = useUser()
+  const { user } = useUser();
   const userId = user._id;
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (userId) {
-      fetchAddresses();
-    }
+    if (userId) fetchAddresses();
   }, [userId]);
 
   const fetchAddresses = async () => {
-    setLoading(true);
-    setError(null); // Reset error before fetching
     try {
-      const response = await getAddress(userId);
-      const fetchedAddresses = response?.data || [];
-      const primaryExists = fetchedAddresses.some((addr) => addr.isPrimary);
+      setLoading(true);
+      const res = await getAddress(userId);
+      const list = res?.data || [];
+      const hasPrimary = list.some((a) => a.isPrimary);
 
-      if (!primaryExists && fetchedAddresses.length > 0) {
-        const addr = fetchedAddresses[0];
-        await updateAddress(userId, addr._id, addr.address, addr.city, addr.state, addr.postalCode, addr.country, addr.phone, true);
-        addr.isPrimary = true;
+      if (!hasPrimary && list.length > 0) {
+        const first = list[0];
+        await updateAddress(userId, first._id, first.address, first.city, first.state, first.postalCode, first.country, first.phone, true);
+        first.isPrimary = true;
       }
 
-      const updatedResponse = await getAddress(userId);
-      const updatedAddresses = updatedResponse?.data || [];
-      const primaryAddress = updatedAddresses.find((addr) => addr.isPrimary);
-
-      setAddresses(updatedAddresses);
-      setSelectedAddressId(primaryAddress ? primaryAddress._id : null);
+      const updated = (await getAddress(userId))?.data || [];
+      const primary = updated.find((a) => a.isPrimary);
+      setAddresses(updated);
+      setSelectedAddressId(primary ? primary._id : null);
     } catch (err) {
-      setAddresses([])
-      console.error("Failed to load addresses", err);
-      setError("Failed to load addresses. Please try again.");
+      console.error(err);
+      toast.error("Failed to load addresses.");
     } finally {
       setLoading(false);
     }
   };
 
   const handleAddAddressClick = () => {
-    if (addresses.length >= 5) {
-      toast.error("You can only add up to 5 addresses.");
-      return;
-    }
+    if (addresses.length >= 5) return toast.error("You can only add up to 5 addresses.");
     setEditing(false);
     setSelectedAddressData(null);
     setOpen(true);
   };
 
-  const handleCloseDrawer = () => setOpen(false);
-
-  const handleEditAddress = (addressId) => {
+  const handleEditAddress = (id) => {
     setEditing(true);
+    const found = addresses.find((a) => a._id === id);
+    setSelectedAddressData(found);
     setOpen(true);
-    const address = addresses.find((addr) => addr._id === addressId);
-    setSelectedAddressData(address);
   };
 
-  const handleRemoveAddress = async (addressId) => {
+  const handleRemoveAddress = async (id) => {
     try {
-      await removeAddress(userId, addressId);
-      await fetchAddresses(); // Refresh address list
-    } catch (err) {
-      console.error("Failed to remove address", err);
-      setError("Failed to remove address. Please try again.");
+      await removeAddress(userId, id);
+      fetchAddresses();
+    } catch {
+      toast.error("Failed to remove address.");
     }
   };
 
-  const handleAddressChange = async (addressId) => {
-    try {
-      const selectedAddress = addresses.find((addr) => addr._id === addressId);
-      if (selectedAddress) {
-        await updateAddress(userId, addressId, selectedAddress.address, selectedAddress.city, selectedAddress.state, selectedAddress.postalCode, selectedAddress.country, selectedAddress.phone, true);
-        setSelectedAddressId(addressId);
-        await fetchAddresses();
-      }
-    } catch (err) {
-      console.error("Failed to update primary address", err);
-      setError("Failed to update primary address. Please try again.");
+  const handleAddressChange = async (id) => {
+    const addr = addresses.find((a) => a._id === id);
+    if (addr) {
+      await updateAddress(userId, id, addr.address, addr.city, addr.state, addr.postalCode, addr.country, addr.phone, true);
+      setSelectedAddressId(id);
+      fetchAddresses();
     }
   };
 
   return (
-    <CustomBox>
+    <div className="min-h-screen bg-body px-4 py-6 md:px-8">
       {/* Header */}
-      <div className="flex justify-between items-center px-4 py-2">
-        <CustomTypography className="text-tprimary font-medium text-lg">
+      <div className="flex justify-between items-center mb-6">
+        <CustomTypography className="text-xl font-semibold text-tprimary">
           {t("Select Delivery Address")}
         </CustomTypography>
 
+        {/* Mobile Add */}
         <div className="block sm:hidden">
-          <CustomIconButton
-            onClick={handleAddAddressClick}
-            className="bg-primary text-white p-2 rounded-md"
-          >
-            <Add />
+          <CustomIconButton onClick={handleAddAddressClick} className="bg-primary text-white p-2 rounded-md">
+            <Plus size={20} />
           </CustomIconButton>
         </div>
 
+        {/* Desktop Add */}
         <div className="hidden sm:block">
           <CustomButton title={t("Add Address")} onClick={handleAddAddressClick} />
         </div>
       </div>
 
-      {/* Address List */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4">
+      {/* Address Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {loading ? (
           <CustomTypography>{t("Loading addresses...")}</CustomTypography>
         ) : addresses.length > 0 ? (
@@ -151,54 +128,48 @@ const AddressPage = ({ handleNext, handleBack }) => {
           ))
         ) : (
           <div className="col-span-full text-center py-8">
-            <CustomTypography variant="h6" className="text-tsecondary">
+            <CustomTypography className="text-tsecondary">
               {t("No address found. Please add one to proceed.")}
             </CustomTypography>
           </div>
         )}
       </div>
 
-      {/* Navigation for Checkout Flow */}
+      {/* Checkout Navigation */}
       {isCheckoutAddressRoute && (
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between py-4">
-            <Link href="/scheckout/carts">
-              <CustomButton title="Back" onClick={handleBack} variant="outlined" />
-            </Link>
+        <div className="flex justify-between py-6">
+          <Link href="/scheckout/carts">
+            <CustomButton title={t("Back")} onClick={handleBack} variant="outlined" />
+          </Link>
 
-            {selectedAddressId ? (
-              <Link href="/scheckout/payment">
-                <CustomButton title="Next" variant="outlined" onClick={handleNext} />
-              </Link>
-            ) : (
-              <CustomButton
-                title="Next"
-                variant="outlined"
-                disabled
-                onClick={() => toast.error(t("Please add an address before proceeding."))}
-              />
-            )}
-          </div>
+          {selectedAddressId ? (
+            <Link href="/scheckout/payment">
+              <CustomButton title={t("Next")} onClick={handleNext} />
+            </Link>
+          ) : (
+            <CustomButton
+              title={t("Next")}
+              disabled
+              onClick={() => toast.error(t("Please add an address before proceeding."))}
+            />
+          )}
         </div>
       )}
 
       {/* Drawer */}
-      {open && (
-        <CustomDrawer
-          open={open}
-          onClose={handleCloseDrawer}
-          title={isEditing ? "Edit Address" : "Add Address"}
-        >
-          <AddressDrawer
-            onClose={handleCloseDrawer}
-            isEditing={isEditing}
-            addressData={selectedAddressData}
-            onAddressSaved={fetchAddresses}
-          />
-        </CustomDrawer>
-      )}
-    </CustomBox>
-
+      <CustomDrawer
+        open={open}
+        onClose={() => setOpen(false)}
+        title={isEditing ? t("Edit Address") : t("Add Address")}
+      >
+        <AddressDrawer
+          onClose={() => setOpen(false)}
+          isEditing={isEditing}
+          addressData={selectedAddressData}
+          onAddressSaved={fetchAddresses}
+        />
+      </CustomDrawer>
+    </div>
   );
 };
 

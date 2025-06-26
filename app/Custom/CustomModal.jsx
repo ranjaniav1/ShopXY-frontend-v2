@@ -6,9 +6,9 @@ const CustomModal = ({ open, onClose, title, children, height = "400px" }) => {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-body/40">
       <div
-        className="bg-white dark:bg-gray-900 rounded-lg p-4 shadow-xl w-[90%] sm:w-[400px] md:w-[500px]"
+        className="bg-body rounded-lg p-4 shadow-xl w-[90%] sm:w-[400px] md:w-[500px]"
         style={{ height }}
       >
         {/* Header */}

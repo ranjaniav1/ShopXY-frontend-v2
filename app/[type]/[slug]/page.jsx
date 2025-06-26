@@ -29,7 +29,7 @@ const Page = () => {
     const [wishlist, setWishlist] = useState([])
 
     useEffect(() => {
-        if ( !type) return;
+        if (!type) return;
         (async () => {
             try {
                 const data = await GetFilteredProduct({ type: "product", search: slug });
@@ -41,7 +41,7 @@ const Page = () => {
                 setLoading(false);
             }
         })();
-    }, [ type]);
+    }, [type]);
 
     const fetchWishlist = async () => {
         if (!userId) return;
@@ -67,16 +67,16 @@ const Page = () => {
 
 
     return (
-        <CustomBox>
+        <div className="px-4 py-6">
             <Heading text={slug} />
             {loading ? (
-                <Grid container spacing={2} className="p-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 p-4">
                     {Array.from({ length: products.length || 9 }).map((_, index) => (
-                        <Grid item xs={6} sm={4} md={5} lg={3} key={index}>
+                        <div key={index} className="w-full">
                             <CustomSkeleton type="card" />
-                        </Grid>
+                        </div>
                     ))}
-                </Grid>
+                </div>
             ) : products.length === 0 ? (
                 <EmptyCart
                     title="No products found"
@@ -85,32 +85,30 @@ const Page = () => {
                     buttonText="Explore Products"
                 />
             ) : (
-                <Grid container spacing={2}>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 p-4">
                     {products.map((product) => (
-                        <Grid item xs={6} sm={4} md={3} lg={2} key={product._id}>
-                            <Link href={`/product/${product._id}/${encodeURIComponent(product.slug)}`} passHref>
-                                <ProductCard
-                                    className="h-40 w-full"
-                                    imgSrc={product.detail_image[0]}
-                                    title={product.name}
-                                    price={product.actual_price}
-                                    discountPrice={product.discounted_price}
-                                    rating={product.ratings}
-                                    description={product.description}
-                                    offer={product.offer}
-                                    userId={userId}
-                                    productId={product._id}
-                                    slug={product.slug}
-                                    isInWishlist={isInWishlist(product._id)}
-                                    inStock={product.inStock > 0}
-                                />
-                            </Link>
-                        </Grid>
+                        <Link href={`/product/${product._id}/${encodeURIComponent(product.slug)}`} passHref>
+                            <ProductCard
+                                className="h-40 w-full"
+                                imgSrc={product.detail_image[0]}
+                                title={product.name}
+                                price={product.actual_price}
+                                discountPrice={product.discounted_price}
+                                rating={product.ratings}
+                                description={product.description}
+                                offer={product.offer}
+                                userId={userId}
+                                productId={product._id}
+                                slug={product.slug}
+                                isInWishlist={isInWishlist(product._id)}
+                                inStock={product.inStock > 0}
+                            />
+                        </Link>
                     ))}
-                </Grid>
+                </div>
             )}
 
-        </CustomBox>
+        </div>
     );
 };
 

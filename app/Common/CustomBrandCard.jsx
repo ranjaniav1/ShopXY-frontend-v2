@@ -24,7 +24,7 @@ const CustomBrandCard = ({ id, slug, image, title }) => {
                 {/* Brand Title */}
                 <Typography
                     component="h3"
-                    className="mt-2 text-sm sm:text-base font-medium text-gray-700 group-hover:text-primary transition-colors duration-200 truncate w-28 sm:w-32"
+                    className="mt-2 text-sm sm:text-base font-medium  text-tsecondary group-hover:text-tprimary transition-colors duration-200 truncate w-28 sm:w-32"
                 >
                     {title}
                 </Typography>

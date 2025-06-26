@@ -29,19 +29,19 @@ const NavProfileMenu = () => {
         alt="avatar"
       />
       {open && (
-        <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 shadow-md rounded-md z-50">
+        <div className="absolute right-0 mt-2 w-40  shadow-md rounded-md z-50 border border-secondary">
           <button
             onClick={() => {
               setOpen(false);
               router.push("/user/profile");
             }}
-            className="block w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700"
+            className="block w-full px-4 py-2 text-left hover:bg-secondary/20"
           >
             Profile
           </button>
           <button
             onClick={handleLogout}
-            className="block w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700"
+            className="block w-full px-4 py-2 text-left hover:bg-secondary/20"
           >
             Logout
           </button>

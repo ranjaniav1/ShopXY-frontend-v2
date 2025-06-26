@@ -1,34 +1,31 @@
 "use client";
 
 import React from "react";
-import CustomTypography from "../Custom/CustomTypography";
 
-const CustomCollectionCard = ({  image, title, tooltip }) => {
+const CustomCollectionCard = ({ image, title, tooltip }) => {
   return (
-    <>
-      {/* Image */}
-      < div className="relative h-44 bg-gray-100 flex items-center justify-center overflow-hidden" >
+    <div className="group rounded-lg overflow-hidden shadow-sm hover:shadow-md transition duration-300 bg-body">
+      {/* Image wrapper */}
+      <div className="w-full h-36 sm:h-48 md:h-52 lg:h-56 relative">
         <img
           src={image}
           alt={title}
           loading="lazy"
-          className="object-fill w-full h-full scale-100 group-hover:scale-105 transition-transform duration-300 ease-in-out"
+          className="w-full h-full object-cover transition-transform duration-300"
         />
-        {/* Subtle overlay effect */}
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition duration-300" />
-      </div >
+        <div className="absolute inset-0 transition duration-300" />
+      </div>
 
       {/* Title */}
-      < div className="p-4 text-center" >
-        <CustomTypography
-          component="h3"
-          className="text-primary transition-colors duration-200 truncate"
+      <div className="p-3 text-center">
+        <h3
           title={tooltip || title}
+          className="text-tsecondary text-sm font-medium truncate"
         >
           {title}
-        </CustomTypography>
-      </div >
-    </>
+        </h3>
+      </div>
+    </div>
   );
 };
 

@@ -33,58 +33,51 @@ const Collection = () => {
 
 
     return (
-        <CustomBox>
+        <div className="px-4 py-6">
             <Heading text={t("Our Top Collections")} />
-            <Box>
-                {loading ? (
-                    <Grid container spacing={2}>
-                        {Array.from({ length: 6 }).map((_, index) => (
-                            <CustomSkeleton
-                                gridItem
-                                gridProps={{ xs: 12, sm: 6, md: 4, lg: 3 }}
-                                key={index}
-                                type="card"
-                                width="96px"
-                                height="96px"
-                            />
-                        ))}
-                    </Grid>
-                ) : collection?.length > 0 ? (
-                    <Swiper
-                        modules={[Navigation, A11y]}
-                        spaceBetween={10}
-                        slidesPerView={2}
-                        breakpoints={{
-                            640: { slidesPerView: 2 },
-                            768: { slidesPerView: 4 },
-                            1024: { slidesPerView: 6, spaceBetween: 30 },
-                        }}
-                    >
-                        {collection.map((col, index) => {
-                            return (
-                                <SwiperSlide key={index}>
-                                    <Link href={`/collection/${col.slug}`}>
-                                        <CustomCollectionCard
-                                            tooltip={col.title}
-                                            id={col._id}
-                                            slug={col.slug}
-                                            image={col.collection_image}
-                                            title={col.title}
-                                        />
-                                    </Link>
-                                </SwiperSlide>
-                            );
-                        })}
 
-                    </Swiper>
-                ) : (
-                    <CustomTypography textAlign="center" sx={{ color: theme.palette.text.primary }}>
-                        {t('No collections found')}
-                    </CustomTypography>
-                )}
-            </Box>
+            {loading ? (
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 mt-4">
+                    {Array.from({ length: 10 }).map((_, idx) => (
+                        <CustomSkeleton key={idx} width="100%" height={120} type="card" />
+                    ))}
+                </div>
+            ) : collection?.length > 0 ? (
+                <Swiper
+                    modules={[Navigation, A11y]}
+                    spaceBetween={10}
+                    slidesPerView={2}
+                    breakpoints={{
+                        640: { slidesPerView: 2 },
+                        768: { slidesPerView: 4 },
+                        1024: { slidesPerView: 6, spaceBetween: 30 },
+                    }}
+                >
+                    {collection.map((col, index) => {
+                        return (
+                            <SwiperSlide key={index}>
+                                <Link href={`/collection/${col.slug}`}>
+                                    <CustomCollectionCard
+                                        tooltip={col.title}
+                                        id={col._id}
+                                        slug={col.slug}
+                                        image={col.collection_image}
+                                        title={col.title}
+                                    />
+                                </Link>
+                            </SwiperSlide>
+                        );
+                    })}
 
-        </CustomBox>
+                </Swiper>
+            ) : (
+                <CustomTypography textAlign="center">
+                    {t('No collections found')}
+                </CustomTypography>
+            )}
+
+
+        </div>
     );
 };
 
