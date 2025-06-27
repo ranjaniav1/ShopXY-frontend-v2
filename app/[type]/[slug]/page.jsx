@@ -37,9 +37,9 @@ const Page = () => {
                 setLoading(false);
             }
         })();
-    }, [type]);
+    }, [type, slug]);
 
-    const fetchWishlist = async () => {
+    const fetchWishlist = useCallback(async () => {
         if (!userId) return;
         try {
             const response = await getWishlist(userId);
@@ -52,12 +52,12 @@ const Page = () => {
             console.error("Failed to fetch wishlist", err);
             setWishlist([]); // fallback to empty array
         }
-    };
+    }, [userId]);
 
 
     useEffect(() => {
         if (userId) fetchWishlist();
-    }, [userId]);
+    }, [userId,fetchWishlist]);
 
     const isInWishlist = (id) => wishlist.includes(id);
 
@@ -83,7 +83,7 @@ const Page = () => {
             ) : (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 p-4">
                     {products.map((product) => (
-                        <ClientLink href={`/product/${product._id}/${encodeURIComponent(product.slug)}`} passHref>
+                        <ClientLink key={product._id} href={`/product/${product._id}/${encodeURIComponent(product.slug)}`} passHref>
                             <ProductCard
                                 className="h-40 w-full"
                                 imgSrc={product.detail_image[0]}

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import CartProductCard from "@/app/Components/CardProductCard";
 import CustomDrawer from "@/app/Custom/CustomDrawer";
 import EditCart from "@/app/Components/EditCart";
@@ -24,19 +24,19 @@ const CartPage = ({ handleNext, loadCart, cartData }) => {
     if (userId) loadCart();
   }, [userId]);
 
-  const handleRemove = async (productId) => {
+  const handleRemove = useCallback(async (productId) => {
     await handleRemoveFromCart({ userId, productId });
     loadCart();
-  };
+  }, [userId, loadCart]);
 
-  const handleEdit = (item) => {
+  const handleEdit = useCallback((item) => {
     setSelectedProduct(item);
     setEditDrawer(true);
-  };
+  }, []);
 
   return (
     <div className="min-h-screen bg-body px-4 py-6 md:px-8">
-     
+
 
       {/* Cart Items */}
       <div className="grid grid-cols-1">
@@ -44,6 +44,7 @@ const CartPage = ({ handleNext, loadCart, cartData }) => {
           cartData.products.map((item) => (
 
             <CartProductCard
+              key={item.product._id}
               image={item.product.image}
               offer={item.product.offer}
               quantity={item.quantity}
