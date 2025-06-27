@@ -80,7 +80,7 @@ const BrandSection = () => {
           </Swiper>
 
         ) : (
-          <Typography textAlign="center" sx={{ color: theme.palette.text.primary }}>
+          <Typography textAlign="center" className="text-tsecondary">
             {t("No Brands Found")}
           </Typography>
         )}
