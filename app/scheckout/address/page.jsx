@@ -8,8 +8,6 @@ import CustomDrawer from "@/app/Custom/CustomDrawer";
 import { getAddress, removeAddress, updateAddress } from "@/app/Service/Address";
 import CustomIconButton from "@/app/Custom/CustomIconButton";
 import CustomTypography from "@/app/Custom/CustomTypography";
-import CustomBox from "@/app/Custom/CustomBox";
-import Link from "next/link";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { usePathname } from "next/navigation";

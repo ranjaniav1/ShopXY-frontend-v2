@@ -1,11 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import Link from "next/link";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { loadStripe } from "@stripe/stripe-js";
-import { useDispatch } from "react-redux";
 
 import { useUser } from "@/app/context/UserContext";
 import { cashOnDelivery, promodCodes } from "@/app/Service/payment";

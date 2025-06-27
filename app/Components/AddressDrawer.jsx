@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import CustomButton from "../Custom/CustomButton";
 import { CreateAddress, updateAddress } from "../Service/Address";
-import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
+import { useUser } from "../context/UserContext";
 
-const AddressDrawer = ({ onClose, isEditing, addressData, onAddressSaved = () => {} }) => {
-  const userId = useSelector((state) => state.auth?.user?.user?._id);
+const AddressDrawer = ({ onClose, isEditing, addressData, onAddressSaved = () => { } }) => {
+  const { user } = useUser()
+  const userId = user._id
 
   const [name, setName] = useState("");
   const [contactNumber, setContactNumber] = useState("");
