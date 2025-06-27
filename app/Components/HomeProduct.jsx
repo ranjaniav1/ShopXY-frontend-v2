@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState, useCallback } from "react";
-import { Grid } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import Heading from "../Common/Heading";
 import { GetFilteredProduct, GetAllProducts } from "../Service/GetProduct";
@@ -27,7 +26,6 @@ const HomeProduct = () => {
   const [inStock, setInStock] = useState(false);
   const [onlyDiscounted, setOnlyDiscounted] = useState(false);
   const [sort, setSort] = useState("");
- 
 
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedCollection, setSelectedCollection] = useState("");
@@ -50,19 +48,12 @@ const HomeProduct = () => {
   };
 
   const fetchCollections = async (categorySlug) => {
-    if (!categorySlug) {
-      setCollections([]);
-      return;
-    }
+    if (!categorySlug) return setCollections([]);
 
-    // ✅ Get the _id from the selected category's slug
     const category = categories.find((cat) => cat.slug === categorySlug);
     const categoryId = category?._id;
 
-    if (!categoryId) {
-      setCollections([]);
-      return;
-    }
+    if (!categoryId) return setCollections([]);
 
     try {
       const res = await GetCollectionsByCategory({ categoryId });
@@ -72,22 +63,13 @@ const HomeProduct = () => {
     }
   };
 
-
-
   const fetchBrands = async (collectionSlug) => {
-    if (!collectionSlug) {
-      setBrands([]);
-      return;
-    }
+    if (!collectionSlug) return setBrands([]);
 
-    // ✅ Get the _id from the selected collection's slug
     const collection = collections.find((col) => col.slug === collectionSlug);
     const collectionId = collection?._id;
 
-    if (!collectionId) {
-      setBrands([]);
-      return;
-    }
+    if (!collectionId) return setBrands([]);
 
     try {
       const res = await GetBrandsByCollection({ brand_id: collectionId });
@@ -96,7 +78,6 @@ const HomeProduct = () => {
       console.error("Failed to fetch brands", err);
     }
   };
-
 
   const fetchWishlist = async () => {
     if (!userId) return;
@@ -112,20 +93,18 @@ const HomeProduct = () => {
 
   const isInWishlist = (id) => wishlist.includes(id);
 
-  const checkIfFiltersApplied = () => {
-    return (
-      selectedCategory ||
-      selectedCollection ||
-      selectedBrand ||
-      priceRange[0] !== 0 ||
-      priceRange[1] !== 1000 ||
-      ratingRange[0] !== 0 ||
-      ratingRange[1] !== 5 ||
-      inStock ||
-      onlyDiscounted ||
-      sort
-    );
-  };
+  const checkIfFiltersApplied = () => (
+    selectedCategory ||
+    selectedCollection ||
+    selectedBrand ||
+    priceRange[0] !== 0 ||
+    priceRange[1] !== 1000 ||
+    ratingRange[0] !== 0 ||
+    ratingRange[1] !== 5 ||
+    inStock ||
+    onlyDiscounted ||
+    sort
+  );
 
   const handleFilterChange = useCallback(async () => {
     const filtersUsed = checkIfFiltersApplied();
@@ -145,7 +124,6 @@ const HomeProduct = () => {
           inStock: inStock ? true : undefined,
           specialOffer: onlyDiscounted ? true : undefined,
           sort,
-        
         });
         setProducts(res?.filters || []);
       } else {
@@ -191,8 +169,10 @@ const HomeProduct = () => {
   return (
     <CustomBox>
       <Heading text={t("Products For You")} />
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={3} sx={{ mt: 3.5 }}>
+
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-6">
+        {/* Filter Sidebar */}
+        <div className="md:col-span-1">
           <FilterSidebar
             priceRange={priceRange}
             setPriceRange={setPriceRange}
@@ -216,44 +196,57 @@ const HomeProduct = () => {
             collections={collections}
             brands={brands}
           />
-        </Grid>
+        </div>
 
-        <Grid item xs={12} md={9} sx={{ mt: 3.5 }}>
+        {/* Product List Section */}
+        <div className="md:col-span-3">
+          {/* Sorting Dropdown */}
+          <div className="mb-4">
+            <select
+              value={sort}
+              onChange={(e) => setSort(e.target.value)}
+              className="border border-gray-300 rounded px-4 py-2 w-full md:w-auto"
+            >
+              <option value="">Sort By</option>
+              <option value="priceLowHigh">Price: Low to High</option>
+              <option value="priceHighLow">Price: High to Low</option>
+              <option value="ratingHighLow">Rating: High to Low</option>
+            </select>
+          </div>
+
+          {/* Product Grid */}
           {isFilterLoading ? (
-            <Grid container spacing={2}>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
               {Array.from({ length: 6 }).map((_, index) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                  <CustomSkeleton type="card" width="96px" height="96px" />
-                </Grid>
+                <CustomSkeleton key={index} type="card" width="100%" height="96px" />
               ))}
-            </Grid>
+            </div>
           ) : products.length === 0 ? (
             <CustomTypography variant="h6" align="center">
               {t("No products found")}
             </CustomTypography>
           ) : (
-            <Grid container spacing={2}>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
               {products.map((product) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} key={product._id}>
-                  <ProductCard
-                    imgSrc={product.detail_image[0]}
-                    title={product.name}
-                    price={product.actual_price}
-                    discountPrice={product.discounted_price}
-                    rating={product.ratings}
-                    offer={product.offer}
-                    userId={userId}
-                    productId={product._id}
-                    slug={product.slug}
-                    isInWishlist={isInWishlist(product._id)}
-                    inStock={product.inStock > 0}
-                  />
-                </Grid>
+                <ProductCard
+                  key={product._id}
+                  imgSrc={product.detail_image[0]}
+                  title={product.name}
+                  price={product.actual_price}
+                  discountPrice={product.discounted_price}
+                  rating={product.ratings}
+                  offer={product.offer}
+                  userId={userId}
+                  productId={product._id}
+                  slug={product.slug}
+                  isInWishlist={isInWishlist(product._id)}
+                  inStock={product.inStock > 0}
+                />
               ))}
-            </Grid>
+            </div>
           )}
-        </Grid>
-      </Grid>
+        </div>
+      </div>
     </CustomBox>
   );
 };

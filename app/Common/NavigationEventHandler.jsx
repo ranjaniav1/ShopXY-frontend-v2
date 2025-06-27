@@ -1,7 +1,5 @@
-// app/Common/NavigationEventHandler.tsx
 "use client";
 import React, { useEffect } from "react";
-import { Box, CircularProgress } from "@mui/material";
 import { usePathname } from "next/navigation";
 import { useLoading } from "../context/LoadingContext";
 
@@ -13,8 +11,8 @@ const NavigationEventsHandler = () => {
     setLoading(true);
 
     const timer = setTimeout(() => {
-      setLoading(false); // wait till transition completes visually
-    }, 100); // adjust based on perceived loading
+      setLoading(false);
+    }, 100);
 
     return () => clearTimeout(timer);
   }, [pathname]);
@@ -22,22 +20,9 @@ const NavigationEventsHandler = () => {
   if (!isLoading) return null;
 
   return (
-    <Box
-      sx={{
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        background: "rgba(255, 255, 255, 0.5)",
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100%",
-        zIndex: 9999,
-      }}
-    >
-      <CircularProgress />
-    </Box>
+    <div className="fixed inset-0 z-[9999] bg-white/50 flex items-center justify-center">
+      <div className="w-10 h-10 border-4 border-t-primary border-gray-300 rounded-full animate-spin" />
+    </div>
   );
 };
 

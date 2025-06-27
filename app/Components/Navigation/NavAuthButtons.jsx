@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import CustomButton from "@/app/Custom/CustomButton";
-import AccountCircle from "@mui/icons-material/AccountCircle";
+import { UserCircle } from "lucide-react"; // ✅ Lucide replacement
 import RegisterModal from "./RegisterModal";
 import LoginModal from "./LoginModal";
 
@@ -20,9 +20,21 @@ const NavAuthButtons = () => {
 
   return (
     <>
-      <CustomButton startIcon={<AccountCircle />} title="Login" onClick={handleOpenLogin} />
-      <RegisterModal open={isRegisterModalOpen} onClose={() => setRegisterModalOpen(false)} onSwitchToLogin={handleOpenLogin} />
-      <LoginModal open={isLoginModalOpen} onClose={() => setLoginModalOpen(false)} onSwitchToRegister={handleOpenRegister} />
+      <CustomButton
+        startIcon={<UserCircle className="w-5 h-5" />} // ✅ Lucide icon
+        title="Login"
+        onClick={handleOpenLogin}
+      />
+      <RegisterModal
+        open={isRegisterModalOpen}
+        onClose={() => setRegisterModalOpen(false)}
+        onSwitchToLogin={handleOpenLogin}
+      />
+      <LoginModal
+        open={isLoginModalOpen}
+        onClose={() => setLoginModalOpen(false)}
+        onSwitchToRegister={handleOpenRegister}
+      />
     </>
   );
 };

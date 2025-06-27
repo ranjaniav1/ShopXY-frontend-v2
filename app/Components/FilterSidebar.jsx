@@ -1,17 +1,6 @@
 "use client";
 
-import {
-  Box,
-  Slider,
-  Checkbox,
-  FormControlLabel,
-  FormGroup,
-  Divider,
-  MenuItem,
-  Select,
-  InputLabel,
-  FormControl,
-} from "@mui/material";
+import React from "react";
 import CustomTypography from "@/app/Custom/CustomTypography";
 import Heading from "@/app/Common/Heading";
 
@@ -42,126 +31,121 @@ const FilterSidebar = ({
   const validRating = Array.isArray(ratingRange) && ratingRange.length === 2 ? ratingRange : [minRating, maxRating];
 
   return (
-    <Box
-      className=" border border-gray-200 text-secondary"
-      sx={{
-        p: 2,
-        borderRadius: 2,
-        boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
-        position: "sticky",
-        top: "100px",
-      }}
-    >
+    <div className="border border-gray-200 rounded-lg p-4 shadow-sm sticky top-24 text-tsecondary bg-white w-full max-w-[300px]">
       <Heading text="Filters" className="text-lg mb-3 text-primary" />
 
       {/* Category Filter */}
-      <FormControl fullWidth margin="normal" size="small">
-        <InputLabel id="category-select-label">Category</InputLabel>
-        <Select
-          labelId="category-select-label"
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-1 text-tprimary">Category</label>
+        <select
+          className="w-full border border-gray-300 rounded-md p-2 text-sm"
           value={selectedCategory}
-          label="Category"
           onChange={(e) => setSelectedCategory(e.target.value)}
         >
-          <MenuItem value="">All</MenuItem>
+          <option value="">All</option>
           {categories.map((cat) => (
-            <MenuItem key={cat._id} value={cat.slug}>
+            <option key={cat._id} value={cat.slug}>
               {cat.title}
-            </MenuItem>
+            </option>
           ))}
-        </Select>
-      </FormControl>
+        </select>
+      </div>
 
       {/* Collection Filter */}
-      <FormControl fullWidth margin="normal" size="small">
-        <InputLabel id="collection-select-label">Collection</InputLabel>
-        <Select
-          labelId="collection-select-label"
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-1 text-tprimary">Collection</label>
+        <select
+          className="w-full border border-gray-300 rounded-md p-2 text-sm"
           value={selectedCollection}
-          label="Collection"
           onChange={(e) => setSelectedCollection(e.target.value)}
         >
-          <MenuItem value="">All</MenuItem>
+          <option value="">All</option>
           {collections.map((col) => (
-            <MenuItem key={col._id} value={col.slug}>
+            <option key={col._id} value={col.slug}>
               {col.title}
-            </MenuItem>
+            </option>
           ))}
-        </Select>
-      </FormControl>
+        </select>
+      </div>
 
       {/* Brand Filter */}
-      <FormControl fullWidth margin="normal" size="small">
-        <InputLabel id="brand-select-label">Brand</InputLabel>
-        <Select
-          labelId="brand-select-label"
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-1 text-tprimary">Brand</label>
+        <select
+          className="w-full border border-gray-300 rounded-md p-2 text-sm"
           value={selectedBrand}
-          label="Brand"
           onChange={(e) => setSelectedBrand(e.target.value)}
         >
-          <MenuItem value="">All</MenuItem>
+          <option value="">All</option>
           {brands.map((brand) => (
-            <MenuItem key={brand._id} value={brand.slug}>
+            <option key={brand._id} value={brand.slug}>
               {brand.title}
-            </MenuItem>
+            </option>
           ))}
-        </Select>
-      </FormControl>
+        </select>
+      </div>
 
       {/* Price Range */}
-      <Box my={3}>
+      <div className="mb-4">
         <CustomTypography fontWeight={600} fontSize="1rem" className="mb-1 text-primary">
           Price Range
         </CustomTypography>
-        <Slider
-          size="small"
+        {/* Replace this with your custom slider component */}
+        <input
+          type="range"
           min={minPrice}
           max={maxPrice}
-          step={1}
-          marks
-          value={validPrice}
-          onChange={(_, newValue) => setPriceRange(newValue)}
-          valueLabelDisplay="auto"
+          value={validPrice[1]}
+          onChange={(e) => setPriceRange([minPrice, Number(e.target.value)])}
+          className="w-full"
         />
-        <CustomTypography fontSize="0.875rem" className="text-primary">
-          ₹{validPrice[0]} - ₹{validPrice[1]}
-        </CustomTypography>
-      </Box>
+        <p className="text-sm text-primary mt-1">₹{validPrice[0]} - ₹{validPrice[1]}</p>
+      </div>
 
-      {/* Rating */}
-      <Box mb={3}>
+      {/* Rating Range */}
+      <div className="mb-4">
         <CustomTypography fontWeight={600} fontSize="1rem" className="mb-1 text-primary">
           Rating
         </CustomTypography>
-        <Slider
-          size="small"
+        {/* Replace with your custom rating slider */}
+        <input
+          type="range"
           min={minRating}
           max={maxRating}
           step={0.1}
-          marks
-          value={validRating}
-          onChange={(_, newValue) => setRatingRange(newValue)}
-          valueLabelDisplay="auto"
+          value={validRating[1]}
+          onChange={(e) => setRatingRange([minRating, parseFloat(e.target.value)])}
+          className="w-full"
         />
-        <CustomTypography fontSize="0.875rem" className="text-primary">
-          {validRating[0]} - {validRating[1]} stars
-        </CustomTypography>
-      </Box>
+        <p className="text-sm text-primary mt-1">{validRating[0]} - {validRating[1]} stars</p>
+      </div>
 
-      <Divider sx={{ my: 2 }} />
+      {/* Divider */}
+      <hr className="my-4" />
 
       {/* Extra Filters */}
-      <FormGroup>
-        <FormControlLabel
-          control={<Checkbox checked={inStock} onChange={(e) => setInStock(e.target.checked)} />}
-          label="Only In Stock"
-        />
-        <FormControlLabel
-          control={<Checkbox checked={onlyDiscounted} onChange={(e) => setOnlyDiscounted(e.target.checked)} />}
-          label="Only Discounted"
-        />
-      </FormGroup>
-    </Box>
+      <div className="space-y-2">
+        <label className="inline-flex items-center gap-2">
+          <input
+            type="checkbox"
+            checked={inStock}
+            onChange={(e) => setInStock(e.target.checked)}
+            className="form-checkbox rounded border-gray-300 text-primary"
+          />
+          <span className="text-sm">Only In Stock</span>
+        </label>
+
+        <label className="inline-flex items-center gap-2">
+          <input
+            type="checkbox"
+            checked={onlyDiscounted}
+            onChange={(e) => setOnlyDiscounted(e.target.checked)}
+            className="form-checkbox rounded border-gray-300 text-primary"
+          />
+          <span className="text-sm">Only Discounted</span>
+        </label>
+      </div>
+    </div>
   );
 };
 

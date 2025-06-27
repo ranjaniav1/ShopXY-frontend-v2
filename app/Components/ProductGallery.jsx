@@ -1,13 +1,9 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import { Grid, Card, Box } from "@mui/material";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import DoubleArrowIcon from "@mui/icons-material/DoubleArrow";
+import { ShoppingCart, MoveRight } from "lucide-react";
 import CustomButton from "../Custom/CustomButton";
-import { useSelector } from "react-redux";
 import { handleAddToCart } from "../helper/cartUtils";
-import Link from "next/link";
 import { useUser } from "../context/UserContext";
 import ClientLink from "../Common/ClientClick";
 
@@ -16,127 +12,96 @@ const ProductGallery = ({
   selectedImage,
   onImageClick,
   productName,
-  productId
+  productId,
 }) => {
- const { user } = useUser(); // 👈 Get user from context
-    const userId = user?._id;
-// 🔹 Magnifier Effect
-const [lensPosition, setLensPosition] = useState({ x: 0, y: 0 });
-const [isHovering, setIsHovering] = useState(false);
-const imgRef = useRef(null);
-  // img magnifier on mouse 
+  const { user } = useUser();
+  const userId = user?._id;
+
+  const [lensPosition, setLensPosition] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
+  const imgRef = useRef(null);
+
   const handleMouseMove = (e) => {
     if (!imgRef.current) return;
-
     const { left, top, width, height } = imgRef.current.getBoundingClientRect();
     const x = ((e.clientX - left) / width) * 100;
     const y = ((e.clientY - top) / height) * 100;
-
     setLensPosition({ x, y });
   };
+
   return (
-    <Grid container spacing={2}>
-      <Grid
-        item
-        xs={2}
-        md={2}
-        sx={{ display: "flex", flexDirection: "column", gap: 1 }}
-      >
+    <div className="grid grid-cols-12 gap-4">
+      {/* Side Thumbnails */}
+      <div className="col-span-2 flex flex-col gap-2">
         {detailImages.map((img, id) => (
-          <Card
+          <div
             key={id}
-            sx={{
-              cursor: "pointer",
-              borderRadius: 2,
-              border: "1px solid #ddd",
-              boxShadow: 1
-            }}
+            className="border rounded-lg shadow cursor-pointer"
             onClick={() => onImageClick(img)}
           >
             <img
               src={img}
               alt={`Thumbnail ${id + 1}`}
-              style={{
-                width: "100%",
-                height: "auto",
-                objectFit: "cover",
-                borderRadius: "8px"
-              }}
+              className="w-full object-cover rounded-md"
             />
-          </Card>
+          </div>
         ))}
-      </Grid>
-      <Grid item xs={10} md={10}>
-      <Card
-          sx={{
-            borderRadius: 2,
-            border: "1px solid #ddd",
-            boxShadow: 1,
-            overflow: "hidden",
-            position: "relative",
-          }}
+      </div>
+
+      {/* Main Image + Magnifier */}
+      <div className="col-span-10 relative">
+        <div
+          className="relative border rounded-lg shadow overflow-hidden"
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
           onMouseMove={handleMouseMove}
         >
-          {/* 🔹 Main Product Image */}
           <img
             ref={imgRef}
             src={selectedImage}
             alt={productName}
-            style={{
-              width: "100%",
-              height: "30%",
-              objectFit: "cover",
-              borderRadius: "8px",
-              transition: "transform 0.3s ease-in-out"
-            }}
+            className="w-full h-auto object-cover rounded-lg transition-transform duration-300"
           />
 
-          {/* 🔹 Magnifier Effect */}
           {isHovering && (
-            <Box
-              sx={{
-                position: "absolute",
+            <div
+              className="absolute border border-black rounded-full pointer-events-none"
+              style={{
                 top: `${lensPosition.y}%`,
                 left: `${lensPosition.x}%`,
                 transform: "translate(-50%, -50%)",
                 width: "150px",
                 height: "150px",
-                borderRadius: "50%",
-                border: "2px solid #000",
-                background: `url(${selectedImage})`,
+                backgroundImage: `url(${selectedImage})`,
                 backgroundSize: "200% 200%",
                 backgroundPosition: `${lensPosition.x}% ${lensPosition.y}%`,
-                pointerEvents: "none"
               }}
             />
           )}
-        </Card>
-      </Grid>
-      <Grid container spacing={2} sx={{ mt: 2 }}>
-        <Grid item xs={12}>
+        </div>
+      </div>
+
+      {/* Buttons */}
+      <div className="col-span-12 mt-4 space-y-3">
+        <CustomButton
+          startIcon={<ShoppingCart size={16} />}
+          variant="contained"
+          title="Cart It"
+          className="w-full"
+          onClick={() => handleAddToCart({ userId, productId })}
+        />
+
+        <ClientLink href="/scheckout/carts" className="block w-full">
           <CustomButton
-            startIcon={<AddShoppingCartIcon />}
-            variant="contained"
-            title="Cart It"
-            className="w-full"
-            onClick={()=>handleAddToCart({userId:userId,productId:productId})}
-          />
-        </Grid>
-        <Grid item xs={12}>
-        <ClientLink href="/scheckout/carts" className="w-full">
-          <CustomButton
-            startIcon={<DoubleArrowIcon />}
+            startIcon={<MoveRight size={16} />}
             variant="contained"
             title="Buy Now"
             className="w-full"
-            onClick={()=>handleAddToCart({userId:userId,productId:productId})}
-
-          /></ClientLink>
-        </Grid>
-      </Grid>
-    </Grid>
+            onClick={() => handleAddToCart({ userId, productId })}
+          />
+        </ClientLink>
+      </div>
+    </div>
   );
 };
 

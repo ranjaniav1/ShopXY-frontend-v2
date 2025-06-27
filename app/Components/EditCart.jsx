@@ -1,15 +1,17 @@
-'use client';
-import React, { useEffect, useState } from 'react';
-import { Add as AddIcon, Remove as RemoveIcon } from '@mui/icons-material';
-import { EdittoCart } from '../Service/Cart';
-import { useUser } from '../context/UserContext';
-import CustomButton from '../Custom/CustomButton';
-import CustomTypography from '../Custom/CustomTypography';
+"use client";
+import React, { useEffect, useState } from "react";
+import { Minus, Plus } from "lucide-react"; // ✅ Lucide Icons
+import { EdittoCart } from "../Service/Cart";
+import { useUser } from "../context/UserContext";
+import CustomButton from "../Custom/CustomButton";
+import CustomTypography from "../Custom/CustomTypography";
 
 const EditCart = ({ onClose, selectedProduct }) => {
   const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [localQuantity, setLocalQuantity] = useState(selectedProduct?.quantity || 1);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [localQuantity, setLocalQuantity] = useState(
+    selectedProduct?.quantity || 1
+  );
 
   const { user } = useUser();
   const userId = user?._id;
@@ -22,13 +24,13 @@ const EditCart = ({ onClose, selectedProduct }) => {
 
   const updateCart = async (newQuantity) => {
     setLoading(true);
-    setErrorMessage('');
+    setErrorMessage("");
     try {
       await EdittoCart(userId, selectedProduct.product._id, newQuantity);
       setLocalQuantity(newQuantity);
     } catch (err) {
-      console.error('Error updating quantity:', err);
-      setErrorMessage('Error updating cart. Please try again.');
+      console.error("Error updating quantity:", err);
+      setErrorMessage("Error updating cart. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -87,18 +89,18 @@ const EditCart = ({ onClose, selectedProduct }) => {
               <div className="flex items-center mt-2 space-x-2">
                 <button
                   onClick={handleDecrement}
-                  className="bg-primary text-white px-3 py-1 rounded hover:opacity-90"
+                  className="bg-primary text-white p-1 rounded hover:opacity-90"
                 >
-                  <RemoveIcon fontSize="small" />
+                  <Minus size={16} />
                 </button>
                 <CustomTypography variant="h6" className="text-tsecondary px-6">
                   {localQuantity}
                 </CustomTypography>
                 <button
                   onClick={handleIncrement}
-                  className="bg-primary text-white px-3 py-1 rounded hover:opacity-90"
+                  className="bg-primary text-white p-1 rounded hover:opacity-90"
                 >
-                  <AddIcon fontSize="small" />
+                  <Plus size={16} />
                 </button>
               </div>
 

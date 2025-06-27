@@ -1,6 +1,12 @@
 "use client";
+
 import React from "react";
-import { Facebook, Instagram, LinkedIn, Twitter } from "@mui/icons-material";
+import {
+  Facebook,
+  Instagram,
+  Linkedin,
+  Twitter,
+} from "lucide-react"; // ✅ Lucide icons
 import { useTheme } from "@/app/context/ThemeContext";
 
 const Footer = () => {
@@ -20,10 +26,12 @@ const Footer = () => {
               <img
                 src={webSettings.logo}
                 alt="Logo"
-                className="h-14 mb-4"
+                className="h-14 mb-4 object-contain"
               />
             )}
-            <p className="text-sm">{webSettings?.description || "Your one-stop eCommerce solution."}</p>
+            <p className="text-sm">
+              {webSettings?.description || "Your one-stop eCommerce solution."}
+            </p>
           </div>
 
           {/* Top Links */}
@@ -32,7 +40,10 @@ const Footer = () => {
             <ul className="space-y-2">
               {footerLinks.map((link) => (
                 <li key={link._id}>
-                  <a href={link.href} className="hover:text-primary transition">
+                  <a
+                    href={link.href}
+                    className="hover:text-primary transition-colors"
+                  >
                     {link.title}
                   </a>
                 </li>
@@ -50,21 +61,21 @@ const Footer = () => {
             </ul>
             <div className="flex space-x-4 mt-4">
               {socialLinks.map((item) => {
-                const icon = {
-                  facebook: <Facebook />,
-                  twitter: <Twitter />,
-                  instagram: <Instagram />,
-                  linkedin: <LinkedIn />
-                }[item.type];
+                const iconMap = {
+                  facebook: <Facebook size={20} />,
+                  twitter: <Twitter size={20} />,
+                  instagram: <Instagram size={20} />,
+                  linkedin: <Linkedin size={20} />,
+                };
                 return (
                   <a
                     key={item._id}
                     href={item.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-primary"
+                    className="hover:text-primary transition-colors"
                   >
-                    {icon}
+                    {iconMap[item.type]}
                   </a>
                 );
               })}

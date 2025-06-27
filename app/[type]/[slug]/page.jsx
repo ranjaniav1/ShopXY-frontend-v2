@@ -1,14 +1,9 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useParams, usePathname } from 'next/navigation';
-import { Grid } from '@mui/material';
-import CustomBox from '@/app/Custom/CustomBox';
 import CustomSkeleton from '@/app/Custom/CustomSkeleton';
-import Link from 'next/link';
-import AOS from 'aos'; // Import AOS
-import 'aos/dist/aos.css'; // Import AOS styles
+
 import Heading from '@/app/Common/Heading';
-import CustomTypography from '@/app/Custom/CustomTypography';
 import ProductCard from '@/app/Components/ProductCard';
 import { useUser } from '@/app/context/UserContext';
 import { getWishlist } from '@/app/Service/Profile';

@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
-import CloseIcon from "@mui/icons-material/Close";
+import { X } from "lucide-react"; // Lucide close icon
 
-const CustomModal = ({ open, onClose, title, children,height }) => {
+const CustomModal = ({ open, onClose, title, children, height }) => {
   if (!open) return null;
 
   return (
@@ -14,8 +14,11 @@ const CustomModal = ({ open, onClose, title, children,height }) => {
         {/* Header */}
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold text-primary">{title}</h2>
-          <button onClick={onClose} className="text-gray-600 hover:text-red-500">
-            <CloseIcon />
+          <button
+            onClick={onClose}
+            className="text-gray-600 hover:text-red-500 transition"
+          >
+            <X className="w-5 h-5" /> {/* Lucide X icon */}
           </button>
         </div>
 

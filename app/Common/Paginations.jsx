@@ -1,7 +1,4 @@
-import React from 'react';
-import { Box, Button } from '@mui/material';
-
-
+import React from "react";
 
 const Pagination = ({ currentPage, totalItems, itemsPerPage, onPageChange }) => {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -15,29 +12,28 @@ const Pagination = ({ currentPage, totalItems, itemsPerPage, onPageChange }) => 
   };
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 2 }}>
-      <Button
-        variant="contained"
+    <div className="flex justify-center items-center mt-4 space-x-4">
+      <button
         onClick={handlePreviousPage}
         disabled={currentPage === 1}
-        sx={{ marginRight: 2 }}
+        className={`px-4 py-2 rounded text-white bg-primary hover:bg-primary/90 disabled:bg-gray-300 disabled:cursor-not-allowed`}
       >
         Previous
-      </Button>
+      </button>
 
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <span>Page {currentPage} of {totalPages}</span>
-      </Box>
+      <span className="text-sm text-secondary">
+        Page <span className="font-semibold">{currentPage}</span> of{" "}
+        <span className="font-semibold">{totalPages}</span>
+      </span>
 
-      <Button
-        variant="contained"
+      <button
         onClick={handleNextPage}
         disabled={currentPage === totalPages}
-        sx={{ marginLeft: 2 }}
+        className={`px-4 py-2 rounded text-white bg-primary hover:bg-primary/90 disabled:bg-gray-300 disabled:cursor-not-allowed`}
       >
         Next
-      </Button>
-    </Box>
+      </button>
+    </div>
   );
 };
 
