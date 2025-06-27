@@ -1,103 +1,87 @@
+'use client';
+
 import React, { useState } from "react";
-import { TextField, Button, Avatar, Box, IconButton } from "@mui/material";
+import { Edit } from "lucide-react"; // Replacing MUI Edit icon
 import { EditUser } from "@/app/Service/User";
-import { Edit as EditIcon } from "@mui/icons-material"; // Import edit icon
 import toast from "react-hot-toast";
 import { useUser } from "@/app/context/UserContext";
 
 const EditUserModal = ({ user, onClose }) => {
   const [fullname, setFullname] = useState(user?.fullname || "");
-  const [avatar, setAvatar] = useState(null); // Avatar will be a file object
-  const { user: contextUser, setUser } = useUser(); // 👈 Get user from context
+  const [avatar, setAvatar] = useState(null); // Avatar file
+  const { user: contextUser, setUser } = useUser(); // Get user from context
   const userId = contextUser?._id;
-
-
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
-    console.log("File input changed:", e.target.files); // Log all selected files
     if (file) {
       setAvatar(file);
-      console.log("Selected avatar:", file); // Log the selected file
-    } else {
-      console.log("No file selected."); // Log if no file is selected
     }
   };
 
   const handleSubmit = async () => {
     const formData = new FormData();
-    formData.append("userId", userId); // Append user ID
-    formData.append("fullname", fullname); // Append full name
-    // Only append avatar if it's selected
-    if (avatar) {
-      formData.append("avatar", avatar);
-    }
+    formData.append("userId", userId);
+    formData.append("fullname", fullname);
+    if (avatar) formData.append("avatar", avatar);
 
     try {
       const response = await EditUser(formData);
-      console.log("response of edit user", response)
-      setUser({ user: response?.data?.user }); // Update the user state
+      setUser(response?.data?.user);
       toast.success("Profile updated successfully");
-      onClose(); // Close modal after success
+      onClose();
     } catch (error) {
       console.error("Error updating profile:", error);
       alert("Error updating profile");
     }
   };
 
-
-
   return (
-    <Box
-      sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
-    >
-      <Box position="relative">
-        <Avatar
+    <div className="flex flex-col items-center w-full px-4 py-2">
+      {/* Avatar and Upload Icon */}
+      <div className="relative mb-4">
+        <img
           src={
             avatar
               ? URL.createObjectURL(avatar)
               : user?.avatar || "/default-avatar.png"
           }
-          sx={{ width: 70, height: 70, mb: 2 }}
+          alt="User Avatar"
+          className="w-20 h-20 rounded-full object-cover border-2 border-secondary"
         />
-        {/* Edit icon in the bottom right corner of the Avatar */}
-        <IconButton
-          component="label"
-          sx={{
-            position: "absolute",
-            bottom: 0,
-            right: 0,
-            bgcolor: "white", // Background color for better visibility
-            borderRadius: "50%",
-            boxShadow: 2 // Optional shadow for better visibility
-          }}
-          size="small"
+
+        <label
+          htmlFor="avatarUpload"
+          className="absolute bottom-0 right-0 bg-white border border-gray-300 rounded-full p-1 shadow-md cursor-pointer hover:bg-gray-100"
         >
-          <EditIcon sx={{ color: "primary.main" }} fontSize="small" />
+          <Edit size={14} className="text-primary" />
           <input
+            id="avatarUpload"
             type="file"
             hidden
+            accept="image/*"
             onChange={handleAvatarChange}
-            accept="image/*" // Optional: limit file type to images
           />
-        </IconButton>
-      </Box>
-      <TextField
-        label="Full Name"
+        </label>
+      </div>
+
+      {/* Full Name Input */}
+      <input
+        type="text"
         value={fullname}
         onChange={(e) => setFullname(e.target.value)}
-        fullWidth
-        margin="dense"
+        placeholder="Full Name"
+        className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary mb-3 text-tprimary bg-white"
       />
-      <Button
-        variant="contained"
-        color="primary"
-        sx={{ mt: 3 }}
+
+      {/* Submit Button */}
+      <button
         onClick={handleSubmit}
+        className="px-4 py-2 rounded-md bg-primary text-white hover:bg-primary/90 transition-all w-full"
       >
         Save Changes
-      </Button>
-    </Box>
+      </button>
+    </div>
   );
 };
 

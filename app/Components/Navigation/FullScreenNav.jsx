@@ -1,6 +1,7 @@
 "use client";
+
 import React, { useState } from "react";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { MoreVertical } from "lucide-react"; // ✅ Lucide icon
 import Link from "next/link";
 import NavSearchBar from "./NavSearchBar";
 import NavProfileMenu from "./NavProfileMenu";
@@ -35,14 +36,14 @@ const FullScreenNav = ({ setDrawerOpen }) => {
         />
       </ClientLink>
 
-      {/* Search Field */}
+      {/* Search Bar */}
       <NavSearchBar
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         onSearch={handleSearch}
       />
 
-      {/* Account + Cart + Drawer Button */}
+      {/* Right Side Buttons */}
       <div className="flex items-center gap-2">
         {user ? (
           <>
@@ -52,11 +53,12 @@ const FullScreenNav = ({ setDrawerOpen }) => {
         ) : (
           <NavAuthButtons />
         )}
+
         <button
           onClick={() => setDrawerOpen(true)}
           className="p-2 hover:bg-secondary/20 rounded"
         >
-          <MoreVertIcon className="text-primary" />
+          <MoreVertical className="w-5 h-5 text-primary" />
         </button>
       </div>
     </div>

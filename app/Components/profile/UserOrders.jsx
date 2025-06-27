@@ -1,27 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardMedia,
-  Divider,
-  Grid,
-  Typography,
-  useTheme,
-  useMediaQuery,
-} from '@mui/material';
+'use client';
+import React, { useEffect, useState } from 'react';
 import CustomButton from '@/app/Custom/CustomButton';
-import { DeleteAllOrder, fetchOrder } from '@/app/helper/ProfileUtils';
 import CustomTypography from '@/app/Custom/CustomTypography';
+import { DeleteAllOrder, fetchOrder } from '@/app/helper/ProfileUtils';
 import generateInvoice from './generateInvoice';
 
 const UserOrders = ({ userId, activeTab }) => {
   const [order, setOrder] = useState([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
-
-  const theme = useTheme();
 
   useEffect(() => {
     if (userId) {
@@ -40,178 +27,106 @@ const UserOrders = ({ userId, activeTab }) => {
 
   const totalPages = Math.ceil(total / 1);
 
-
-
   return (
-    <Box>
-     
-
+    <div className="space-y-6">
       {order.length > 0 ? (
         order.map((orderItem) => (
-          <Card
+          <div
             key={orderItem._id}
-            sx={{
-              borderRadius: 2,
-              boxShadow: 3,
-              mb: 3,
-              px: 2,
-              py: 2,
-              backgroundColor: theme.palette.background.main,
-              transition: '0.3s ease',
-              '&:hover': {
-                boxShadow: 6,
-                transform: 'scale(1.005)',
-              },
-            }}
+            className="rounded-lg border border-gray-200 p-4 shadow-md transition hover:shadow-lg bg-body"
           >
-            <CardContent>
-              <Grid
-                container
-                spacing={2}
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <Grid item xs={12} sm="auto">
-                  <CustomTypography variant="h6" fontWeight="bold" sx={{ color: theme.palette.text.primary }}>
-                    Order ID: {orderItem._id}
-                  </CustomTypography>
-                </Grid>
-                <Grid item>
-                  <CustomButton
-                    onClick={() => generateInvoice(orderItem)}
-                    title="Download Invoice"
-                    className="px-4 py-2 rounded-md transition-all duration-200"
+            {/* Header */}
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2">
+              <p className="text-sm font-semibold text-primary">
+                Order ID: {orderItem._id}
+              </p>
+              <CustomButton
+                onClick={() => generateInvoice(orderItem)}
+                title="Download Invoice"
+                className="mt-2 sm:mt-0"
+              />
+            </div>
+
+            {/* Status + Date */}
+            <div className="flex flex-col sm:flex-row justify-between text-sm text-tsecondary mb-3">
+              <p>Order Status: {orderItem.orderStatus}</p>
+              <p>Order Date: {new Date(orderItem.createdAt).toLocaleDateString()}</p>
+            </div>
+
+            {/* Product List */}
+            <div className="border border-dashed border-gray-300 rounded-md p-4 space-y-4">
+              {orderItem.product.map((item, index) => (
+                <div
+                  key={item._id}
+                  className="flex items-start gap-4 border-b last:border-none pb-4"
+                >
+                  {/* Image */}
+                  <img
+                    src={item.product.image}
+                    alt={item.product.name}
+                    className="w-16 h-16 object-cover rounded-md border border-secondary"
                   />
-                </Grid>
-              </Grid>
 
-              <Divider sx={{ my: 2 }} />
+                  {/* Product Info */}
+                  <div className="flex-1">
+                    <p className="text-sm font-semibold text-tprimary">
+                      {item.product.name}
+                    </p>
+                    <p className="text-xs text-tsecondary">
+                      {item.product.description}
+                    </p>
+                  </div>
 
-              <Grid container justifyContent="space-between">
-                <Grid item xs={12} sm="auto">
-                  <CustomTypography sx={{ color: theme.palette.text.secondary }}>
-                    Order Status: {orderItem.orderStatus}
-                  </CustomTypography>
-                </Grid>
-                <Grid item xs={12} sm="auto">
-                  <CustomTypography sx={{ color: theme.palette.text.secondary }} textAlign="right">
-                    Order Date: {new Date(orderItem.createdAt).toLocaleDateString()}
-                  </CustomTypography>
-                </Grid>
-              </Grid>
+                  {/* Price & Qty */}
+                  <div className="flex flex-col text-right whitespace-nowrap text-sm">
+                    <p className="font-semibold text-tprimary">
+                      ₹{item.product.discounted_price.toFixed(2)}
+                    </p>
+                    <p className="text-xs text-tsecondary">Qty: {item.quantity}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
 
-              <Box
-                sx={{
-                  border: `1px dashed ${theme.palette.divider}`,
-                  borderRadius: 2,
-                  p: 2,
-                  my: 2,
-                }}
-              >
-                {orderItem.product.map((item, index) => (
-                  <Box key={item._id}>
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: { xs: 'column', sm: 'row' },
-                        gap: 2,
-                        alignItems: 'center',
-                      }}
-                    >
-                      <CardMedia
-                        component="img"
-                        image={item.product.image}
-                        alt={item.product.name}
-                        sx={{
-                          width: 80,
-                          height: 80,
-                          objectFit: 'cover',
-                          borderRadius: 2,
-                        }}
-                      />
-                      <Box sx={{ flexGrow: 1 }}>
-                        <Grid container spacing={2}>
-                          <Grid item xs={12} sm={6}>
-                            <CustomTypography variant="subtitle1" fontWeight="bold">
-                              {item.product.name}
-                            </CustomTypography>
-                            <CustomTypography variant="body2" sx={{ color: theme.palette.text.secondary }}>
-                              {item.product.description}
-                            </CustomTypography>
-                          </Grid>
-                          <Grid
-                            item
-                            xs={12}
-                            sm={6}
-                            container
-                            justifyContent="flex-end"
-                            direction="column"
-                            alignItems="flex-end"
-                          >
-                            <CustomTypography fontWeight="bold" sx={{ color: theme.palette.text.secondary }}>
-                              ₹{item.product.discounted_price.toFixed(2)}
-                            </CustomTypography>
-                            <CustomTypography variant="body2" sx={{ color: theme.palette.text.primary }}>
-                              Qty: {item.quantity}
-                            </CustomTypography>
-                          </Grid>
-                        </Grid>
-                      </Box>
-                    </Box>
-                    {index < orderItem.product.length - 1 && <Divider sx={{ my: 2 }} />}
-                  </Box>
-                ))}
-              </Box>
-
-              <Grid container justifyContent="space-between" mt={2}>
-                <Grid item>
-                  <CustomTypography variant="body2" sx={{ color: theme.palette.text.primary }}>
-                    Payment Type: {orderItem.paymentType}
-                  </CustomTypography>
-                </Grid>
-                <Grid item>
-                  <CustomTypography variant="body2" sx={{ color: theme.palette.text.primary }}>
-                    Total Price: ₹{orderItem.discountedPrice.toFixed(2) > 0 ? orderItem.discountedPrice.toFixed(2) : orderItem.totalPrice.toFixed(2)}
-                  </CustomTypography>
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
+            {/* Footer */}
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-3 text-sm">
+              <p className="text-primary">Payment Type: {orderItem.paymentType}</p>
+              <p className="text-primary">
+                Total Price: ₹
+                {orderItem.discountedPrice > 0
+                  ? orderItem.discountedPrice.toFixed(2)
+                  : orderItem.totalPrice.toFixed(2)}
+              </p>
+            </div>
+          </div>
         ))
       ) : (
-        <CustomTypography variant="body2" sx={{ color: theme.palette.text.primary }} align="center" mt={3}>
-          No orders found.
-        </CustomTypography>
+        <p className="text-center text-tprimary mt-6">No orders found.</p>
       )}
 
-      {/* Pagination Controls */}
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          mt: 4,
-        }}
-      >
-        <Button
-          variant="outlined"
-          onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-          disabled={page <= 1}
-        >
-          Previous
-        </Button>
-        <CustomTypography variant="body2" sx={{ color: theme.palette.text.secondary }}>
-          Page {page} of {totalPages}
-        </CustomTypography>
-        <Button
-          variant="outlined"
-          onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
-          disabled={page >= totalPages}
-        >
-          Next
-        </Button>
-      </Box>
-    </Box>
+      {/* Pagination */}
+      {order.length > 0 && (
+        <div className="flex justify-between items-center mt-6">
+          <button
+            onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+            disabled={page <= 1}
+            className="px-4 py-2 border rounded-md text-sm bg-white hover:bg-gray-100 disabled:opacity-50"
+          >
+            Previous
+          </button>
+          <p className="text-sm text-tsecondary">
+            Page {page} of {totalPages}
+          </p>
+          <button
+            onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+            disabled={page >= totalPages}
+            className="px-4 py-2 border rounded-md text-sm bg-white hover:bg-gray-100 disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
+      )}
+    </div>
   );
 };
 

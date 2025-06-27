@@ -1,79 +1,53 @@
+'use client';
+
 import React, { useState } from "react";
-import { Avatar, Box, IconButton, Typography, useTheme } from "@mui/material";
-import { Edit as EditIcon } from "@mui/icons-material"; // Importing the edit icon from MUI
+import { Edit } from "lucide-react"; // lightweight icon alternative
 import CustomModal from "@/app/Custom/CustomModal";
 import EditUserModal from "./EditUserModal";
 import CustomTypography from "@/app/Custom/CustomTypography";
+import { useUser } from "@/app/context/UserContext";
 
-const UserProfile = ({ user }) => {
-  const theme = useTheme();
+const UserProfile = () => {
   const [open, setOpen] = useState(false);
-  // Handler to toggle modal
-  const onEditClick = () => {
-    setOpen(true);
-  };
 
-  // Handler to close modal
-  const handleClose = () => {
-    setOpen(false);
-  };
-  console.log("avatar",user?.avatar)
+  const onEditClick = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const { user } = useUser()
   return (
-    <Box
-      sx={{
-        position: "relative", // For positioning the edit itcon
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        p: 3,
-        mb: 4,
-        background: `linear-gradient(135deg)`, // Theme-based background
-        borderRadius: "12px",
-        boxShadow: theme.shadows[3]
-      }}
-    >
-      {" "}
-      {/* Edit Icon in the top-right corner */}
-      <IconButton
+    <div className="relative flex flex-col items-center p-6 mb-6 rounded-xl bg-body shadow-md">
+      {/* Edit Icon */}
+      <button
         onClick={onEditClick}
-        sx={{
-          position: "absolute",
-          top: 8,
-          right: 8,
-          color: theme.palette.grey[50] // Theme-based color for the icon
-        }}
+        className="absolute top-2 right-2 text-white bg-primary p-2 rounded-full hover:bg-primary/80 transition-all"
       >
-        <EditIcon />
-      </IconButton>
+        <Edit size={18} />
+      </button>
+
+      {/* Avatar */}
       <img
         src={user?.avatar}
         alt={user?.fullname || "Avatar"}
-        style={{
-          width: "130px",
-          height: "130px",
-          marginBottom: "16px",
-          border: `2px solid ${theme.palette.secondary.main}`,
-          borderRadius: "50%",
-          objectFit: "cover", // important
-        }}
+        className="w-32 h-32 mb-4 rounded-full object-cover border-2 border-secondary"
       />
 
-      <CustomTypography
-        variant="h5"
-        sx={{ fontWeight: "bold", color: theme.palette.text.primary }}
-      >
+      {/* User Info */}
+      <CustomTypography variant="h5" className="font-bold text-tprimary mb-1">
         {user?.fullname || "Your Name"}
       </CustomTypography>
-      <CustomTypography variant="body1" sx={{ color: theme.palette.text.secondary }}>
+
+      <CustomTypography variant="body1" className="text-tsecondary">
         {user?.email || "Email not available"}
       </CustomTypography>
-      <CustomTypography variant="body1" sx={{ color: theme.palette.text.secondary }}>
+
+      <CustomTypography variant="body1" className="text-tsecondary">
         {user?.phone || "Phone not available"}
       </CustomTypography>
+
+      {/* Edit Modal */}
       <CustomModal open={open} onClose={handleClose} title="Edit Profile">
         <EditUserModal user={user} onClose={handleClose} />
       </CustomModal>
-    </Box>
+    </div>
   );
 };
 

@@ -2,7 +2,7 @@
 import React from "react";
 import CloseIcon from "@mui/icons-material/Close";
 
-const CustomModal = ({ open, onClose, title, children, height = "400px" }) => {
+const CustomModal = ({ open, onClose, title, children,height }) => {
   if (!open) return null;
 
   return (

@@ -1,7 +1,7 @@
-"use client";
+'use client'
+
 import React, { useState } from "react";
-import MenuIcon from "@mui/icons-material/Menu";
-import SearchIcon from "@mui/icons-material/Search";
+import { Menu, Search } from "lucide-react"; // ✅ Lucide icons
 import Link from "next/link";
 import NavCartButton from "./NavCartButton";
 import NavAuthButtons from "./NavAuthButtons";
@@ -46,10 +46,10 @@ const SmallScreenNav = ({ setDrawerOpen }) => {
           onClick={() => setIsSearchOpen(true)}
           className="p-2 hover:bg-secondary/20 rounded-md"
         >
-          <SearchIcon className="text-primary" />
+          <Search className="w-5 h-5 text-primary" />
         </button>
 
-        {/* Auth / Avatar + Cart */}
+        {/* Avatar & Cart */}
         {user ? (
           <>
             <ClientLink href="/user/profile">
@@ -70,7 +70,7 @@ const SmallScreenNav = ({ setDrawerOpen }) => {
           onClick={() => setDrawerOpen(true)}
           className="p-2 hover:bg-secondary/20 rounded-md"
         >
-          <MenuIcon className="text-primary" />
+          <Menu className="w-5 h-5 text-primary" />
         </button>
       </div>
 

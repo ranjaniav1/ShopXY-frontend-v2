@@ -1,70 +1,88 @@
-"use client"; // Ensure this component runs client-side in Next.js
+"use client";
 
 import React, { useState } from "react";
-import { Box, Typography, Avatar, Divider, Button } from "@mui/material";
-import Rating from "@mui/material/Rating";
-import CustomTypography from "../Custom/CustomTypography";
+import { Star, StarHalf, StarOff } from "lucide-react";
 
-const ReviewItem = ({ reviews = [], theme }) => {  // Ensure reviews is always an array
-  const [visibleCount, setVisibleCount] = useState(1); // Initially show 1 review
+const renderStars = (rating) => {
+  const fullStars = Math.floor(rating);
+  const hasHalf = rating % 1 >= 0.5;
+  const stars = [];
+
+  for (let i = 0; i < fullStars; i++) {
+    stars.push(<Star key={`full-${i}`} className="w-4 h-4 text-yellow-500 fill-yellow-500" />);
+  }
+
+  if (hasHalf) {
+    stars.push(<StarHalf key="half" className="w-4 h-4 text-yellow-500 fill-yellow-500" />);
+  }
+
+  while (stars.length < 5) {
+    stars.push(<StarOff key={`empty-${stars.length}`} className="w-4 h-4 text-gray-300" />);
+  }
+
+  return stars;
+};
+
+const ReviewItem = ({ reviews = [] }) => {
+  const [visibleCount, setVisibleCount] = useState(1);
 
   const handleViewMore = () => {
-    setVisibleCount((prevCount) => prevCount + 5); // Show 5 more reviews
+    setVisibleCount((prev) => prev + 5);
   };
 
   return (
-    <Box>
-      {/* Loop through the visible reviews */}
+    <div>
       {reviews.slice(0, visibleCount).map((review, index) => (
-        <Box key={review.id}>
-          <Box sx={{ p: 2, mb: 2 }}>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-              <Avatar src={review.userAvatar} alt={review.userName}>
-                {!review.userAvatar && (review.userName ? review.userName.charAt(0) : "?")}
-              </Avatar>
-              <Box>
-                <CustomTypography variant="body2" fontWeight="bold" sx={{ color: theme.palette.text.primary }}>
-                  {review.userName}
-                </CustomTypography>
-                <Rating value={review.rating} readOnly size="small" />
-                <CustomTypography variant="body2" sx={{ color: theme.palette.text.secondary }}>
-                  {new Date(review.createdAt).toLocaleDateString()}
-                </CustomTypography>
-              </Box>
-            </Box>
+        <div key={review.id} className="p-4 mb-4 border border-gray-200 rounded-md">
+          <div className="flex items-center gap-4">
+            {review.userAvatar ? (
+              <img
+                src={review.userAvatar}
+                alt={review.userName}
+                className="w-10 h-10 rounded-full object-cover"
+              />
+            ) : (
+              <div className="w-10 h-10 flex items-center justify-center bg-primary text-white rounded-full text-sm font-bold">
+                {review.userName ? review.userName.charAt(0) : "?"}
+              </div>
+            )}
+            <div>
+              <p className="font-semibold text-tprimary">{review.userName}</p>
+              <div className="flex items-center space-x-1">{renderStars(review.rating)}</div>
+              <p className="text-xs text-tsecondary">
+                {new Date(review.createdAt).toLocaleDateString()}
+              </p>
+            </div>
+          </div>
 
-            <CustomTypography variant="body2" mt={2} sx={{ color: theme.palette.text.secondary }}>
-              {review.review}
-            </CustomTypography>
+          <p className="mt-3 text-sm text-tsecondary">{review.review}</p>
 
-            {review.media &&
-              review.media.map((img, index) => (
+          {review.media?.length > 0 && (
+            <div className="mt-2 flex gap-2">
+              {review.media.map((img, i) => (
                 <img
-                  key={index}
+                  key={i}
                   src={img}
-                  alt="Review"
-                  style={{
-                    width: "10%",
-                    height: "auto",
-                    marginTop: "8px",
-                    borderRadius: "4px",
-                  }}
+                  alt="Review Media"
+                  className="w-20 h-auto rounded-md object-cover"
                 />
               ))}
+            </div>
+          )}
 
-            {/* Only show the divider if there's more than one review */}
-            {index === 0 && reviews.length > 1 && <Divider sx={{ my: 2 }} />}
-          </Box>
-        </Box>
+          {index === 0 && reviews.length > 1 && <div className="my-4 border-t border-gray-300" />}
+        </div>
       ))}
 
-      {/* "View More" button logic */}
       {visibleCount < reviews.length && (
-        <Button onClick={handleViewMore} variant="contained" sx={{ mt: 2 }}>
+        <button
+          onClick={handleViewMore}
+          className="bg-primary text-white px-4 py-2 rounded hover:bg-opacity-90 mt-2"
+        >
           View More
-        </Button>
+        </button>
       )}
-    </Box>
+    </div>
   );
 };
 

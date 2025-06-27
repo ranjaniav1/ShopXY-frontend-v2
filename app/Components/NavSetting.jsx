@@ -1,13 +1,10 @@
 'use client';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
-import i18n from '../i18n';
 import Cookies from 'js-cookie';
 import { useTheme } from '../context/ThemeContext'; // 👈 Your custom hook
 import { useLanguage } from '../context/LanguageContext';
 
 const NavSetting = ({ onClose }) => {
-    const { t } = useTranslation();
     const { theme, switchTheme } = useTheme(); // 👈 from your context
     const { language, setLanguage } = useLanguage();
 

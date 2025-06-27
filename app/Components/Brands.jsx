@@ -1,11 +1,8 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import Heading from "../Common/Heading";
-import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
-import { Grid, Box, Typography, useTheme } from "@mui/material";
-import { usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import Link from "next/link";
 import CustomBox from "../Custom/CustomBox";
 import CustomSkeleton from "../Custom/CustomSkeleton";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -20,11 +17,10 @@ const BrandSection = () => {
   const { t } = useTranslation();
   const [brands, setBrands] = useState([]);
   const [loading, setLoading] = useState(true);
-  const theme = useTheme();
 
   const getBrandsData = async () => {
     const response = await GetBrands();
-    setBrands(response?.brands);
+    setBrands(response?.brands || []);
     setLoading(false);
   };
 
@@ -32,16 +28,13 @@ const BrandSection = () => {
     getBrandsData();
   }, []);
 
-
-
   return (
     <CustomBox>
       <Heading text={t("Our Top Brands")} />
 
-
-      <Box>
+      <div className="w-full">
         {loading ? (
-          <Grid container spacing={2}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {Array.from({ length: 6 }).map((_, index) => (
               <CustomSkeleton
                 gridItem
@@ -52,9 +45,8 @@ const BrandSection = () => {
                 height="96px"
               />
             ))}
-          </Grid>
+          </div>
         ) : brands && brands.length > 0 ? (
-
           <Swiper
             modules={[Navigation, A11y]}
             spaceBetween={10}
@@ -78,14 +70,11 @@ const BrandSection = () => {
               </SwiperSlide>
             ))}
           </Swiper>
-
         ) : (
-          <Typography textAlign="center" className="text-tsecondary">
-            {t("No Brands Found")}
-          </Typography>
+          <p className="text-center text-tsecondary">{t("No Brands Found")}</p>
         )}
-      </Box>
-    </CustomBox >
+      </div>
+    </CustomBox>
   );
 };
 

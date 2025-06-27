@@ -1,16 +1,9 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { DeleteAccount, Logout } from "@/app/Service/User";
-import {
-  Box,
-  Divider,
-  Grid,
-  useTheme
-} from "@mui/material";
 import CustomBox from "@/app/Custom/CustomBox";
 import { toast } from "react-hot-toast";
 import DialogBox from "@/app/Custom/CustomDialog";
-
 import { useRouter } from "next/navigation";
 import UserProfile from "@/app/Components/profile/UserProfile";
 import TabSection from "@/app/Components/profile/TabSection";
@@ -20,15 +13,13 @@ import UserNotify from "@/app/Components/profile/UserNotify";
 import AddressPage from "@/app/scheckout/address/page";
 import { useUser } from "@/app/context/UserContext";
 
-const Layout = ({ children }) => {
-  const { user, setUser } = useUser()
+const Layout = () => {
+  const { user, setUser } = useUser();
   const userId = user?._id;
-  console.log(user)
   const [activeTab, setActiveTab] = useState(0);
   const [openDialog, setOpenDialog] = useState(false);
   const [openDeleteAccountDialog, setOpenDeleteAccountDialog] = useState(false);
   const router = useRouter();
-  const theme = useTheme();
 
   const handleTabChange = (event, newValue) => {
     if (newValue === 4) {
@@ -42,11 +33,10 @@ const Layout = ({ children }) => {
     }
   };
 
-
   const handleLogoutConfirm = async () => {
     try {
       await Logout({ userId });
-      setUser(null)
+      setUser(null);
       toast.success("User logged out successfully.");
       router.push("/");
     } catch (error) {
@@ -59,7 +49,7 @@ const Layout = ({ children }) => {
   const handleDeleteAccount = async () => {
     try {
       await DeleteAccount(userId);
-      setUser(null)
+      setUser(null);
       toast.success("Account deleted successfully.");
       router.push("/");
     } catch (error) {
@@ -71,31 +61,26 @@ const Layout = ({ children }) => {
 
   return (
     <CustomBox>
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={3}>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        {/* Left Panel */}
+        <div className="col-span-1">
           <UserProfile user={user} />
-          <Divider sx={{ my: 2 }} />
+          <div className="my-4 border-b border-gray-300" />
           <TabSection activeTab={activeTab} handleTabChange={handleTabChange} />
-        </Grid>
+        </div>
 
-        <Grid item xs={12} md={9}>
-          <Box
-            p={2}
-            sx={{
-              borderRadius: "8px",
-              boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
-              mx: "auto",
-            }}
-          >
+        {/* Right Panel */}
+        <div className="col-span-1 md:col-span-3">
+          <div className="p-4 rounded-lg shadow-md bg-white">
             {activeTab === 0 && <UserNotify userId={userId} activeTab={activeTab} />}
             {activeTab === 1 && <WishlistItem userId={userId} activeTab={activeTab} />}
             {activeTab === 2 && <UserOrders userId={userId} activeTab={activeTab} />}
-            {activeTab === 3 && <AddressPage />} {/* Render AddressPage */}
+            {activeTab === 3 && <AddressPage />}
+          </div>
+        </div>
+      </div>
 
-          </Box>
-        </Grid>
-      </Grid>
-
+      {/* Logout Confirmation Dialog */}
       <DialogBox
         open={openDialog}
         onClose={() => setOpenDialog(false)}
@@ -105,6 +90,7 @@ const Layout = ({ children }) => {
         onCancel={() => setOpenDialog(false)}
       />
 
+      {/* Delete Account Confirmation Dialog */}
       <DialogBox
         open={openDeleteAccountDialog}
         onClose={() => setOpenDeleteAccountDialog(false)}

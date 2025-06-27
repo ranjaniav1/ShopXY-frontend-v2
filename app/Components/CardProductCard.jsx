@@ -1,6 +1,5 @@
 import React from 'react';
 import { Edit, Trash2 } from "lucide-react";
-
 import CustomIconButton from '../Custom/CustomIconButton';
 import CustomTypography from '../Custom/CustomTypography';
 import { useTranslation } from 'react-i18next';
@@ -19,7 +18,7 @@ const CartProductCard = ({
   const { t } = useTranslation();
 
   return (
-    <div className="flex items-center rounded-md p-4 shadow-md bg-body mb-1 border hover:border-primary transition-all duration-300">
+    <div className="relative flex items-center rounded-md p-4 shadow-md bg-body mb-1 border hover:border-primary transition-all duration-300">
       {/* Image */}
       <div className="flex-shrink-0 mr-4">
         <img
@@ -36,23 +35,6 @@ const CartProductCard = ({
           <CustomTypography variant="body1" className="font-semibold text-tprimary">
             {name}
           </CustomTypography>
-
-          <div className="absolute top-3 right-3 flex items-center bg-white border border-gray-200 rounded-md px-1.5 py-0.5 shadow-sm">
-            <CustomIconButton
-              onClick={onEdit}
-              className="p-1 text-tprimary"
-            >
-              <Edit size={16} />
-            </CustomIconButton>
-
-            <div className="w-px h-5 bg-secondary mx-1" />
-            <CustomIconButton
-              onClick={onRemove}
-              className="p-1"
-            >
-              <Trash2 size={16} className="text-red-600" />
-            </CustomIconButton>
-          </div>
         </div>
 
         {/* Price and Offer */}
@@ -84,6 +66,17 @@ const CartProductCard = ({
             {t('Quantity')}: {quantity}
           </CustomTypography>
         </div>
+      </div>
+
+      {/* Action Icons (Edit + Delete) */}
+      <div className="absolute top-3 right-3 flex items-center bg-white border border-gray-200 rounded-md px-1.5 py-0.5 shadow-sm z-10">
+        <CustomIconButton onClick={onEdit} className="p-1 text-tprimary ">
+          <Edit size={18} />
+        </CustomIconButton>
+        <div className="w-px h-5 bg-secondary mx-1" />
+        <CustomIconButton onClick={onRemove} className="p-1 ">
+          <Trash2 size={18} className='text-red-600'/>
+        </CustomIconButton>
       </div>
     </div>
   );
