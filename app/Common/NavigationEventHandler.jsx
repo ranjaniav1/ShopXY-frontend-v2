@@ -1,25 +1,25 @@
+// app/Common/NavigationEventHandler.tsx
 "use client";
-import React, { useEffect, useState } from "react";
-import { usePathname } from "next/navigation"; 
+import React, { useEffect } from "react";
 import { Box, CircularProgress } from "@mui/material";
+import { usePathname } from "next/navigation";
+import { useLoading } from "../context/LoadingContext";
 
 const NavigationEventsHandler = () => {
   const pathname = usePathname();
-  const [isNavigating, setIsNavigating] = useState(false);
+  const { isLoading, setLoading } = useLoading();
 
   useEffect(() => {
-    if (!pathname) return;
-    
-    setIsNavigating(true);
+    setLoading(true);
 
-    const timeout = setTimeout(() => {
-      setIsNavigating(false);
-    }, 500); // spinner visible for at least 500ms
+    const timer = setTimeout(() => {
+      setLoading(false); // wait till transition completes visually
+    }, 100); // adjust based on perceived loading
 
-    return () => clearTimeout(timeout);
+    return () => clearTimeout(timer);
   }, [pathname]);
 
-  if (!isNavigating) return null;
+  if (!isLoading) return null;
 
   return (
     <Box
@@ -28,7 +28,7 @@ const NavigationEventsHandler = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        background: "rgba(255, 255, 255, 0.8)",
+        background: "rgba(255, 255, 255, 0.5)",
         position: "fixed",
         top: 0,
         left: 0,

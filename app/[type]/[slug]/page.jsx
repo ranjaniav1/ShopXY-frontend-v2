@@ -14,6 +14,7 @@ import { useUser } from '@/app/context/UserContext';
 import { getWishlist } from '@/app/Service/Profile';
 import { GetFilteredProduct } from '@/app/Service/GetProduct';
 import EmptyCart from '@/app/Components/EmptyCart';
+import ClientLink from '@/app/Common/ClientClick';
 
 const Page = () => {
     const { slug } = useParams();
@@ -87,7 +88,7 @@ const Page = () => {
             ) : (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 p-4">
                     {products.map((product) => (
-                        <Link href={`/product/${product._id}/${encodeURIComponent(product.slug)}`} passHref>
+                        <ClientLink href={`/product/${product._id}/${encodeURIComponent(product.slug)}`} passHref>
                             <ProductCard
                                 className="h-40 w-full"
                                 imgSrc={product.detail_image[0]}
@@ -103,7 +104,7 @@ const Page = () => {
                                 isInWishlist={isInWishlist(product._id)}
                                 inStock={product.inStock > 0}
                             />
-                        </Link>
+                        </ClientLink>
                     ))}
                 </div>
             )}

@@ -13,6 +13,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import { Navigation, A11y } from 'swiper/modules';
 import CustomTypography from '../Custom/CustomTypography';
+import ClientLink from '../Common/ClientClick';
 
 const Collection = () => {
     const { t } = useTranslation();
@@ -56,7 +57,7 @@ const Collection = () => {
                     {collection.map((col, index) => {
                         return (
                             <SwiperSlide key={index}>
-                                <Link href={`/collection/${col.slug}`}>
+                                <ClientLink href={`/collection/${col.slug}`}>
                                     <CustomCollectionCard
                                         tooltip={col.title}
                                         id={col._id}
@@ -64,7 +65,7 @@ const Collection = () => {
                                         image={col.collection_image}
                                         title={col.title}
                                     />
-                                </Link>
+                                </ClientLink>
                             </SwiperSlide>
                         );
                     })}

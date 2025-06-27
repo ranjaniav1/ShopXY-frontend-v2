@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import { handleRemoveFromCart } from "@/app/helper/cartUtils";
 import { useUser } from "@/app/context/UserContext";
 import { ShoppingCart } from "lucide-react";
+import ClientLink from "@/app/Common/ClientClick";
 
 const CartPage = ({ handleNext, loadCart, cartData }) => {
   const [editDrawer, setEditDrawer] = useState(false);
@@ -82,9 +83,9 @@ const CartPage = ({ handleNext, loadCart, cartData }) => {
       {/* Footer Buttons */}
       {cartData?.products?.length > 0 && (
         <div className="flex justify-end mt-8">
-          <Link href="/scheckout/address">
+          <ClientLink href="/scheckout/address">
             <CustomButton title={t("Next")} onClick={handleNext} />
-          </Link>
+          </ClientLink>
         </div>
       )}
     </div>

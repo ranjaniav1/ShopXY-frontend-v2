@@ -3,6 +3,7 @@ import React from 'react'
 import CustomButton from '../Custom/CustomButton'
 import Link from 'next/link'
 import CustomTypography from '../Custom/CustomTypography'
+import ClientLink from '../Common/ClientClick'
 
 const EmptyCart = ({ src, title, buttonHref = "/categories/collections", buttonText = "Start Shopping", subtitle }) => {
   const theme = useTheme()
@@ -40,9 +41,9 @@ const EmptyCart = ({ src, title, buttonHref = "/categories/collections", buttonT
           {subtitle}
         </CustomTypography>
       )}
-      <Link href={buttonHref} passHref>
+      <ClientLink href={buttonHref} passHref>
         <CustomButton title={buttonText} />
-      </Link>
+      </ClientLink>
 
       {/* CSS Animation Styles */}
       <style>

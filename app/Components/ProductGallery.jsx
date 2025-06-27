@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { handleAddToCart } from "../helper/cartUtils";
 import Link from "next/link";
 import { useUser } from "../context/UserContext";
+import ClientLink from "../Common/ClientClick";
 
 const ProductGallery = ({
   detailImages,
@@ -124,7 +125,7 @@ const imgRef = useRef(null);
           />
         </Grid>
         <Grid item xs={12}>
-        <Link href="/scheckout/carts" className="w-full">
+        <ClientLink href="/scheckout/carts" className="w-full">
           <CustomButton
             startIcon={<DoubleArrowIcon />}
             variant="contained"
@@ -132,7 +133,7 @@ const imgRef = useRef(null);
             className="w-full"
             onClick={()=>handleAddToCart({userId:userId,productId:productId})}
 
-          /></Link>
+          /></ClientLink>
         </Grid>
       </Grid>
     </Grid>

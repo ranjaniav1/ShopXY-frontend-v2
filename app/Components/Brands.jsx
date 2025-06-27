@@ -14,6 +14,7 @@ import "swiper/css/navigation";
 import { Navigation, A11y } from "swiper/modules";
 import { GetBrands } from "../Service/GetBrands";
 import CustomBrandCard from "../Common/CustomBrandCard";
+import ClientLink from "../Common/ClientClick";
 
 const BrandSection = () => {
   const { t } = useTranslation();
@@ -66,14 +67,14 @@ const BrandSection = () => {
           >
             {brands.map((brand, index) => (
               <SwiperSlide key={index}>
-                <Link href={`/brand/${brand.slug}`}>
+                <ClientLink href={`/brand/${brand.slug}`}>
                   <CustomBrandCard
                     id={brand._id}
                     slug={brand.slug}
                     image={brand.brand_image}
                     title={brand.title}
                   />
-                </Link>
+                </ClientLink>
               </SwiperSlide>
             ))}
           </Swiper>

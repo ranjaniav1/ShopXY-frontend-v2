@@ -9,6 +9,7 @@ import NavAuthButtons from "./NavAuthButtons";
 import { useTheme } from "@/app/context/ThemeContext";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/app/context/UserContext";
+import ClientLink from "@/app/Common/ClientClick";
 
 const FullScreenNav = ({ setDrawerOpen }) => {
   const { webSettings } = useTheme();
@@ -26,13 +27,13 @@ const FullScreenNav = ({ setDrawerOpen }) => {
   return (
     <div className="flex justify-between items-center py-2 px-4">
       {/* Logo */}
-      <Link href="/" className="flex items-center">
+      <ClientLink href="/" className="flex items-center">
         <img
           src={webSettings?.logo}
           alt="Site Logo"
           className="h-16 w-auto object-contain"
         />
-      </Link>
+      </ClientLink>
 
       {/* Search Field */}
       <NavSearchBar

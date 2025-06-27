@@ -13,6 +13,7 @@ import { httpAxios } from "@/app/httpAxios";
 
 import CustomButton from "@/app/Custom/CustomButton";
 import CustomTypography from "@/app/Custom/CustomTypography";
+import ClientLink from "@/app/Common/ClientClick";
 
 const PaymentPage = ({ handleBack, cartData, loadCart }) => {
   const { user } = useUser();
@@ -120,14 +121,14 @@ const PaymentPage = ({ handleBack, cartData, loadCart }) => {
 
         {/* Navigation */}
         <div className="flex justify-between mt-8">
-          <Link href="/scheckout/address" className="w-full">
+          <ClientLink href="/scheckout/address" className="w-full">
             <CustomButton
               title="Back"
               onClick={handleBack}
               variant="outlined"
               className="w-full border border-primary text-tprimary"
             />
-          </Link>
+          </ClientLink>
         </div>
       </div>
     </div>

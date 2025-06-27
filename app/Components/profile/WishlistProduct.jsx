@@ -19,6 +19,7 @@ import CustomTypography from "@/app/Custom/CustomTypography";
 import CustomCollectionCard from "@/app/Common/CustomCollectionCard";
 import EmptyCart from "../EmptyCart";
 import { deleteWishlistItem, getWishlist } from "@/app/Service/Profile";
+import ClientLink from "@/app/Common/ClientClick";
 
 const WishlistItem = ({ userId, activeTab }) => {
   const theme = useTheme();
@@ -108,7 +109,7 @@ const WishlistItem = ({ userId, activeTab }) => {
                   <DeleteIcon fontSize="small" />
                 </IconButton>
 
-                <Link
+                <ClientLink
                   href={`/product/${wishlistItem._id}/${encodeURIComponent(
                     wishlistItem.slug
                   )}`}
@@ -121,7 +122,7 @@ const WishlistItem = ({ userId, activeTab }) => {
                     tooltip={wishlistItem.name}
                     slug={wishlistItem.slug}
                   />
-                </Link>
+                </ClientLink>
               </Card>
             </Grid>
           ))}

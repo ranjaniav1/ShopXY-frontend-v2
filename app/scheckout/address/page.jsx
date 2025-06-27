@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import { usePathname } from "next/navigation";
 import { useUser } from "@/app/context/UserContext";
 import { Plus } from "lucide-react";
+import ClientLink from "@/app/Common/ClientClick";
 
 const AddressPage = ({ handleNext, handleBack }) => {
   const [open, setOpen] = useState(false);
@@ -138,14 +139,14 @@ const AddressPage = ({ handleNext, handleBack }) => {
       {/* Checkout Navigation */}
       {isCheckoutAddressRoute && (
         <div className="flex justify-between py-6">
-          <Link href="/scheckout/carts">
+          <ClientLink href="/scheckout/carts">
             <CustomButton title={t("Back")} onClick={handleBack} variant="outlined" />
-          </Link>
+          </ClientLink>
 
           {selectedAddressId ? (
-            <Link href="/scheckout/payment">
+            <ClientLink href="/scheckout/payment">
               <CustomButton title={t("Next")} onClick={handleNext} />
-            </Link>
+            </ClientLink>
           ) : (
             <CustomButton
               title={t("Next")}

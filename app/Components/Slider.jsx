@@ -7,6 +7,7 @@ import "swiper/css/autoplay";
 import { Navigation, A11y, Autoplay } from "swiper/modules";
 import { GetHomeScreenData } from "../Service/GetHomeScreenData";
 import Link from "next/link";
+import ClientLink from "../Common/ClientClick";
 
 const Slider = () => {
   const [slider, setSlider] = useState([]);
@@ -46,7 +47,7 @@ const Slider = () => {
         ) : slider.length > 0 ? (
           slider.map((slide) => (
             <SwiperSlide key={slide._id} className="h-full">
-              <Link
+              <ClientLink
                 href={`/categories/${slide._id}/${slide.slug}`}
                 className="block w-full h-full"
               >
@@ -55,7 +56,7 @@ const Slider = () => {
                   alt={slide.title}
                   className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                 />
-              </Link>
+              </ClientLink>
             </SwiperSlide>
           ))
         ) : (

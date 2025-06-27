@@ -1,10 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { GetCategories } from "../Service/GetCategory";
-import Link from "next/link";
 import CustomSkeleton from "../Custom/CustomSkeleton";
 import Heading from "../Common/Heading";
 import { useTranslation } from "react-i18next";
+import ClientLink from "../Common/ClientClick";
 
 const bgColors = [
   "bg-red-100",
@@ -50,7 +50,7 @@ const CategorySection = () => {
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-5 mt-4">
           {categories.map((category, idx) => (
-            <Link
+            <ClientLink
               href={`/category/${category.slug}`}
               key={category._id}
               className={`group rounded-xl p-4 flex flex-col items-center text-center cursor-pointer hover:shadow-md transition ${bgColors[idx % bgColors.length]}`}
@@ -63,7 +63,7 @@ const CategorySection = () => {
               <p className="text-sm font-semibold text-tsecondary group-hover:text-primary truncate">
                 {category.title}
               </p>
-            </Link>
+            </ClientLink>
           ))}
         </div>
       )}

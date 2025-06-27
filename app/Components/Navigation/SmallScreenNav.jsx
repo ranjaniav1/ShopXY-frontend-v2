@@ -10,6 +10,7 @@ import NavSearchBar from "./NavSearchBar";
 import { useTheme } from "@/app/context/ThemeContext";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/app/context/UserContext";
+import ClientLink from "@/app/Common/ClientClick";
 
 const SmallScreenNav = ({ setDrawerOpen }) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -31,13 +32,13 @@ const SmallScreenNav = ({ setDrawerOpen }) => {
   return (
     <div className="flex justify-between items-center w-full px-4 py-2 border-b border-secondary bg-body">
       {/* Logo */}
-      <Link href="/" className="flex items-center">
+      <ClientLink href="/" className="flex items-center">
         <img
           src={webSettings?.logo}
           alt="Site Logo"
           className="h-14 w-auto object-contain"
         />
-      </Link>
+      </ClientLink>
 
       <div className="flex items-center gap-2">
         {/* Search Button */}
@@ -51,13 +52,13 @@ const SmallScreenNav = ({ setDrawerOpen }) => {
         {/* Auth / Avatar + Cart */}
         {user ? (
           <>
-            <Link href="/user/profile">
+            <ClientLink href="/user/profile">
               <img
                 src={`${user?.avatar}?sz=64`}
                 alt="Avatar"
                 className="w-8 h-8 rounded-full object-cover"
               />
-            </Link>
+            </ClientLink>
             <NavCartButton />
           </>
         ) : (

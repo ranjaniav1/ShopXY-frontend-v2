@@ -4,6 +4,7 @@ import { addWishlist, deleteWishlistItem } from "../Service/Profile";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import { handleAddToCart } from "../helper/cartUtils";
+import ClientLink from "../Common/ClientClick";
 
 const ProductCard = ({
   imgSrc,
@@ -72,7 +73,7 @@ const ProductCard = ({
       </div>
 
       {/* Product Image (Link) */}
-      <Link href={`/product/${productId}/${encodeURIComponent(slug)}`}>
+      <ClientLink href={`/product/${productId}/${encodeURIComponent(slug)}`}>
         <div className="w-full h-36 bg-gray-50 rounded-md overflow-hidden flex items-center justify-center mb-2">
           <img
             src={imgSrc}
@@ -80,14 +81,14 @@ const ProductCard = ({
             className="object-contain w-full h-full transition-transform duration-200 hover:scale-105"
           />
         </div>
-      </Link>
+      </ClientLink>
 
       {/* Title (Link) */}
-      <Link href={`/product/${productId}/${encodeURIComponent(slug)}`}>
+      <ClientLink href={`/product/${productId}/${encodeURIComponent(slug)}`}>
         <h3 className="text-xs font-medium text-gray-800 line-clamp-2 mb-1 min-h-[32px] hover:underline">
           {title}
         </h3>
-      </Link>
+      </ClientLink>
 
       {/* Rating */}
       {rating > 0 && <div>{renderStars(rating)}</div>}
