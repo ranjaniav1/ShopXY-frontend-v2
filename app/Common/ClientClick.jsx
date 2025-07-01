@@ -2,15 +2,12 @@
 "use client";
 import React from "react";
 import { useRouter } from "next/navigation";
-import { useLoading } from "@/app/context/LoadingContext"; // adjust path
 
 const ClientLink = ({ href, className = "", children, ...rest }) => {
     const router = useRouter();
-    const { setLoading } = useLoading();
 
     const handleClick = (e) => {
         e.preventDefault();
-        setLoading(true);
         router.push(href);
     };
 
