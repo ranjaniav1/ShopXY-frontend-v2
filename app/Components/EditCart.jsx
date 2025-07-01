@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Typography, Button, Divider, useTheme, ButtonGroup, CircularProgress } from '@mui/material';
-import { Add as AddIcon, Remove as RemoveIcon } from '@mui/icons-material';
-import { EdittoCart } from '../Service/Cart';
-import CustomButton from '../Custom/CustomButton';
-import { useSelector } from 'react-redux';
-import CustomTypography from '../Custom/CustomTypography';
-import { useUser } from '../context/UserContext';
+"use client";
+import React, { useEffect, useState } from "react";
+import { Minus, Plus } from "lucide-react"; // ✅ Lucide Icons
+import { EdittoCart } from "../Service/Cart";
+import { useUser } from "../context/UserContext";
+import CustomButton from "../Custom/CustomButton";
+import CustomTypography from "../Custom/CustomTypography";
 
 const EditCart = ({ onClose, selectedProduct }) => {
   const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [localQuantity, setLocalQuantity] = useState(selectedProduct?.quantity || 1);
- const { user } = useUser(); // 👈 Get user from context
-    const userId = user?._id;  
+  const [errorMessage, setErrorMessage] = useState("");
+  const [localQuantity, setLocalQuantity] = useState(
+    selectedProduct?.quantity || 1
+  );
 
-  const theme = useTheme();
+  const { user } = useUser();
+  const userId = user?._id;
 
   useEffect(() => {
     if (selectedProduct) {
@@ -24,13 +24,13 @@ const EditCart = ({ onClose, selectedProduct }) => {
 
   const updateCart = async (newQuantity) => {
     setLoading(true);
-    setErrorMessage('');
+    setErrorMessage("");
     try {
       await EdittoCart(userId, selectedProduct.product._id, newQuantity);
       setLocalQuantity(newQuantity);
     } catch (err) {
-      console.error('Error updating quantity:', err);
-      setErrorMessage('Error updating cart. Please try again.');
+      console.error("Error updating quantity:", err);
+      setErrorMessage("Error updating cart. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -52,74 +52,78 @@ const EditCart = ({ onClose, selectedProduct }) => {
   };
 
   if (!selectedProduct) {
-    return <CustomTypography variant="body2" color="textSecondary">No product selected.</CustomTypography>;
+    return (
+      <CustomTypography variant="body2" className="text-tsecondary">
+        No product selected.
+      </CustomTypography>
+    );
   }
 
-  const totalPrice = (selectedProduct.product.discounted_price || 0) * localQuantity;
+  const totalPrice =
+    (selectedProduct.product.discounted_price || 0) * localQuantity;
 
   return (
-    <Box sx={{ p: 2 }}>
+    <div className="p-4">
       {loading ? (
-        <CircularProgress />
+        <div className="flex justify-center items-center h-20">
+          <div className="w-6 h-6 border-4 border-t-transparent border-primary rounded-full animate-spin" />
+        </div>
       ) : (
         <>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 2,
-              background: theme.palette.background.paper,
-              borderRadius: 2,
-              p: 2,
-              mb: 2,
-            }}
-          >
+          {/* Product Info */}
+          <div className="flex gap-4 bg-body p-4 rounded-xl mb-4">
             <img
               src={selectedProduct.product.image}
               alt={selectedProduct.product.name}
-              style={{
-                width: 80,
-                height: 80,
-                objectFit: 'cover',
-                borderRadius: 8,
-              }}
+              className="w-20 h-20 object-cover rounded-lg"
             />
-            <Box sx={{ flex: 1 }}>
-              <CustomTypography sx={{ fontWeight: 'bold' ,color:theme.palette.card.text}}>{selectedProduct.product.name}</CustomTypography>
-              <CustomTypography variant="body2" sx={{color: theme.palette.text.secondary}}>
+            <div className="flex-1">
+              <CustomTypography className="font-semibold text-tprimary">
+                {selectedProduct.product.name}
+              </CustomTypography>
+              <CustomTypography variant="body2" className="text-tsecondary">
                 ₹{selectedProduct.product.discounted_price}
               </CustomTypography>
-              <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
-                <ButtonGroup sx={{ borderRadius: 2 }}>
-                  <Button
-                    onClick={handleDecrement}
-                    sx={{ background: theme.palette.primary.main, color: 'white' }}
-                  >
-                    <RemoveIcon />
-                  </Button>
-                  <CustomTypography variant="h6" sx={{ mx: 16,color:theme.palette.text.secondary}}>{localQuantity}</CustomTypography>
-                  <Button
-                    onClick={handleIncrement}
-                    sx={{ background: theme.palette.primary.main, color: 'white' }}
-                  >
-                    <AddIcon />
-                  </Button>
-                </ButtonGroup>
-              </Box>
+
+              {/* Quantity Control */}
+              <div className="flex items-center mt-2 space-x-2">
+                <button
+                  onClick={handleDecrement}
+                  className="bg-primary text-white p-1 rounded hover:opacity-90"
+                >
+                  <Minus size={16} />
+                </button>
+                <CustomTypography variant="h6" className="text-tsecondary px-6">
+                  {localQuantity}
+                </CustomTypography>
+                <button
+                  onClick={handleIncrement}
+                  className="bg-primary text-white p-1 rounded hover:opacity-90"
+                >
+                  <Plus size={16} />
+                </button>
+              </div>
+
               {errorMessage && (
-                <CustomTypography variant="body2" color="error" sx={{ mt: 1 }}>
+                <CustomTypography variant="body2" className="text-red-600 mt-2">
                   {errorMessage}
                 </CustomTypography>
               )}
-            </Box>
-          </Box>
+            </div>
+          </div>
 
-          <Divider sx={{ my: 2 }} />
-          <CustomTypography variant="body2" sx={{color:theme.palette.card.text}}>Total Price: ₹{totalPrice}</CustomTypography>
-          <CustomButton onClick={onClose} title="Continue" sx={{ mt: 2 }} />
+          <hr className="my-4 border-tsecondary/30" />
+
+          {/* Total Price */}
+          <CustomTypography variant="body2" className="text-tprimary">
+            Total Price: ₹{totalPrice}
+          </CustomTypography>
+
+          {/* Continue Button */}
+          <CustomButton onClick={onClose} title="Continue" className="mt-4" />
         </>
       )}
-    </Box>
+    </div>
   );
 };
 

@@ -1,64 +1,61 @@
-import { Box, useTheme } from '@mui/material'
-import React from 'react'
-import CustomButton from '../Custom/CustomButton'
-import Link from 'next/link'
-import CustomTypography from '../Custom/CustomTypography'
+'use client';
+import React from 'react';
+import CustomButton from '../Custom/CustomButton';
+import CustomTypography from '../Custom/CustomTypography';
+import ClientLink from '../Common/ClientClick';
 
-const EmptyCart = ({ src, title, buttonHref = "/categories/collections", buttonText = "Start Shopping", subtitle }) => {
-  const theme = useTheme()
+const EmptyCart = ({
+  src,
+  title,
+  buttonHref = "/categories/collections",
+  buttonText = "Start Shopping",
+  subtitle
+}) => {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100%",
-        width: "100%",
-        textAlign: "center",
-        paddingBottom: 10,
-        paddingTop: 2,
-        paddingTop: 2, background: theme.palette.background.main,
-        color: theme.palette.text.primary
-      }}
-    >
+    <div className="flex flex-col items-center justify-center text-center w-full h-full pt-8 pb-24 bg-body text-tprimary">
+      {/* Animated Image */}
       <img
         src={src}
         alt="empty content"
-        style={{
-          height: "250px",
-          objectFit: "cover",
-          animation: "scale 2s infinite alternate"
-        }}
+        className="h-[250px] object-cover animate-scaleUp"
       />
 
-      <CustomTypography variant="h6" sx={{ mb: 1 }}>
+      {/* Title */}
+      <CustomTypography variant="h6" className="mb-1 text-tprimary">
         {title}
       </CustomTypography>
+
+      {/* Subtitle */}
       {subtitle && (
-        <CustomTypography variant="body2" sx={{ mb: 3, maxWidth: 400, color: theme.palette.text.secondary }}>
+        <CustomTypography variant="body2" className="mb-4 max-w-md text-tsecondary">
           {subtitle}
         </CustomTypography>
       )}
-      <Link href={buttonHref} passHref>
-        <CustomButton title={buttonText} />
-      </Link>
 
-      {/* CSS Animation Styles */}
+      {/* CTA Button */}
+      <ClientLink href={buttonHref} passHref>
+        <CustomButton title={buttonText} />
+      </ClientLink>
+
+      {/* Animation */}
       <style>
         {`
-                     @keyframes scale {
-                       0% {
-                         transform: scale(1);
-                       }
-                       100% {
-                         transform: scale(1.05);
-                       }
-                     }
-                   `}
-      </style>
-    </Box>
-  )
-}
+          @keyframes scaleUp {
+            0% {
+              transform: scale(1);
+            }
+            100% {
+              transform: scale(1.05);
+            }
+          }
 
-export default EmptyCart
+          .animate-scaleUp {
+            animation: scaleUp 2s infinite alternate;
+          }
+        `}
+      </style>
+    </div>
+  );
+};
+
+export default EmptyCart;

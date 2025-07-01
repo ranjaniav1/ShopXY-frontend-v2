@@ -1,5 +1,4 @@
 import React from "react";
-import { Box, Divider, useTheme } from "@mui/material";
 import CustomButton from "../Custom/CustomButton";
 import { useTranslation } from "react-i18next";
 import CustomTypography from "../Custom/CustomTypography";
@@ -8,125 +7,79 @@ const PriceDetails = ({
   numberOfItems,
   totalProductPrice,
   totalDiscount,
-  orderTotal
+  orderTotal,
 }) => {
   const { t } = useTranslation();
-  const theme = useTheme();
 
   const formatPrice = (price) => Number(price).toFixed(2);
   const finalPrice = () => Number(totalProductPrice) - Number(totalDiscount);
 
   return (
-    <Box
-      sx={{
-        p: 3,
-        borderRadius: 2,
-        backgroundColor: theme.palette.card.background,
-        border: `1px solid ${theme.palette.card.border}`,
-        boxShadow:
-          theme.palette.mode === "light"
-            ? "0px 4px 10px rgba(0,0,0,0.05)"
-            : "0px 4px 15px rgba(0,0,0,0.5)",
-        transition: "all 0.3s ease-in-out"
-      }}
-    >
+    <div className="p-4 rounded-2xl bg-body border border-tsecondary shadow-md transition-all duration-300">
+      {/* Heading */}
       <CustomTypography
         variant="h6"
-        sx={{
-          mb: 2,
-          fontWeight: "bold",
-          color: theme.palette.card.text
-        }}
+        className="mb-4 font-bold text-tprimary"
       >
         {t("Price Details")} ({numberOfItems} {t("Items")})
       </CustomTypography>
 
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+      <div className="flex flex-col gap-3">
         {/* Total Product Price */}
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+        <div className="flex justify-between items-center">
           <CustomTypography
             variant="body2"
-            sx={{
-              borderBottom: `1px dotted ${theme.palette.divider}`,
-              color: theme.palette.text.secondary
-            }}
+            className="border-b border-dotted border-tsecondary text-tsecondary"
           >
             {t("Total Product Price")}:
           </CustomTypography>
           <CustomTypography
             variant="body2"
-            sx={{
-              fontWeight: "bold",
-              color: theme.palette.text.secondary
-            }}
+            className="font-bold text-tsecondary"
           >
             + ₹{formatPrice(totalProductPrice)}
           </CustomTypography>
-        </Box>
+        </div>
 
         {/* Total Discount */}
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between"
-          }}
-        >
+        <div className="flex justify-between items-center">
           <CustomTypography
             variant="body2"
-            sx={{
-              color: theme.palette.success.main,
-              borderBottom: `1px dotted ${theme.palette.success.main}`
-            }}
+            className="text-green-600 border-b border-dotted border-green-600"
           >
             {t("Total Discount")}:
           </CustomTypography>
           <CustomTypography
             variant="body2"
-            sx={{ color: theme.palette.success.main }}
+            className="text-green-600"
           >
             - ₹{totalDiscount}
           </CustomTypography>
-        </Box>
+        </div>
 
-        <Divider sx={{ borderColor: theme.palette.divider }} />
+        <div className="border-t border-secondary my-2" />
 
         {/* Order Total */}
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            fontWeight: "bolder",
-            color: theme.palette.text.primary
-          }}
-        >
-          <CustomTypography sx={{color:theme.palette.success.main}}>{t("Order Total")}:</CustomTypography>
-          <CustomTypography sx={{color:theme.palette.success.main}}>₹{formatPrice(finalPrice())}</CustomTypography>
-        </Box>
+        <div className="flex justify-between font-bold text-tprimary">
+          <CustomTypography className="text-green-600">
+            {t("Order Total")}:
+          </CustomTypography>
+          <CustomTypography className="text-green-600">
+            ₹{formatPrice(finalPrice())}
+          </CustomTypography>
+        </div>
 
         {/* Saved Message */}
         {totalDiscount > 0 && (
           <CustomTypography
             variant="body2"
-            sx={{
-              mt: 3,
-              py: 1.5,
-              px: 2,
-              borderRadius: 2,
-              textAlign: "center",
-              fontWeight: "bold",
-              background: theme.palette.mode === "dark"
-                ? "linear-gradient(90deg, #0d7377 0%, #1e9b82 100%)"
-                : theme.palette.success.light,
-              color: theme.palette.mode === "dark"
-                ? "#ffffff"
-                : theme.palette.success.main
-            }}
+            className="mt-3 py-2 px-4 text-center font-bold rounded-xl bg-green-100 text-green-600"
           >
             🎉 {t("Yay! You saved")} ₹{totalDiscount} {t("on your order")}!
           </CustomTypography>
         )}
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 

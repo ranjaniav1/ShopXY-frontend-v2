@@ -1,43 +1,28 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { usePathname } from "next/navigation"; 
-import { Box, CircularProgress } from "@mui/material";
+import React, { useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { useLoading } from "../context/LoadingContext";
 
 const NavigationEventsHandler = () => {
   const pathname = usePathname();
-  const [isNavigating, setIsNavigating] = useState(false);
+  const { isLoading, setLoading } = useLoading();
 
   useEffect(() => {
-    if (!pathname) return;
-    
-    setIsNavigating(true);
+    setLoading(true);
 
-    const timeout = setTimeout(() => {
-      setIsNavigating(false);
-    }, 500); // spinner visible for at least 500ms
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 500);
 
-    return () => clearTimeout(timeout);
+    return () => clearTimeout(timer);
   }, [pathname]);
 
-  if (!isNavigating) return null;
+  if (!isLoading) return null;
 
   return (
-    <Box
-      sx={{
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        background: "rgba(255, 255, 255, 0.8)",
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100%",
-        zIndex: 9999,
-      }}
-    >
-      <CircularProgress />
-    </Box>
+    <div className="fixed inset-0 z-[9999] bg-white/50 flex items-center justify-center">
+      <div className="w-10 h-10 border-4 border-t-primary border-gray-300 rounded-full animate-spin" />
+    </div>
   );
 };
 

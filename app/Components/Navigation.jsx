@@ -1,6 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import { Box, Container } from '@mui/material';
+import React, { useState } from 'react';
 import FullScreenNav from './Navigation/FullScreenNav';
 import SmallScreenNav from './Navigation/SmallScreenNav';
 import CustomDrawer from '../Custom/CustomDrawer';
@@ -10,30 +9,28 @@ const Navigation = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
 
     return (
-        <Box className="bg-body border-b border-secondary" style={{
-            position: 'fixed', // Fix the nav at the top
-            top: 0, // Align to the top
-            left: 0,
-            right: 0,
-            zIndex: 1000
-        }}>
-            <Container maxWidth="xl">
-                {/* Only visible on larger screens */}
-                <Box display={{ xs: 'none', md: 'block' }}>
+        <div
+            className="bg-body border-b border-secondary fixed top-0 left-0 right-0 z-[1000]"
+        >
+            <div className=" mx-auto px-4">
+                {/* Large Screens */}
+                <div className="hidden md:block">
                     <FullScreenNav setDrawerOpen={setDrawerOpen} />
-                </Box>
-                {/* Only visible on smaller screens */}
-                <Box display={{ xs: 'flex', md: 'none' }}>
+                </div>
+
+                {/* Small Screens */}
+                <div className="flex md:hidden">
                     <SmallScreenNav setDrawerOpen={setDrawerOpen} />
-                </Box>
-            </Container>
-            <Box width={350}>
+                </div>
+            </div>
+
+            {/* Drawer */}
+            <div className="w-[350px]">
                 <CustomDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} title="Settings">
                     <NavSetting onClose={() => setDrawerOpen(false)} />
                 </CustomDrawer>
-            </Box> {/* Register Modal */}
-
-        </Box>
+            </div>
+        </div>
     );
 };
 

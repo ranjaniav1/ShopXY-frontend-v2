@@ -1,6 +1,7 @@
 "use client";
+
 import React from "react";
-import { Search } from "@mui/icons-material";
+import { Search } from "lucide-react"; // Lucide Search icon
 import CustomInput from "@/app/Custom/CustomInput";
 
 const NavSearchBar = ({ searchQuery, setSearchQuery, onSearch }) => {
@@ -9,7 +10,7 @@ const NavSearchBar = ({ searchQuery, setSearchQuery, onSearch }) => {
       <CustomInput
         startIcon={
           <Search
-            className="cursor-pointer text-primary"
+            className="cursor-pointer text-primary w-5 h-5"
             onClick={onSearch}
           />
         }

@@ -1,45 +1,35 @@
+'use client';
+
+import CustomTypography from "@/app/Custom/CustomTypography";
 import React from "react";
-import { Box, Tabs, Tab, useTheme } from "@mui/material";
+
+const tabs = [
+  "Notifications",
+  "Wishlist",
+  "Orders",
+  "Address",
+  "Logout",
+  "Delete Account",
+];
 
 const TabSection = ({ activeTab, handleTabChange }) => {
-  const theme = useTheme();
   return (
-    <Box
-      sx={{
-        p: 2,
-        backgroundColor: theme.palette.background.main,
-        color: theme.palette.text.primary,
-        borderRadius: "8px",
-        boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)"
-      }}
-    >
-      <Tabs
-        orientation="vertical"
-        value={activeTab}
-        onChange={handleTabChange}
-        sx={{
-          width: "100%",
-          "& .MuiTab-root": {
-            color: theme.palette.text.primary, // Theme-based text color for tabs
-            "&.Mui-selected": {
-              color: theme.palette.primary.main, // Active tab color
-            },
-            "&:hover": {
-              backgroundColor: theme.palette.background.secondary, // Hover effect based on theme
-            }
-          },
-          "& .MuiTabs-indicator": {
-            backgroundColor: theme.palette.primary.main, // Active tab indicator color
-          }
-        }}      >
-        <Tab label="Notifications" />
-        <Tab label="Wishlist" />
-        <Tab label="Orders" />
-        <Tab label="Address" />
-        <Tab label="Logout" />
-        <Tab label="Delete Account" />
-      </Tabs>
-    </Box>
+    <div className="p-4 bg-body text-tprimary rounded-lg shadow-md w-full">
+      <div className="flex flex-col space-y-2">
+        {tabs.map((label, index) => (
+          <button
+            key={index}
+            onClick={() => handleTabChange(null, index)}
+            className={`text-left w-full px-4 py-2 rounded-md transition-colors duration-200
+              ${activeTab === index
+                ? "text-primary font-semibold bg-primary/10"
+                : "text-tprimary hover:bg-secondary/10"}`}
+          >
+            <CustomTypography variant="body2">{label}</CustomTypography>
+          </button>
+        ))}
+      </div>
+    </div>
   );
 };
 

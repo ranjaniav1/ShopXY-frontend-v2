@@ -1,12 +1,10 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
-import { Grid } from "@mui/material";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import Heading from "../Common/Heading";
 import { GetFilteredProduct, GetAllProducts } from "../Service/GetProduct";
 import CustomSkeleton from "../Custom/CustomSkeleton";
-import CustomBox from "../Custom/CustomBox";
 import CustomTypography from "../Custom/CustomTypography";
 import FilterSidebar from "./FilterSidebar";
 import ProductCard from "./ProductCard";
@@ -20,18 +18,22 @@ const HomeProduct = () => {
   const [products, setProducts] = useState([]);
   const [wishlist, setWishlist] = useState([]);
   const [isFilterLoading, setIsFilterLoading] = useState(false);
-  const [isFilterApplied, setIsFilterApplied] = useState(false);
+  const [infoMessage, setInfoMessage] = useState("");
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
   const [priceRange, setPriceRange] = useState([0, 1000]);
   const [ratingRange, setRatingRange] = useState([0, 5]);
+  const [defaultPriceRange, setDefaultPriceRange] = useState([0, 1000]);
+
   const [inStock, setInStock] = useState(false);
   const [onlyDiscounted, setOnlyDiscounted] = useState(false);
   const [sort, setSort] = useState("");
- 
 
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedCollection, setSelectedCollection] = useState("");
   const [selectedBrand, setSelectedBrand] = useState("");
+
   const [categories, setCategories] = useState([]);
   const [collections, setCollections] = useState([]);
   const [brands, setBrands] = useState([]);
@@ -40,30 +42,23 @@ const HomeProduct = () => {
   const { user } = useUser();
   const userId = user?._id;
 
+  const observer = useRef();
+  const debounceTimer = useRef(null);
+
   const fetchMetaData = async () => {
     try {
       const categoryData = await GetCategories();
       setCategories(Array.isArray(categoryData) ? categoryData : categoryData?.categories || []);
     } catch (err) {
-      console.error("Failed to fetch metadata", err);
+      console.error("Failed to fetch categories", err);
     }
   };
 
   const fetchCollections = async (categorySlug) => {
-    if (!categorySlug) {
-      setCollections([]);
-      return;
-    }
-
-    // ✅ Get the _id from the selected category's slug
+    if (!categorySlug) return setCollections([]);
     const category = categories.find((cat) => cat.slug === categorySlug);
     const categoryId = category?._id;
-
-    if (!categoryId) {
-      setCollections([]);
-      return;
-    }
-
+    if (!categoryId) return setCollections([]);
     try {
       const res = await GetCollectionsByCategory({ categoryId });
       setCollections(res?.collections || []);
@@ -72,31 +67,18 @@ const HomeProduct = () => {
     }
   };
 
-
-
   const fetchBrands = async (collectionSlug) => {
-    if (!collectionSlug) {
-      setBrands([]);
-      return;
-    }
-
-    // ✅ Get the _id from the selected collection's slug
+    if (!collectionSlug) return setBrands([]);
     const collection = collections.find((col) => col.slug === collectionSlug);
     const collectionId = collection?._id;
-
-    if (!collectionId) {
-      setBrands([]);
-      return;
-    }
-
+    if (!collectionId) return setBrands([]);
     try {
-      const res = await GetBrandsByCollection({ brand_id: collectionId });
+      const res = await GetBrandsByCollection({ collectionId });
       setBrands(res?.brands || []);
     } catch (err) {
       console.error("Failed to fetch brands", err);
     }
   };
-
 
   const fetchWishlist = async () => {
     if (!userId) return;
@@ -112,24 +94,17 @@ const HomeProduct = () => {
 
   const isInWishlist = (id) => wishlist.includes(id);
 
-  const checkIfFiltersApplied = () => {
-    return (
-      selectedCategory ||
-      selectedCollection ||
-      selectedBrand ||
-      priceRange[0] !== 0 ||
-      priceRange[1] !== 1000 ||
-      ratingRange[0] !== 0 ||
-      ratingRange[1] !== 5 ||
-      inStock ||
-      onlyDiscounted ||
-      sort
-    );
-  };
+  const checkIfFiltersApplied = () =>
+    selectedCategory || selectedCollection || selectedBrand ||
+    priceRange[0] !== 0 || priceRange[1] !== 1000 ||
+    ratingRange[0] !== 0 || ratingRange[1] !== 5 ||
+    inStock || onlyDiscounted || sort;
 
-  const handleFilterChange = useCallback(async () => {
+  const handleFilterChange = useCallback(() => {
+  if (debounceTimer.current) clearTimeout(debounceTimer.current);
+
+  debounceTimer.current = setTimeout(async () => {
     const filtersUsed = checkIfFiltersApplied();
-    setIsFilterApplied(filtersUsed);
     setIsFilterLoading(true);
 
     try {
@@ -139,33 +114,69 @@ const HomeProduct = () => {
           category: selectedCategory || undefined,
           collection: selectedCollection || undefined,
           brand: selectedBrand || undefined,
-          minPrice: priceRange[0],
-          maxPrice: priceRange[1],
-          rating: ratingRange[0],
-          inStock: inStock ? true : undefined,
-          specialOffer: onlyDiscounted ? true : undefined,
-          sort,
-        
+          ...(priceRange.length === 1 && {
+            minPrice: defaultPriceRange[0],
+            maxPrice: priceRange[0],
+          }),
+          ...(ratingRange[0] > 0 && { rating: ratingRange[0] }),
+          ...(inStock && { inStock: "true" }),
+          ...(onlyDiscounted && { specialOffer: "true" }),
+          ...(sort && { sort }),
         });
-        setProducts(res?.filters || []);
+
+        const filteredProducts = res?.filters || [];
+        setProducts(filteredProducts);
+        setHasMore(false);
+        setInfoMessage(`Filtered ${filteredProducts.length} products`);
+
+        if (res?.minPrice !== undefined && res?.maxPrice !== undefined && page === 1) {
+          const min = Math.floor(res.minPrice);
+          const max = Math.ceil(res.maxPrice);
+          setDefaultPriceRange([min, max]);
+
+          // Reset slider only if user didn't touch it yet
+          setPriceRange((prev) => (prev[0] === 1000 ? [max] : prev));
+        }
       } else {
-        const res = await GetAllProducts();
-        setProducts(res?.products || []);
+        const res = await GetAllProducts(page, 12);
+        const newProducts = res?.products || [];
+        setProducts((prev) => (page === 1 ? newProducts : [...prev, ...newProducts]));
+        setHasMore(newProducts.length === 12);
+        setInfoMessage(`Showing ${page * 12} products`);
       }
     } catch (error) {
       console.error("Product fetch failed", error);
+      setInfoMessage("Failed to fetch products");
+      setProducts([]);
     } finally {
       setIsFilterLoading(false);
     }
+  }, 300);
+}, [
+  selectedCategory, selectedCollection, selectedBrand,
+  priceRange, ratingRange, inStock, onlyDiscounted, sort, page
+]);
+
+
+ const onClearFilters = () => {
+  setSelectedCategory("");
+  setSelectedCollection("");
+  setSelectedBrand("");
+  setPriceRange([defaultPriceRange[1]]);
+  setRatingRange([0, 5]);
+  setInStock(false);
+  setOnlyDiscounted(false);
+  setSort("");
+  setPage(1);
+  setHasMore(true);
+};
+
+
+  useEffect(() => {
+    setPage(1);
   }, [
-    selectedCategory,
-    selectedCollection,
-    selectedBrand,
-    priceRange,
-    ratingRange,
-    inStock,
-    onlyDiscounted,
-    sort,
+    selectedCategory, selectedCollection, selectedBrand,
+    priceRange, ratingRange, inStock, onlyDiscounted, sort
   ]);
 
   useEffect(() => {
@@ -188,18 +199,31 @@ const HomeProduct = () => {
     fetchBrands(selectedCollection);
   }, [selectedCollection]);
 
+  const lastProductRef = useCallback((node) => {
+    if (isFilterLoading || !hasMore || checkIfFiltersApplied()) return;
+    if (observer.current) observer.current.disconnect();
+
+    observer.current = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setPage((prev) => prev + 1);
+      }
+    });
+
+    if (node) observer.current.observe(node);
+  }, [isFilterLoading, hasMore, selectedCategory, selectedCollection, selectedBrand]);
+
   return (
-    <CustomBox>
+    <div>
       <Heading text={t("Products For You")} />
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={3} sx={{ mt: 3.5 }}>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-6">
+        <div className="md:col-span-1">
           <FilterSidebar
             priceRange={priceRange}
             setPriceRange={setPriceRange}
             ratingRange={ratingRange}
             setRatingRange={setRatingRange}
-            minPrice={0}
-            maxPrice={1000}
+            minPrice={defaultPriceRange[0]}
+            maxPrice={defaultPriceRange[1]}
             minRating={0}
             maxRating={5}
             inStock={inStock}
@@ -212,49 +236,53 @@ const HomeProduct = () => {
             setSelectedCollection={setSelectedCollection}
             selectedBrand={selectedBrand}
             setSelectedBrand={setSelectedBrand}
+            sort={sort}
+            setSort={setSort}
             categories={categories}
             collections={collections}
             brands={brands}
+            onClearFilters={onClearFilters}
           />
-        </Grid>
+        </div>
 
-        <Grid item xs={12} md={9} sx={{ mt: 3.5 }}>
+        <div className="md:col-span-3">
           {isFilterLoading ? (
-            <Grid container spacing={2}>
-              {Array.from({ length: 6 }).map((_, index) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                  <CustomSkeleton type="card" width="96px" height="96px" />
-                </Grid>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <CustomSkeleton key={i} type="card" width="100%" height="96px" />
               ))}
-            </Grid>
+            </div>
           ) : products.length === 0 ? (
             <CustomTypography variant="h6" align="center">
               {t("No products found")}
             </CustomTypography>
           ) : (
-            <Grid container spacing={2}>
-              {products.map((product) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} key={product._id}>
-                  <ProductCard
-                    imgSrc={product.detail_image[0]}
-                    title={product.name}
-                    price={product.actual_price}
-                    discountPrice={product.discounted_price}
-                    rating={product.ratings}
-                    offer={product.offer}
-                    userId={userId}
-                    productId={product._id}
-                    slug={product.slug}
-                    isInWishlist={isInWishlist(product._id)}
-                    inStock={product.inStock > 0}
-                  />
-                </Grid>
-              ))}
-            </Grid>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+              {products.map((product, index) => {
+                const isLast = index === products.length - 1;
+                return (
+                  <div ref={isLast ? lastProductRef : null} key={product._id}>
+                    <ProductCard
+                      imgSrc={product.detail_image[0]}
+                      title={product.name}
+                      price={product.actual_price}
+                      discountPrice={product.discounted_price}
+                      rating={product.ratings}
+                      offer={product.offer}
+                      userId={userId}
+                      productId={product._id}
+                      slug={product.slug}
+                      isInWishlist={isInWishlist(product._id)}
+                      inStock={product.stock_qty > 0}
+                    />
+                  </div>
+                );
+              })}
+            </div>
           )}
-        </Grid>
-      </Grid>
-    </CustomBox>
+        </div>
+      </div>
+    </div>
   );
 };
 

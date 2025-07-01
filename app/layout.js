@@ -1,60 +1,37 @@
-"use client";
+// "use client";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navigation from "./Components/Navigation";
-import { Container, } from "@mui/material";
-import "./Styles/styles.scss";
-import { ProviderStore } from "./redux/storeProvider";
-import { I18nextProvider } from "react-i18next";
-import i18n from "./i18n";
-import Footer from "./Components/Footer";
-import { Toaster } from "react-hot-toast";
+// import Navigation from "./Components/Navigation";
+
+import { LanguageProvider } from "./context/LanguageContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import { UserProvider } from "./context/UserContext";
-import { LanguageProvider } from "./context/LanguageContext";
+import ClientToaster from "./Common/ClientToaster";
+import Navigation from "./Components/Navigation";
+
 
 const inter = Inter({ subsets: ["latin"] });
+
+
+
+export const dynamic = "force-dynamic";
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.className} bg-body text-white min-h-screen`}>
+      <body className={`${inter.className} bg-body min-h-screen`}>
         <UserProvider>
-
           <ThemeProvider>
             <LanguageProvider>
-
-              <ProviderStore>
-                <Toaster position="bottom-center" />
-                <I18nextProvider i18n={i18n}>
-                  {/* <NavigationEventsHandler /> */}
-                  <Navigation />
-                  <Container
-                    maxWidth="xl"
-                    sx={{
-                      marginY: {
-                        xs: "12%",//mobile devices
-                        sm: "7%",// tablets
-                        md: "6%", // small desktops
-                        lg: "6%",//medium desktops
-                        xl: "4%", // large desktops
-                      },
-                      paddingTop: "30px", // adjust based on the height of your nav
-                    }}
-                  >
-                    {children}
-                  </Container>
-                  {/* <Footer /> */}
-                </I18nextProvider>
-              </ProviderStore>
+              <ClientToaster />
+              <Navigation />
+              <div className="pt-[80px] max-w-screen-xl mx-auto px-4 pb-8 sm:pt-[96px]">
+                {children}
+              </div>
             </LanguageProvider>
           </ThemeProvider>
         </UserProvider>
-
       </body>
-    </html >
+    </html>
   );
 }
-
-

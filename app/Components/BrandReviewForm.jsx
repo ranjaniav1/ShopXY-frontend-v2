@@ -1,28 +1,26 @@
+"use client";
+
 import React, { useState } from "react";
+import { toast } from "react-hot-toast";
 import {
-  Box,
-  Button,
-  TextField,
-  Typography,
-  Rating,
-  IconButton
-} from "@mui/material";
+  Star,
+  StarOff,
+  Trash2,
+  ImageIcon
+} from "lucide-react";
 import { SubmitBrandReview, SubmitProductReview } from "../Service/GetReviews";
-import { useTheme } from "@mui/material/styles"; // Import the theme hook
-import toast from "react-hot-toast";
-import ImageIcon from "@mui/icons-material/Image";
-import DeleteIcon from "@mui/icons-material/Delete"; // Import DeleteIcon
-import { useSelector } from "react-redux";
 import { useUser } from "../context/UserContext";
 
-const BrandReviewForm = ({ brandId, onClose, productId,onSubmitSuccess }) => {
-  const theme = useTheme(); // Access the theme
+const BrandReviewForm = ({ brandId, productId, onClose, onSubmitSuccess }) => {
   const [rating, setRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
   const [review, setReview] = useState("");
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
- const { user } = useUser(); // 👈 Get user from context
-    const userId = user?._id;
+
+  const { user } = useUser();
+  const userId = user?._id;
+
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
     setImages(files);
@@ -30,148 +28,121 @@ const BrandReviewForm = ({ brandId, onClose, productId,onSubmitSuccess }) => {
 
   const handleImageRemove = (index) => {
     const updatedImages = images.filter((_, i) => i !== index);
-    setImages(updatedImages); // Remove image by index
+    setImages(updatedImages);
   };
 
   const handleSubmit = async () => {
     setLoading(true);
-
     try {
       const reviewData = {
-        id: productId || brandId, // Use productId if it exists, else use brandId
-        userId:userId,
+        id: productId || brandId,
         rating,
         review,
-        mediaFiles: images
+        mediaFiles: images,
       };
 
       if (productId) {
         await SubmitProductReview(reviewData);
-        toast.success("Thank you for giving our product a review!");
+        toast.success("Thank you for reviewing our product!");
       } else {
         await SubmitBrandReview(reviewData);
-        toast.success("Thank you for giving our brand a review!");
+        toast.success("Thank you for reviewing our brand!");
       }
-      // ✅ Inform parent that submission succeeded
-      if (onSubmitSuccess) {
-        onSubmitSuccess();
-      }
-      onClose();
+
+      onSubmitSuccess?.();
+      onClose?.();
       setRating(0);
       setReview("");
       setImages([]);
     } catch (error) {
-      const errorMessage =
-        error?.response?.data?.message ||
-        error?.message ||
-        "Something went wrong. Please try again.";
-    
-      toast.error(errorMessage);
-      console.error("Error submitting review:", error);
-    }
-     finally {
+      const msg = error?.response?.data?.message || error?.message || "Something went wrong!";
+      toast.error(msg);
+      console.error("Review submission error:", error);
+    } finally {
       setLoading(false);
     }
   };
-  return (
-    <Box>
-      <Box sx={{ marginBottom: 2 }}>
-        <Rating
-          sx={{ fontSize: 40 }}
-          name="brand-rating"
-          value={rating}
-          onChange={(e, newValue) => setRating(newValue)}
-        />
-      </Box>
 
-      <TextField
-        fullWidth
-        multiline
+  return (
+    <div className="space-y-5 text-tprimary">
+      {/* Rating */}
+      <div className="flex space-x-1">
+        {[1, 2, 3, 4, 5].map((starValue) => (
+          <button
+            key={starValue}
+            type="button"
+            onClick={() => setRating(starValue)}
+            onMouseEnter={() => setHoverRating(starValue)}
+            onMouseLeave={() => setHoverRating(0)}
+            className="transition"
+          >
+            {starValue <= (hoverRating || rating) ? (
+              <Star className="w-6 h-6 text-yellow-500 fill-yellow-400" />
+            ) : (
+              <StarOff className="w-6 h-6 text-gray-400" />
+            )}
+          </button>
+        ))}
+      </div>
+
+      {/* Review Input */}
+      <textarea
         rows={4}
-        variant="outlined"
-        label="Write your review"
+        className="w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary bg-white placeholder-gray-500"
+        placeholder="Write your review here..."
         value={review}
         onChange={(e) => setReview(e.target.value)}
-        sx={{ marginBottom: 2 ,color:theme.palette.text.primary}}
-        InputProps={{
-          style: { backgroundColor: theme.palette.background.default }
-        }} // Use theme for background color
       />
 
-      <Box sx={{ marginBottom: 2 }}>
-        <Button
-          variant="contained"
-          component="label"
-          startIcon={<ImageIcon />}
-          sx={{ borderRadius: "20px", padding: "10px 20px" }}
-        >
+      {/* Image Upload Button */}
+      <div>
+        <label className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-md text-sm cursor-pointer hover:bg-primary/90">
+          <ImageIcon className="w-4 h-4" />
           Upload Images
           <input
             type="file"
-            hidden
             accept="image/*"
             multiple
             onChange={handleImageUpload}
+            className="hidden"
           />
-        </Button>
+        </label>
 
-        {/* Show selected images */}
+        {/* Image Preview */}
         {images.length > 0 && (
-          <Box
-            sx={{
-              marginTop: 2,
-              display: "flex",
-              justifyContent: "center",
-              gap: 2
-            }}
-          >
+          <div className="flex flex-wrap gap-2 mt-4">
             {images.map((image, index) => (
-              <Box
+              <div
                 key={index}
-                sx={{
-                  position: "relative",
-                  width: 80,
-                  height: 80
-                }}
+                className="relative w-20 h-20 border rounded overflow-hidden"
               >
                 <img
                   src={URL.createObjectURL(image)}
-                  alt="upload preview"
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    borderRadius: "8px",
-                    objectFit: "cover"
-                  }}
+                  alt={`uploaded ${index}`}
+                  className="w-full h-full object-cover"
                 />
-                <IconButton
-                  size="small"
+                <button
+                  type="button"
                   onClick={() => handleImageRemove(index)}
-                  sx={{
-                    position: "absolute",
-                    top: -10,
-                    right: -10,
-                    background: theme.palette.error.main,
-                    color: "white"
-                  }}
+                  className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full p-1"
                 >
-                  <DeleteIcon fontSize="small" />
-                </IconButton>
-              </Box>
+                  <Trash2 className="w-3 h-3" />
+                </button>
+              </div>
             ))}
-          </Box>
+          </div>
         )}
-      </Box>
+      </div>
 
-      <Button
-        variant="contained"
-        color="primary"
+      {/* Submit Button */}
+      <button
+        disabled={rating === 0 || !review || loading}
         onClick={handleSubmit}
-        disabled={rating === 0 || !review || loading} // Disable if no rating/review or if loading
+        className="bg-primary text-white px-6 py-2 rounded hover:bg-primary-dark disabled:opacity-60 disabled:cursor-not-allowed"
       >
         {loading ? "Submitting..." : "Submit Review"}
-      </Button>
-    </Box>
+      </button>
+    </div>
   );
 };
 

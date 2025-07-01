@@ -1,57 +1,31 @@
-// CustomModal.js
+"use client";
 import React from "react";
-import { Modal, Box, Typography, IconButton, useTheme } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import CustomIconButton from "./CustomIconButton";
-import CustomTypography from "./CustomTypography";
+import { X } from "lucide-react"; // Lucide close icon
 
-const CustomModal = ({ open, onClose, title, children,height})=>{
-  const theme = useTheme();
+const CustomModal = ({ open, onClose, title, children, height }) => {
+  if (!open) return null;
+
   return (
-    <Modal open={open} onClose={onClose}>
-      <Box
-        sx={{
-          height:height,
-          width: {
-            xs: "90%",
-            sm: 400,
-            md: 500,
-          },          margin: "auto",
-          padding: 3,
-          backgroundColor: theme.palette.background.paper,
-          borderRadius: 2,
-          boxShadow: theme.shadows[5],
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          color: theme.palette.text.primary
-        }}
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-body/40">
+      <div
+        className="bg-body rounded-lg p-4 shadow-xl w-[90%] sm:w-[400px] md:w-[500px]"
+        style={{ height }}
       >
-        {/* Modal Heading */}
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          mb={2}
-        >
-          <CustomTypography
-            variant="h6"
-            component="h2"
-            sx={{ color: theme.palette.text.primary }}
+        {/* Header */}
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-lg font-semibold text-primary">{title}</h2>
+          <button
+            onClick={onClose}
+            className="text-gray-600 hover:text-red-500 transition"
           >
-            {title}
-          </CustomTypography>
-          {/* Close Button */}
-          <CustomIconButton onClick={onClose}>
-            <CloseIcon />
-          </CustomIconButton>
-        </Box>
+            <X className="w-5 h-5" /> {/* Lucide X icon */}
+          </button>
+        </div>
 
-        {/* Modal Content */}
-        {children}
-      </Box>
-    </Modal>
+        {/* Body */}
+        <div className="overflow-y-auto h-full">{children}</div>
+      </div>
+    </div>
   );
 };
 

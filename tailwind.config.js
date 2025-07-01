@@ -12,6 +12,9 @@ module.exports = {
         body: "var(--body)",
         primary: "var(--primary)",
         secondary: "var(--secondary)",
+        tsecondary: "var(--t-secondary)",
+        tprimary:"var(--t-primary)",
+        tactive:"var(--t-active)"
       },
     },
   },

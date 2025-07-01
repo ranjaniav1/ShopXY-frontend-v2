@@ -2,18 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* globals.css */
-:root {
-  --body: #f9fafb;
-  --primary: #0d6efd;
-  --secondary: #6c757d;
-}
-
-[data-theme="dark"] {
-  --body: #121212;
-  --primary: #0d6efd;
-  --secondary: #adb5bd;
-}
 
 
 @font-face {

@@ -1,6 +1,7 @@
+"use client";
+
 import React, { useState } from "react";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { Box, IconButton } from "@mui/material";
+import { MoreVertical } from "lucide-react"; // ✅ Lucide icon
 import Link from "next/link";
 import NavSearchBar from "./NavSearchBar";
 import NavProfileMenu from "./NavProfileMenu";
@@ -8,11 +9,14 @@ import NavCartButton from "./NavCartButton";
 import NavAuthButtons from "./NavAuthButtons";
 import { useTheme } from "@/app/context/ThemeContext";
 import { useRouter } from "next/navigation";
+import { useUser } from "@/app/context/UserContext";
+import ClientLink from "@/app/Common/ClientClick";
 
-const FullScreenNav = ({ setDrawerOpen, user }) => {
-  const { webSettings } = useTheme()
+const FullScreenNav = ({ setDrawerOpen }) => {
+  const { webSettings } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
+  const { user } = useUser();
 
   const handleSearch = () => {
     const query = searchQuery.trim();
@@ -20,35 +24,44 @@ const FullScreenNav = ({ setDrawerOpen, user }) => {
       router.push(`/product/${encodeURIComponent(query)}`);
     }
   };
+
   return (
-    <Box
-      display="flex"
-      justifyContent="space-between"
-      alignItems="center"
-      p={2}
-    >
+    <div className="flex justify-between items-center py-2 px-4">
       {/* Logo */}
-      <Link href="/" className="flex item-center">
-        <img src={webSettings?.logo} alt="Site Logo" className="h-16 w-auto object-contain" />
-      </Link>
+      <ClientLink href="/" className="flex items-center">
+        <img
+          src={webSettings?.logo}
+          alt="Site Logo"
+          className="h-16 w-auto object-contain"
+        />
+      </ClientLink>
 
-      {/* Search Field */}
-      <NavSearchBar searchQuery={searchQuery}
+      {/* Search Bar */}
+      <NavSearchBar
+        searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
-        onSearch={handleSearch} />
+        onSearch={handleSearch}
+      />
 
-      {/* Account and Cart Menu */}
-      <div className="flex space-x-2">
-        {user ? (<>
-          <NavProfileMenu user={user} />  <NavCartButton /> </>
+      {/* Right Side Buttons */}
+      <div className="flex items-center gap-2">
+        {user ? (
+          <>
+            <NavProfileMenu />
+            <NavCartButton />
+          </>
         ) : (
           <NavAuthButtons />
         )}
-        <IconButton size="small">
-          <MoreVertIcon onClick={() => setDrawerOpen(true)} />
-        </IconButton>
+
+        <button
+          onClick={() => setDrawerOpen(true)}
+          className="p-2 hover:bg-secondary/20 rounded"
+        >
+          <MoreVertical className="w-5 h-5 text-primary" />
+        </button>
       </div>
-    </Box>
+    </div>
   );
 };
 

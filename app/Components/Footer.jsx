@@ -1,117 +1,96 @@
-import { Facebook, Instagram, LinkedIn, Twitter } from "@mui/icons-material";
-import { Container, Divider, Grid, Link as MUILink, useTheme } from "@mui/material";
+"use client";
+
 import React from "react";
-import CustomBox from "../Custom/CustomBox";
+import {
+  Facebook,
+  Instagram,
+  Linkedin,
+  Twitter,
+} from "lucide-react"; // ✅ Lucide icons
+import { useTheme } from "@/app/context/ThemeContext";
 
 const Footer = () => {
-  const theme=useTheme()
-  // Define your categories here
-  const categories = [
-    { name: "Electronics", link: "/categories/1/electronics" },
-    {
-      name: "Jewellwey & Accessories",
-      link: "/categories/2/Jewellery-and-Accessories"
-    },
-    { name: "Home & kitchen", link: "/categories/3/Home-and-Kitchen" },
-    { name: "Bags & Footwear", link: "/categories/4/Bags-and-Footwear" },
-    { name: "Bady Products", link: "/categories/5/babies-products" },
-    { name: "Beverages", link: "/categories/6/food-Beverages" },
-    { name: "Sport Outdoor", link: "/categories/7/Sports-Outdoors" },
-    { name: "Pet Supplies", link: "/categories/8/Pet-Supplies" },
-    { name: "Stationary", link: "/categories/9/Stationary" }
-  ];
+  const { webSettings } = useTheme();
 
-  const collection = [
-    { name: "mobile phone", link: "/categories/collections/101/mobile-phones" },
-    { name: "Laptops", link: "/categories/collections/102/laptops" },
-    { name: "Tablets", link: "/categories/collections/103/tablets" },
-    { name: "Camera", link: "/categories/collections/104/Camera" },
-    { name: "Headphones", link: "/categories/collections/105/headphones" },
-    { name: "Smart Watch", link: "/categories/collections/106/smart-watch" }
-  ];
+  const footerLinks = webSettings?.footerLinks || [];
+  const socialLinks = webSettings?.socialLinks || [];
+  const contact = webSettings?.contactInfo || {};
 
   return (
-    <CustomBox>
-      <Container maxWidth="xl">
-        <div className="p-3">
-          <Grid container>
-            <Grid item xs={12} md={3}>
-              <div className="px-3">
-                <h1 className="text-2xl font-semibold ml-2 my-3">ShopXY</h1>
-                <p>
-                  At ShopXY, you can find all your favorite products in one
-                  place, from home essentials to the latest gadgets. We aim to
-                  provide you with the best shopping experience.
-                </p>
-              </div>
-            </Grid>
-            <Grid item xs={12} md={3}>
-              <div className="px-3 my-4">
-                <h1 className="my-4 text-xl font-medium">Top Categories</h1>
-                <ul className="space-y-2">
-                  {categories.map((category, index) => (
-                    <li key={index}>
-                      <MUILink href={category.link}>{category.name}</MUILink>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </Grid>
-            <Grid item xs={12} md={3}>
-              <div className="px-3 my-4">
-                <h1 className="my-4 text-xl font-medium">Top Collections</h1>
-                <ul className="space-y-2">
-                  {collection.map((collections, index) => (
-                    <li key={index}>
-                      <MUILink href={collections.link}>
-                        {collections.name}
-                      </MUILink>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </Grid>
-            <Grid item xs={12} md={3}>
-              <div className="px-3 my-4" style={{color:theme.palette.card.text}}>
-                <h1 className="my-4 text-xl font-medium">Contact Us</h1>
-                <ul className="space-y-2">
-                  <li >
-                    1234 Market St, San Francisco, CA
-                  </li>
-                  <li >Email: support@ShopXY.com</li>
-                  <li >Phone: +1 (555) 123-4567</li>
-                  <div className="icons">
-                    <li>
-                      <div className="flex space-x-4 mt-4">
-                      <a href="#" aria-label="Facebook" className="hover:text-gray-300">
-  <Facebook />
-</a>
-<a href="#" aria-label="Twitter" className="hover:text-gray-300">
-  <Twitter />
-</a>
-<a href="#" aria-label="Instagram" className="hover:text-gray-300">
-  <Instagram />
-</a>
-<a href="#" aria-label="LinkedIn" className="hover:text-gray-300">
-  <LinkedIn />
-</a>
+    <footer className="bg-body text-tsecondary w-full">
+      <div className="max-w-screen-xl mx-auto px-4 py-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Logo & Description */}
+          <div>
+            {webSettings?.logo && (
+              <img
+                src={webSettings.logo}
+                alt="Logo"
+                className="h-14 mb-4 object-contain"
+              />
+            )}
+            <p className="text-sm">
+              {webSettings?.description || "Your one-stop eCommerce solution."}
+            </p>
+          </div>
 
-                      </div>
-                    </li>
-                  </div>
-                </ul>
-              </div>
-            </Grid>
-          </Grid>
+          {/* Top Links */}
+          <div>
+            <h2 className="text-xl font-semibold mb-4">Our Top Links</h2>
+            <ul className="space-y-2">
+              {footerLinks.map((link) => (
+                <li key={link._id}>
+                  <a
+                    href={link.href}
+                    className="hover:text-primary transition-colors"
+                  >
+                    {link.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact + Social */}
+          <div>
+            <h2 className="text-xl font-semibold mb-4">Contact Us</h2>
+            <ul className="space-y-2 text-sm">
+              {contact.address && <li>{contact.address}</li>}
+              {contact.email && <li>Email: {contact.email}</li>}
+              {contact.phone && <li>Phone: {contact.phone}</li>}
+            </ul>
+            <div className="flex space-x-4 mt-4">
+              {socialLinks.map((item) => {
+                const iconMap = {
+                  facebook: <Facebook size={20} />,
+                  twitter: <Twitter size={20} />,
+                  instagram: <Instagram size={20} />,
+                  linkedin: <Linkedin size={20} />,
+                };
+                return (
+                  <a
+                    key={item._id}
+                    href={item.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-primary transition-colors"
+                  >
+                    {iconMap[item.type]}
+                  </a>
+                );
+              })}
+            </div>
+          </div>
         </div>
-        <Divider />
-        <div className="py-2 text-center" style={{color:theme.palette.card.text}}>
-          <p >
-            &copy; {new Date().getFullYear()} ShopXY. All rights reserved.
+
+        <div className="border-t mt-10 pt-4 flex flex-col md:flex-row justify-between items-center text-sm">
+          <p>
+            {webSettings?.footerText ||
+              `© ${new Date().getFullYear()} eShop. All rights reserved.`}
           </p>
         </div>
-      </Container>
-    </CustomBox>
+      </div>
+    </footer>
   );
 };
 

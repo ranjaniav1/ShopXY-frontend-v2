@@ -1,28 +1,27 @@
-'use client';
-import { createContext, useContext, useState, useEffect } from 'react';
-import i18n from '../i18n';
-import Cookies from 'js-cookie';
+// app/context/LanguageContext.tsx or .jsx
+"use client";
+
+import React, { createContext, useContext, useState } from "react";
+import { I18nextProvider } from "react-i18next";
+import i18n from "../i18n"; // your existing i18n.js
+import Cookies from "js-cookie";
 
 const LanguageContext = createContext();
 
 export const LanguageProvider = ({ children }) => {
-  const [language, setLanguageState] = useState('en');
+  const [language, setLanguage] = useState(Cookies.get("language") || "en");
 
-  useEffect(() => {
-    const storedLang = Cookies.get('language') || 'en';
-    setLanguageState(storedLang);
-    i18n.changeLanguage(storedLang);
-  }, []);
-
-  const setLanguage = (lang) => {
-    setLanguageState(lang);
-    i18n.changeLanguage(lang);
-    Cookies.set('language', lang);
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+    Cookies.set("language", lng);
+    setLanguage(lng);
   };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage }}>
-      {children}
+    <LanguageContext.Provider value={{ language, changeLanguage }}>
+      <I18nextProvider i18n={i18n}>
+        {children}
+      </I18nextProvider>
     </LanguageContext.Provider>
   );
 };

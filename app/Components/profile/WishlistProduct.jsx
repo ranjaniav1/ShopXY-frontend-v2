@@ -1,131 +1,95 @@
+'use client';
+
 import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Grid,
-  IconButton,
-  Typography,
-  useTheme,
-  Button,
-  Card,
-} from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import Link from "next/link";
-import {
-  fetchWishlist,
-  handleRemoveFromWishlist,
-  removeAllWishlists,
-} from "@/app/helper/ProfileUtils";
-import CustomTypography from "@/app/Custom/CustomTypography";
+import { deleteWishlistItem, getWishlist } from "@/app/Service/Profile";
+import { removeAllWishlists } from "@/app/helper/ProfileUtils";
 import CustomCollectionCard from "@/app/Common/CustomCollectionCard";
 import EmptyCart from "../EmptyCart";
-import { deleteWishlistItem, getWishlist } from "@/app/Service/Profile";
+import CustomTypography from "@/app/Custom/CustomTypography";
+import ClientLink from "@/app/Common/ClientClick";
+import { Trash2 } from "lucide-react";
 
 const WishlistItem = ({ userId, activeTab }) => {
-  const theme = useTheme();
   const [wishlist, setWishlist] = useState([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
 
-  async function fetchWishlist() {
+  const fetchWishlist = async () => {
     try {
       const data = await getWishlist(page, 6);
-      setWishlist(data?.wishlists)
-      setTotal(data?.totalResults)
+      setWishlist(data?.wishlists || []);
+      setTotal(data?.totalResults || 0);
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
-  }
+  };
 
   useEffect(() => {
-    if (userId) {
-      fetchWishlist()
-    }
+    if (userId) fetchWishlist();
   }, [userId, page]);
 
   useEffect(() => {
-    if (activeTab === 1) {
-      setPage(1);
-    }
+    if (activeTab === 1) setPage(1);
   }, [activeTab]);
 
   const handleDeleteWishlist = async (productId) => {
     await deleteWishlistItem(productId);
+    fetchWishlist();
+  };
+
+  const handleRemoveAll = async () => {
+    await removeAllWishlists(userId, setWishlist);
+    fetchWishlist();
   };
 
   const totalPages = Math.ceil(total / 6);
 
   return (
-    <Box sx={{ mt: 2 }}>
+    <div className="mt-4">
       {wishlist.length > 0 && (
-        <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
-          <Button
-            variant="contained"
-            color="error"
-            onClick={() => removeAllWishlists(userId, setWishlist)}
+        <div className="flex justify-end mb-4">
+          <button
+            onClick={handleRemoveAll}
+            className="bg-red-500 hover:bg-red-600 text-white text-sm font-medium px-4 py-2 rounded-md"
           >
             Remove All
-          </Button>
-        </Box>
+          </button>
+        </div>
       )}
 
       {wishlist.length > 0 ? (
-        <Grid container spacing={2}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {wishlist.map((wishlistItem) => (
-            <Grid key={wishlistItem._id} item xs={12} sm={6} md={4} lg={3}>
-              <Card
-                sx={{
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  position: "relative",
-                  borderRadius: 3,
-                  transition: "transform 0.3s, box-shadow 0.3s",
-                  "&:hover": {
-                    transform: "scale(1.02)",
-                    boxShadow: 6,
-                  },
-                }}
+            <div
+              key={wishlistItem._id}
+              className="relative rounded-xl shadow-md transition-transform duration-300 hover:scale-105 bg-white"
+            >
+              {/* Delete Button */}
+              <button
+                onClick={() => handleDeleteWishlist(wishlistItem.product._id)}
+                className="absolute top-2 right-2 z-10 bg-white text-red-500 p-1.5 rounded-full hover:bg-red-500 hover:text-white transition"
               >
-                <IconButton
-                  onClick={() =>
-                    handleDeleteWishlist(wishlistItem.product._id)
-                  }
-                  sx={{
-                    position: "absolute",
-                    top: 8,
-                    right: 8,
-                    zIndex: 10,
-                    backgroundColor: theme.palette.background.default,
-                    "&:hover": {
-                      backgroundColor: theme.palette.error.main,
-                      color: theme.palette.getContrastText(
-                        theme.palette.error.main
-                      ),
-                    },
-                  }}
-                >
-                  <DeleteIcon fontSize="small" />
-                </IconButton>
+                <Trash2 size={16} />
+              </button>
 
-                <Link
-                  href={`/product/${wishlistItem._id}/${encodeURIComponent(
-                    wishlistItem.slug
-                  )}`}
-                  passHref
-                >
-                  <CustomCollectionCard
-                    id={wishlistItem._id}
-                    image={wishlistItem.detail_image[0]}
-                    title={wishlistItem.name}
-                    tooltip={wishlistItem.name}
-                    slug={wishlistItem.slug}
-                  />
-                </Link>
-              </Card>
-            </Grid>
+              {/* Product Link */}
+              <ClientLink
+                href={`/product/${wishlistItem._id}/${encodeURIComponent(
+                  wishlistItem.slug
+                )}`}
+                passHref
+              >
+                <CustomCollectionCard
+                  id={wishlistItem._id}
+                  image={wishlistItem.detail_image?.[0]}
+                  title={wishlistItem.name}
+                  tooltip={wishlistItem.name}
+                  slug={wishlistItem.slug}
+                />
+              </ClientLink>
+            </div>
           ))}
-        </Grid>
+        </div>
       ) : (
         <EmptyCart
           src="/search-not-found.png"
@@ -137,28 +101,27 @@ const WishlistItem = ({ userId, activeTab }) => {
       )}
 
       {wishlist.length > 0 && (
-        <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
-          <Button
+        <div className="flex justify-between items-center mt-6">
+          <button
             onClick={() => setPage((p) => Math.max(p - 1, 1))}
             disabled={page <= 1}
+            className="text-sm px-3 py-1.5 border border-gray-300 rounded-md hover:bg-gray-100 disabled:opacity-50"
           >
             Previous
-          </Button>
-          <CustomTypography
-            variant="body2"
-            sx={{ color: theme.palette.text.secondary }}
-          >
+          </button>
+          <CustomTypography variant="body2" className="text-tsecondary">
             Page {page} of {totalPages}
           </CustomTypography>
-          <Button
+          <button
             onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
             disabled={page >= totalPages}
+            className="text-sm px-3 py-1.5 border border-gray-300 rounded-md hover:bg-gray-100 disabled:opacity-50"
           >
             Next
-          </Button>
-        </Box>
+          </button>
+        </div>
       )}
-    </Box>
+    </div>
   );
 };
 

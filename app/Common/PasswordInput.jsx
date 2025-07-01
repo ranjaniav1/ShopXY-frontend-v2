@@ -1,27 +1,28 @@
-// PasswordInput.js
-import React from 'react';
-import { Box, IconButton } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import CustomInput from '../Custom/CustomInput';
+"use client";
+import React from "react";
+import { Eye, EyeOff } from "lucide-react";
+import CustomInput from "../Custom/CustomInput";
 
-const PasswordInput = ({ t, showPassword, handleChange, setShowPassword, value }) => (
-    <Box sx={{ position: 'relative' }}>
-        <CustomInput
-            placeholder={t('Password')}
-            type={showPassword ? 'text' : 'password'}
-            name="password"
-            value={value}
-            onChange={handleChange}
-            className="mb-2"
-            required
-        />
-        <IconButton
-            sx={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)' }}
-            onClick={() => setShowPassword(prev => !prev)}
-        >
-            {showPassword ? <VisibilityOff /> : <Visibility />}
-        </IconButton>
-    </Box>
-);
+const PasswordInput = ({ t, showPassword, handleChange, setShowPassword, value }) => {
+  return (
+    <div className="relative mb-2">
+      <CustomInput
+        placeholder={t("Password")}
+        type={showPassword ? "text" : "password"}
+        name="password"
+        value={value}
+        onChange={handleChange}
+        required
+      />
+      <button
+        type="button"
+        onClick={() => setShowPassword((prev) => !prev)}
+        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-primary"
+      >
+        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+      </button>
+    </div>
+  );
+};
 
 export default PasswordInput;

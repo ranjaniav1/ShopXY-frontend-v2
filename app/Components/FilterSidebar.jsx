@@ -1,167 +1,155 @@
 "use client";
 
-import {
-  Box,
-  Slider,
-  Checkbox,
-  FormControlLabel,
-  FormGroup,
-  Divider,
-  MenuItem,
-  Select,
-  InputLabel,
-  FormControl,
-} from "@mui/material";
+import React from "react";
 import CustomTypography from "@/app/Custom/CustomTypography";
 import Heading from "@/app/Common/Heading";
 
 const FilterSidebar = ({
-  priceRange,
-  setPriceRange,
-  ratingRange,
-  setRatingRange,
-  minPrice,
-  maxPrice,
-  minRating,
-  maxRating,
-  inStock,
-  setInStock,
-  onlyDiscounted,
-  setOnlyDiscounted,
-  selectedCategory,
-  setSelectedCategory,
-  selectedCollection,
-  setSelectedCollection,
-  selectedBrand,
-  setSelectedBrand,
-  categories,
-  collections,
-  brands,
+  priceRange, setPriceRange,
+  ratingRange, setRatingRange,
+  minPrice, maxPrice, minRating, maxRating,
+  inStock, setInStock,
+  onlyDiscounted, setOnlyDiscounted,
+  selectedCategory, setSelectedCategory,
+  selectedCollection, setSelectedCollection,
+  selectedBrand, setSelectedBrand,
+  sort, setSort,
+  categories, collections, brands,
+  onClearFilters,
 }) => {
-  const validPrice = Array.isArray(priceRange) && priceRange.length === 2 ? priceRange : [minPrice, maxPrice];
-  const validRating = Array.isArray(ratingRange) && ratingRange.length === 2 ? ratingRange : [minRating, maxRating];
-
   return (
-    <Box
-      className=" border border-gray-200 text-secondary"
-      sx={{
-        p: 2,
-        borderRadius: 2,
-        boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
-        position: "sticky",
-        top: "100px",
-      }}
-    >
+    <div className="border border-gray-200 rounded-lg p-4 shadow-sm sticky top-24 text-tsecondary bg-white w-full max-w-[300px]">
       <Heading text="Filters" className="text-lg mb-3 text-primary" />
 
-      {/* Category Filter */}
-      <FormControl fullWidth margin="normal" size="small">
-        <InputLabel id="category-select-label">Category</InputLabel>
-        <Select
-          labelId="category-select-label"
-          value={selectedCategory}
-          label="Category"
-          onChange={(e) => setSelectedCategory(e.target.value)}
+      {/* Sort By */}
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-1 text-tprimary">Sort By</label>
+        <select
+          value={sort}
+          onChange={(e) => setSort(e.target.value)}
+          className="w-full border border-gray-300 rounded-md p-2 text-sm"
         >
-          <MenuItem value="">All</MenuItem>
+          <option value="">Default</option>
+          <option value="priceLowHigh">Price: Low to High</option>
+          <option value="priceHighLow">Price: High to Low</option>
+          <option value="ratingHighLow">Rating: High to Low</option>
+        </select>
+      </div>
+
+      {/* Category Filter */}
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-1 text-tprimary">Category</label>
+        <select
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+          className="w-full border border-gray-300 rounded-md p-2 text-sm"
+        >
+          <option value="">All</option>
           {categories.map((cat) => (
-            <MenuItem key={cat._id} value={cat.slug}>
-              {cat.title}
-            </MenuItem>
+            <option key={cat._id} value={cat.slug}>{cat.title}</option>
           ))}
-        </Select>
-      </FormControl>
+        </select>
+      </div>
 
       {/* Collection Filter */}
-      <FormControl fullWidth margin="normal" size="small">
-        <InputLabel id="collection-select-label">Collection</InputLabel>
-        <Select
-          labelId="collection-select-label"
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-1 text-tprimary">Collection</label>
+        <select
           value={selectedCollection}
-          label="Collection"
           onChange={(e) => setSelectedCollection(e.target.value)}
+          className="w-full border border-gray-300 rounded-md p-2 text-sm"
         >
-          <MenuItem value="">All</MenuItem>
+          <option value="">All</option>
           {collections.map((col) => (
-            <MenuItem key={col._id} value={col.slug}>
-              {col.title}
-            </MenuItem>
+            <option key={col._id} value={col.slug}>{col.title}</option>
           ))}
-        </Select>
-      </FormControl>
+        </select>
+      </div>
 
       {/* Brand Filter */}
-      <FormControl fullWidth margin="normal" size="small">
-        <InputLabel id="brand-select-label">Brand</InputLabel>
-        <Select
-          labelId="brand-select-label"
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-1 text-tprimary">Brand</label>
+        <select
           value={selectedBrand}
-          label="Brand"
           onChange={(e) => setSelectedBrand(e.target.value)}
+          className="w-full border border-gray-300 rounded-md p-2 text-sm"
         >
-          <MenuItem value="">All</MenuItem>
+          <option value="">All</option>
           {brands.map((brand) => (
-            <MenuItem key={brand._id} value={brand.slug}>
-              {brand.title}
-            </MenuItem>
+            <option key={brand._id} value={brand.slug}>{brand.title}</option>
           ))}
-        </Select>
-      </FormControl>
+        </select>
+      </div>
 
-      {/* Price Range */}
-      <Box my={3}>
+      {/* Price Range - SLIDER */}
+
+      <div className="mb-4">
         <CustomTypography fontWeight={600} fontSize="1rem" className="mb-1 text-primary">
-          Price Range
+          Price Range (₹{priceRange[0]})
         </CustomTypography>
-        <Slider
-          size="small"
+        <input
+          type="range"
           min={minPrice}
           max={maxPrice}
-          step={1}
-          marks
-          value={validPrice}
-          onChange={(_, newValue) => setPriceRange(newValue)}
-          valueLabelDisplay="auto"
+          value={priceRange[0]}
+          onChange={(e) => setPriceRange([parseInt(e.target.value)])}
+          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
         />
-        <CustomTypography fontSize="0.875rem" className="text-primary">
-          ₹{validPrice[0]} - ₹{validPrice[1]}
-        </CustomTypography>
-      </Box>
+        <div className="flex justify-between text-sm text-gray-600 mt-1">
+          <span>₹{minPrice}</span>
+          <span>₹{priceRange[0]}</span>
+          <span>₹{maxPrice}</span>
+        </div>
+      </div>
 
-      {/* Rating */}
-      <Box mb={3}>
-        <CustomTypography fontWeight={600} fontSize="1rem" className="mb-1 text-primary">
-          Rating
+
+
+      {/* Rating Range - SLIDER */}
+      <div className="mb-6">
+        <CustomTypography fontWeight={600} fontSize="1rem" className="mb-2 text-primary">
+          Minimum Rating ({ratingRange[0]} stars)
         </CustomTypography>
-        <Slider
-          size="small"
+        <input
+          type="range"
           min={minRating}
           max={maxRating}
-          step={0.1}
-          marks
-          value={validRating}
-          onChange={(_, newValue) => setRatingRange(newValue)}
-          valueLabelDisplay="auto"
+          step={0.5}
+          value={ratingRange[0]}
+          onChange={(e) => setRatingRange([parseFloat(e.target.value), 5])}
+          className="w-full accent-yellow-500"
         />
-        <CustomTypography fontSize="0.875rem" className="text-primary">
-          {validRating[0]} - {validRating[1]} stars
-        </CustomTypography>
-      </Box>
+      </div>
 
-      <Divider sx={{ my: 2 }} />
+      {/* Stock & Discount Filters */}
+      <div className="space-y-2 mb-4">
+        <label className="inline-flex items-center gap-2">
+          <input
+            type="checkbox"
+            checked={inStock}
+            onChange={(e) => setInStock(e.target.checked)}
+            className="form-checkbox rounded border-gray-300 text-primary"
+          />
+          <span className="text-sm">Only In Stock</span>
+        </label>
+        <label className="inline-flex items-center gap-2">
+          <input
+            type="checkbox"
+            checked={onlyDiscounted}
+            onChange={(e) => setOnlyDiscounted(e.target.checked)}
+            className="form-checkbox rounded border-gray-300 text-primary"
+          />
+          <span className="text-sm">Only Discounted</span>
+        </label>
+      </div>
 
-      {/* Extra Filters */}
-      <FormGroup>
-        <FormControlLabel
-          control={<Checkbox checked={inStock} onChange={(e) => setInStock(e.target.checked)} />}
-          label="Only In Stock"
-        />
-        <FormControlLabel
-          control={<Checkbox checked={onlyDiscounted} onChange={(e) => setOnlyDiscounted(e.target.checked)} />}
-          label="Only Discounted"
-        />
-      </FormGroup>
-    </Box>
+      {/* Clear Filters */}
+      <button
+        onClick={onClearFilters}
+        className="mt-4 w-full text-center text-red-600 text-sm underline hover:text-red-800"
+      >
+        Clear All Filters
+      </button>
+    </div>
   );
 };
 

@@ -1,13 +1,13 @@
-"use client"
-import { Box, useTheme } from '@mui/material'
+'use client'
+
 import React from 'react'
 
-const CustomBox = ({ children ,sx}) => {
-    const theme = useTheme()
-    return (
-        <Box className="my-7   rounded-md "sx={{sx}}>{children}
-        </Box>
-    )
+const CustomBox = ({ children, className = '' }) => {
+  return (
+    <div className={`my-7 rounded-md ${className}`}>
+      {children}
+    </div>
+  )
 }
 
 export default CustomBox

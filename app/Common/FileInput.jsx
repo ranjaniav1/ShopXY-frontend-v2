@@ -1,28 +1,30 @@
-// FileInput.js
-import React from 'react';
-import { Box, IconButton, Typography } from '@mui/material';
-import { AddPhotoAlternate } from '@mui/icons-material';
-import CustomTypography from '../Custom/CustomTypography';
+"use client";
+
+import React from "react";
+import { ImagePlus } from "lucide-react"; // Lucide icon for photo upload
 
 const FileInput = ({ t, avatar, handleFileClick, handleFileChange }) => (
-    <Box
-        sx={{ display: 'flex', alignItems: 'center', border: '1px dashed #ccc', borderRadius: '4px', padding: '8px', cursor: 'pointer', mb: 2 }}
-        onClick={handleFileClick}
+  <div
+    className="flex items-center border border-dashed border-gray-300 rounded px-3 py-2 cursor-pointer mb-2"
+    onClick={handleFileClick}
+  >
+    <input
+      type="file"
+      id="avatar-upload"
+      accept="image/*"
+      className="hidden"
+      onChange={handleFileChange}
+    />
+    <button
+      type="button"
+      className="p-1 text-primary hover:bg-gray-100 rounded"
     >
-        <input
-            type="file"
-            id="avatar-upload"
-            accept="image/*"
-            style={{ display: 'none' }}
-            onChange={handleFileChange}
-        />
-        <IconButton color="primary" component="span">
-            <AddPhotoAlternate />
-        </IconButton>
-        <CustomTypography variant="body2" sx={{ ml: 2 }}>
-            {avatar ? avatar.name : t('Upload Avatar')}
-        </CustomTypography>
-    </Box>
+      <ImagePlus className="w-5 h-5" />
+    </button>
+    <span className="ml-2 text-sm text-tsecondary">
+      {avatar ? avatar.name : t("Upload Avatar")}
+    </span>
+  </div>
 );
 
 export default FileInput;

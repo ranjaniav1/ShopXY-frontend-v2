@@ -1,70 +1,93 @@
+'use client'
+
 import React, { useState } from "react";
-import { Box, IconButton } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import { useSelector } from "react-redux";
+import { Menu, Search } from "lucide-react"; // ✅ Lucide icons
 import Link from "next/link";
-import { Search as SearchIcon } from "@mui/icons-material";
 import NavCartButton from "./NavCartButton";
 import NavAuthButtons from "./NavAuthButtons";
 import CustomModal from "@/app/Custom/CustomModal";
 import NavSearchBar from "./NavSearchBar";
 import { useTheme } from "@/app/context/ThemeContext";
 import { useRouter } from "next/navigation";
+import { useUser } from "@/app/context/UserContext";
+import ClientLink from "@/app/Common/ClientClick";
 
-const SmallScreenNav = ({ setDrawerOpen, user }) => {
+const SmallScreenNav = ({ setDrawerOpen }) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState(""); // State for search input
-  const { webSettings } = useTheme()
+  const [searchQuery, setSearchQuery] = useState("");
+  const { webSettings } = useTheme();
   const router = useRouter();
+  const { user } = useUser();
 
   const handleSearch = () => {
     const query = searchQuery.trim();
     if (query) {
-      setIsSearchOpen(false); // ✅ Close modal first
+      setIsSearchOpen(false);
       setTimeout(() => {
         router.push(`/product/${encodeURIComponent(query)}`);
-      }, 100); // slight delay ensures modal is removed first
+      }, 100);
     }
   };
+
   return (
-    <Box display="flex" justifyContent="space-between" alignItems="center" p={2} sx={{ width: "100%" }}>
+    <div className="flex justify-between items-center w-full px-4 py-2 border-b border-secondary bg-body">
       {/* Logo */}
-      <Link href="/" passHref>
-        <img src={webSettings?.logo} alt="Site Logo" className="h-16 w-auto object-contain" />
-      </Link>
+      <ClientLink href="/" className="flex items-center">
+        <img
+          src={webSettings?.logo}
+          alt="Site Logo"
+          className="h-14 w-auto object-contain"
+        />
+      </ClientLink>
 
-      <Box display="flex" alignItems="center">
-        {/* ✅ Search Icon (Opens Modal) */}
-        <IconButton onClick={() => setIsSearchOpen(true)} size="small">
-          <SearchIcon />
-        </IconButton>
+      <div className="flex items-center gap-2">
+        {/* Search Button */}
+        <button
+          onClick={() => setIsSearchOpen(true)}
+          className="p-2 hover:bg-secondary/20 rounded-md"
+        >
+          <Search className="w-5 h-5 text-primary" />
+        </button>
 
-        {/* Login/Account Button */}
+        {/* Avatar & Cart */}
         {user ? (
           <>
-            <Link href="/user/profile" passHref>
-              <img src={`${user?.avatar}?sz=64`} alt="Avatar" className="w-8 h-8 rounded-md object-cover" />
-            </Link>
+            <ClientLink href="/user/profile">
+              <img
+                src={`${user?.avatar}?sz=64`}
+                alt="Avatar"
+                className="w-8 h-8 rounded-full object-cover"
+              />
+            </ClientLink>
             <NavCartButton />
           </>
         ) : (
           <NavAuthButtons />
         )}
 
-        {/* Hamburger Menu Icon */}
-        <IconButton onClick={() => setDrawerOpen(true)} size="small">
-          <MenuIcon />
-        </IconButton>
-      </Box>
+        {/* Drawer Button */}
+        <button
+          onClick={() => setDrawerOpen(true)}
+          className="p-2 hover:bg-secondary/20 rounded-md"
+        >
+          <Menu className="w-5 h-5 text-primary" />
+        </button>
+      </div>
 
-      {/* ✅ Render Modal only when open */}
-      <CustomModal open={isSearchOpen} onClose={() => setIsSearchOpen(false)} height="450px" title="search">
+      {/* Search Modal */}
+      <CustomModal
+        open={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        title="Search"
+        height="450px"
+      >
         <NavSearchBar
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           onSearch={handleSearch}
-        />      </CustomModal>
-    </Box>
+        />
+      </CustomModal>
+    </div>
   );
 };
 

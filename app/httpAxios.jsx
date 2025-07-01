@@ -2,7 +2,7 @@ import axios from "axios";
 
 const BASE_URL = "https://eshop-backend-tau.vercel.app/api/v2";
 
-// Helper to get cookies from the browser
+// 🔁 Helper to get cookies from the browser
 function getCookie(name) {
   if (typeof document === "undefined") return null;
   const value = `; ${document.cookie}`;
@@ -11,24 +11,33 @@ function getCookie(name) {
   return null;
 }
 
-
+// 📦 Axios instance
 export const httpAxios = axios.create({
   baseURL: BASE_URL,
   withCredentials: true,
+  timeout: 5000, // ⏳ Prevent infinite waiting
 });
 
-// Add the access token from cookie to every request
-httpAxios.interceptors.request.use((config) => {
-  const accessToken = getCookie("accessToken");
-  if (accessToken) {
-    config.headers["Authorization"] = `Bearer ${accessToken}`;
-  }
-  return config;
-});
+// ✅ Request interceptor — skip token for public routes
+httpAxios.interceptors.request.use(
+  (config) => {
+    const isPublicRoute = config.url?.includes("/home") || config.url?.includes("/public");
 
-// Refresh logic
+    if (!isPublicRoute) {
+      const accessToken = getCookie("accessToken");
+      if (accessToken) {
+        config.headers["Authorization"] = `Bearer ${accessToken}`;
+      }
+    }
+
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// 🛠️ Token Refresh Logic
 let isRefreshing = false;
-let failedQueue = [];
+let failedQueue=[];
 
 const processQueue = (error, token = null) => {
   failedQueue.forEach((prom) => {
@@ -41,16 +50,18 @@ const processQueue = (error, token = null) => {
   failedQueue = [];
 };
 
-// Response interceptor to handle token refresh
 httpAxios.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !originalRequest.url.includes("/refresh-token")
+    ) {
       originalRequest._retry = true;
 
-      // Queue handling if multiple 401s
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({
@@ -58,7 +69,7 @@ httpAxios.interceptors.response.use(
               originalRequest.headers["Authorization"] = `Bearer ${token}`;
               resolve(httpAxios(originalRequest));
             },
-            reject: (err) => reject(err),
+            reject,
           });
         });
       }
@@ -66,21 +77,20 @@ httpAxios.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const res = await axios.get(
-          `${BASE_URL}/user/auth/refresh-token`,
-          { withCredentials: true }
-        );
+        const res = await axios.get(`${BASE_URL}/user/auth/refresh-token`, {
+          withCredentials: true,
+        });
 
         const newAccessToken = res.data?.accessToken;
 
         if (newAccessToken) {
-          // Save new token in cookie (client-side use only)
           document.cookie = `accessToken=${newAccessToken}; path=/`;
 
-          // Retry original request
           originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
           processQueue(null, newAccessToken);
           return httpAxios(originalRequest);
+        } else {
+          throw new Error("Access token not received");
         }
       } catch (err) {
         processQueue(err, null);
@@ -93,5 +103,3 @@ httpAxios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
-

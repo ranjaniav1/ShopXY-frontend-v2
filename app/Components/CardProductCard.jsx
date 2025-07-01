@@ -1,7 +1,5 @@
 import React from 'react';
-import { Box, Divider, useTheme } from '@mui/material';
-import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
-import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import { Edit, Trash2 } from "lucide-react";
 import CustomIconButton from '../Custom/CustomIconButton';
 import CustomTypography from '../Custom/CustomTypography';
 import { useTranslation } from 'react-i18next';
@@ -15,98 +13,72 @@ const CartProductCard = ({
   actual_price,
   discounted_price,
   quantity,
-  size
+  size,
 }) => {
-  const theme = useTheme();
   const { t } = useTranslation();
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        border: `1px solid ${theme.palette.card.border}`,
-        backgroundColor: theme.palette.card.background,
-        borderRadius: 2,
-        padding: '16px',
-        marginBottom: 2,
-        boxShadow: theme.palette.mode === 'light'
-          ? '0px 4px 8px rgba(0, 0, 0, 0.1)'
-          : '0px 4px 8px rgba(255, 255, 255, 0.05)',
-        position: 'relative',
-        transition: 'all 0.3s ease-in-out',
-        '&:hover': {
-          borderColor: theme.palette.card.hover
-        }
-      }}
-    >
+    <div className="relative flex items-center rounded-md p-4 shadow-md bg-body mb-1 border hover:border-primary transition-all duration-300">
       {/* Image */}
-      <Box sx={{ flexShrink: 0, marginRight: 2 }}>
+      <div className="flex-shrink-0 mr-4">
         <img
           src={image || 'https://via.placeholder.com/150'}
           alt={name}
-          style={{
-            width: '60px',
-            height: '60px',
-            objectFit: 'cover',
-            borderRadius: '8px',
-            border: `1px solid ${theme.palette.divider}`
-          }}
+          className="w-16 h-16 object-cover rounded-md border border-secondary"
         />
-      </Box>
+      </div>
 
       {/* Product Details */}
-      <Box sx={{ flex: 1 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <CustomTypography variant="body1" sx={{ fontWeight: 500, color: theme.palette.card.text }}>
+      <div className="flex-1">
+        {/* Title and Action Icons */}
+        <div className="flex justify-between items-start">
+          <CustomTypography variant="body1" className="font-semibold text-tprimary">
             {name}
           </CustomTypography>
-
-          {/* Edit/Delete Buttons */}
-          <Box sx={{ display: 'flex', alignItems: 'center', border: `1px solid ${theme.palette.divider}`, borderRadius: 2 }}>
-            <CustomIconButton onClick={onEdit}>
-              <ModeEditOutlineOutlinedIcon sx={{ color: theme.palette.text.primary }} />
-            </CustomIconButton>
-
-            <Divider orientation='vertical' flexItem sx={{ height: 48, backgroundColor: theme.palette.divider }} />
-
-            <CustomIconButton onClick={onRemove}>
-              <DeleteForeverOutlinedIcon sx={{ color: '#e53935' }} />
-            </CustomIconButton>
-          </Box>
-        </Box>
+        </div>
 
         {/* Price and Offer */}
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-          <CustomTypography variant="body1" sx={{ fontWeight: 'bold', fontSize: '16px', mr: 1, color: theme.palette.text.secondary }}>
+        <div className="flex items-center mb-1 space-x-2">
+          <CustomTypography variant="body1" className="font-bold text-lg text-tsecondary">
             ₹{discounted_price || actual_price}
           </CustomTypography>
 
           {discounted_price && (
-            <CustomTypography variant="body2" sx={{ textDecoration: 'line-through', mr: 1, color: theme.palette.text.secondary }}>
+            <CustomTypography variant="body2" className="line-through text-tsecondary">
               ₹{actual_price}
             </CustomTypography>
           )}
 
-          <CustomTypography variant="body2" sx={{ color: theme.palette.text.secondary }}>
-            ₹{offer}% {t("off")}
+          <CustomTypography variant="body2" className="text-tsecondary">
+            {offer}% {t('off')}
           </CustomTypography>
-        </Box>
+        </div>
 
         {/* Size and Quantity */}
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <CustomTypography variant="body2" sx={{ mr: 1, color: theme.palette.text.secondary }}>
-            {t("Size")}: {size}
+        <div className="flex items-center space-x-3">
+          <CustomTypography variant="body2" className="text-tsecondary">
+            {t('Size')}: {size}
           </CustomTypography>
 
-          <Divider orientation='vertical' flexItem sx={{ height: 28, mx: 1, backgroundColor: theme.palette.divider }} />
+          <div className="w-px h-5 bg-secondary" />
 
-          <CustomTypography variant="body2" sx={{ color: theme.palette.text.secondary }}>
-            {t("Quantity")}: {quantity}
+          <CustomTypography variant="body2" className="text-tsecondary">
+            {t('Quantity')}: {quantity}
           </CustomTypography>
-        </Box>
-      </Box>
-    </Box>
+        </div>
+      </div>
+
+      {/* Action Icons (Edit + Delete) */}
+      <div className="absolute top-3 right-3 flex items-center bg-white border border-gray-200 rounded-md px-1.5 py-0.5 shadow-sm z-10">
+        <CustomIconButton onClick={onEdit} className="p-1 text-tprimary ">
+          <Edit size={18} />
+        </CustomIconButton>
+        <div className="w-px h-5 bg-secondary mx-1" />
+        <CustomIconButton onClick={onRemove} className="p-1 ">
+          <Trash2 size={18} className='text-red-600'/>
+        </CustomIconButton>
+      </div>
+    </div>
   );
 };
 

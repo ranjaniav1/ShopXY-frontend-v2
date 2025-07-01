@@ -1,19 +1,18 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
-import { Box, Divider } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
 import { GetSpecificProductReview } from "../Service/GetReviews";
 import RatingReview from "./Rating";
 import ReviewItem from "./Review";
 
 const ReviewComponents = ({ productId }) => {
   const [reviews, setReviews] = useState([]);
-  const theme = useTheme();
 
   useEffect(() => {
     const fetchReviews = async () => {
       try {
         const { data } = await GetSpecificProductReview(productId);
-        if (data && Array.isArray(data.reviews)) {  // Ensure reviews is an array
+        if (data && Array.isArray(data.reviews)) {
           setReviews(data.reviews);
         }
       } catch (error) {
@@ -24,28 +23,32 @@ const ReviewComponents = ({ productId }) => {
     fetchReviews();
   }, [productId]);
 
-  // Calculate the number of reviews per rating
+  // Calculate review counts per star rating
   const ratingCounts = Array(5).fill(0);
   reviews.forEach((review) => {
     if (review.rating >= 1 && review.rating <= 5) {
-      ratingCounts[review.rating - 1] += 1;
+      ratingCounts[review.rating - 1]++;
     }
   });
 
   return (
-    <Box>
-      {/* Display Ratings */}
-      {ratingCounts.map((count, index) => (
-        <RatingReview
-          key={index + 1}
-          starCount={index + 1}
-          reviewCount={count}
-        />
-      ))}
-      <Divider />
-      {/* Display Review Items */}
-      <ReviewItem reviews={reviews} theme={theme} />  {/* Pass reviews array here */}
-    </Box>
+    <div className="bg-body rounded-md p-4">
+      {/* Ratings Summary */}
+      <div className="space-y-2 mb-4">
+        {ratingCounts.map((count, index) => (
+          <RatingReview
+            key={index + 1}
+            starCount={index + 1}
+            reviewCount={count}
+          />
+        ))}
+      </div>
+
+      <hr className="border-secondary my-4" />
+
+      {/* Review List */}
+      <ReviewItem reviews={reviews} />
+    </div>
   );
 };
 

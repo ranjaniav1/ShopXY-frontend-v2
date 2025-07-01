@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import clsx from "clsx"; // Optional: for cleaner conditional class handling
 
 const CustomButton = ({
   startIcon,
@@ -13,35 +12,28 @@ const CustomButton = ({
   type = "button",
   ...props
 }) => {
-  const baseClasses = `
-    inline-flex items-center justify-center 
-    font-semibold rounded px-4 py-2 
-    transition duration-200 ease-in-out 
+  let sizeClass = "text-base px-4 py-2";
+  if (size === "small") sizeClass = "text-sm px-3 py-1";
+  else if (size === "large") sizeClass = "text-lg px-5 py-3";
+
+  let variantClass = "bg-primary text-white hover:opacity-90";
+  if (variant === "outlined")
+    variantClass = "border border-primary text-primary bg-transparent hover:bg-primary hover:text-white";
+  else if (variant === "text")
+    variantClass = "bg-transparent text-primary hover:underline";
+
+  const combinedClasses = `
+    inline-flex items-center justify-center
+    font-semibold rounded transition duration-200 ease-in-out
     focus:outline-none focus:ring-2 focus:ring-primary
+    ${sizeClass} ${variantClass} ${className}
   `;
-
-  const sizeClasses = {
-    small: "text-sm px-3 py-1",
-    medium: "text-base px-4 py-2",
-    large: "text-lg px-5 py-3",
-  };
-
-  const variantClasses = {
-    contained: "bg-primary text-white hover:opacity-90",
-    outlined: "border border-primary text-primary bg-transparent hover:bg-primary hover:text-white",
-    text: "bg-transparent text-primary hover:underline",
-  };
 
   return (
     <button
       type={type}
       onClick={onClick}
-      className={clsx(
-        baseClasses,
-        sizeClasses[size],
-        variantClasses[variant],
-        className
-      )}
+      className={combinedClasses}
       {...props}
     >
       {startIcon && <span className="mr-2">{startIcon}</span>}

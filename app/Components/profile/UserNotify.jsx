@@ -1,12 +1,7 @@
+'use client';
+
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Paper,
-  IconButton,
-  useTheme,
-  Button,
-} from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { Trash2 } from "lucide-react";
 import {
   fetchUserNotifications,
   removeAllNotifications,
@@ -16,7 +11,6 @@ import CustomTypography from "@/app/Custom/CustomTypography";
 import EmptyCart from "../EmptyCart";
 
 const UserNotify = ({ userId, activeTab }) => {
-  const theme = useTheme();
   const [notifications, setNotifications] = useState([]);
   const [hoveredNotificationId, setHoveredNotificationId] = useState(null);
   const [page, setPage] = useState(1);
@@ -46,72 +40,47 @@ const UserNotify = ({ userId, activeTab }) => {
   const totalPages = Math.ceil(total / 8);
 
   return (
-    <Box>
+    <div className="mt-4">
       {notifications.length > 0 && (
-        <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
-          <Button
-            variant="contained"
-            color="error"
+        <div className="flex justify-end mb-3">
+          <button
             onClick={() => removeAllNotifications(userId, setNotifications)}
+            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium"
           >
             Remove All
-          </Button>
-        </Box>
+          </button>
+        </div>
       )}
 
       {notifications.length > 0 ? (
         notifications.map((notification) => (
-          <Paper
+          <div
             key={notification._id}
-            sx={{
-              p: 2,
-              mb: 2,
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-             
-              borderLeft: `4px solid ${theme.palette.primary.main}`,
-              boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.1)",
-              position: "relative",
-              transition: "0.3s",
-              "&:hover": {
-                boxShadow: 6,
-              },
-            }}
             onMouseEnter={() => setHoveredNotificationId(notification._id)}
             onMouseLeave={() => setHoveredNotificationId(null)}
+            className="relative bg-white dark:bg-body border-l-4 border-primary shadow-md rounded-md px-4 py-3 mb-3 transition hover:shadow-lg"
           >
-            <CustomTypography
-              variant="body1"
-              sx={{ flexGrow: 1, fontWeight: "bold", color: theme.palette.text.primary }}
-            >
-              {notification.notify}
-            </CustomTypography>
-            <CustomTypography
-              variant="body2"
-              sx={{ ml: 2, minWidth: "120px", color: theme.palette.text.secondary }}
-            >
-              {new Date(notification.timestamp).toLocaleString()}
-            </CustomTypography>
+            <div className="flex items-center justify-between">
+              <CustomTypography variant="body1" className="font-semibold text-tprimary">
+                {notification.notify}
+              </CustomTypography>
+              <CustomTypography variant="body2" className="text-tsecondary min-w-[120px] ml-4 text-right">
+                {new Date(notification.timestamp).toLocaleString()}
+              </CustomTypography>
+            </div>
             {hoveredNotificationId === notification._id && (
-              <IconButton
+              <button
                 onClick={() => handleDelete(notification._id)}
-                sx={{
-                  position: "absolute",
-                  right: "8px",
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                  color: theme.palette.error.main,
-                }}
+                className="absolute top-1/2 right-3 transform -translate-y-1/2 text-red-600 hover:text-white hover:bg-red-500 p-1 rounded-full transition"
               >
-                <DeleteIcon />
-              </IconButton>
+                <Trash2 size={18} />
+              </button>
             )}
-          </Paper>
+          </div>
         ))
       ) : (
         <EmptyCart
-           src="/search-not-found.png"
+          src="/search-not-found.png"
           title="No notifications yet"
           subtitle="You’ll be notified when there’s something new."
           buttonText="Explore Now"
@@ -120,19 +89,27 @@ const UserNotify = ({ userId, activeTab }) => {
       )}
 
       {notifications.length > 0 && (
-        <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
-          <Button onClick={() => setPage((p) => Math.max(p - 1, 1))} disabled={page <= 1}>
+        <div className="flex justify-between items-center mt-4">
+          <button
+            onClick={() => setPage((p) => Math.max(p - 1, 1))}
+            disabled={page <= 1}
+            className="px-3 py-1 border border-gray-300 rounded-md text-sm hover:bg-gray-100 disabled:opacity-50"
+          >
             Previous
-          </Button>
-          <CustomTypography variant="body2" sx={{ color: theme.palette.text.secondary }}>
+          </button>
+          <CustomTypography variant="body2" className="text-tsecondary">
             Page {page} of {totalPages}
           </CustomTypography>
-          <Button onClick={() => setPage((p) => Math.min(p + 1, totalPages))} disabled={page >= totalPages}>
+          <button
+            onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
+            disabled={page >= totalPages}
+            className="px-3 py-1 border border-gray-300 rounded-md text-sm hover:bg-gray-100 disabled:opacity-50"
+          >
             Next
-          </Button>
-        </Box>
+          </button>
+        </div>
       )}
-    </Box>
+    </div>
   );
 };
 

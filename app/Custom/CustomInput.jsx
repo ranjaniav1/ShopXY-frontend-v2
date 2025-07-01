@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { InputBase, IconButton, InputAdornment } from "@mui/material";
 
 const CustomInput = ({
   placeholder,
@@ -14,56 +13,33 @@ const CustomInput = ({
   ...props
 }) => {
   return (
-    <InputBase
-      placeholder={placeholder}
-      value={value}
-      onChange={onChange}
-      className={`
-        custom-input 
-        w-full 
-        bg-body 
-        border border-secondary 
-        rounded px-2 py-1 
-        text-gray-800
-        focus:outline-none focus:ring-2 focus:ring-primary 
-        ${className}
-      `}
-      {...props}
-      startAdornment={
-        startIcon && (
-          <InputAdornment position="start">
-            <IconButton
-              tabIndex={-1}
-              onClick={onClickStartIcon}
-              className="
-                bg-primary text-white 
-                hover:opacity-90 
-                rounded-sm p-1
-              "
-            >
-              {startIcon}
-            </IconButton>
-          </InputAdornment>
-        )
-      }
-      endAdornment={
-        endIcon && (
-          <InputAdornment position="end">
-            <IconButton
-              tabIndex={-1}
-              onClick={onClickEndIcon}
-              className="
-                bg-primary text-white 
-                hover:opacity-90 
-                rounded-sm p-1
-              "
-            >
-              {endIcon}
-            </IconButton>
-          </InputAdornment>
-        )
-      }
-    />
+    <div className={`relative flex items-center border border-secondary rounded px-2 ${className}`}>
+      {startIcon && (
+        <div
+          onClick={onClickStartIcon}
+          className="cursor-pointer pr-2 text-tprimary"
+        >
+          {startIcon}
+        </div>
+      )}
+      <input
+        type="text"
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        {...props}
+        className="bg-body flex-1 focus:outline-none text-tprimary py-1"
+        onKeyDown={(e) => e.key === "Enter" && props.onKeyDown?.(e)}
+      />
+      {endIcon && (
+        <div
+          onClick={onClickEndIcon}
+          className="cursor-pointer pl-2 text-tprimary"
+        >
+          {endIcon}
+        </div>
+      )}
+    </div>
   );
 };
 
