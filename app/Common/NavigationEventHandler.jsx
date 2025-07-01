@@ -12,7 +12,7 @@ const NavigationEventsHandler = () => {
 
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 100);
+    }, 500);
 
     return () => clearTimeout(timer);
   }, [pathname]);

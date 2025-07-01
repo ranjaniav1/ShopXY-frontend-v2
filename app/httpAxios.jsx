@@ -14,24 +14,30 @@ function getCookie(name) {
 // 📦 Axios instance
 export const httpAxios = axios.create({
   baseURL: BASE_URL,
-  withCredentials: true, // ⬅️ Required to send cookies
+  withCredentials: true,
+  timeout: 5000, // ⏳ Prevent infinite waiting
 });
 
-// ✅ Request interceptor to attach accessToken to header (if needed)
+// ✅ Request interceptor — skip token for public routes
 httpAxios.interceptors.request.use(
   (config) => {
-    const accessToken = getCookie("accessToken");
-    if (accessToken) {
-      config.headers["Authorization"] = `Bearer ${accessToken}`;
+    const isPublicRoute = config.url?.includes("/home") || config.url?.includes("/public");
+
+    if (!isPublicRoute) {
+      const accessToken = getCookie("accessToken");
+      if (accessToken) {
+        config.headers["Authorization"] = `Bearer ${accessToken}`;
+      }
     }
+
     return config;
   },
   (error) => Promise.reject(error)
 );
 
-// 🛠️ Refresh token logic
+// 🛠️ Token Refresh Logic
 let isRefreshing = false;
-let failedQueue = [];
+let failedQueue=[];
 
 const processQueue = (error, token = null) => {
   failedQueue.forEach((prom) => {
@@ -44,17 +50,15 @@ const processQueue = (error, token = null) => {
   failedQueue = [];
 };
 
-// 🔁 Response interceptor for token auto-refresh
 httpAxios.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    // ✅ Only retry once
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
-      !originalRequest.url.includes("/refresh-token") // ⛔️ Prevent infinite loop
+      !originalRequest.url.includes("/refresh-token")
     ) {
       originalRequest._retry = true;
 
@@ -65,7 +69,7 @@ httpAxios.interceptors.response.use(
               originalRequest.headers["Authorization"] = `Bearer ${token}`;
               resolve(httpAxios(originalRequest));
             },
-            reject: reject,
+            reject,
           });
         });
       }
@@ -73,19 +77,15 @@ httpAxios.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const res = await axios.get(
-          `${BASE_URL}/user/auth/refresh-token`,
-          { withCredentials: true }
-        );
+        const res = await axios.get(`${BASE_URL}/user/auth/refresh-token`, {
+          withCredentials: true,
+        });
 
-        // ✅ Correct way to extract and store token (from cookie OR optional body)
         const newAccessToken = res.data?.accessToken;
 
         if (newAccessToken) {
-          // Update the cookie (if needed client-side)
           document.cookie = `accessToken=${newAccessToken}; path=/`;
 
-          // Retry the original request with new token
           originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
           processQueue(null, newAccessToken);
           return httpAxios(originalRequest);
@@ -94,8 +94,6 @@ httpAxios.interceptors.response.use(
         }
       } catch (err) {
         processQueue(err, null);
-        // Optional: redirect to login
-        // window.location.href = '/login';
         return Promise.reject(err);
       } finally {
         isRefreshing = false;

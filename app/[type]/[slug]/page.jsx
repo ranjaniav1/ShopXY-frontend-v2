@@ -1,5 +1,6 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+
+import React, { useCallback, useEffect, useState } from 'react';
 import { useParams, usePathname } from 'next/navigation';
 import CustomSkeleton from '@/app/Custom/CustomSkeleton';
 
@@ -57,7 +58,7 @@ const Page = () => {
 
     useEffect(() => {
         if (userId) fetchWishlist();
-    }, [userId,fetchWishlist]);
+    }, [userId, fetchWishlist]);
 
     const isInWishlist = (id) => wishlist.includes(id);
 

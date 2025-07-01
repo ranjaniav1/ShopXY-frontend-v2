@@ -33,7 +33,7 @@ const NavProfileMenu = () => {
           <button
             onClick={() => {
               setOpen(false);
-              router.push("/user/profile");
+              router.push(`/user/${user.fullname}`);
             }}
             className="block w-full px-4 py-2 text-left hover:bg-secondary/20"
           >
