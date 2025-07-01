@@ -5,48 +5,48 @@ import CustomTypography from "@/app/Custom/CustomTypography";
 import Heading from "@/app/Common/Heading";
 
 const FilterSidebar = ({
-  priceRange,
-  setPriceRange,
-  ratingRange,
-  setRatingRange,
-  minPrice,
-  maxPrice,
-  minRating,
-  maxRating,
-  inStock,
-  setInStock,
-  onlyDiscounted,
-  setOnlyDiscounted,
-  selectedCategory,
-  setSelectedCategory,
-  selectedCollection,
-  setSelectedCollection,
-  selectedBrand,
-  setSelectedBrand,
-  categories,
-  collections,
-  brands,
+  priceRange, setPriceRange,
+  ratingRange, setRatingRange,
+  minPrice, maxPrice, minRating, maxRating,
+  inStock, setInStock,
+  onlyDiscounted, setOnlyDiscounted,
+  selectedCategory, setSelectedCategory,
+  selectedCollection, setSelectedCollection,
+  selectedBrand, setSelectedBrand,
+  sort, setSort,
+  categories, collections, brands,
+  onClearFilters,
 }) => {
-  const validPrice = Array.isArray(priceRange) && priceRange.length === 2 ? priceRange : [minPrice, maxPrice];
-  const validRating = Array.isArray(ratingRange) && ratingRange.length === 2 ? ratingRange : [minRating, maxRating];
-
   return (
     <div className="border border-gray-200 rounded-lg p-4 shadow-sm sticky top-24 text-tsecondary bg-white w-full max-w-[300px]">
       <Heading text="Filters" className="text-lg mb-3 text-primary" />
+
+      {/* Sort By */}
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-1 text-tprimary">Sort By</label>
+        <select
+          value={sort}
+          onChange={(e) => setSort(e.target.value)}
+          className="w-full border border-gray-300 rounded-md p-2 text-sm"
+        >
+          <option value="">Default</option>
+          <option value="priceLowHigh">Price: Low to High</option>
+          <option value="priceHighLow">Price: High to Low</option>
+          <option value="ratingHighLow">Rating: High to Low</option>
+        </select>
+      </div>
 
       {/* Category Filter */}
       <div className="mb-4">
         <label className="block text-sm font-medium mb-1 text-tprimary">Category</label>
         <select
-          className="w-full border border-gray-300 rounded-md p-2 text-sm"
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
+          className="w-full border border-gray-300 rounded-md p-2 text-sm"
         >
           <option value="">All</option>
           {categories.map((cat) => (
-            <option key={cat._id} value={cat.slug}>
-              {cat.title}
-            </option>
+            <option key={cat._id} value={cat.slug}>{cat.title}</option>
           ))}
         </select>
       </div>
@@ -55,15 +55,13 @@ const FilterSidebar = ({
       <div className="mb-4">
         <label className="block text-sm font-medium mb-1 text-tprimary">Collection</label>
         <select
-          className="w-full border border-gray-300 rounded-md p-2 text-sm"
           value={selectedCollection}
           onChange={(e) => setSelectedCollection(e.target.value)}
+          className="w-full border border-gray-300 rounded-md p-2 text-sm"
         >
           <option value="">All</option>
           {collections.map((col) => (
-            <option key={col._id} value={col.slug}>
-              {col.title}
-            </option>
+            <option key={col._id} value={col.slug}>{col.title}</option>
           ))}
         </select>
       </div>
@@ -72,59 +70,58 @@ const FilterSidebar = ({
       <div className="mb-4">
         <label className="block text-sm font-medium mb-1 text-tprimary">Brand</label>
         <select
-          className="w-full border border-gray-300 rounded-md p-2 text-sm"
           value={selectedBrand}
           onChange={(e) => setSelectedBrand(e.target.value)}
+          className="w-full border border-gray-300 rounded-md p-2 text-sm"
         >
           <option value="">All</option>
           {brands.map((brand) => (
-            <option key={brand._id} value={brand.slug}>
-              {brand.title}
-            </option>
+            <option key={brand._id} value={brand.slug}>{brand.title}</option>
           ))}
         </select>
       </div>
 
-      {/* Price Range */}
+      {/* Price Range - SLIDER */}
+
       <div className="mb-4">
         <CustomTypography fontWeight={600} fontSize="1rem" className="mb-1 text-primary">
-          Price Range
+          Price Range (₹{priceRange[0]})
         </CustomTypography>
-        {/* Replace this with your custom slider component */}
         <input
           type="range"
           min={minPrice}
           max={maxPrice}
-          value={validPrice[1]}
-          onChange={(e) => setPriceRange([minPrice, Number(e.target.value)])}
-          className="w-full"
+          value={priceRange[0]}
+          onChange={(e) => setPriceRange([parseInt(e.target.value)])}
+          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
         />
-        <p className="text-sm text-primary mt-1">₹{validPrice[0]} - ₹{validPrice[1]}</p>
+        <div className="flex justify-between text-sm text-gray-600 mt-1">
+          <span>₹{minPrice}</span>
+          <span>₹{priceRange[0]}</span>
+          <span>₹{maxPrice}</span>
+        </div>
       </div>
 
-      {/* Rating Range */}
-      <div className="mb-4">
-        <CustomTypography fontWeight={600} fontSize="1rem" className="mb-1 text-primary">
-          Rating
+
+
+      {/* Rating Range - SLIDER */}
+      <div className="mb-6">
+        <CustomTypography fontWeight={600} fontSize="1rem" className="mb-2 text-primary">
+          Minimum Rating ({ratingRange[0]} stars)
         </CustomTypography>
-        {/* Replace with your custom rating slider */}
         <input
           type="range"
           min={minRating}
           max={maxRating}
-          step={0.1}
-          value={validRating[1]}
-          onChange={(e) => setRatingRange([minRating, parseFloat(e.target.value)])}
-          className="w-full"
+          step={0.5}
+          value={ratingRange[0]}
+          onChange={(e) => setRatingRange([parseFloat(e.target.value), 5])}
+          className="w-full accent-yellow-500"
         />
-        <p className="text-sm text-primary mt-1">{validRating[0]} - {validRating[1]} stars</p>
       </div>
 
-      {/* Divider */}
-      <hr className="my-4" />
-
-      {/* Extra Filters */}
-      <div className="space-y-2">
+      {/* Stock & Discount Filters */}
+      <div className="space-y-2 mb-4">
         <label className="inline-flex items-center gap-2">
           <input
             type="checkbox"
@@ -134,7 +131,6 @@ const FilterSidebar = ({
           />
           <span className="text-sm">Only In Stock</span>
         </label>
-
         <label className="inline-flex items-center gap-2">
           <input
             type="checkbox"
@@ -145,6 +141,14 @@ const FilterSidebar = ({
           <span className="text-sm">Only Discounted</span>
         </label>
       </div>
+
+      {/* Clear Filters */}
+      <button
+        onClick={onClearFilters}
+        className="mt-4 w-full text-center text-red-600 text-sm underline hover:text-red-800"
+      >
+        Clear All Filters
+      </button>
     </div>
   );
 };
