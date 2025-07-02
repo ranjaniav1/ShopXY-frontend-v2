@@ -6,12 +6,12 @@ const CustomBrandCard = ({ id, slug, image, title }) => {
   return (
     <div className="group flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300">
       {/* Brand Logo */}
-      <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden bg-white shadow-sm border border-gray-200 group-hover:shadow-md group-hover:border-primary transition duration-300 ease-in-out">
+      <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-body shadow-sm border border-gray-200  transition duration-300 ease-in-out">
         <img
           src={image}
           alt={title}
           title={title}
-          className="object-contain w-full h-full opacity-70 group-hover:opacity-100 transition-opacity duration-300"
+          className="object-fill w-full h-full  transition-opacity duration-300"
           loading="lazy"
         />
       </div>
