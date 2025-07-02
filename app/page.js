@@ -31,9 +31,7 @@ export default function Home() {
       });
   }, []);
 
-  if (loading) {
-    return <p className="text-center mt-10">⏳ Loading homepage...</p>;
-  }
+ 
 
   if (!data) {
     return (
