@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 
 const CustomInput = ({
@@ -7,13 +8,16 @@ const CustomInput = ({
   endIcon,
   onChange,
   value,
-  className,
+  className = "",
   onClickStartIcon,
   onClickEndIcon,
+  type = "text",
   ...props
 }) => {
   return (
-    <div className={`relative flex items-center border border-secondary rounded px-2 ${className}`}>
+    <div
+      className={`relative flex items-center border border-secondary rounded px-2 ${className}`}
+    >
       {startIcon && (
         <div
           onClick={onClickStartIcon}
@@ -23,13 +27,12 @@ const CustomInput = ({
         </div>
       )}
       <input
-        type="text"
+        type={type}
         placeholder={placeholder}
         value={value}
         onChange={onChange}
         {...props}
         className="bg-body flex-1 focus:outline-none text-tprimary py-1"
-        onKeyDown={(e) => e.key === "Enter" && props.onKeyDown?.(e)}
       />
       {endIcon && (
         <div
