@@ -3,73 +3,50 @@ import React from 'react';
 import Cookies from 'js-cookie';
 import { useTheme } from '../context/ThemeContext'; // 👈 Your custom hook
 import { useLanguage } from '../context/LanguageContext';
+import CustomRadioGroup from '../Custom/CustomRadioGroup';
 
 const NavSetting = ({ onClose }) => {
-    const { theme, switchTheme } = useTheme(); // 👈 from your context
+    const { theme, switchTheme } = useTheme();
     const { language, setLanguage } = useLanguage();
 
     const handleThemeChange = (e) => {
         const newTheme = e.target.value;
-        if (newTheme) {
-            switchTheme(newTheme); // 👈 use context function
-            Cookies.set('theme', newTheme);
-            if (onClose) onClose();
-        }
-    };
+        switchTheme(newTheme);
+        Cookies.set('theme', newTheme);
+        onClose?.();
+    }
 
-    const handleLanguageChange = (event) => {
-        const lang = event.target.value;
-        setLanguage(lang); // uses your context
-        if (onClose) onClose();
+
+    const handleLanguageChange = (e) => {
+        setLanguage(e.target.value);
+        onClose?.()
     };
 
     return (
         <>
-            <div className="mb-4">
-                <label className="text-md font-medium mb-2 block">Theme Options</label>
-                <div className="flex flex-row gap-4">
-                    <label className="flex items-center gap-2 cursor-pointer">
-                        <input
-                            type="radio"
-                            name="theme"
-                            value="light"
-                            checked={theme === 'light'}
-                            onChange={handleThemeChange}
-                        />
-                        Light Mode
-                    </label>
-                    <label className="flex items-center gap-2 cursor-pointer">
-                        <input
-                            type="radio"
-                            name="theme"
-                            value="dark"
-                            checked={theme === 'dark'}
-                            onChange={handleThemeChange}
-                        />
-                        Dark Mode
-                    </label>
-                </div>
-            </div>
+            <CustomRadioGroup
+                name="theme"
+                label="Theme Options"
+                value={theme}
+                onChange={handleThemeChange}
+                options={[
+                    { value: "light", label: "Light Mode" },
+                    { value: "dark", label: "Dark Mode" },
+                ]}
+            />
 
-            <div className="mb-4">
-                <label className="text-md font-medium mb-2 block">Select Language</label>
-                <div className="flex flex-row gap-4">
-                    {['en', 'hi', 'gu', 'fr'].map(lang => (
-                        <label key={lang} className="flex items-center gap-2 cursor-pointer">
-                            <input
-                                type="radio"
-                                name="language"
-                                value={lang}
-                                checked={language === lang}
-                                onChange={handleLanguageChange}
-                            />
-                            {lang === 'en' ? 'English' :
-                                lang === 'hi' ? 'Hindi' :
-                                    lang === 'gu' ? 'Gujarati' : 'French'}
-                        </label>
-                    ))}
-                </div>
-            </div>
+            <CustomRadioGroup
+                name="language"
+                label="Select Language"
+                value={language}
+                onChange={handleLanguageChange}
+                options={[
+                    { value: "en", label: "English" },
+                    { value: "hi", label: "Hindi" },
+                    { value: "gu", label: "Gujarati" },
+                    { value: "fr", label: "French" },
+                ]}
+            />
         </>
     );
 };

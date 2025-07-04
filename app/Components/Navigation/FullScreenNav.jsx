@@ -32,7 +32,7 @@ const FullScreenNav = ({ setDrawerOpen }) => {
         <img
           src={webSettings?.logo}
           alt="Site Logo"
-          className="h-16 w-auto object-contain"
+          className="h-16 w-auto"
         />
       </ClientLink>
 

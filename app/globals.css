@@ -17,3 +17,29 @@
     text-wrap: balance;
   }
 }
+
+/* swiper button of navigate */
+.swiper-custom-nav .swiper-button-next,
+.swiper-custom-nav .swiper-button-prev {
+  width: 40px;
+  height: 40px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: background 0.3s ease;
+}
+
+.swiper-custom-nav .swiper-button-next:hover,
+.swiper-custom-nav .swiper-button-prev:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.swiper-custom-nav .swiper-button-next::after,
+.swiper-custom-nav .swiper-button-prev::after {
+  font-size: 1rem;
+  font-weight: bold;
+}
