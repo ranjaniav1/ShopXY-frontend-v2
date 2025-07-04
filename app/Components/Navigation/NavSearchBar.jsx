@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Search,X } from "lucide-react"; // Lucide Search icon
+import { Search, X } from "lucide-react";
 import CustomInput from "@/app/Custom/CustomInput";
 
 const NavSearchBar = ({ searchQuery, setSearchQuery, onSearch }) => {
@@ -18,6 +18,18 @@ const NavSearchBar = ({ searchQuery, setSearchQuery, onSearch }) => {
             <Search className="text-primary w-5 h-5" />
           </button>
         }
+        endIcon={
+          searchQuery && (
+            <button
+              type="button"
+              className="text-gray-400 hover:text-gray-600"
+              onClick={() => setSearchQuery("")}
+              aria-label="Clear search"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )
+        }
         placeholder="Search for Products, Brands, and More"
         className="bg-body text-primary py-2 px-3 rounded-md w-full border border-secondary focus:border-primary transition-all duration-200"
         aria-label="Search"
@@ -27,17 +39,6 @@ const NavSearchBar = ({ searchQuery, setSearchQuery, onSearch }) => {
           if (e.key === "Enter") onSearch();
         }}
       />
-      {/* Clear button when input is not empty */}
-      {searchQuery && (
-        <button
-          type="button"
-          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-          onClick={() => setSearchQuery("")}
-          aria-label="Clear search"
-        >
-          <X className="w-4 h-4" />
-        </button>
-      )}
     </div>
   );
 };
