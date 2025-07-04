@@ -16,6 +16,7 @@ const CustomSwiper = ({
   autoplay = true,
   pagination = true,
   navigation = true,
+  breakpoints={}
 }) => {
   if (!data.length) {
     return (
@@ -32,6 +33,7 @@ const CustomSwiper = ({
         slidesPerView={1}
         navigation={navigation}
         pagination={pagination ? { clickable: true } : false}
+        breakpoints={breakpoints}
         autoplay={autoplay ? { delay: 3000, disableOnInteraction: false } : false}
         className={`h-full relative swiper-custom-nav ${swiperClass}`}
       >
@@ -41,7 +43,7 @@ const CustomSwiper = ({
           </SwiperSlide>
         ))}
       </Swiper>
-    </div>
+    </div >
   );
 };
 

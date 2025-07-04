@@ -55,7 +55,7 @@ const ProductCard = ({
   );
 
   return (
-    <div className="relative rounded-lg p-2 bg-white shadow-sm border hover:shadow-md transition duration-200">
+    <div className="relative rounded-lg p-2 bg-body border shadow-sm hover:shadow-md transition duration-200 text-tprimary">
       {/* Offer Badge */}
       {offer && (
         <div className="absolute top-2 left-2 bg-red-500 text-white text-[10px] px-2 py-[2px] rounded font-semibold z-10">
@@ -69,14 +69,14 @@ const ProductCard = ({
           {isWished ? (
             <Heart className="w-4 h-4 text-green-600 fill-green-600" />
           ) : (
-            <Heart className="w-4 h-4 text-gray-400 hover:text-red-500 transition" />
+            <Heart className="w-4 h-4 text-tmuted hover:text-red-500 transition" />
           )}
         </button>
       </div>
 
       {/* Product Image */}
       <ClientLink href={`/product/${productId}/${encodeURIComponent(slug)}`}>
-        <div className="w-full h-36 bg-gray-50 rounded-md overflow-hidden flex items-center justify-center mb-2">
+        <div className="w-full h-36 bg-body-light rounded-md overflow-hidden flex items-center justify-center mb-2">
           <img
             src={imgSrc}
             alt={title}
@@ -87,7 +87,7 @@ const ProductCard = ({
 
       {/* Title */}
       <ClientLink href={`/product/${productId}/${encodeURIComponent(slug)}`}>
-        <h3 className="text-xs font-medium text-gray-800 line-clamp-2 mb-1 min-h-[32px] hover:underline">
+        <h3 className="text-xs font-medium text-tprimary line-clamp-2 mb-1 min-h-[32px] hover:underline">
           {title}
         </h3>
       </ClientLink>
@@ -98,10 +98,10 @@ const ProductCard = ({
       {/* Price + Add to Cart */}
       <div className="flex items-center justify-between mt-2">
         <div>
-          <span className="text-green-600 font-semibold text-sm">
+          <span className="text-success font-semibold text-sm">
             ₹{discountPrice}
           </span>
-          <span className="line-through text-gray-400 text-xs ml-1">
+          <span className="line-through text-tsecondary text-xs ml-1">
             ₹{price}
           </span>
         </div>
