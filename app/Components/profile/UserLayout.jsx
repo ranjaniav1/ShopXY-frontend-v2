@@ -60,7 +60,8 @@ const UserLayout = () => {
   };
 
   return (
-    <CustomBox>
+    <>
+
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         {/* Left Panel */}
         <div className="col-span-1">
@@ -99,7 +100,7 @@ const UserLayout = () => {
         onConfirm={handleDeleteAccount}
         onCancel={() => setOpenDeleteAccountDialog(false)}
       />
-    </CustomBox>
+    </>
   );
 };
 

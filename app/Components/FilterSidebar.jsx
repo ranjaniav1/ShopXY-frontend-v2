@@ -76,9 +76,9 @@ const FilterSidebar = ({
           max={maxPrice}
           value={priceRange[0]}
           onChange={(e) => setPriceRange([parseInt(e.target.value)])}
-          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+          className="w-full h-2 bg-secondary rounded-lg appearance-none cursor-pointer"
         />
-        <div className="flex justify-between text-sm text-gray-600 mt-1">
+        <div className="flex justify-between text-sm text-tsecondary mt-1">
           <span>₹{minPrice}</span>
           <span>₹{priceRange[0]}</span>
           <span>₹{maxPrice}</span>
@@ -99,7 +99,7 @@ const FilterSidebar = ({
           step={0.5}
           value={ratingRange[0]}
           onChange={(e) => setRatingRange([parseFloat(e.target.value), 5])}
-          className="w-full accent-yellow-500"
+          className="w-full h-2 bg-secondary rounded-lg appearance-none cursor-pointer"
         />
       </div>
 
