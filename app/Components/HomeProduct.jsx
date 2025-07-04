@@ -101,76 +101,73 @@ const HomeProduct = () => {
     inStock || onlyDiscounted || sort;
 
   const handleFilterChange = useCallback(() => {
-  if (debounceTimer.current) clearTimeout(debounceTimer.current);
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
 
-  debounceTimer.current = setTimeout(async () => {
-    const filtersUsed = checkIfFiltersApplied();
-    setIsFilterLoading(true);
+    debounceTimer.current = setTimeout(async () => {
+      const filtersUsed = checkIfFiltersApplied();
+      setIsFilterLoading(true);
 
-    try {
-      if (filtersUsed) {
-        const res = await GetFilteredProduct({
-          type: "product",
-          category: selectedCategory || undefined,
-          collection: selectedCollection || undefined,
-          brand: selectedBrand || undefined,
-          ...(priceRange.length === 1 && {
-            minPrice: defaultPriceRange[0],
-            maxPrice: priceRange[0],
-          }),
-          ...(ratingRange[0] > 0 && { rating: ratingRange[0] }),
-          ...(inStock && { inStock: "true" }),
-          ...(onlyDiscounted && { specialOffer: "true" }),
-          ...(sort && { sort }),
-        });
+      try {
+        if (filtersUsed) {
+          const res = await GetFilteredProduct({
+            type: "product",
+            category: selectedCategory || undefined,
+            collection: selectedCollection || undefined,
+            brand: selectedBrand || undefined,
+            ...(priceRange.length === 1 && {
+              minPrice: defaultPriceRange[0],
+              maxPrice: priceRange[0],
+            }),
+            ...(ratingRange[0] > 0 && { rating: ratingRange[0] }),
+            ...(inStock && { inStock: "true" }),
+            ...(onlyDiscounted && { specialOffer: "true" }),
+            ...(sort && { sort }),
+          });
 
-        const filteredProducts = res?.filters || [];
-        setProducts(filteredProducts);
-        setHasMore(false);
-        setInfoMessage(`Filtered ${filteredProducts.length} products`);
+          const filteredProducts = res?.filters || [];
+          setProducts(filteredProducts);
+          setHasMore(false);
+          setInfoMessage(`Filtered ${filteredProducts.length} products`);
 
-        if (res?.minPrice !== undefined && res?.maxPrice !== undefined && page === 1) {
-          const min = Math.floor(res.minPrice);
-          const max = Math.ceil(res.maxPrice);
-          setDefaultPriceRange([min, max]);
+          if (res?.minPrice !== undefined && res?.maxPrice !== undefined && page === 1) {
+            const min = Math.floor(res.minPrice);
+            const max = Math.ceil(res.maxPrice);
+            setDefaultPriceRange([min, max]);
 
-          // Reset slider only if user didn't touch it yet
-          setPriceRange((prev) => (prev[0] === 1000 ? [max] : prev));
+            setPriceRange((prev) => (prev[0] === 1000 ? [max] : prev));
+          }
+        } else {
+          const res = await GetAllProducts(page, 12);
+          const newProducts = res?.products || [];
+          setProducts((prev) => (page === 1 ? newProducts : [...prev, ...newProducts]));
+          setHasMore(newProducts.length === 12);
+          setInfoMessage(`Showing ${page * 12} products`);
         }
-      } else {
-        const res = await GetAllProducts(page, 12);
-        const newProducts = res?.products || [];
-        setProducts((prev) => (page === 1 ? newProducts : [...prev, ...newProducts]));
-        setHasMore(newProducts.length === 12);
-        setInfoMessage(`Showing ${page * 12} products`);
+      } catch (error) {
+        console.error("Product fetch failed", error);
+        setInfoMessage("Failed to fetch products");
+        setProducts([]);
+      } finally {
+        setIsFilterLoading(false);
       }
-    } catch (error) {
-      console.error("Product fetch failed", error);
-      setInfoMessage("Failed to fetch products");
-      setProducts([]);
-    } finally {
-      setIsFilterLoading(false);
-    }
-  }, 300);
-}, [
-  selectedCategory, selectedCollection, selectedBrand,
-  priceRange, ratingRange, inStock, onlyDiscounted, sort, page
-]);
+    }, 300);
+  }, [
+    selectedCategory, selectedCollection, selectedBrand,
+    priceRange, ratingRange, inStock, onlyDiscounted, sort, page
+  ]);
 
-
- const onClearFilters = () => {
-  setSelectedCategory("");
-  setSelectedCollection("");
-  setSelectedBrand("");
-  setPriceRange([defaultPriceRange[1]]);
-  setRatingRange([0, 5]);
-  setInStock(false);
-  setOnlyDiscounted(false);
-  setSort("");
-  setPage(1);
-  setHasMore(true);
-};
-
+  const onClearFilters = () => {
+    setSelectedCategory("");
+    setSelectedCollection("");
+    setSelectedBrand("");
+    setPriceRange([defaultPriceRange[1]]);
+    setRatingRange([0, 5]);
+    setInStock(false);
+    setOnlyDiscounted(false);
+    setSort("");
+    setPage(1);
+    setHasMore(true);
+  };
 
   useEffect(() => {
     setPage(1);
@@ -215,6 +212,11 @@ const HomeProduct = () => {
   return (
     <div>
       <Heading text={t("Products For You")} />
+      {infoMessage && (
+        <CustomTypography className="text-sm text-tsecondary mb-4">
+          {infoMessage}
+        </CustomTypography>
+      )}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-6">
         <div className="md:col-span-1">
           <FilterSidebar

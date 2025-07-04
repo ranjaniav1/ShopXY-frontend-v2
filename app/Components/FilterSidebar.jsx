@@ -3,6 +3,7 @@
 import React from "react";
 import CustomTypography from "@/app/Custom/CustomTypography";
 import Heading from "@/app/Common/Heading";
+import CustomMenu from "../Custom/CustomMenu";
 
 const FilterSidebar = ({
   priceRange, setPriceRange,
@@ -18,68 +19,50 @@ const FilterSidebar = ({
   onClearFilters,
 }) => {
   return (
-    <div className="border border-gray-200 rounded-lg p-4 shadow-sm sticky top-24 text-tsecondary bg-white w-full max-w-[300px]">
+    <div className="border border-gray-200 rounded-lg p-4 shadow-sm sticky top-24 text-tsecondary bg-body w-full max-w-[300px]">
       <Heading text="Filters" className="text-lg mb-3 text-primary" />
 
       {/* Sort By */}
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-1 text-tprimary">Sort By</label>
-        <select
-          value={sort}
-          onChange={(e) => setSort(e.target.value)}
-          className="w-full border border-gray-300 rounded-md p-2 text-sm"
-        >
-          <option value="">Default</option>
-          <option value="priceLowHigh">Price: Low to High</option>
-          <option value="priceHighLow">Price: High to Low</option>
-          <option value="ratingHighLow">Rating: High to Low</option>
-        </select>
-      </div>
+      <CustomMenu
+        label="Sort By"
+        value={sort}
+        onChange={setSort}
+        placeholder="Default"
+        options={[
+          { value: "priceLowHigh", label: "Price: Low to High" },
+          { value: "priceHighLow", label: "Price: High to Low" },
+          { value: "ratingHighLow", label: "Rating: High to Low" },
+        ]}
+      />
 
       {/* Category Filter */}
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-1 text-tprimary">Category</label>
-        <select
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-          className="w-full border border-gray-300 rounded-md p-2 text-sm"
-        >
-          <option value="">All</option>
-          {categories.map((cat) => (
-            <option key={cat._id} value={cat.slug}>{cat.title}</option>
-          ))}
-        </select>
-      </div>
+      <CustomMenu
+        label="Category"
+        value={selectedCategory}
+        onChange={setSelectedCategory}
+        placeholder="All"
+        options={categories}
+      />
 
       {/* Collection Filter */}
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-1 text-tprimary">Collection</label>
-        <select
-          value={selectedCollection}
-          onChange={(e) => setSelectedCollection(e.target.value)}
-          className="w-full border border-gray-300 rounded-md p-2 text-sm"
-        >
-          <option value="">All</option>
-          {collections.map((col) => (
-            <option key={col._id} value={col.slug}>{col.title}</option>
-          ))}
-        </select>
-      </div>
+      <CustomMenu
+        label="Collection"
+        value={selectedCollection}
+        onChange={setSelectedCollection}
+        placeholder="All"
+        options={collections}
+      />
 
       {/* Brand Filter */}
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-1 text-tprimary">Brand</label>
-        <select
-          value={selectedBrand}
-          onChange={(e) => setSelectedBrand(e.target.value)}
-          className="w-full border border-gray-300 rounded-md p-2 text-sm"
-        >
-          <option value="">All</option>
-          {brands.map((brand) => (
-            <option key={brand._id} value={brand.slug}>{brand.title}</option>
-          ))}
-        </select>
-      </div>
+      <CustomMenu
+        label="Brand"
+        value={selectedBrand}
+        onChange={setSelectedBrand}
+        placeholder="All"
+        options={brands}
+      />
+
+
 
       {/* Price Range - SLIDER */}
 

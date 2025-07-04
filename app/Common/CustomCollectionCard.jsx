@@ -11,7 +11,7 @@ const CustomCollectionCard = ({ image, title, tooltip }) => {
           src={image}
           alt={title}
           loading="lazy"
-          className="w-full h-full object-fill transition-transform duration-300"
+          className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
         />
         <div className="absolute inset-0 transition duration-300" />
       </div>
