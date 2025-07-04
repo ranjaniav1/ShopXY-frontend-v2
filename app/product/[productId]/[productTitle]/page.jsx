@@ -5,7 +5,6 @@ import { useParams } from 'next/navigation';
 import { GetSingleProduct } from '@/app/Service/GetProduct';
 import ProductGallery from '@/app/Components/ProductGallery';
 import ProductDetails from '@/app/Components/ProductDetails';
-import CustomBox from '@/app/Custom/CustomBox';
 import CustomTypography from '@/app/Custom/CustomTypography';
 
 const Page = () => {
@@ -49,7 +48,7 @@ const Page = () => {
   };
 
   return (
-    <CustomBox>
+    
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
         {/* Left side: Image gallery */}
         <div className="md:col-span-4">
@@ -84,7 +83,6 @@ const Page = () => {
           />
         </div>
       </div>
-    </CustomBox>
   );
 };
 
