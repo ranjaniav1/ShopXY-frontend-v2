@@ -6,7 +6,19 @@ import ReviewComponents from "./RatindReview";
 import BrandReviewForm from "./BrandReviewForm";
 import BrandRating from "./BrandRating";
 import CustomModal from "../Custom/CustomModal";
-import { MessageSquare } from "lucide-react"; // Lucide icon
+import {
+  MessageSquare,
+  Truck,
+  BadgePercent,
+  CheckCircle,
+  XCircle,
+  Boxes,
+  Palette,
+  Tag,
+  Ruler,
+  AlertCircle,
+  PackageCheck,
+} from "lucide-react";
 
 const ProductDetails = ({
   name,
@@ -15,61 +27,104 @@ const ProductDetails = ({
   offer,
   description,
   full_description,
-  special_offer,
-  gst_type,
   productId,
   brand,
-  userId,
+  size = [],
+  color = [],
+  stock_qty = 0,
+  shipping_charges = 0,
+  ratings,
+  reviews,
+  category,
+  collection,
 }) => {
   const { t } = useTranslation();
   const [modalOpen, setModalOpen] = useState(false);
+
+  const isInStock = stock_qty > 0;
 
   return (
     <div className="grid grid-cols-1 gap-6">
       {/* Basic Info */}
       <div className="bg-body p-4 rounded shadow">
         <h2 className="text-xl font-bold text-tprimary mb-2">{name}</h2>
-        <p className="text-sm text-tsecondary mb-4">{description}</p>
+        <p className="text-sm text-tsecondary mb-3">{description}</p>
+        <p className="text-sm text-tsecondary">{full_description}</p>
 
-        <div className="text-sm mb-2">
-          <span className="text-green-600 font-semibold text-base">
+        {/* Pricing */}
+        <div className="text-sm mb-2 space-x-2">
+          <span className="text-green-600 font-semibold text-xl">
             ₹{discounted_price}
           </span>
-          {actual_price && (
-            <span className="line-through text-red-500 text-sm ml-2">
-              ₹{actual_price}
-            </span>
-          )}
-          {offer && (
-            <span className="ml-2 text-xs font-medium bg-red-100 text-red-600 px-2 py-1 rounded">
-              {offer}% OFF
-            </span>
+          {actual_price && actual_price !== discounted_price && (
+            <>
+              <span className="line-through text-red-500 text-sm">
+                ₹{actual_price}
+              </span>
+              <span className="text-xs font-medium bg-red-100 text-red-600 px-2 py-1 rounded">
+                {offer}% OFF
+              </span>
+            </>
           )}
         </div>
 
-        <p className="text-xs text-tactive">{t("Free Delivery")}</p>
+        {/* Delivery */}
+        <div className="text-xs text-tactive flex items-center gap-2 mt-1">
+          <Truck className="w-4 h-4" />
+          {shipping_charges === 0 ? "Free Delivery" : `Shipping: ₹${shipping_charges}`}
+        </div>
+
+        {/* Stock Status */}
+        <div className="mt-2 flex items-center text-sm">
+          {isInStock ? (
+            <span className="text-green-600 flex items-center gap-1">
+              <PackageCheck size={16} /> In Stock ({stock_qty})
+            </span>
+          ) : (
+            <span className="text-red-600 flex items-center gap-1">
+              <AlertCircle size={16} /> Out of Stock
+            </span>
+          )}
+        </div>
       </div>
 
-      {/* Product Details */}
-      <div className="bg-body p-4 rounded shadow space-y-2">
-        <h3 className="text-lg font-semibold text-tprimary mb-2">
-          {t("Product details")}:
-        </h3>
-        <p className="text-sm text-tsecondary">
-          <span className="font-medium">{t("Description")}:</span>{" "}
-          {full_description}
-        </p>
-        <p className="text-sm text-tsecondary">
-          <span className="font-medium">{t("Special Offer")}:</span>{" "}
-          {special_offer ? "Yes" : "No"}
-        </p>
-        <p className="text-sm text-tsecondary">
-          <span className="font-medium">{t("GST Type")}:</span> {gst_type}
-        </p>
+      {/* Tags: Brand, Category, Collection, Size, Color */}
+      <div className="bg-body p-4 rounded shadow space-y-3 text-sm text-tsecondary">
+        <div className="flex flex-wrap gap-3">
+          {brand?.title && (
+            <span className="flex items-center gap-1 bg-primary/10 px-2 py-1 rounded">
+              <Tag size={14} /> Brand: {brand.title}
+            </span>
+          )}
+
+          {category?.title && (
+            <span className="flex items-center gap-1 bg-yellow-100 text-yellow-800 px-2 py-1 rounded">
+              <Boxes size={14} /> Category: {category.title}
+            </span>
+          )}
+
+          {collection?.title && (
+            <span className="flex items-center gap-1 bg-purple-100 text-purple-800 px-2 py-1 rounded">
+              <Tag size={14} /> Collection: {collection.title}
+            </span>
+          )}
+
+          {/* {size.length > 0 && (
+            <span className="flex items-center gap-1 bg-green-100 text-green-800 px-2 py-1 rounded">
+              <Ruler size={14} /> Size: {size.join(", ")}
+            </span>
+          )} */}
+
+          {color.length > 0 && (
+            <span className="flex items-center gap-1 bg-blue-100 text-blue-800 px-2 py-1 rounded">
+              <Palette size={14} /> Color: {color.join(", ")}
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Brand Rating */}
-      <BrandRating brand={brand} brandId={productId} />
+      {brand && <BrandRating brand={brand} brandId={productId} />}
 
       {/* Reviews */}
       <div className="bg-body p-4 rounded shadow">
@@ -85,7 +140,7 @@ const ProductDetails = ({
             {t("Write a Review")}
           </button>
         </div>
-        <ReviewComponents productId={productId} />
+        <ReviewComponents productId={productId} reviews={reviews} />
       </div>
 
       {/* Review Modal */}

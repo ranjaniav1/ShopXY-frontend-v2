@@ -48,41 +48,43 @@ const Page = () => {
   };
 
   return (
-    
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-        {/* Left side: Image gallery */}
-        <div className="md:col-span-4">
-          <ProductGallery
-            detailImages={product?.detail_image || []}
-            selectedImage={selectedImage}
-            onImageClick={handleImageClick}
-            productName={product.name}
-            productId={product._id}
-          />
-        </div>
 
-        {/* Right side: Product details */}
-        <div className="md:col-span-8">
-          <ProductDetails
-            name={product.name}
-            actual_price={product.actual_price}
-            discounted_price={product.discounted_price}
-            offer={product.offer}
-            ratings={product.ratings}
-            special_offer={product.special_offer}
-            reviews={product.reviews}
-            description={product.description}
-            full_description={product.full_description}
-            productId={product._id}
-            size={product.size}
-            tags={product.tags}
-            gst_type={product.gst_type}
-            brand={product.brand}
-            product_id={product._id}
-            product={product}
-          />
-        </div>
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      {/* Left side: Image gallery */}
+      <div className="lg:col-span-5">
+        <ProductGallery
+          detailImages={product?.detail_image || []}
+          selectedImage={selectedImage}
+          onImageClick={handleImageClick}
+          productName={product.name}
+          productId={product._id}
+        />
       </div>
+
+      {/* Right side: Product details */}
+      <div className="lg:col-span-7">
+        <ProductDetails
+          name={product.name}
+          actual_price={product.actual_price}
+          discounted_price={product.discounted_price}
+          offer={product.offer}
+          description={product.description}
+          full_description={product.full_description}
+          special_offer={product.special_offer}
+          gst_type={product.gst_type}
+          productId={product._id}
+          brand={product.brand}
+          size={product.size}
+          color={product.color}
+          stock_qty={product.stock_qty}
+          shipping_charges={product.shipping_charges}
+          ratings={product.ratings}
+          reviews={product.reviews}
+          category={product.category}
+          collection={product.collection}
+        />
+      </div>
+    </div>
   );
 };
 
