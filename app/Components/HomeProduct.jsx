@@ -207,46 +207,49 @@ const HomeProduct = () => {
     });
 
     if (node) observer.current.observe(node);
-  }, [isFilterLoading, hasMore, selectedCategory, selectedCollection, selectedBrand]);
+  }, [isFilterLoading, hasMore]);
+
+  const filterProps = {
+    priceRange, setPriceRange,
+    ratingRange, setRatingRange,
+    minPrice: defaultPriceRange[0],
+    maxPrice: defaultPriceRange[1],
+    minRating: 0,
+    maxRating: 5,
+    inStock, setInStock,
+    onlyDiscounted, setOnlyDiscounted,
+    selectedCategory, setSelectedCategory,
+    selectedCollection, setSelectedCollection,
+    selectedBrand, setSelectedBrand,
+    sort, setSort,
+    categories, collections, brands,
+    onClearFilters,
+  };
 
   return (
     <div>
       <Heading text={t("Products For You")} />
       {infoMessage && (
-        <CustomTypography className="text-sm text-tsecondary mb-4">
+        <CustomTypography className="text-sm text-tsecondary mb-4 pl-4">
           {infoMessage}
         </CustomTypography>
       )}
+
+      {/* Horizontal filters on small devices */}
+      <div className="block md:hidden w-full overflow-x-auto mb-4">
+        <div className="flex gap-4 min-w-[900px] items-center border border-gray-200 rounded-lg p-4 shadow-sm bg-body">
+          <FilterSidebar isCompact={true} {...filterProps} />
+        </div>
+      </div>
+
+      {/* Grid layout for desktop */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-6">
-        <div className="md:col-span-1">
-          <FilterSidebar
-            priceRange={priceRange}
-            setPriceRange={setPriceRange}
-            ratingRange={ratingRange}
-            setRatingRange={setRatingRange}
-            minPrice={defaultPriceRange[0]}
-            maxPrice={defaultPriceRange[1]}
-            minRating={0}
-            maxRating={5}
-            inStock={inStock}
-            setInStock={setInStock}
-            onlyDiscounted={onlyDiscounted}
-            setOnlyDiscounted={setOnlyDiscounted}
-            selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
-            selectedCollection={selectedCollection}
-            setSelectedCollection={setSelectedCollection}
-            selectedBrand={selectedBrand}
-            setSelectedBrand={setSelectedBrand}
-            sort={sort}
-            setSort={setSort}
-            categories={categories}
-            collections={collections}
-            brands={brands}
-            onClearFilters={onClearFilters}
-          />
+        {/* Vertical filter sidebar */}
+        <div className="hidden md:block">
+          <FilterSidebar isCompact={false} {...filterProps} />
         </div>
 
+        {/* Product list */}
         <div className="md:col-span-3">
           {isFilterLoading ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -259,7 +262,7 @@ const HomeProduct = () => {
               {t("No products found")}
             </CustomTypography>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {products.map((product, index) => {
                 const isLast = index === products.length - 1;
                 return (
@@ -275,7 +278,14 @@ const HomeProduct = () => {
                       productId={product._id}
                       slug={product.slug}
                       isInWishlist={isInWishlist(product._id)}
-                      inStock={product.stock_qty > 0}
+                      stockQty={product.stock_qty}
+                      description={product.description}
+                      brand={product.brand}
+                      collection={product.collection}
+                      shipping_charges={product.shipping_charges}
+                      color={product.color}
+                      size={product.size}
+                      inStock={!!product.stock_qty && Number(product.stock_qty) > 0}
                     />
                   </div>
                 );
