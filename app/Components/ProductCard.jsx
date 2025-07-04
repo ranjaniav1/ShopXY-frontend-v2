@@ -1,6 +1,7 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
-import { Heart, HeartOff } from "lucide-react";
+import { Heart, Plus } from "lucide-react";
 import { addWishlist, deleteWishlistItem } from "../Service/Profile";
 import toast from "react-hot-toast";
 import { handleAddToCart } from "../helper/cartUtils";
@@ -17,7 +18,12 @@ const ProductCard = ({
   productId,
   slug,
   isInWishlist: isWishlistedFromParent,
-  inStock,
+  stockQty,
+  description,
+  brand,
+  collection,
+  shipping_charges,
+  color,
 }) => {
   const [isWished, setIsWished] = useState(isWishlistedFromParent);
 
@@ -63,9 +69,9 @@ const ProductCard = ({
         </div>
       )}
 
-      {/* Wishlist Icon (Lucide) */}
+      {/* Wishlist Icon */}
       <div className="absolute top-2 right-2 z-20">
-        <button onClick={handleAddToWishlist}>
+        <button onClick={handleAddToWishlist} aria-label="Toggle wishlist">
           {isWished ? (
             <Heart className="w-4 h-4 text-green-600 fill-green-600" />
           ) : (
@@ -78,6 +84,7 @@ const ProductCard = ({
       <ClientLink href={`/product/${productId}/${encodeURIComponent(slug)}`}>
         <div className="w-full h-36 bg-body-light rounded-md overflow-hidden flex items-center justify-center mb-2">
           <img
+            loading="lazy"
             src={imgSrc}
             alt={title}
             className="object-contain w-full h-full transition-transform duration-200 hover:scale-105"
@@ -87,38 +94,51 @@ const ProductCard = ({
 
       {/* Title */}
       <ClientLink href={`/product/${productId}/${encodeURIComponent(slug)}`}>
-        <h3 className="text-xs font-medium text-tprimary line-clamp-2 mb-1 min-h-[32px] hover:underline">
+        <h3 className="text-xs font-medium text-tprimary  hover:underline">
           {title}
         </h3>
+        <p className="text-[11px] text-tmuted line-clamp-2 mb-1">{description}</p>
+
       </ClientLink>
 
       {/* Rating */}
       {rating > 0 && <div>{renderStars(rating)}</div>}
 
-      {/* Price + Add to Cart */}
+
+
+      {/* Brand & Collection */}
+      <p className="text-[10px] text-gray-500 mb-1">
+        {brand?.title} • {collection?.title}
+      </p>
+
+
+      {/* Price + Add to Cart / Out of Stock */}
       <div className="flex items-center justify-between mt-2">
         <div>
-          <span className="text-success font-semibold text-sm">
-            ₹{discountPrice}
-          </span>
-          <span className="line-through text-tsecondary text-xs ml-1">
-            ₹{price}
-          </span>
+          {discountPrice !== price ? (
+            <>
+              <span className="text-success font-semibold text-sm">₹{discountPrice}</span>
+              <span className="line-through text-tsecondary text-xs ml-1">₹{price}</span>
+            </>
+          ) : (
+            <span className="text-success font-semibold text-sm">₹{price}</span>
+          )}
         </div>
 
-        {inStock ? (
+        {stockQty > 0 ? (
           <button
-            className="bg-green-600 hover:bg-green-700 text-white text-[10px] px-3 py-[3px] rounded"
+            className="bg-green-600 hover:bg-green-700 text-white text-[10px] px-2 py-[3px] rounded flex items-center gap-1"
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
               handleAddToCart({ userId, productId });
             }}
           >
+            <Plus size={12} />
             Add
           </button>
         ) : (
-          <span className="text-red-500 text-[10px] font-medium">
+          <span className="bg-red-100 text-red-600 text-[10px] px-2 py-[2px] rounded font-semibold">
             Out of Stock
           </span>
         )}

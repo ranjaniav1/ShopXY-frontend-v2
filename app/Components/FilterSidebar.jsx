@@ -6,6 +6,7 @@ import Heading from "@/app/Common/Heading";
 import CustomMenu from "../Custom/CustomMenu";
 
 const FilterSidebar = ({
+  isCompact = false,
   priceRange, setPriceRange,
   ratingRange, setRatingRange,
   minPrice, maxPrice, minRating, maxRating,
@@ -19,15 +20,18 @@ const FilterSidebar = ({
   onClearFilters,
 }) => {
   return (
-    <div className="border border-gray-200 rounded-lg p-4 shadow-sm sticky top-24 text-tsecondary bg-body w-full max-w-[300px]">
-      <Heading text="Filters" className="text-lg mb-3 text-primary" />
+    <div className={`bg-body ${isCompact ? 'flex flex-wrap gap-4 items-center' : 'border border-gray-200 rounded-lg p-4 shadow-sm sticky top-24 w-full max-w-[300px] text-tsecondary'}`}>
+      {!isCompact && (
+        <Heading text="Filters" className="text-lg mb-3 text-primary" />
+      )}
 
-      {/* Sort By */}
+      {/* Sort */}
       <CustomMenu
-        label="Sort By"
+        label={isCompact ? undefined : "Sort By"}
+        className={isCompact ? "min-w-[130px]" : "w-full mb-3"}
         value={sort}
         onChange={setSort}
-        placeholder="Default"
+        placeholder="Sort"
         options={[
           { value: "priceLowHigh", label: "Price: Low to High" },
           { value: "priceHighLow", label: "Price: High to Low" },
@@ -35,38 +39,38 @@ const FilterSidebar = ({
         ]}
       />
 
-      {/* Category Filter */}
+      {/* Category */}
       <CustomMenu
-        label="Category"
+        label={isCompact ? undefined : "Category"}
+        className={isCompact ? "min-w-[130px]" : "w-full mb-3"}
         value={selectedCategory}
         onChange={setSelectedCategory}
         placeholder="All"
         options={categories}
       />
 
-      {/* Collection Filter */}
+      {/* Collection */}
       <CustomMenu
-        label="Collection"
+        label={isCompact ? undefined : "Collection"}
+        className={isCompact ? "min-w-[130px]" : "w-full mb-3"}
         value={selectedCollection}
         onChange={setSelectedCollection}
         placeholder="All"
         options={collections}
       />
 
-      {/* Brand Filter */}
+      {/* Brand */}
       <CustomMenu
-        label="Brand"
+        label={isCompact ? undefined : "Brand"}
+        className={isCompact ? "min-w-[130px]" : "w-full mb-3"}
         value={selectedBrand}
         onChange={setSelectedBrand}
         placeholder="All"
         options={brands}
       />
 
-
-
-      {/* Price Range - SLIDER */}
-
-      <div className="mb-4">
+      {/* Price Range */}
+      <div className={isCompact ? "min-w-[180px]" : "w-full mb-4"}>
         <CustomTypography fontWeight={600} fontSize="1rem" className="mb-1 text-primary">
           Price Range (₹{priceRange[0]})
         </CustomTypography>
@@ -78,19 +82,19 @@ const FilterSidebar = ({
           onChange={(e) => setPriceRange([parseInt(e.target.value)])}
           className="w-full h-2 bg-secondary rounded-lg appearance-none cursor-pointer"
         />
-        <div className="flex justify-between text-sm text-tsecondary mt-1">
-          <span>₹{minPrice}</span>
-          <span>₹{priceRange[0]}</span>
-          <span>₹{maxPrice}</span>
-        </div>
+        {!isCompact && (
+          <div className="flex justify-between text-sm text-tsecondary mt-1">
+            <span>₹{minPrice}</span>
+            <span>₹{priceRange[0]}</span>
+            <span>₹{maxPrice}</span>
+          </div>
+        )}
       </div>
 
-
-
-      {/* Rating Range - SLIDER */}
-      <div className="mb-6">
+      {/* Rating */}
+      <div className={isCompact ? "min-w-[180px]" : "w-full mb-6"}>
         <CustomTypography fontWeight={600} fontSize="1rem" className="mb-2 text-primary">
-          Minimum Rating ({ratingRange[0]} stars)
+          Min Rating ({ratingRange[0]} stars)
         </CustomTypography>
         <input
           type="range"
@@ -103,8 +107,8 @@ const FilterSidebar = ({
         />
       </div>
 
-      {/* Stock & Discount Filters */}
-      <div className="space-y-2 mb-4">
+      {/* Stock & Discount */}
+      <div className={`space-y-2 ${isCompact ? "" : "mb-4"}`}>
         <label className="inline-flex items-center gap-2">
           <input
             type="checkbox"
@@ -125,13 +129,15 @@ const FilterSidebar = ({
         </label>
       </div>
 
-      {/* Clear Filters */}
-      <button
-        onClick={onClearFilters}
-        className="mt-4 w-full text-center text-red-600 text-sm underline hover:text-red-800"
-      >
-        Clear All Filters
-      </button>
+      {/* Clear All */}
+      {!isCompact && (
+        <button
+          onClick={onClearFilters}
+          className="mt-4 w-full text-center text-red-600 text-sm underline hover:text-red-800"
+        >
+          Clear All Filters
+        </button>
+      )}
     </div>
   );
 };

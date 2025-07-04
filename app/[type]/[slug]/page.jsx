@@ -64,7 +64,7 @@ const Page = () => {
 
 
     return (
-        <div >
+        <div z>
             <Heading text={slug} />
             {loading ? (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 p-4">
@@ -82,7 +82,7 @@ const Page = () => {
                     buttonText="Explore Products"
                 />
             ) : (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 p-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                     {products.map((product) => (
                         <ClientLink key={product._id} href={`/product/${product._id}/${encodeURIComponent(product.slug)}`} passHref>
                             <ProductCard
@@ -98,7 +98,13 @@ const Page = () => {
                                 productId={product._id}
                                 slug={product.slug}
                                 isInWishlist={isInWishlist(product._id)}
-                                inStock={product.inStock > 0}
+                                inStock={!!product.stock_qty && Number(product.stock_qty) > 0}
+                                stockQty={product.stock_qty}
+                                brand={product.brand}
+                                collection={product.collection}
+                                shipping_charges={product.shipping_charges}
+                                color={product.color}
+                                size={product.size}
                             />
                         </ClientLink>
                     ))}

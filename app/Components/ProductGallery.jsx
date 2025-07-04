@@ -17,21 +17,9 @@ const ProductGallery = ({
   const { user } = useUser();
   const userId = user?._id;
 
-  const [lensPosition, setLensPosition] = useState({ x: 0, y: 0 });
-  const [isHovering, setIsHovering] = useState(false);
-  const imgRef = useRef(null);
-
-  const handleMouseMove = (e) => {
-    if (!imgRef.current) return;
-    const { left, top, width, height } = imgRef.current.getBoundingClientRect();
-    const x = ((e.clientX - left) / width) * 100;
-    const y = ((e.clientY - top) / height) * 100;
-    setLensPosition({ x, y });
-  };
-
   return (
     <div className="grid grid-cols-12 gap-4">
-      {/* Side Thumbnails */}
+      {/* Thumbnails */}
       <div className="col-span-2 flex flex-col gap-2">
         {detailImages.map((img, id) => (
           <div
@@ -42,46 +30,24 @@ const ProductGallery = ({
             <img
               src={img}
               alt={`Thumbnail ${id + 1}`}
-              className="w-full object-cover rounded-md"
+              className="w-full h-16 object-cover rounded-md"
             />
           </div>
         ))}
       </div>
 
-      {/* Main Image + Magnifier */}
-      <div className="col-span-10 relative">
-        <div
-          className="relative border rounded-lg shadow overflow-hidden"
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
-          onMouseMove={handleMouseMove}
-        >
+      {/* Main Image */}
+      <div className="col-span-10">
+        <div className="border rounded-lg shadow overflow-hidden w-full md:w-[400px] h-[400px]">
           <img
-            ref={imgRef}
             src={selectedImage}
             alt={productName}
-            className="w-full h-auto object-cover rounded-lg transition-transform duration-300"
+            className="w-full h-full object-cover rounded-lg"
           />
-
-          {isHovering && (
-            <div
-              className="absolute border border-black rounded-full pointer-events-none"
-              style={{
-                top: `${lensPosition.y}%`,
-                left: `${lensPosition.x}%`,
-                transform: "translate(-50%, -50%)",
-                width: "150px",
-                height: "150px",
-                backgroundImage: `url(${selectedImage})`,
-                backgroundSize: "200% 200%",
-                backgroundPosition: `${lensPosition.x}% ${lensPosition.y}%`,
-              }}
-            />
-          )}
         </div>
       </div>
 
-      {/* Buttons */}
+      {/* Cart & Buy Buttons */}
       <div className="col-span-12 mt-4 space-y-3">
         <CustomButton
           startIcon={<ShoppingCart size={16} />}
