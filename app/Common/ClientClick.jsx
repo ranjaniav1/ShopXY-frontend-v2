@@ -2,6 +2,7 @@
 "use client";
 import React from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const ClientLink = ({ href, className = "", children, ...rest }) => {
     const router = useRouter();
@@ -12,14 +13,14 @@ const ClientLink = ({ href, className = "", children, ...rest }) => {
     };
 
     return (
-        <a
+        <Link
             href={href}
             onClick={handleClick}
             className={`cursor-pointer ${className}`}
             {...rest}
         >
             {children}
-        </a>
+        </Link>
     );
 };
 
