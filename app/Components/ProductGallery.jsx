@@ -13,10 +13,11 @@ const ProductGallery = ({
   onImageClick,
   productName,
   productId,
+  stockQty
 }) => {
   const { user } = useUser();
   const userId = user?._id;
-
+  const outOfStock = stockQty <= 0;
   return (
     <div className="grid grid-cols-12 gap-4">
       {/* Thumbnails */}
@@ -48,25 +49,35 @@ const ProductGallery = ({
       </div>
 
       {/* Cart & Buy Buttons */}
+      {/* Cart & Buy Buttons */}
       <div className="col-span-12 mt-4 space-y-3">
-        <CustomButton
-          startIcon={<ShoppingCart size={16} />}
-          variant="contained"
-          title="Cart It"
-          className="w-full"
-          onClick={() => handleAddToCart({ userId, productId })}
-        />
+        {outOfStock ? (
+          <div className="bg-red-100 text-red-600 text-center py-2 px-4 rounded-lg font-semibold">
+            Out of Stock – Please check back later!
+          </div>
+        ) : (
+          <>
+            <CustomButton
+              startIcon={<ShoppingCart size={16} />}
+              variant="contained"
+              title="Cart It"
+              className="w-full"
+              onClick={() => handleAddToCart({ userId, productId })}
+            />
 
-        <ClientLink href="/scheckout/carts" className="block w-full">
-          <CustomButton
-            startIcon={<MoveRight size={16} />}
-            variant="contained"
-            title="Buy Now"
-            className="w-full"
-            onClick={() => handleAddToCart({ userId, productId })}
-          />
-        </ClientLink>
+            <ClientLink href="/scheckout/carts" className="block w-full">
+              <CustomButton
+                startIcon={<MoveRight size={16} />}
+                variant="contained"
+                title="Buy Now"
+                className="w-full"
+                onClick={() => handleAddToCart({ userId, productId })}
+              />
+            </ClientLink>
+          </>
+        )}
       </div>
+
     </div>
   );
 };
