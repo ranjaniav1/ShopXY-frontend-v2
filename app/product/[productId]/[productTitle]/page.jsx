@@ -58,6 +58,7 @@ const Page = () => {
           onImageClick={handleImageClick}
           productName={product.name}
           productId={product._id}
+          stockQty={product.stock_qty}
         />
       </div>
 
