@@ -46,7 +46,7 @@ const Categoy = ({ data = [] }) => {
             }}
             renderContent={(category, idx) => (
               <ClientLink
-                href={`/category/${category.slug}`}
+                href={`/${category.slug}`}
                 className={`group rounded-xl p-4 flex flex-col items-center text-center cursor-pointer hover:shadow-md transition ${bgColors[idx % bgColors.length]}`}
               >
                 <img

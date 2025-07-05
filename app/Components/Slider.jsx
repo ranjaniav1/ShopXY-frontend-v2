@@ -6,7 +6,7 @@ const Slider = ({ data }) => (
     data={data}
     renderContent={(slide) => (
       <ClientLink
-        href={`/categories/${slide._id}/${slide.slug}`}
+        href={`/${slide.slug}`}
         className="block w-full h-full"
       >
         <img
