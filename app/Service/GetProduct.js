@@ -34,6 +34,7 @@ export async function GetFilteredProduct(params) {
       ...(params.inStock && { inStock: "true" }),
       ...(params.specialOffer && { specialOffer: "true" }),
       ...(params.sort && { sort: params.sort }),
+      ...(params.search && { search: params.search }),
     };
 
     const response = await httpAxios.get(`/products/filters`, {

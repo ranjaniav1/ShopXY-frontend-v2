@@ -21,7 +21,7 @@ const FullScreenNav = ({ setDrawerOpen }) => {
   const handleSearch = () => {
     const query = searchQuery.trim();
     if (query) {
-      router.push(`/product/${encodeURIComponent(query)}`);
+      router.push(`/${encodeURIComponent(query)}`);
     }
   };
 
