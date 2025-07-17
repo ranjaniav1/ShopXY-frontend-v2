@@ -30,7 +30,7 @@ const Collection = ({ data = [] }) => {
             1024: { slidesPerView: 6, spaceBetween: 30 },
           }}
           renderContent={(col) => (
-            <ClientLink href={`/${col.slug}`}>
+            <ClientLink href={`/collection/${col.slug}`}>
               <CustomCollectionCard
                 tooltip={col.title}
                 id={col._id}

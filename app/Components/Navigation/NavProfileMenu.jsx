@@ -29,7 +29,7 @@ const NavProfileMenu = () => {
         alt="avatar"
       />
       {open && (
-        <div className="absolute right-0 mt-2 w-40  shadow-md rounded-md z-50 border border-secondary">
+        <div className="absolute right-0 mt-2 w-40  shadow-md rounded-lg z-50 border border-secondary">
           <button
             onClick={() => {
               setOpen(false);

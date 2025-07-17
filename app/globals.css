@@ -25,7 +25,7 @@
   height: 40px;
   background-color: rgba(0, 0, 0, 0.6);
   color: white;
-  border-radius: 9999px;
+  border-radius: 6px; /* 🟩 Change from full to slight rounding */
   display: flex;
   align-items: center;
   justify-content: center;

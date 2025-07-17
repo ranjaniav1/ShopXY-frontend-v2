@@ -11,9 +11,9 @@ const AddressCard = ({ address, selectedAddressId, handleEdit, handleRemove, han
   };
 
   return (
-    <div className="relative bg-body border  rounded-md p-4 shadow-md hover:border-primary transition-all duration-300">
+    <div className="relative bg-body border  rounded-lg p-4 shadow-md hover:border-primary transition-all duration-300">
       {/* Edit & Delete Buttons */}
-      <div className="absolute top-3 right-3 flex items-center bg-white border border-gray-200 rounded-md px-1.5 py-0.5 shadow-sm">
+      <div className="absolute top-3 right-3 flex items-center bg-white border border-gray-200 rounded-lg px-1.5 py-0.5 shadow-sm">
         <CustomIconButton
           onClick={() => handleEdit(address._id)}
           className="p-1 text-tprimary"

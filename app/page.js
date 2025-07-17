@@ -6,6 +6,7 @@ import Slider from "./Components/Slider";
 import Categoy from "./Components/Categoy";
 import Collection from "./Components/Collection";
 import Brands from "./Components/Brands";
+import CustomSkeleton from "./Custom/CustomSkeleton";
 
 // 🔁 Lazy load HomeProduct for performance
 const HomeProduct = dynamic(() => import("./Components/HomeProduct"), {
@@ -22,6 +23,7 @@ export default function Home() {
     fetchHomeData()
       .then((res) => {
         setData(res?.data);
+        setLoading(false)
       })
       .catch((err) => {
         console.error("❌ Error fetching data", err);
@@ -31,13 +33,11 @@ export default function Home() {
       });
   }, []);
 
- 
 
-  if (!data) {
+
+  if (!data && loading) {
     return (
-      <p className="text-center text-red-500 mt-10">
-        ❌ Failed to load homepage data.
-      </p>
+      <CustomSkeleton type="card" />
     );
   }
 

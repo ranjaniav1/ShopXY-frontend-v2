@@ -16,7 +16,7 @@ const CustomSwiper = ({
   autoplay = true,
   pagination = true,
   navigation = true,
-  breakpoints={}
+  breakpoints = {}
 }) => {
   if (!data.length) {
     return (
@@ -27,7 +27,7 @@ const CustomSwiper = ({
   }
 
   return (
-    <div className={`my-7 rounded-md overflow-hidden bg-body ${className}`} style={{ height }}>
+    <div className={` rounded-lg overflow-hidden  ${className}`} style={{ height }}>
       <Swiper
         modules={[A11y, Navigation, Autoplay, Pagination]}
         slidesPerView={1}
@@ -37,9 +37,9 @@ const CustomSwiper = ({
         autoplay={autoplay ? { delay: 3000, disableOnInteraction: false } : false}
         className={`h-full relative swiper-custom-nav ${swiperClass}`}
       >
-        {data.map((item) => (
+        {data.map((item,idx) => (
           <SwiperSlide key={item._id} className="relative h-full">
-            {renderContent(item)}
+            {renderContent(item,idx)}
           </SwiperSlide>
         ))}
       </Swiper>

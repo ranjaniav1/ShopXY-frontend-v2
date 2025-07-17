@@ -18,13 +18,13 @@ const CartProductCard = ({
   const { t } = useTranslation();
 
   return (
-    <div className="relative flex items-center rounded-md p-4 shadow-md bg-body mb-1 border hover:border-primary transition-all duration-300">
+    <div className="relative flex items-center rounded-lg p-4 shadow-md bg-body mb-1 border hover:border-primary transition-all duration-300">
       {/* Image */}
       <div className="flex-shrink-0 mr-4">
         <img
           src={image || 'https://via.placeholder.com/150'}
           alt={name}
-          className="w-16 h-16 object-cover rounded-md border border-secondary"
+          className="w-16 h-16 object-cover rounded-lg border border-secondary"
         />
       </div>
 
@@ -69,7 +69,7 @@ const CartProductCard = ({
       </div>
 
       {/* Action Icons (Edit + Delete) */}
-      <div className="absolute top-3 right-3 flex items-center bg-white border border-gray-200 rounded-md px-1.5 py-0.5 shadow-sm z-10">
+      <div className="absolute top-3 right-3 flex items-center bg-white border border-gray-200 rounded-lg px-1.5 py-0.5 shadow-sm z-10">
         <CustomIconButton onClick={onEdit} className="p-1 text-tprimary ">
           <Edit size={18} />
         </CustomIconButton>

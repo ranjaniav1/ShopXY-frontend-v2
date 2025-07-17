@@ -4,24 +4,23 @@ import React from "react";
 
 const CustomCollectionCard = ({ image, title, tooltip }) => {
   return (
-    <div className="group rounded-lg overflow-hidden shadow-sm hover:shadow-md transition duration-300 bg-body">
+    <div
+      className="group rounded-2xl border border-secondary bg-body shadow-sm hover:shadow-lg transition-all duration-300 ease-in-out hover:border-primary hover:bg-gray-50 cursor-pointer"
+      title={tooltip || title}
+    >
       {/* Image wrapper */}
-      <div className="w-full h-20 sm:h-10 md:h-20 lg:h-36 relative">
+      <div className="w-full aspect-[4/3] flex items-center justify-center p-4">
         <img
           src={image}
           alt={title}
           loading="lazy"
-          className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+          className="h-full object-contain transition-transform duration-300 group-hover:scale-105"
         />
-        <div className="absolute inset-0 transition duration-300" />
       </div>
 
       {/* Title */}
-      <div className="p-3 text-center">
-        <h3
-          title={tooltip || title}
-          className="text-tsecondary text-sm font-medium truncate"
-        >
+      <div className="px-4 pb-4 text-center">
+        <h3 className="text-sm font-semibold text-tsecondary group-hover:text-primary truncate">
           {title}
         </h3>
       </div>

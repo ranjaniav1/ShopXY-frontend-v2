@@ -20,7 +20,7 @@ const BrandReviewDrawer = ({ brand, reviews, analytics }) => {
             {/* Rating Breakdown */}
             {Object.keys(starCounts).map((star) => (
 
-                <div key={star} className="p-4 rounded-md shadow bg-body">
+                <div key={star} className="p-4 rounded-lg shadow bg-body">
                     <h2 className="text-lg font-bold text-tprimary mb-3">
                         Rating Breakdown
                     </h2>
@@ -54,7 +54,7 @@ const BrandReviewDrawer = ({ brand, reviews, analytics }) => {
                     reviews.map((review) => (
                         <div
                             key={review._id}
-                            className="p-4 rounded-md shadow bg-body text-body"
+                            className="p-4 rounded-lg shadow bg-body text-body"
                         >
                             <div className="flex items-center gap-3 mb-1">
                                 <img

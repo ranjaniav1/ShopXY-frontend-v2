@@ -26,19 +26,32 @@ const Page = () => {
     const [wishlist, setWishlist] = useState([])
 
     useEffect(() => {
-        if (!type) return;
-        (async () => {
+        if (!type || !slug) return;
+
+        const fetchData = async () => {
             try {
-                const data = await GetFilteredProduct({ type: "product", search: slug });
-                console.log(data)
+                let filterParam = {};
+                if (type === "category") {
+                    filterParam = { category: slug };
+                } else if (type === "brand") {
+                    filterParam = { brand: slug };
+                } else if (type === "collection") {
+                    filterParam = { collection: slug };
+                }
+
+                const data = await GetFilteredProduct({ type: "product", ...filterParam });
+                console.log(data);
                 setProducts(data.filters || []);
             } catch (err) {
                 console.error(`❌ Failed to fetch ${type}`, err);
             } finally {
                 setLoading(false);
             }
-        })();
+        };
+
+        fetchData();
     }, [type, slug]);
+
 
     const fetchWishlist = useCallback(async () => {
         if (!userId) return;

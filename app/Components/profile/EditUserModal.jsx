@@ -71,13 +71,13 @@ const EditUserModal = ({ user, onClose }) => {
         value={fullname}
         onChange={(e) => setFullname(e.target.value)}
         placeholder="Full Name"
-        className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary mb-3 text-tprimary bg-white"
+        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary mb-3 text-tprimary bg-white"
       />
 
       {/* Submit Button */}
       <button
         onClick={handleSubmit}
-        className="px-4 py-2 rounded-md bg-primary text-white hover:bg-primary/90 transition-all w-full"
+        className="px-4 py-2 rounded-lg bg-primary text-white hover:bg-primary/90 transition-all w-full"
       >
         Save Changes
       </button>

@@ -99,7 +99,7 @@ const AddressPage = ({ handleNext, handleBack }) => {
 
         {/* Mobile Add */}
         <div className="block sm:hidden">
-          <CustomIconButton onClick={handleAddAddressClick} className="bg-primary text-white p-2 rounded-md">
+          <CustomIconButton onClick={handleAddAddressClick} className="bg-primary text-white p-2 rounded-lg">
             <Plus size={20} />
           </CustomIconButton>
         </div>

@@ -29,7 +29,7 @@ const Brands = ({ data = [] }) => {
             1024: { slidesPerView: 6, spaceBetween: 30 },
           }}
           renderContent={(brand) => (
-            <ClientLink href={`/${brand.slug}`}>
+            <ClientLink href={`/brand/${brand.slug}`}>
               <CustomCollectionCard
                 id={brand._id}
                 slug={brand.slug}

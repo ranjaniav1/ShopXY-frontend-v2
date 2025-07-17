@@ -6,6 +6,7 @@ import { addWishlist, deleteWishlistItem } from "../Service/Profile";
 import toast from "react-hot-toast";
 import { handleAddToCart } from "../helper/cartUtils";
 import ClientLink from "../Common/ClientClick";
+import { GetCollectionsByCategory } from "../Service/GetCollection";
 
 const ProductCard = ({
   imgSrc,
@@ -20,6 +21,7 @@ const ProductCard = ({
   isInWishlist: isWishlistedFromParent,
   stockQty,
   description,
+  category,
   brand,
   collection,
   shipping_charges,
@@ -82,7 +84,7 @@ const ProductCard = ({
 
       {/* Product Image */}
       <ClientLink href={`/product/${productId}/${encodeURIComponent(slug)}`}>
-        <div className="w-full h-36 bg-body-light rounded-md overflow-hidden flex items-center justify-center mb-2">
+        <div className="w-full h-36 bg-body-light rounded-lg overflow-hidden flex items-center justify-center mb-2">
           <img
             loading="lazy"
             src={imgSrc}
@@ -97,7 +99,7 @@ const ProductCard = ({
         <h3 className="text-xs font-medium text-tprimary  hover:underline">
           {title}
         </h3>
-        <p className="text-[11px] text-tmuted line-clamp-2 mb-1">{description}</p>
+
 
       </ClientLink>
 
@@ -107,9 +109,31 @@ const ProductCard = ({
 
 
       {/* Brand & Collection */}
-      <p className="text-[10px] text-gray-500 mb-1">
-        {brand?.title} • {collection?.title}
-      </p>
+      <div className="flex flex-wrap gap-1 mt-2 mb-1">
+        {brand?.title && brand?.slug && (
+          <ClientLink href={`/brand/${brand.slug}`}>
+            <span className="cursor-pointer bg-blue-100 text-blue-700 text-[10px] font-medium px-2 py-[2px] rounded-full hover:bg-blue-200 transition">
+              {brand.title}
+            </span>
+          </ClientLink>
+        )}
+        {collection?.title && collection?.slug && (
+          <ClientLink href={`/collection/${collection.slug}`}>
+            <span className="cursor-pointer bg-purple-100 text-purple-700 text-[10px] font-medium px-2 py-[2px] rounded-full hover:bg-purple-200 transition">
+              {collection.title}
+            </span>
+          </ClientLink>
+        )}
+
+        {category?.title && category?.slug && (
+          <ClientLink href={`/category/${category.slug}`}>
+            <span className="cursor-pointer bg-green-100 text-green-700 text-[10px] font-medium px-2 py-[2px] rounded-full hover:bg-green-200 transition">
+              {category.title}
+            </span>
+          </ClientLink>
+        )}
+      </div>
+
 
 
       {/* Price + Add to Cart / Out of Stock */}
