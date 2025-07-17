@@ -50,7 +50,7 @@ const WishlistItem = ({ userId, activeTab }) => {
         <div className="flex justify-end mb-4">
           <button
             onClick={handleRemoveAll}
-            className="bg-red-500 hover:bg-red-600 text-white text-sm font-medium px-4 py-2 rounded-md"
+            className="bg-red-500 hover:bg-red-600 text-white text-sm font-medium px-4 py-2 rounded-lg"
           >
             Remove All
           </button>
@@ -105,7 +105,7 @@ const WishlistItem = ({ userId, activeTab }) => {
           <button
             onClick={() => setPage((p) => Math.max(p - 1, 1))}
             disabled={page <= 1}
-            className="text-sm px-3 py-1.5 border border-gray-300 rounded-md hover:bg-gray-100 disabled:opacity-50"
+            className="text-sm px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-100 disabled:opacity-50"
           >
             Previous
           </button>
@@ -115,7 +115,7 @@ const WishlistItem = ({ userId, activeTab }) => {
           <button
             onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
             disabled={page >= totalPages}
-            className="text-sm px-3 py-1.5 border border-gray-300 rounded-md hover:bg-gray-100 disabled:opacity-50"
+            className="text-sm px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-100 disabled:opacity-50"
           >
             Next
           </button>

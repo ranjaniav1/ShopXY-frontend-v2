@@ -20,7 +20,7 @@ const TabSection = ({ activeTab, handleTabChange }) => {
           <button
             key={index}
             onClick={() => handleTabChange(null, index)}
-            className={`text-left w-full px-4 py-2 rounded-md transition-colors duration-200
+            className={`text-left w-full px-4 py-2 rounded-lg transition-colors duration-200
               ${activeTab === index
                 ? "text-primary font-semibold bg-primary/10"
                 : "text-tprimary hover:bg-secondary/10"}`}

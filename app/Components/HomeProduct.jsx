@@ -281,6 +281,7 @@ const HomeProduct = () => {
                       stockQty={product.stock_qty}
                       description={product.description}
                       brand={product.brand}
+                      category={product.category}
                       collection={product.collection}
                       shipping_charges={product.shipping_charges}
                       color={product.color}

@@ -33,7 +33,7 @@ const ReviewItem = ({ reviews = [] }) => {
   return (
     <div>
       {reviews.slice(0, visibleCount).map((review, index) => (
-        <div key={review.id} className="p-4 mb-4 border border-gray-200 rounded-md">
+        <div key={review.id} className="p-4 mb-4 border border-gray-200 rounded-lg">
           <div className="flex items-center gap-4">
             {review.userAvatar ? (
               <img
@@ -64,7 +64,7 @@ const ReviewItem = ({ reviews = [] }) => {
                   key={i}
                   src={img}
                   alt="Review Media"
-                  className="w-20 h-auto rounded-md object-cover"
+                  className="w-20 h-auto rounded-lg object-cover"
                 />
               ))}
             </div>

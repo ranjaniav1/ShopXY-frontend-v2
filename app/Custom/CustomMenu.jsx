@@ -16,7 +16,7 @@ const CustomMenu = ({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full border border-gray-300 rounded-md p-2 text-sm"
+        className="w-full border border-gray-300 rounded-lg p-2 text-sm"
       >
         <option value="">{placeholder}</option>
         {options.map((opt) => (

@@ -19,6 +19,7 @@ import {
   AlertCircle,
   PackageCheck,
 } from "lucide-react";
+import ClientLink from "../Common/ClientClick";
 
 const ProductDetails = ({
   name,
@@ -92,33 +93,30 @@ const ProductDetails = ({
       <div className="bg-body p-4 rounded shadow space-y-3 text-sm text-tsecondary">
         <div className="flex flex-wrap gap-3">
           {brand?.title && (
-            <span className="flex items-center gap-1 bg-primary/10 px-2 py-1 rounded">
+            <ClientLink
+              href={`/brand/${brand.slug || brand.id}`}
+              className="flex items-center gap-1 bg-primary/10 text-primary px-2 py-1 rounded hover:bg-primary/20 transition"
+            >
               <Tag size={14} /> Brand: {brand.title}
-            </span>
+            </ClientLink>
           )}
 
           {category?.title && (
-            <span className="flex items-center gap-1 bg-yellow-100 text-yellow-800 px-2 py-1 rounded">
+            <ClientLink
+              href={`/category/${category.slug || category.id}`}
+              className="flex items-center gap-1 bg-yellow-100 text-yellow-800 px-2 py-1 rounded hover:bg-yellow-200 transition"
+            >
               <Boxes size={14} /> Category: {category.title}
-            </span>
+            </ClientLink>
           )}
 
           {collection?.title && (
-            <span className="flex items-center gap-1 bg-purple-100 text-purple-800 px-2 py-1 rounded">
+            <ClientLink
+              href={`/collection/${collection.slug || collection.id}`}
+              className="flex items-center gap-1 bg-purple-100 text-purple-800 px-2 py-1 rounded hover:bg-purple-200 transition"
+            >
               <Tag size={14} /> Collection: {collection.title}
-            </span>
-          )}
-
-          {/* {size.length > 0 && (
-            <span className="flex items-center gap-1 bg-green-100 text-green-800 px-2 py-1 rounded">
-              <Ruler size={14} /> Size: {size.join(", ")}
-            </span>
-          )} */}
-
-          {color.length > 0 && (
-            <span className="flex items-center gap-1 bg-blue-100 text-blue-800 px-2 py-1 rounded">
-              <Palette size={14} /> Color: {color.join(", ")}
-            </span>
+            </ClientLink>
           )}
         </div>
       </div>

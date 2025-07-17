@@ -31,7 +31,7 @@ const ProductGallery = ({
             <img
               src={img}
               alt={`Thumbnail ${id + 1}`}
-              className="w-full h-16 object-cover rounded-md"
+              className="w-full h-16 object-cover rounded-lg"
             />
           </div>
         ))}

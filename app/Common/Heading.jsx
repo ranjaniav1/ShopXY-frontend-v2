@@ -5,9 +5,9 @@ import React from "react";
 const Heading = ({ text, className = "", children }) => {
   return (
     <div
-      className={`flex justify-between items-center  px-3 py-2 rounded-md text-xl text-tprimary font-bold ${className}`}
+      className={`flex justify-between items-center rounded-lg text-xl text-tprimary font-bold ${className}`}
     >
-      <h2>{text}</h2>
+      <h2 className="py-4">{text}</h2>
       {children}
     </div>
   );
