@@ -8,7 +8,7 @@ const CustomModal = ({ open, onClose, title, children, height }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-body/40">
       <div
-        className="bg-body rounded-lg p-4 shadow-xl w-[90%] sm:w-[400px] md:w-[500px]"
+        className="bg-body rounded-md p-4 shadow-xl w-[90%] sm:w-[400px] md:w-[500px]"
         style={{ height }}
       >
         {/* Header */}

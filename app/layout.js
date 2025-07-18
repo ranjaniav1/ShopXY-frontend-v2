@@ -25,7 +25,7 @@ export default function RootLayout({ children }) {
             <LanguageProvider>
               <ClientToaster />
               <Navigation />
-              <div className="pt-[80px] max-w-screen-xl mx-auto pb-8 sm:pt-[96px]">
+              <div className="pt-[80px] max-w-screen-xl mx-auto px-4 pb-8 sm:pt-[96px]">
                 {children}
               </div>
             </LanguageProvider>

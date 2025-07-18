@@ -13,7 +13,7 @@ const DialogBox = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="bg-white rounded-lg shadow-lg w-[90%] sm:w-[400px]">
+      <div className="bg-white rounded-md shadow-lg w-[90%] sm:w-[400px]">
         {/* Title */}
         <div className="px-6 py-4 border-b border-gray-200">
           <h2 className="text-lg font-semibold text-gray-800">{title}</h2>

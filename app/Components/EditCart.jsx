@@ -75,7 +75,7 @@ const EditCart = ({ onClose, selectedProduct }) => {
             <img
               src={selectedProduct.product.image}
               alt={selectedProduct.product.name}
-              className="w-20 h-20 object-cover rounded-lg"
+              className="w-20 h-20 object-cover rounded-md"
             />
             <div className="flex-1">
               <CustomTypography className="font-semibold text-tprimary">

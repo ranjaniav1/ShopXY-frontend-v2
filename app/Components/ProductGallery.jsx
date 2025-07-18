@@ -25,13 +25,13 @@ const ProductGallery = ({
         {detailImages.map((img, id) => (
           <div
             key={id}
-            className="border rounded-lg shadow cursor-pointer"
+            className="border rounded-md shadow cursor-pointer"
             onClick={() => onImageClick(img)}
           >
             <img
               src={img}
               alt={`Thumbnail ${id + 1}`}
-              className="w-full h-16 object-cover rounded-lg"
+              className="w-full h-16 object-cover rounded-md"
             />
           </div>
         ))}
@@ -39,11 +39,11 @@ const ProductGallery = ({
 
       {/* Main Image */}
       <div className="col-span-10">
-        <div className="border rounded-lg shadow overflow-hidden w-full md:w-[400px] h-[400px]">
+        <div className="border rounded-md shadow overflow-hidden w-full md:w-[400px] h-[400px]">
           <img
             src={selectedImage}
             alt={productName}
-            className="w-full h-full object-cover rounded-lg"
+            className="w-full h-full object-cover rounded-md"
           />
         </div>
       </div>
@@ -52,7 +52,7 @@ const ProductGallery = ({
       {/* Cart & Buy Buttons */}
       <div className="col-span-12 mt-4 space-y-3">
         {outOfStock ? (
-          <div className="bg-red-100 text-red-600 text-center py-2 px-4 rounded-lg font-semibold">
+          <div className="bg-red-100 text-red-600 text-center py-2 px-4 rounded-md font-semibold">
             Out of Stock – Please check back later!
           </div>
         ) : (

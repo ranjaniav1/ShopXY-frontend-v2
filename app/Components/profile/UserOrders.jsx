@@ -33,7 +33,7 @@ const UserOrders = ({ userId, activeTab }) => {
         order.map((orderItem) => (
           <div
             key={orderItem._id}
-            className="rounded-lg border border-gray-200 p-4 shadow-md transition hover:shadow-lg bg-body"
+            className="rounded-md border border-gray-200 p-4 shadow-md transition hover:shadow-lg bg-body"
           >
             {/* Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2">
@@ -54,7 +54,7 @@ const UserOrders = ({ userId, activeTab }) => {
             </div>
 
             {/* Product List */}
-            <div className="border border-dashed border-gray-300 rounded-lg p-4 space-y-4">
+            <div className="border border-dashed border-gray-300 rounded-md p-4 space-y-4">
               {orderItem.product.map((item, index) => (
                 <div
                   key={item._id}
@@ -64,7 +64,7 @@ const UserOrders = ({ userId, activeTab }) => {
                   <img
                     src={item.product.image}
                     alt={item.product.name}
-                    className="w-16 h-16 object-cover rounded-lg border border-secondary"
+                    className="w-16 h-16 object-cover rounded-md border border-secondary"
                   />
 
                   {/* Product Info */}
@@ -110,7 +110,7 @@ const UserOrders = ({ userId, activeTab }) => {
           <button
             onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
             disabled={page <= 1}
-            className="px-4 py-2 border rounded-lg text-sm bg-white hover:bg-gray-100 disabled:opacity-50"
+            className="px-4 py-2 border rounded-md text-sm bg-white hover:bg-gray-100 disabled:opacity-50"
           >
             Previous
           </button>
@@ -120,7 +120,7 @@ const UserOrders = ({ userId, activeTab }) => {
           <button
             onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
             disabled={page >= totalPages}
-            className="px-4 py-2 border rounded-lg text-sm bg-white hover:bg-gray-100 disabled:opacity-50"
+            className="px-4 py-2 border rounded-md text-sm bg-white hover:bg-gray-100 disabled:opacity-50"
           >
             Next
           </button>

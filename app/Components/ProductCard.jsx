@@ -63,7 +63,7 @@ const ProductCard = ({
   );
 
   return (
-    <div className="relative rounded-lg p-2 bg-body border shadow-sm hover:shadow-md transition duration-200 text-tprimary">
+    <div className="relative rounded-md p-2 bg-body border shadow-sm hover:shadow-md transition duration-200 text-tprimary hover:border-primary">
       {/* Offer Badge */}
       {offer && (
         <div className="absolute top-2 left-2 bg-red-500 text-white text-[10px] px-2 py-[2px] rounded font-semibold z-10">
@@ -84,7 +84,7 @@ const ProductCard = ({
 
       {/* Product Image */}
       <ClientLink href={`/product/${productId}/${encodeURIComponent(slug)}`}>
-        <div className="w-full h-36 bg-body-light rounded-lg overflow-hidden flex items-center justify-center mb-2">
+        <div className="w-full h-36 bg-body-light rounded-md overflow-hidden flex items-center justify-center mb-2">
           <img
             loading="lazy"
             src={imgSrc}

@@ -32,7 +32,7 @@ const ReviewComponents = ({ productId }) => {
   });
 
   return (
-    <div className="bg-body rounded-lg p-4">
+    <div className="bg-body rounded-md p-4">
       {/* Ratings Summary */}
       <div className="space-y-2 mb-4">
         {ratingCounts.map((count, index) => (
