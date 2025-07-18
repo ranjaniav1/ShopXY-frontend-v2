@@ -23,7 +23,16 @@ export default function CheckoutStepPage() {
       fetchCart(userId).then(setCartData);
     }
   }, [step, userId]);
+  // ✅ Set document title based on step
+  useEffect(() => {
+    const titleMap = {
+      carts: "Checkout - Cart",
+      address: "Checkout - Address",
+      payment: "Checkout - Payment",
+    };
 
+    document.title = titleMap[step] || "ShopXY - Checkout";
+  }, [step]);
   const handleNext = () => {
     if (step === "carts") router.push("/scheckout/address");
     else if (step === "address") router.push("/scheckout/payment");

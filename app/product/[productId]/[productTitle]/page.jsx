@@ -46,6 +46,11 @@ const Page = () => {
   const handleImageClick = (img) => {
     setSelectedImage(img);
   };
+useEffect(() => {
+  if (slug) {
+    document.title = `${productTitle} | ShopXY`;
+  }
+}, [slug]);
 
   return (
 
