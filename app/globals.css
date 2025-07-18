@@ -40,8 +40,8 @@
 .swiper-custom-nav .swiper-button-prev {
   width: 40px;
   height: 40px;
-  background-color: var(--t-primary);
-  color: white;
+  background-color: var(--body);
+  color: var(--primary);
   border-radius: 0.375rem; /* square with rounded corners */
   display: flex;
   align-items: center;

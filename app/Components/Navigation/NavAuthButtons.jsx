@@ -20,7 +20,7 @@ const NavAuthButtons = () => {
 
   return (
     <>
-      <CustomButton
+      <CustomButton className="text-body"
         startIcon={<UserCircle className="w-5 h-5" />} // ✅ Lucide icon
         title="Login"
         onClick={handleOpenLogin}

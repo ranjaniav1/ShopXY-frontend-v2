@@ -114,6 +114,7 @@ const Page = () => {
                                 inStock={!!product.stock_qty && Number(product.stock_qty) > 0}
                                 stockQty={product.stock_qty}
                                 brand={product.brand}
+                                category={product.category}
                                 collection={product.collection}
                                 shipping_charges={product.shipping_charges}
                                 color={product.color}

@@ -19,16 +19,16 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const { setUser } = useUser();
+  const [googleLoading, setGoogleLoading] = useState(false);
 
   const handleSubmitEmail = async (e) => {
     e.preventDefault();
-    setLoading(true);
 
     if (!email || !password) {
       toast.error(t("Please fill all fields"));
-      setLoading(false);
       return;
     }
+    setLoading(true);
 
     try {
       const response = await Login({ email, password });
@@ -55,9 +55,22 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
     }
   };
 
+  const handleGoogleLogin = async () => {
+    setGoogleLoading(true);
+    try {
+      await GoogleSignupButton(setUser, onClose);
+    } catch {
+      toast.error(t("Google login failed"));
+    } finally {
+      setGoogleLoading(false);
+    }
+  };
+
+
   return (
-    <CustomModal open={open} onClose={onClose} title={t("Login")}>
-      <form onSubmit={handleSubmitEmail} className="space-y-4 text-tprimary">
+    <CustomModal open={open} onClose={onClose} title={t("Welcome back")}>
+      <form onSubmit={handleSubmitEmail} className="space-y-4 text-tprimary flex flex-col justify-center"
+      >
         <CustomInput
           placeholder={t("Email")}
           startIcon={<Mail size={18} />}
@@ -80,31 +93,33 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
           fullWidth
           type="submit"
           title={loading ? "Loading..." : t("Login")}
-          className="bg-primary text-white hover:opacity-90"
+          className="bg-primary text-white rounded-lg py-2 font-semibold hover:opacity-90 transition-all"
           disabled={loading}
         />
       </form>
 
-      <div className="my-4 text-center text-tsecondary text-sm">OR</div>
-
-      <div className="flex items-center gap-2">
-        <CustomButton
-          fullWidth
-          onClick={() => GoogleSignupButton(setUser, onClose)}
-          startIcon={<Globe size={18} />}
-          title={t("Login with Google")}
-          className="bg-red-600 text-white hover:bg-red-700"
-        />
+      <div className="my-4 text-center text-sm text-tsecondary relative">
+        <div className="absolute left-0 top-1/2 w-full border-t border-gray-300" />
+        <span className="relative bg-body px-2 z-10">OR</span>
       </div>
 
-      <div className="mt-6">
+      <CustomButton
+        fullWidth
+        onClick={handleGoogleLogin}
+        startIcon={<Globe size={18} />}
+        title={googleLoading ? t("Loading...") : t("Login with Google")}
+        className="bg-white text-gray-800 border border-gray-300 rounded-lg py-2 hover:bg-gray-100 transition-all"
+      />
+
+
+      <div className="mt-6 text-center">
         <CustomButton
           fullWidth
           variant="text"
           onClick={onSwitchToRegister}
           startIcon={<LogIn size={18} />}
           title={t("Not registered? Register")}
-          className="text-primary hover:underline"
+          className="text-primary hover:underline text-sm"
         />
       </div>
     </CustomModal>
