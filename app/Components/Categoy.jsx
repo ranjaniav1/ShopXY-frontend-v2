@@ -33,13 +33,13 @@ const Categoy = ({ data = [] }) => {
         <div className="flex gap-2 items-center">
           <CustomIconButton
             onClick={handlePrev}
-            className="bg-body border border-transparent hover:border-primary transition-all"
+            className="bg-white border border-transparent hover:border-primary transition-all"
           >
             <ChevronLeft className="w-5 h-5" />
           </CustomIconButton>
           <CustomIconButton
             onClick={handleNext}
-            className="bg-body border border-transparent hover:border-primary transition-all"
+            className="bg-white border border-transparent hover:border-primary transition-all"
           >
             <ChevronRight className="w-5 h-5" />
           </CustomIconButton>
