@@ -29,7 +29,7 @@ const Categoy = ({ data = [] }) => {
 
   return (
     <div className="my-6">
-      <Heading text="Shop by Category">
+      <Heading text={t("Shop by Category")}>
         <div className="flex gap-2 items-center">
           <CustomIconButton
             onClick={handlePrev}

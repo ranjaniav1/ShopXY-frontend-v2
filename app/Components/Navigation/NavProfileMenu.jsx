@@ -3,23 +3,24 @@ import React, { useState } from "react";
 import { useUser } from "@/app/context/UserContext";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { Logout } from "@/app/Service/User";
 
 const NavProfileMenu = () => {
   const { user, setUser } = useUser();
   const router = useRouter();
   const [open, setOpen] = useState(false);
-
-  const handleLogout = async () => {
+const userId=user?._id
+ 
+ const handleLogout = async () => {
     try {
-      await Logout({ userId: user._id });
+      await Logout({ userId });
       setUser(null);
       toast.success("User logged out successfully.");
       router.push("/");
     } catch (error) {
-      console.error("Logout error", error);
-    }
+      console.error("Error during logout:", error);
+    } 
   };
-
   return (
     <div className="relative">
       <img

@@ -8,13 +8,14 @@ import Collection from "./Components/Collection";
 import Brands from "./Components/Brands";
 import CustomSkeleton from "./Custom/CustomSkeleton";
 
-// 🔁 Lazy load HomeProduct for performance
+// Lazy load HomeProduct
 const HomeProduct = dynamic(() => import("./Components/HomeProduct"), {
   ssr: false,
   loading: () => (
     <p className="text-center mt-10 text-gray-500">Loading products...</p>
   ),
 });
+
 export default function Home() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -23,30 +24,51 @@ export default function Home() {
     fetchHomeData()
       .then((res) => {
         setData(res?.data);
-        setLoading(false)
       })
       .catch((err) => {
         console.error("❌ Error fetching data", err);
       })
-      .finally(() => {
-        setLoading(false);
-      });
+      .finally(() => setLoading(false));
   }, []);
 
-
-
-  if (!data && loading) {
-    return (
-      <CustomSkeleton type="card" />
-    );
-  }
-
   return (
-    <div>
-      <Slider data={data.sliders} />
-      <Categoy data={data.categories} />
-      <Collection data={data.collections} />
-      <Brands data={data.brands} />
+    <div className="space-y-6">
+      {loading ? (
+        <CustomSkeleton type="card" />
+      ) : (
+        <Slider data={data.sliders} />
+      )}
+
+      {loading ? (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <CustomSkeleton key={i} type="rounded" width="70px" height="70px" />
+          ))}
+        </div>
+      ) : (
+        <Categoy data={data.categories} />
+      )}
+
+      {loading ? (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <CustomSkeleton key={i} type="card" />
+          ))}
+        </div>
+      ) : (
+        <Collection data={data.collections} />
+      )}
+
+      {loading ? (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <CustomSkeleton key={i} type="card" />
+          ))}
+        </div>
+      ) : (
+        <Brands data={data.brands} />
+      )}
+
       <HomeProduct />
     </div>
   );

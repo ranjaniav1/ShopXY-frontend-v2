@@ -86,7 +86,7 @@ export const handleSubmit = async (formData, avatar, setLoading, onClose) => {
 
 
 
-export const GoogleSignupButton = async (setUser,onClose) => {
+export const GoogleSignupButton = async (setUser, onClose) => {
   try {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
@@ -94,7 +94,7 @@ export const GoogleSignupButton = async (setUser,onClose) => {
     // You can now use the user object to store user info in your app
     const saveUserInfo = await SignupWithGoogle(user);
     console.log("User info saved", saveUserInfo);
-   setUser({ user: saveUserInfo.data.user });
+    setUser(saveUserInfo.data.user);
     toast.success(saveUserInfo.message);
     // close modal after google signup
     onClose()

@@ -229,11 +229,7 @@ const HomeProduct = () => {
   return (
     <div className="my-6">
       <Heading text={t("Products For You")} />
-      {infoMessage && (
-        <CustomTypography className="text-sm text-tsecondary mb-4 pl-4">
-          {infoMessage}
-        </CustomTypography>
-      )}
+     
 
       {/* Horizontal filters on small devices */}
       <div className="block md:hidden w-full overflow-x-auto mb-4">

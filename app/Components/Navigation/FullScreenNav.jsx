@@ -26,13 +26,13 @@ const FullScreenNav = ({ setDrawerOpen }) => {
   };
 
   return (
-    <div className="flex justify-between items-center py-2 px-4">
+    <div className="flex justify-between items-center py-2 bg-body text-tprimary">
       {/* Logo */}
       <ClientLink href="/" className="flex items-center">
         <img
           src={webSettings?.logo}
           alt="Site Logo"
-          className="h-16 w-auto"
+          className="h-10 w-auto"
         />
       </ClientLink>
 
