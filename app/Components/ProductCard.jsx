@@ -63,7 +63,7 @@ const ProductCard = ({
   );
 
   return (
-    <div className="relative rounded-lg p-2 bg-body border shadow-sm hover:shadow-md transition duration-200 text-tprimary">
+    <div className="relative rounded-lg p-2 bg-body border shadow-sm hover:shadow-md transition duration-200 text-tprimary hover:border-primary">
       {/* Offer Badge */}
       {offer && (
         <div className="absolute top-2 left-2 bg-red-500 text-white text-[10px] px-2 py-[2px] rounded font-semibold z-10">

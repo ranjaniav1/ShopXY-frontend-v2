@@ -227,7 +227,7 @@ const HomeProduct = () => {
   };
 
   return (
-    <div>
+    <div className="my-6">
       <Heading text={t("Products For You")} />
       {infoMessage && (
         <CustomTypography className="text-sm text-tsecondary mb-4 pl-4">

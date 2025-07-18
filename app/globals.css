@@ -2,12 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 @font-face {
   font-family: "Circular Std";
   src: url("/fonts/circular-std.woff2") format("woff2"),
-       url("/fonts/circular-std.woff") format("woff");
+    url("/fonts/circular-std.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
@@ -25,7 +23,7 @@
   height: 40px;
   background-color: rgba(0, 0, 0, 0.6);
   color: white;
-  border-radius: 6px; /* 🟩 Change from full to slight rounding */
+  border-radius: 0.375rem; /* square with rounded corners */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -35,11 +33,22 @@
 
 .swiper-custom-nav .swiper-button-next:hover,
 .swiper-custom-nav .swiper-button-prev:hover {
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: #0f172a; /* Tailwind slate-900 */
+  transform: scale(1.1);
 }
 
 .swiper-custom-nav .swiper-button-next::after,
 .swiper-custom-nav .swiper-button-prev::after {
   font-size: 1rem;
   font-weight: bold;
+}
+.my-swiper-wrapper .swiper-button-prev,
+.my-swiper-wrapper .swiper-button-next {
+  @apply text-black bg-white p-2 rounded-full shadow; /* or your custom Tailwind */
+}
+
+/* Optional: hide disabled buttons */
+.swiper-button-disabled {
+  opacity: 0;
+  pointer-events: none;
 }
