@@ -44,7 +44,7 @@ const SmallScreenNav = ({ setDrawerOpen }) => {
         {/* Search Button */}
         <button
           onClick={() => setIsSearchOpen(true)}
-          className="p-2 hover:bg-secondary/20 rounded-lg"
+          className="p-2 hover:bg-secondary/20 rounded-md"
         >
           <Search className="w-5 h-5 text-primary" />
         </button>
@@ -68,7 +68,7 @@ const SmallScreenNav = ({ setDrawerOpen }) => {
         {/* Drawer Button */}
         <button
           onClick={() => setDrawerOpen(true)}
-          className="p-2 hover:bg-secondary/20 rounded-lg"
+          className="p-2 hover:bg-secondary/20 rounded-md"
         >
           <Menu className="w-5 h-5 text-primary" />
         </button>

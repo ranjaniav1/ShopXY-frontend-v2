@@ -20,7 +20,7 @@ const FilterSidebar = ({
   onClearFilters,
 }) => {
   return (
-    <div className={`bg-body ${isCompact ? 'flex flex-wrap gap-4 items-center' : 'border border-gray-200 rounded-lg p-4 shadow-sm sticky top-24 w-full max-w-[300px] text-tsecondary'}`}>
+    <div className={`bg-body ${isCompact ? 'flex flex-wrap gap-4 items-center' : 'border border-gray-200 rounded-md p-4 shadow-sm sticky top-24 w-full max-w-[300px] text-tsecondary'}`}>
       {!isCompact && (
         <Heading text="Filters" className="text-lg mb-3 text-primary" />
       )}
@@ -80,7 +80,7 @@ const FilterSidebar = ({
           max={maxPrice}
           value={priceRange[0]}
           onChange={(e) => setPriceRange([parseInt(e.target.value)])}
-          className="w-full h-2 bg-secondary rounded-lg appearance-none cursor-pointer"
+          className="w-full h-2 bg-secondary rounded-md appearance-none cursor-pointer"
         />
         {!isCompact && (
           <div className="flex justify-between text-sm text-tsecondary mt-1">
@@ -103,7 +103,7 @@ const FilterSidebar = ({
           step={0.5}
           value={ratingRange[0]}
           onChange={(e) => setRatingRange([parseFloat(e.target.value), 5])}
-          className="w-full h-2 bg-secondary rounded-lg appearance-none cursor-pointer"
+          className="w-full h-2 bg-secondary rounded-md appearance-none cursor-pointer"
         />
       </div>
 

@@ -31,7 +31,7 @@ const NavSearchBar = ({ searchQuery, setSearchQuery, onSearch }) => {
           )
         }
         placeholder="Search for Products, Brands, and More"
-        className="bg-body text-primary py-2 px-3 rounded-lg w-full border border-secondary focus:border-primary transition-all duration-200"
+        className="bg-body text-primary  px-3 rounded-md w-full border border-secondary focus:border-primary transition-all py-1 duration-200"
         aria-label="Search"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}

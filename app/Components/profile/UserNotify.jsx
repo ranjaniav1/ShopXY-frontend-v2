@@ -45,7 +45,7 @@ const UserNotify = ({ userId, activeTab }) => {
         <div className="flex justify-end mb-3">
           <button
             onClick={() => removeAllNotifications(userId, setNotifications)}
-            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium"
+            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium"
           >
             Remove All
           </button>
@@ -58,7 +58,7 @@ const UserNotify = ({ userId, activeTab }) => {
             key={notification._id}
             onMouseEnter={() => setHoveredNotificationId(notification._id)}
             onMouseLeave={() => setHoveredNotificationId(null)}
-            className="relative bg-white dark:bg-body border-l-4 border-primary shadow-md rounded-lg px-4 py-3 mb-3 transition hover:shadow-lg"
+            className="relative bg-white dark:bg-body border-l-4 border-primary shadow-md rounded-md px-4 py-3 mb-3 transition hover:shadow-lg"
           >
             <div className="flex items-center justify-between">
               <CustomTypography variant="body1" className="font-semibold text-tprimary">
@@ -93,7 +93,7 @@ const UserNotify = ({ userId, activeTab }) => {
           <button
             onClick={() => setPage((p) => Math.max(p - 1, 1))}
             disabled={page <= 1}
-            className="px-3 py-1 border border-gray-300 rounded-lg text-sm hover:bg-gray-100 disabled:opacity-50"
+            className="px-3 py-1 border border-gray-300 rounded-md text-sm hover:bg-gray-100 disabled:opacity-50"
           >
             Previous
           </button>
@@ -103,7 +103,7 @@ const UserNotify = ({ userId, activeTab }) => {
           <button
             onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
             disabled={page >= totalPages}
-            className="px-3 py-1 border border-gray-300 rounded-lg text-sm hover:bg-gray-100 disabled:opacity-50"
+            className="px-3 py-1 border border-gray-300 rounded-md text-sm hover:bg-gray-100 disabled:opacity-50"
           >
             Next
           </button>

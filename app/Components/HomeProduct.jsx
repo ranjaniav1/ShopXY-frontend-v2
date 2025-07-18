@@ -237,7 +237,7 @@ const HomeProduct = () => {
 
       {/* Horizontal filters on small devices */}
       <div className="block md:hidden w-full overflow-x-auto mb-4">
-        <div className="flex gap-4 min-w-[900px] items-center border border-gray-200 rounded-lg p-4 shadow-sm bg-body">
+        <div className="flex gap-4 min-w-[900px] items-center border border-gray-200 rounded-md p-4 shadow-sm bg-body">
           <FilterSidebar isCompact={true} {...filterProps} />
         </div>
       </div>

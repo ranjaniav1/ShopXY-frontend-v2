@@ -14,13 +14,13 @@ const tabs = [
 
 const TabSection = ({ activeTab, handleTabChange }) => {
   return (
-    <div className="p-4 bg-body text-tprimary rounded-lg shadow-md w-full">
+    <div className="p-4 bg-body text-tprimary rounded-md shadow-md w-full">
       <div className="flex flex-col space-y-2">
         {tabs.map((label, index) => (
           <button
             key={index}
             onClick={() => handleTabChange(null, index)}
-            className={`text-left w-full px-4 py-2 rounded-lg transition-colors duration-200
+            className={`text-left w-full px-4 py-2 rounded-md transition-colors duration-200
               ${activeTab === index
                 ? "text-primary font-semibold bg-primary/10"
                 : "text-tprimary hover:bg-secondary/10"}`}

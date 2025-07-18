@@ -16,8 +16,8 @@ const CustomSkeleton = ({
       <div
         className={`w-full max-w-sm p-4 rounded-xl shadow-md border border-tsecondary/50 bg-body ${className}`}
       >
-        <div className={`${basePulse} w-full h-48 rounded-lg`} />
-        <div className={`${basePulse} h-5 mt-4 rounded-lg`} />
+        <div className={`${basePulse} w-full h-48 rounded-md`} />
+        <div className={`${basePulse} h-5 mt-4 rounded-md`} />
       </div>
     ),
     image: (
@@ -31,13 +31,13 @@ const CustomSkeleton = ({
     ),
     row: (
       <div
-        className={`${basePulse} w-full h-24 rounded-lg ${className}`}
+        className={`${basePulse} w-full h-24 rounded-md ${className}`}
         style={{ width }}
       />
     ),
     text: (
       <div
-        className={`${basePulse} w-full h-5 rounded-lg mb-2 ${className}`}
+        className={`${basePulse} w-full h-5 rounded-md mb-2 ${className}`}
         style={{ width }}
       />
     ),

@@ -37,7 +37,7 @@ const CustomSwiper = ({
   }
 
   return (
-    <div className={`rounded-lg overflow-hidden ${className}`} style={{ height }}>
+    <div className={`rounded-md overflow-hidden ${className}`} style={{ height }}>
       <Swiper
         ref={internalRef}
         modules={[A11y, Navigation, Autoplay, Pagination]}

@@ -72,7 +72,7 @@ const UserLayout = () => {
 
         {/* Right Panel */}
         <div className="col-span-1 md:col-span-3">
-          <div className="p-4 rounded-lg shadow-md bg-white">
+          <div className="p-4 rounded-md shadow-md bg-white">
             {activeTab === 0 && <UserNotify userId={userId} activeTab={activeTab} />}
             {activeTab === 1 && <WishlistItem userId={userId} activeTab={activeTab} />}
             {activeTab === 2 && <UserOrders userId={userId} activeTab={activeTab} />}

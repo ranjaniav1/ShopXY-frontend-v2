@@ -88,7 +88,7 @@ const BrandReviewForm = ({ brandId, productId, onClose, onSubmitSuccess }) => {
       {/* Review Input */}
       <textarea
         rows={4}
-        className="w-full border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary bg-white placeholder-gray-500"
+        className="w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary bg-white placeholder-gray-500"
         placeholder="Write your review here..."
         value={review}
         onChange={(e) => setReview(e.target.value)}
@@ -96,7 +96,7 @@ const BrandReviewForm = ({ brandId, productId, onClose, onSubmitSuccess }) => {
 
       {/* Image Upload Button */}
       <div>
-        <label className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm cursor-pointer hover:bg-primary/90">
+        <label className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-md text-sm cursor-pointer hover:bg-primary/90">
           <ImageIcon className="w-4 h-4" />
           Upload Images
           <input
