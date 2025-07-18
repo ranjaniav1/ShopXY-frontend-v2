@@ -24,10 +24,10 @@ const Collection = ({ data = [] }) => {
   return (
     <div className="my-6">
       <Heading text={t("Our Top Collections")} >  <div className="flex gap-2 items-center">
-        <CustomIconButton onClick={handlePrev} className="rounded-md border bg-white shadow-sm">
+        <CustomIconButton onClick={handlePrev} className="rounded-md border bg-body shadow-sm">
           <ChevronLeft className="w-5 h-5" />
         </CustomIconButton>
-        <CustomIconButton onClick={handleNext} className="rounded-md border bg-white shadow-sm">
+        <CustomIconButton onClick={handleNext} className="rounded-md border bg-body shadow-sm">
           <ChevronRight className="w-5 h-5" />
         </CustomIconButton>
       </div></Heading>
