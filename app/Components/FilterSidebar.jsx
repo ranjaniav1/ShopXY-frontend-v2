@@ -3,21 +3,10 @@
 import React, { useState } from "react"; // useState is needed for the search input
 import { useTranslation } from "react-i18next";
 // Import icons if you use them for search or filters, e.g., from lucide-react
-import { Search, ChevronDown, SlidersHorizontal } from "lucide-react"; // Importing icons for search and "More Filters"
-
-// Assuming these are custom components you have.
-// I'll provide simplified mockups for them if you don't have them handy,
-// but for a real app, ensure your actual components are used.
-// import CustomTypography from "@/app/Custom/CustomTypography";
-// import Heading from "@/app/Common/Heading";
-// import CustomMenu from "../Custom/CustomMenu";
-
-// --- MOCK CUSTOM COMPONENTS (Replace with your actual components) ---
+import { Search, ChevronDown, SlidersHorizontal } from "lucide-react"; // Importing i
 const CustomTypography = ({ children, className }) => <p className={className}>{children}</p>;
-const Heading = ({ text, className }) => <h2 className={className}>{text}</h2>;
 
-// Simplified CustomMenu for the compact bar.
-// In a real app, this would be a proper dropdown/select component.
+
 const CustomMenu = ({ value, onChange, placeholder, options, className }) => (
   <div className={`relative ${className}`}>
     <select
@@ -41,31 +30,18 @@ const CustomMenu = ({ value, onChange, placeholder, options, className }) => (
 // --- END MOCK CUSTOM COMPONENTS ---
 
 const FilterBar = ({ // Renamed from FilterSidebar for clarity when used as a bar
-  // These props are less relevant for the *compact bar* UI but kept for completeness
-  // if this component is also responsible for the full sidebar.
-  // priceRange, setPriceRange,
-  // ratingRange, setRatingRange,
-  // minPrice, maxPrice, minRating, maxRating,
-  // selectedCollection, setSelectedCollection,
-  // selectedBrand, setSelectedBrand,
-  // collections, brands,
-  // onClearFilters,
-
-  // Props relevant to the compact filter bar
   sort, setSort,
-  categories,
+  categories, collections, brands,
   selectedCategory, setSelectedCategory,
+  selectedCollection, setSelectedCollection,
+  selectedBrand, setSelectedBrand,
   inStock, setInStock,
   onlyDiscounted, setOnlyDiscounted,
-  onSearch, // New prop for search functionality
-  searchQuery, setSearchQuery, // New props for search input state
-  onShowMoreFilters, // New prop for the "More Filters" button action (e.g., open a modal)
+  searchQuery, setSearchQuery,
+  onSearch,
 }) => {
-  const { t } = useTranslation();
-
-  // State for the search input
-  // const [internalSearchQuery, setInternalSearchQuery] = useState(""); // If not controlled by parent
-  // Assuming searchQuery and setSearchQuery are passed as props
+  const { t } = useTranslation()
+  const [showMoreFilters, setShowMoreFilters] = useState(false);
 
   const sortOptions = [
     { value: "priceLowHigh", label: t("Price: Low to High") },
@@ -77,6 +53,15 @@ const FilterBar = ({ // Renamed from FilterSidebar for clarity when used as a ba
   const categoryOptions = categories?.map(cat => ({
     value: cat.slug,
     label: cat.title
+  })) || [];
+  const collectionOptions = collections?.map(col => ({
+    value: col.slug,
+    label: col.title
+  })) || [];
+
+  const brandOptions = brands?.map(brand => ({
+    value: brand.slug,
+    label: brand.title
   })) || [];
 
   return (
@@ -135,12 +120,30 @@ const FilterBar = ({ // Renamed from FilterSidebar for clarity when used as a ba
 
       {/* More Filters Button */}
       <button
-        onClick={onShowMoreFilters}
-        className="flex items-center gap-1 px-4 py-2 rounded-md text-sm font-medium text-blue-600 hover:bg-blue-50 transition-colors duration-200"
+        onClick={() => setShowMoreFilters(prev => !prev)}
+        className="flex items-center gap-1 px-4 py-2 rounded-md text-sm font-medium text-blue-600 hover:bg-blue-50"
       >
-        <SlidersHorizontal size={16} /> {/* Or ChevronDown if you prefer a dropdown icon */}
+        <SlidersHorizontal size={16} />
         {t("More Filters")}
       </button>
+      {/* More Filters Section */}
+      {showMoreFilters && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 pt-2 border-t mt-2">
+          <CustomMenu
+            value={selectedCollection}
+            onChange={setSelectedCollection}
+            placeholder={t("Select Collection")}
+            options={[{ value: "", label: t("All Collections") }, ...collectionOptions]}
+          />
+
+          <CustomMenu
+            value={selectedBrand}
+            onChange={setSelectedBrand}
+            placeholder={t("Select Brand")}
+            options={[{ value: "", label: t("All Brands") }, ...brandOptions]}
+          />
+        </div>
+      )}
     </div>
   );
 };

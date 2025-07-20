@@ -272,6 +272,7 @@ const HomeProduct = () => {
     searchQuery, setSearchQuery,
     onSearch: handleSearch,
     onShowMoreFilters: handleShowMoreFilters,
+    
   };
 
   return (
