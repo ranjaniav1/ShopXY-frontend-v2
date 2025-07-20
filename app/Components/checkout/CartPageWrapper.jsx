@@ -54,7 +54,7 @@ export default function CartPageWrapper() {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[7fr_1fr_4fr] gap-4 min-h-screen bg-body px-4 py-6 md:px-8">
+    <div className="grid grid-cols-1 md:grid-cols-[7fr_1fr_4fr] gap-4 bg-body px-4 py-6 md:px-8">
       <div className="grid grid-cols-1">
         {cartData.products.map((item) => (
           <CartProductCard

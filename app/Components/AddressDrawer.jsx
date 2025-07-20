@@ -68,7 +68,7 @@ const AddressDrawer = ({ onClose, isEditing, addressData, onAddressSaved = () =>
       city,
       state,
       postalCode: pincode,
-      country: "USA",
+      country: "India",
       phone: contactNumber,
       name,
     };
@@ -109,11 +109,11 @@ const AddressDrawer = ({ onClose, isEditing, addressData, onAddressSaved = () =>
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 bg-body px-4 py-6 rounded">
       <input
         type="text"
         placeholder="Name"
-        className="input input-bordered w-full"
+        className="bg-secondary text-tsecondary px-4 py-2 rounded border border-secondary focus:outline-none focus:ring-2 focus:ring-primary"
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
@@ -121,48 +121,42 @@ const AddressDrawer = ({ onClose, isEditing, addressData, onAddressSaved = () =>
       <input
         type="text"
         placeholder="Contact Number"
-        className="input input-bordered w-full"
-        value={contactNumber}
+        className="bg-secondary text-tsecondary px-4 py-2 rounded border border-secondary focus:outline-none focus:ring-2 focus:ring-primary" value={contactNumber}
         onChange={(e) => setContactNumber(e.target.value)}
       />
 
       <input
         type="text"
         placeholder="House No."
-        className="input input-bordered w-full"
-        value={houseNo}
+        className="bg-secondary text-tsecondary px-4 py-2 rounded border border-secondary focus:outline-none focus:ring-2 focus:ring-primary" value={houseNo}
         onChange={(e) => setHouseNo(e.target.value)}
       />
 
       <input
         type="text"
         placeholder="Road Name"
-        className="input input-bordered w-full"
-        value={roadName}
+        className="bg-secondary text-tsecondary px-4 py-2 rounded border border-secondary focus:outline-none focus:ring-2 focus:ring-primary" value={roadName}
         onChange={(e) => setRoadName(e.target.value)}
       />
 
       <input
         type="text"
         placeholder="Pincode"
-        className="input input-bordered w-full"
-        value={pincode}
+        className="bg-secondary text-tsecondary px-4 py-2 rounded border border-secondary focus:outline-none focus:ring-2 focus:ring-primary" value={pincode}
         onChange={(e) => setPincode(e.target.value)}
       />
 
       <input
         type="text"
         placeholder="City"
-        className="input input-bordered w-full"
-        value={city}
+        className="bg-secondary text-tsecondary px-4 py-2 rounded border border-secondary focus:outline-none focus:ring-2 focus:ring-primary" value={city}
         onChange={(e) => setCity(e.target.value)}
       />
 
       <input
         type="text"
         placeholder="State"
-        className="input input-bordered w-full"
-        value={state}
+        className="bg-secondary text-tsecondary px-4 py-2 rounded border border-secondary focus:outline-none focus:ring-2 focus:ring-primary" value={state}
         onChange={(e) => setState(e.target.value)}
       />
 

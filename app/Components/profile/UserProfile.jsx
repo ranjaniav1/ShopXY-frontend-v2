@@ -14,7 +14,7 @@ const UserProfile = () => {
   const handleClose = () => setOpen(false);
   const { user } = useUser()
   return (
-    <div className="relative flex flex-col items-center p-6 mb-6 rounded-xl bg-body shadow-md">
+    <div className="relative flex flex-col items-center p-6 mb-6 rounded bg-body shadow-md">
       {/* Edit Icon */}
       <button
         onClick={onEditClick}

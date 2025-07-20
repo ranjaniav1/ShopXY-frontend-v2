@@ -15,7 +15,7 @@ const PriceDetails = ({
   const finalPrice = () => Number(totalProductPrice) - Number(totalDiscount);
 
   return (
-    <div className="p-4 rounded-2xl bg-body border border-tsecondary shadow-md transition-all duration-300">
+    <div className="p-4  bg-body transition-all duration-300">
       {/* Heading */}
       <CustomTypography
         variant="h6"

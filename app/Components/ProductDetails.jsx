@@ -30,8 +30,7 @@ const ProductDetails = ({
   full_description,
   productId,
   brand,
-  size = [],
-  color = [],
+  
   stock_qty = 0,
   shipping_charges = 0,
   ratings,
@@ -47,13 +46,13 @@ const ProductDetails = ({
   return (
     <div className="grid grid-cols-1 gap-6">
       {/* Basic Info */}
-      <div className="bg-body p-4 rounded shadow">
+      <div className="bg-secondary p-4 rounded shadow">
         <h2 className="text-xl font-bold text-tprimary mb-2">{name}</h2>
         <p className="text-sm text-tsecondary mb-3">{description}</p>
         <p className="text-sm text-tsecondary">{full_description}</p>
 
         {/* Pricing */}
-        <div className="text-sm mb-2 space-x-2">
+        <div className="text-sm mb-2 space-x-2 ">
           <span className="text-green-600 font-semibold text-xl">
             ₹{discounted_price}
           </span>
@@ -90,7 +89,7 @@ const ProductDetails = ({
       </div>
 
       {/* Tags: Brand, Category, Collection, Size, Color */}
-      <div className="bg-body p-4 rounded shadow space-y-3 text-sm text-tsecondary">
+      <div className="bg-body p-4 rounded shadow space-y-3 text-sm text-tsecondary bg-secondary">
         <div className="flex flex-wrap gap-3">
           {brand?.title && (
             <ClientLink
@@ -125,8 +124,8 @@ const ProductDetails = ({
       {brand && <BrandRating brand={brand} brandId={productId} />}
 
       {/* Reviews */}
-      <div className="bg-body p-4 rounded shadow">
-        <div className="flex justify-between items-center mb-2">
+      <div className="bg-body rounded shadow ">
+        <div className="flex justify-between items-center mb-2 ">
           <h3 className="text-lg font-semibold text-tprimary">
             {t("Rating & Reviews")}
           </h3>

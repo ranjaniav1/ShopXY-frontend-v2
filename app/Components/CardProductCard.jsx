@@ -39,8 +39,8 @@ const CartProductCard = ({
 
         {/* Price and Offer */}
         <div className="flex items-center mb-1 space-x-2">
-          <CustomTypography variant="body1" className="font-bold text-lg text-tsecondary">
-            ₹{discounted_price || actual_price}
+          <CustomTypography variant="body1" className="font-bold text-lg text-tactive">
+            ₹{discounted_price}
           </CustomTypography>
 
           {discounted_price && (
@@ -56,11 +56,8 @@ const CartProductCard = ({
 
         {/* Size and Quantity */}
         <div className="flex items-center space-x-3">
-          <CustomTypography variant="body2" className="text-tsecondary">
-            {t('Size')}: {size}
-          </CustomTypography>
 
-          <div className="w-px h-5 bg-secondary" />
+
 
           <CustomTypography variant="body2" className="text-tsecondary">
             {t('Quantity')}: {quantity}
@@ -69,13 +66,13 @@ const CartProductCard = ({
       </div>
 
       {/* Action Icons (Edit + Delete) */}
-      <div className="absolute top-3 right-3 flex items-center bg-white border border-gray-200 rounded-md px-1.5 py-0.5 shadow-sm z-10">
-        <CustomIconButton onClick={onEdit} className="p-1 text-tprimary ">
+      <div className="absolute top-3 right-3 flex items-center bg-body border border-secondary rounded-md px-1.5 py-0.5 shadow-sm z-10">
+        <CustomIconButton onClick={onEdit} className="text-tactive ">
           <Edit size={18} />
         </CustomIconButton>
-        <div className="w-px h-5 bg-secondary mx-1" />
-        <CustomIconButton onClick={onRemove} className="p-1 ">
-          <Trash2 size={18} className='text-red-600'/>
+        <div className="w-px h-5 bg-secondary " />
+        <CustomIconButton onClick={onRemove} className="">
+          <Trash2 size={18} className='text-red-600' />
         </CustomIconButton>
       </div>
     </div>

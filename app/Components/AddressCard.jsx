@@ -13,10 +13,10 @@ const AddressCard = ({ address, selectedAddressId, handleEdit, handleRemove, han
   return (
     <div className="relative bg-body border  rounded-md p-4 shadow-md hover:border-primary transition-all duration-300">
       {/* Edit & Delete Buttons */}
-      <div className="absolute top-3 right-3 flex items-center bg-white border border-gray-200 rounded-md px-1.5 py-0.5 shadow-sm">
+      <div className="absolute top-3 right-3 flex items-center bg-body border border-secondary rounded-md px-1.5 py-0.5 shadow-sm">
         <CustomIconButton
           onClick={() => handleEdit(address._id)}
-          className="p-1 text-tprimary"
+          className="p-1 text-tactive"
         >
           <Edit size={16} />
         </CustomIconButton>
@@ -40,7 +40,7 @@ const AddressCard = ({ address, selectedAddressId, handleEdit, handleRemove, han
           className="accent-primary w-4 h-4 mt-1 mr-3"
         />
 
-        <div className="text-sm text-tsecondary space-y-1">
+        <div className="text-sm text-tprimary space-y-1">
           <CustomTypography variant="body2">
             {address.address}, {address.city}
           </CustomTypography>

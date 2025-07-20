@@ -13,10 +13,10 @@ const CustomModal = ({ open, onClose, title, children, height }) => {
       >
         {/* Header */}
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold text-primary">{title}</h2>
+          <h2 className="text-lg font-semibold text-tprimary">{title}</h2>
           <button
             onClick={onClose}
-            className="text-gray-600 hover:text-red-500 transition"
+            className="text-tsecondary hover:text-red-500 transition"
           >
             <X className="w-5 h-5" /> {/* Lucide X icon */}
           </button>

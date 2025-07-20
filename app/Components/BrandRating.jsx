@@ -39,7 +39,7 @@ const BrandRating = ({ brand, brandId }) => {
   return (
     <>
       <div
-        className="flex items-center justify-between bg-body  p-4 rounded shadow cursor-pointer hover:shadow-md transition"
+        className="flex items-center justify-between bg-secondary  p-4 rounded shadow cursor-pointer hover:shadow-md transition"
         onClick={() => setDrawerOpen(true)}
       >
         <div className="flex items-center gap-3">

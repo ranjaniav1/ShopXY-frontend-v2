@@ -4,6 +4,7 @@ import React from "react";
 import ClientLink from "../Common/ClientClick";
 import { useTranslation } from "react-i18next";
 import CustomTypography from "../Custom/CustomTypography";
+import Heading from "../Common/Heading";
 
 const Category = ({ data = [] }) => {
   const { t } = useTranslation();
@@ -11,14 +12,7 @@ const Category = ({ data = [] }) => {
   return (
     <div className="py-12 max-w-screen-xl mx-auto px-4">
       {/* Heading */}
-      <div className="text-center mb-10">
-        <h2 className="text-3xl md:text-4xl font-bold text-tprimary">
-          {t("Shop by Category")}
-        </h2>
-        <p className="text-tsecondary mt-2 text-base max-w-xl mx-auto">
-          {t("Discover our extensive range of products across all your favorite categories")}
-        </p>
-      </div>
+      <Heading title={t("Shop by Category")} subtitle={t("Discover our extensive range of products across all your favorite categories")} />
 
       {/* Grid */}
       {data.length > 0 ? (
@@ -28,9 +22,9 @@ const Category = ({ data = [] }) => {
               <ClientLink
                 key={category.id || idx}
                 href={`/category/${category.slug}`}
-                className="group bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition duration-300"
+                className="group bg-body rounded-xl overflow-hidden shadow transition duration-300 hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               >
-                <div className="h-40 sm:h-48 bg-gray-100 flex items-center justify-center p-4">
+                <div className="h-40 sm:h-48 bg-gray-100 flex items-center justify-center p-4 transition-all ">
                   <img
                     src={category.category_icon}
                     alt={category.title}
@@ -38,28 +32,24 @@ const Category = ({ data = [] }) => {
                   />
                 </div>
                 <div className="p-3 text-center">
-                  <p className="font-semibold text-tprimary truncate">
+                  <p className="font-semibold text-tprimary truncate group-hover:text-tactive transition-colors duration-200">
                     {category.title}
                   </p>
-                  {category.product_count && (
-                    <p className="text-sm text-tsecondary">
-                      {category.product_count}+ {t("Products")}
-                    </p>
-                  )}
                 </div>
               </ClientLink>
+
             ))}
           </div>
 
           {/* View All Categories Button */}
-          <div className="mt-10 text-center">
+          {/* <div className="mt-10 text-center">
             <ClientLink
               href="/categories"
               className="inline-block px-6 py-2 rounded bg-primary text-white hover:bg-primary/90 transition font-medium"
             >
               {t("View All Categories")}
             </ClientLink>
-          </div>
+          </div> */}
         </>
       ) : (
         <CustomTypography textAlign="center" className="text-tsecondary mt-8">
