@@ -88,7 +88,7 @@ const BrandReviewForm = ({ brandId, productId, onClose, onSubmitSuccess }) => {
       {/* Review Input */}
       <textarea
         rows={4}
-        className="w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary bg-white placeholder-gray-500"
+        className="w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary bg-secondary placeholder-gray-500"
         placeholder="Write your review here..."
         value={review}
         onChange={(e) => setReview(e.target.value)}

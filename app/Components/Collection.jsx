@@ -2,7 +2,6 @@
 
 import React from "react";
 import Heading from "../Common/Heading";
-import CustomCollectionCard from "../Common/CustomCollectionCard";
 import ClientLink from "../Common/ClientClick";
 import { useTranslation } from "react-i18next";
 import CustomTypography from "../Custom/CustomTypography";
@@ -14,14 +13,8 @@ const Collection = ({ data = [] }) => {
     <div className="bg-secondary py-12">
       <div className="max-w-screen-xl mx-auto px-4">
         {/* Heading */}
-        <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-tprimary">
-            {t("Top Collections")}
-          </h2>
-          <p className="text-tsecondary mt-2 text-base">
-            {t("Curated collections for every lifestyle")}
-          </p>
-        </div>
+        <Heading title={t("Top Collections")} subtitle={t("Curated collections for every lifestyle")} />
+
 
         {data.length > 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
@@ -29,7 +22,7 @@ const Collection = ({ data = [] }) => {
               <ClientLink
                 key={col._id}
                 href={`/collection/${col.slug}`}
-                className="group bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition duration-300 flex flex-col h-64"
+                className="group bg-body rounded-xl overflow-hidden shadow hover:shadow-md transition duration-300 flex flex-col h-64"
               >
                 {/* Image with fixed height and responsive scaling */}
                 <div className="w-full h-48 p-4 overflow-hidden">

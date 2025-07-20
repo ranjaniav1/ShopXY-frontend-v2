@@ -32,11 +32,11 @@ const CustomDrawer = ({ open, onClose, title, children }) => {
       >
 
         {/* Header */}
-        <div className="flex justify-between items-center p-4 bg-secondary text-body">
+        <div className="flex justify-between items-center p-4 bg-secondary text-tprimary">
           <h2 className="text-lg font-semibold">{title}</h2>
           <button
             onClick={onClose}
-            className="text-body focus:outline-none"
+            className="text-tprimary focus:outline-none"
           >
             <X className="w-6 h-6" />
           </button>

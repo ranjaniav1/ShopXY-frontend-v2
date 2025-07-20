@@ -16,11 +16,11 @@ const CustomButton = ({
   if (size === "small") sizeClass = "text-sm px-3 py-1";
   else if (size === "large") sizeClass = "text-lg px-5 py-3";
 
-  let variantClass = "bg-primary  hover:opacity-90";
+  let variantClass = "bg-primary  text-white hover:opacity-90";
   if (variant === "outlined")
-    variantClass = "border border-primary text-primary bg-transparent hover:bg-primary hover:text-white";
+    variantClass = "border border-secondary text-tsecondary bg-transparent hover:bg-primary hover:text-white";
   else if (variant === "text")
-    variantClass = "bg-transparent text-primary hover:underline";
+    variantClass = "bg-transparent text-white hover:underline";
 
   const combinedClasses = `
     inline-flex items-center justify-center

@@ -12,6 +12,26 @@ import { GetFilteredProduct } from '@/app/Service/GetProduct';
 import EmptyCart from '@/app/Components/EmptyCart';
 import ClientLink from '@/app/Common/ClientClick';
 
+// 🔠 Utility: format slug to readable title
+const formatSlug = (text) =>
+  text.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+
+// 🧠 Subtitle suggestions per category
+const subtitleSuggestions = {
+  electronics: 'Discover the latest in tech & innovation',
+  'jewellery-accessories': 'Shine bright with elegant pieces',
+  'women-ethnics': 'Traditional fashion with modern style',
+  'home-kitchen': 'Essentials that make life easier & beautiful',
+  'bags-footwear': 'Step out in style – from casual to classy',
+  'babies-products': 'Everything your little one needs',
+  'food-beverages': 'Taste the best – from snacks to drinks',
+  'sports-outdoors': 'Gear up for your next adventure',
+  'pet-suppliers': 'Love & care for your furry friends',
+  stationery: 'Tools to write, draw, and organize your ideas',
+  brand: 'Browse by trusted brands',
+  collection: 'Hand-picked for every occasion',
+};
+
 const Page = () => {
     const { slug } = useParams();
     const pathname = usePathname();
@@ -77,15 +97,19 @@ const Page = () => {
 
     useEffect(() => {
         if (slug) {
-            document.title = `${slug} | ShopXY`;
+      document.title = `${formatSlug(slug)} | ShopXY`;
         }
     }, [slug]);
 
+  const formattedTitle = formatSlug(slug);
+  const subtitle =
+    subtitleSuggestions[slug.toLowerCase()] || subtitleSuggestions[type] || 'Explore our hand-picked collection for you.';
+
     return (
-        <div>
-            <Heading text={slug} />
+        <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 my-4 bg-secondary">
+      <Heading title={formattedTitle} subtitle={subtitle} />
             {loading ? (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 p-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4">
                     {Array.from({ length: products.length || 9 }).map((_, index) => (
                         <div key={index} className="w-full">
                             <CustomSkeleton type="card" />
@@ -100,7 +124,7 @@ const Page = () => {
                     buttonText="Explore Products"
                 />
             ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4">
                     {products.map((product) => (
                         <ClientLink key={product._id} href={`/product/${product._id}/${encodeURIComponent(product.slug)}`} passHref>
                             <ProductCard
@@ -122,8 +146,6 @@ const Page = () => {
                                 category={product.category}
                                 collection={product.collection}
                                 shipping_charges={product.shipping_charges}
-                                color={product.color}
-                                size={product.size}
                             />
                         </ClientLink>
                     ))}

@@ -40,16 +40,16 @@ const Page = () => {
     fetchProduct();
   }, [productTitle]);
 
-useEffect(() => {
-  if (slug) {
-    document.title = `${productTitle} | ShopXY`;
-  }
-}, [slug]);
+  useEffect(() => {
+    if (productTitle) {
+      document.title = `${productTitle} | ShopXY`;
+    }
+  }, [productTitle]);
 
   const handleImageClick = (img) => {
     setSelectedImage(img);
   };
-  
+
   if (loading) {
     return <CustomTypography variant="h6">Loading...</CustomTypography>;
   }
@@ -59,7 +59,7 @@ useEffect(() => {
 
   return (
 
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 max-w-screen-xl mx-auto">
       {/* Left side: Image gallery */}
       <div className="lg:col-span-5">
         <ProductGallery

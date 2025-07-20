@@ -1,8 +1,13 @@
-const Heading = ({ text, children }) => {
+const Heading = ({ title, subtitle }) => {
   return (
-    <div className="flex items-center justify-between px-4 py-2 mb-6 bg-secondary rounded-md shadow-sm border">
-      <h2 className="text-lg font-bold text-white">{text}</h2>
-      {children}
+    <div className="text-center mb-10">
+      <h2 className="text-3xl md:text-4xl font-bold text-tprimary">
+        {title}
+      </h2>
+      <p className="text-tsecondary mt-2 text-base max-w-xl mx-auto">
+        {subtitle}
+
+      </p>
     </div>
   );
 };

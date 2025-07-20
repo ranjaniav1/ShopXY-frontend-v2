@@ -150,7 +150,9 @@ const HomeProduct = () => {
             ...(sort && { sort }),
           });
 
-          const filteredProducts = res?.filters || [];
+          const filteredProducts = (res?.filters || []).filter(
+            (p) => !inStock || (p.stock_qty > 0 && p.inStock === true)
+          );
           setProducts(filteredProducts);
           setHasMore(false); // Disable "Show More" if filtered
 
@@ -272,20 +274,16 @@ const HomeProduct = () => {
     searchQuery, setSearchQuery,
     onSearch: handleSearch,
     onShowMoreFilters: handleShowMoreFilters,
-    
+
+
   };
+
 
   return (
     <div className="bg-secondary">
       <div className="py-12 max-w-screen-xl mx-auto px-4">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-tprimary">
-            {t("Products for You")}
-          </h2>
-          <p className="text-tsecondary mt-2 text-base">
-            {t("Discover amazing products at unbeatable prices")}
-          </p>
-        </div>
+        <Heading title={t("Products for You")} subtitle={t("Discover amazing products at unbeatable prices")} />
+
 
         {/* Horizontal Filter Bar - Assuming FilterBar component exists and handles this layout */}
         <div className="mb-6">
@@ -324,7 +322,10 @@ const HomeProduct = () => {
                         isInWishlist={isInWishlist(product._id)}
                         stockQty={product.stock_qty}
                         category={product.category}
-                        inStock={!!product.stock_qty && Number(product.stock_qty) > 0}
+                        inStock={product.stock_qty > 0 && product.inStock === true}
+                        stock_qty={product.stock_qty}
+
+
                       />
                     </div>
                   );

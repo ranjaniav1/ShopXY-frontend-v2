@@ -70,7 +70,7 @@ const PaymentPage = ({ handleBack, cartData, loadCart }) => {
 
   return (
     <div className="min-h-screen bg-body px-4 py-6 md:px-8">
-      <div className="w-full max-w-2xl mx-auto bg-white shadow-md rounded-2xl p-6">
+      <div className="w-full max-w-2xl mx-auto bg-body shadow-md rounded-2xl p-6">
         {/* Title */}
         <CustomTypography className="text-xl font-semibold text-tprimary mb-6">
           Payment Methods
@@ -124,7 +124,7 @@ const PaymentPage = ({ handleBack, cartData, loadCart }) => {
               title="Back"
               onClick={handleBack}
               variant="outlined"
-              className="w-full border border-primary text-tprimary"
+              className="w-full"
             />
           </ClientLink>
         </div>

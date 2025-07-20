@@ -63,7 +63,7 @@ const EditCart = ({ onClose, selectedProduct }) => {
     (selectedProduct.product.discounted_price || 0) * localQuantity;
 
   return (
-    <div className="p-4">
+    <div >
       {loading ? (
         <div className="flex justify-center items-center h-20">
           <div className="w-6 h-6 border-4 border-t-transparent border-primary rounded-full animate-spin" />
@@ -86,20 +86,20 @@ const EditCart = ({ onClose, selectedProduct }) => {
               </CustomTypography>
 
               {/* Quantity Control */}
-              <div className="flex items-center mt-2 space-x-2">
+              <div className="flex items-center mt-3 gap-3 bg-secondary  border border-tsecondary/20 px-4 py-2 rounded w-fit">
                 <button
                   onClick={handleDecrement}
-                  className="bg-primary text-white p-1 rounded hover:opacity-90"
-                >
+                  className="w-8 h-8 flex items-center justify-center bg-primary rounded text-white hover:opacity-90 transition"
+                  aria-label="Decrease quantity"                >
                   <Minus size={16} />
                 </button>
-                <CustomTypography variant="h6" className="text-tsecondary px-6">
+                <CustomTypography variant="h6" className="text-tprimary min-w-[24px] text-center">
                   {localQuantity}
                 </CustomTypography>
                 <button
                   onClick={handleIncrement}
-                  className="bg-primary text-white p-1 rounded hover:opacity-90"
-                >
+                  className="w-8 h-8 flex items-center justify-center bg-primary rounded text-white hover:opacity-90 transition"
+                  aria-label="Increase quantity"                >
                   <Plus size={16} />
                 </button>
               </div>

@@ -13,22 +13,22 @@ const DialogBox = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="bg-white rounded-md shadow-lg w-[90%] sm:w-[400px]">
+      <div className="bg-secondary rounded-md shadow-lg w-[90%] sm:w-[400px]">
         {/* Title */}
         <div className="px-6 py-4 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-800">{title}</h2>
+          <h2 className="text-lg font-semibold text-tprimary">{title}</h2>
         </div>
 
         {/* Content */}
         <div className="px-6 py-4">
-          <p className="text-sm text-gray-600">{description}</p>
+          <p className="text-sm text-tsecondary">{description}</p>
         </div>
 
         {/* Actions */}
-        <div className="px-6 py-3 border-t border-gray-200 flex justify-end gap-3">
+        <div className="px-6 py-3 flex justify-end gap-3">
           <button
             onClick={onCancel}
-            className="px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100 text-sm"
+            className="px-4 py-2 rounded border border-gray-300 text-tprimary  text-sm"
           >
             {cancelText}
           </button>

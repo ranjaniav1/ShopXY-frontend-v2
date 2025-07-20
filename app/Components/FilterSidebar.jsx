@@ -65,7 +65,7 @@ const FilterBar = ({ // Renamed from FilterSidebar for clarity when used as a ba
   })) || [];
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm flex flex-wrap items-center gap-4 justify-between">
+    <div className="bg-body border border-gray-200 rounded-xl p-4 shadow-sm flex flex-wrap items-center gap-4 justify-between">
       {/* Search Input */}
       <div className="relative flex-grow max-w-sm"> {/* max-w-sm for the search input width */}
         <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />

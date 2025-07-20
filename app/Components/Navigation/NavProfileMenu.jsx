@@ -29,6 +29,7 @@ const userId=user?._id
         className="w-8 h-8 rounded-full cursor-pointer"
         alt="avatar"
       />
+      
       {open && (
         <div className="absolute right-0 mt-2 w-40  shadow-md rounded-md z-50 border border-secondary">
           <button

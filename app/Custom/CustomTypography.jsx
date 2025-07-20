@@ -10,8 +10,8 @@ const typographyVariantMap = {
   h5: 'text-lg font-normal text-gray-900',
   h6: 'text-base font-normal text-gray-800',
   body1: 'text-base text-gray-800',
-  body2: 'text-sm text-gray-700',
-  caption: 'text-xs text-gray-700',
+  body2: 'text-sm text-tsecondary',
+  caption: 'text-xs text-tsecondary',
   overline: 'text-xs uppercase text-gray-700 tracking-wider',
 };
 
