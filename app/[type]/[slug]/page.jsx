@@ -75,6 +75,11 @@ const Page = () => {
 
     const isInWishlist = (id) => wishlist.includes(id);
 
+    useEffect(() => {
+        if (slug) {
+            document.title = `${slug} | ShopXY`;
+        }
+    }, [slug]);
 
     return (
         <div>

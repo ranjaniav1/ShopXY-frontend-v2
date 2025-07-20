@@ -17,35 +17,45 @@ const Page = () => {
   const [selectedImage, setSelectedImage] = useState('');
   const [loading, setLoading] = useState(true);
 
-  const fetchProduct = async () => {
-    if (!productTitle) return;
-    try {
-      const result = await GetSingleProduct({ slug: productTitle });
-      const productData = result.product;
-
-      setProduct(productData);
-      setBrand(result.brand);
-      if (productData) {
-        setSelectedImage(productData.detail_image[0]);
-      }
-    } catch (error) {
-      console.error('Failed to fetch product', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchProduct();
-  }, []);
+    const fetchProduct = async () => {
+      if (!productTitle) return;
 
-  if (loading) {
-    return <CustomTypography variant="h6">Loading...</CustomTypography>;
+      try {
+        const result = await GetSingleProduct({ slug: productTitle });
+        const productData = result.product;
+
+        setProduct(productData);
+        setBrand(result.brand);
+        if (productData) {
+          setSelectedImage(productData.detail_image[0]);
+        }
+      } catch (error) {
+        console.error('Failed to fetch product', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [productTitle]);
+
+useEffect(() => {
+  if (slug) {
+    document.title = `${productTitle} | ShopXY`;
   }
+}, [slug]);
 
   const handleImageClick = (img) => {
     setSelectedImage(img);
   };
+  
+  if (loading) {
+    return <CustomTypography variant="h6">Loading...</CustomTypography>;
+  }
+
+
+
 
   return (
 

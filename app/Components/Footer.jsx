@@ -30,13 +30,13 @@ const Footer = () => {
               />
             )}
             <p className="text-sm">
-              {webSettings?.description || "Your one-stop eCommerce solution."}
+              {webSettings?.description || "Your one-stop destination for quality products across multiple categories. Shop with confidence and convenience."}
             </p>
           </div>
 
           {/* Top Links */}
           <div>
-            <h2 className="text-xl font-semibold mb-4">Our Top Links</h2>
+            <h2 className="text-xl font-semibold mb-4">Quick Links</h2>
             <ul className="space-y-2">
               {footerLinks.map((link) => (
                 <li key={link._id}>

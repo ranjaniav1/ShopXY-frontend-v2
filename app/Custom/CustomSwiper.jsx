@@ -16,7 +16,7 @@ const CustomSwiper = ({
   swiperClass = "",
   autoplay = true,
   pagination = true,
-  navigation = true,
+  navigation = false,
   breakpoints = {},
   swiperRef, // <- accept external ref
 }) => {
