@@ -1,12 +1,24 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { Heart, Plus } from "lucide-react";
-import { addWishlist, deleteWishlistItem } from "../Service/Profile";
-import toast from "react-hot-toast";
-import { handleAddToCart } from "../helper/cartUtils";
-import ClientLink from "../Common/ClientClick";
-import { GetCollectionsByCategory } from "../Service/GetCollection";
+import React from "react";
+// No Plus icon needed for the new UI, so it's removed
+// import { Plus } from "lucide-react";
+
+// Assuming these are external helper functions/components
+// You MUST ensure these paths and functionalities are correct in your project:
+// import { handleAddToCart } from "../helper/cartUtils"; // This is crucial for add to cart
+// import ClientLink from "../Common/ClientClick"; // This is crucial for navigation
+
+// Placeholder for ClientLink and handleAddToCart if you don't have them set up yet.
+// In a real application, you'd replace these with your actual implementations.
+const ClientLink = ({ href, children, className = "" }) => (
+  <a href={href} className={className}>{children}</a>
+);
+const handleAddToCart = ({ userId, productId }) => {
+  console.log(`Simulating Add to Cart: Product ID ${productId} for User ID ${userId}`);
+  // Implement your actual add to cart logic here (e.g., API call, state management)
+  // Example: toast.success("Product added to cart!");
+};
 
 const ProductCard = ({
   imgSrc,
@@ -18,153 +30,115 @@ const ProductCard = ({
   userId,
   productId,
   slug,
-  isInWishlist: isWishlistedFromParent,
   stockQty,
-  description,
-  category,
-  brand,
-  collection,
-  shipping_charges,
-  color,
+  category, // Assuming category.title and category.slug exist
 }) => {
-  const [isWished, setIsWished] = useState(isWishlistedFromParent);
-
-  useEffect(() => {
-    setIsWished(isWishlistedFromParent);
-  }, [isWishlistedFromParent]);
-
-  const handleAddToWishlist = async (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    if (!userId) {
-      toast.error("Please login first to use wishlist!");
-      return;
-    }
-
-    try {
-      if (isWished) {
-        await deleteWishlistItem(productId);
-        toast.success("Removed from wishlist!");
-      } else {
-        await addWishlist(productId);
-        toast.success("Added to wishlist!");
-      }
-      setIsWished(!isWished);
-    } catch (err) {
-      toast.error("Something went wrong!");
-    }
-  };
-
   const renderStars = (rating) => (
-    <div className="text-yellow-400 text-sm">
-      {"★".repeat(Math.floor(rating)) + "☆".repeat(5 - Math.floor(rating))}
+    <div className="flex items-center text-yellow-400 text-xs">
+      {"★".repeat(Math.floor(rating))}
+      {"☆".repeat(5 - Math.floor(rating))}
+      {rating > 0 && (
+        <span className="ml-1 text-gray-500 text-[11px]">({rating.toFixed(1)})</span> // Slightly smaller text for rating number
+      )}
     </div>
   );
 
+  const isOutOfStock = stockQty <= 0;
+
   return (
-    <div className="relative rounded-md p-2 bg-body border shadow-sm hover:shadow-md transition duration-200 text-tprimary hover:border-primary">
+    <div
+      className={`relative rounded-lg overflow-hidden border border-gray-100 bg-white shadow-lg transition-all duration-200
+       
+      `}
+    >
       {/* Offer Badge */}
       {offer && (
-        <div className="absolute top-2 left-2 bg-red-500 text-white text-[10px] px-2 py-[2px] rounded font-semibold z-10">
+        <div className="absolute top-3 left-3 bg-red-500 text-white text-[11px] px-2.5 py-[3px] rounded font-semibold z-10">
           {offer}% OFF
         </div>
       )}
 
-      {/* Wishlist Icon */}
-      <div className="absolute top-2 right-2 z-20">
-        <button onClick={handleAddToWishlist} aria-label="Toggle wishlist">
-          {isWished ? (
-            <Heart className="w-4 h-4 text-green-600 fill-green-600" />
-          ) : (
-            <Heart className="w-4 h-4 text-tmuted hover:text-red-500 transition" />
-          )}
-        </button>
-      </div>
-
-      {/* Product Image */}
+      {/* Product Image Link Wrapper */}
       <ClientLink href={`/product/${productId}/${encodeURIComponent(slug)}`}>
-        <div className="w-full h-36 bg-body-light rounded-md overflow-hidden flex items-center justify-center mb-2">
+        <div className="w-full h-40 bg-gray-50 flex items-center justify-center overflow-hidden"> {/* Changed to gray-50 for image background */}
           <img
-            loading="lazy"
             src={imgSrc}
             alt={title}
-            className="object-contain w-full h-full transition-transform duration-200 hover:scale-105"
+            className="object-contain w-full h-full p-4 transition-transform duration-300 hover:scale-105"
           />
         </div>
       </ClientLink>
 
-      {/* Title */}
-      <ClientLink href={`/product/${productId}/${encodeURIComponent(slug)}`}>
-        <h3 className="text-xs font-medium text-tprimary  hover:underline">
-          {title}
-        </h3>
-
-
-      </ClientLink>
-
-      {/* Rating */}
-      {rating > 0 && <div>{renderStars(rating)}</div>}
-
-
-
-      {/* Brand & Collection */}
-      <div className="flex flex-wrap gap-1 mt-2 mb-1">
-        {brand?.title && brand?.slug && (
-          <ClientLink href={`/brand/${brand.slug}`}>
-            <span className="cursor-pointer bg-blue-100 text-blue-700 text-[10px] font-medium px-2 py-[2px] rounded-full hover:bg-blue-200 transition">
-              {brand.title}
-            </span>
-          </ClientLink>
-        )}
-        {collection?.title && collection?.slug && (
-          <ClientLink href={`/collection/${collection.slug}`}>
-            <span className="cursor-pointer bg-purple-100 text-purple-700 text-[10px] font-medium px-2 py-[2px] rounded-full hover:bg-purple-200 transition">
-              {collection.title}
-            </span>
-          </ClientLink>
-        )}
-
-        {category?.title && category?.slug && (
-          <ClientLink href={`/category/${category.slug}`}>
-            <span className="cursor-pointer bg-green-100 text-green-700 text-[10px] font-medium px-2 py-[2px] rounded-full hover:bg-green-200 transition">
-              {category.title}
-            </span>
-          </ClientLink>
-        )}
-      </div>
-
-
-
-      {/* Price + Add to Cart / Out of Stock */}
-      <div className="flex items-center justify-between mt-2">
-        <div>
-          {discountPrice !== price ? (
-            <>
-              <span className="text-success font-semibold text-sm">₹{discountPrice}</span>
-              <span className="line-through text-tsecondary text-xs ml-1">₹{price}</span>
-            </>
+      {/* White Content Block */}
+      <div className="bg-white p-4 flex flex-col gap-2">
+        {/* Row 1: Category + Stars */}
+        <div className="flex items-center justify-between text-xs">
+          {category?.title ? (
+            <ClientLink href={`/category/${category.slug}`}>
+              <span className="bg-blue-100 text-blue-700 px-2 py-[2px] rounded text-[10px] font-medium hover:bg-blue-200 transition">
+                {category.title}
+              </span>
+            </ClientLink>
           ) : (
-            <span className="text-success font-semibold text-sm">₹{price}</span>
+            <span /> // Empty span to maintain spacing if no category
+          )}
+          {rating > 0 && renderStars(rating)}
+        </div>
+
+        {/* Row 2: Title */}
+        <ClientLink href={`/product/${productId}/${encodeURIComponent(slug)}`}>
+          <h3 className="text-base font-semibold text-gray-800 hover:underline line-clamp-2 min-h-[1em]"> {/* Increased text size to base, min-h for 2 lines */}
+            {title}
+          </h3>
+        </ClientLink>
+
+        {/* Row 3: Price & Stock Status */}
+        <div className="flex items-baseline justify-between mt-1 mb-2"> {/* Adjusted margin for spacing */}
+          <div className="flex items-baseline gap-1">
+            {discountPrice && discountPrice !== price ? (
+              <>
+                <span className="text-primary font-bold text-lg">
+                  ₹{discountPrice}
+                </span>
+                <span className="line-through text-gray-500 text-sm">
+                  ₹{price}
+                </span>
+              </>
+            ) : (
+              <span className="text-gray-900 font-bold text-lg">₹{price}</span>
+            )}
+          </div>
+          {/* Stock Status text aligned right */}
+          {!isOutOfStock ? (
+            <span className="text-green-600 text-[13px] font-medium">
+              In Stock
+            </span>
+          ) : (
+            <span className="text-red-600 text-[13px] font-medium">
+              Out of Stock
+            </span>
           )}
         </div>
 
-        {stockQty > 0 ? (
+        {/* Full-width Add to Cart / Out of Stock Button */}
+        {isOutOfStock ? (
           <button
-            className="bg-green-600 hover:bg-green-700 text-white text-[10px] px-2 py-[3px] rounded flex items-center gap-1"
+            disabled
+            className="w-full bg-gray-200 text-gray-500 text-base py-2.5 rounded-md font-medium cursor-not-allowed"
+          >
+            Out of Stock
+          </button>
+        ) : (
+          <button
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
               handleAddToCart({ userId, productId });
             }}
+            className="w-full bg-gray-100 text-gray-700 hover:bg-gray-200 active:bg-gray-300 text-base py-2.5 rounded-md font-medium transition-colors duration-200"
           >
-            <Plus size={12} />
-            Add
+            Add to Cart
           </button>
-        ) : (
-          <span className="bg-red-100 text-red-600 text-[10px] px-2 py-[2px] rounded font-semibold">
-            Out of Stock
-          </span>
         )}
       </div>
     </div>

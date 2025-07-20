@@ -1,91 +1,68 @@
 "use client";
 
-import React, { useRef } from "react";
-import Heading from "../Common/Heading";
+import React from "react";
 import ClientLink from "../Common/ClientClick";
 import { useTranslation } from "react-i18next";
-import CustomSwiper from "../Custom/CustomSwiper";
 import CustomTypography from "../Custom/CustomTypography";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import CustomIconButton from "../Custom/CustomIconButton";
 
-const bgColors = [
-  "bg-red-100", "bg-blue-100", "bg-green-100", "bg-yellow-100",
-  "bg-purple-100", "bg-pink-100", "bg-indigo-100", "bg-orange-100",
-  "bg-teal-100", "bg-cyan-100",
-];
-
-const Categoy = ({ data = [] }) => {
+const Category = ({ data = [] }) => {
   const { t } = useTranslation();
-  const swiperRef = useRef(null);
-
-  const handlePrev = () => {
-    swiperRef.current?.slidePrev();
-  };
-
-  const handleNext = () => {
-    swiperRef.current?.slideNext();
-  };
 
   return (
-    <div className="my-6">
-      <Heading text={t("Shop by Category")}>
-        <div className="flex gap-2 items-center">
-          <CustomIconButton
-            onClick={handlePrev}
-            className="bg-white border border-transparent hover:border-primary transition-all"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </CustomIconButton>
-          <CustomIconButton
-            onClick={handleNext}
-            className="bg-white border border-transparent hover:border-primary transition-all"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </CustomIconButton>
-        </div>
-      </Heading>
+    <div className="py-12 max-w-screen-xl mx-auto px-4">
+      {/* Heading */}
+      <div className="text-center mb-10">
+        <h2 className="text-3xl md:text-4xl font-bold text-tprimary">
+          {t("Shop by Category")}
+        </h2>
+        <p className="text-tsecondary mt-2 text-base max-w-xl mx-auto">
+          {t("Discover our extensive range of products across all your favorite categories")}
+        </p>
+      </div>
 
-
+      {/* Grid */}
       {data.length > 0 ? (
-        <CustomSwiper
-          data={data}
-          autoplay={true}
-          navigation={false} // disable default arrows
-          pagination={false}
-          height="auto"
-          swiperClass="px-2"
-          swiperRef={swiperRef} // pass ref to control from outside
-          breakpoints={{
-            0: { slidesPerView: 2, spaceBetween: 10 },
-            640: { slidesPerView: 2, spaceBetween: 10 },
-            768: { slidesPerView: 4, spaceBetween: 20 },
-            1024: { slidesPerView: 6, spaceBetween: 30 },
-          }}
-          renderContent={(category, idx) => {
-            const bgColor = bgColors[idx % bgColors.length];
-            return (
+        <>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+            {data.slice(0, 8).map((category, idx) => (
               <ClientLink
                 key={category.id || idx}
                 href={`/category/${category.slug}`}
-                className={`group rounded-xl p-4 flex flex-col items-center text-center cursor-pointer shadow-sm hover:shadow-md transition duration-300 ${bgColor}`}
+                className="group bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition duration-300"
               >
-                <div className="w-16 h-16 mb-3 rounded-full bg-white p-2 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300">
+                <div className="h-40 sm:h-48 bg-gray-100 flex items-center justify-center p-4">
                   <img
                     src={category.category_icon}
                     alt={category.title}
-                    className="w-full h-full object-contain"
+                    className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
                   />
                 </div>
-                <p className="text-sm font-semibold text-tsecondary group-hover:text-primary truncate">
-                  {category.title}
-                </p>
+                <div className="p-3 text-center">
+                  <p className="font-semibold text-tprimary truncate">
+                    {category.title}
+                  </p>
+                  {category.product_count && (
+                    <p className="text-sm text-tsecondary">
+                      {category.product_count}+ {t("Products")}
+                    </p>
+                  )}
+                </div>
               </ClientLink>
-            );
-          }}
-        />
+            ))}
+          </div>
+
+          {/* View All Categories Button */}
+          <div className="mt-10 text-center">
+            <ClientLink
+              href="/categories"
+              className="inline-block px-6 py-2 rounded bg-primary text-white hover:bg-primary/90 transition font-medium"
+            >
+              {t("View All Categories")}
+            </ClientLink>
+          </div>
+        </>
       ) : (
-        <CustomTypography textAlign="center" className="text-tsecondary">
+        <CustomTypography textAlign="center" className="text-tsecondary mt-8">
           {t("No category found")}
         </CustomTypography>
       )}
@@ -93,4 +70,4 @@ const Categoy = ({ data = [] }) => {
   );
 };
 
-export default Categoy;
+export default Category;

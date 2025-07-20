@@ -1,148 +1,148 @@
-'use client';
+"use client";
 
-import React from "react";
+import React, { useState } from "react"; // useState is needed for the search input
 import { useTranslation } from "react-i18next";
-import CustomTypography from "@/app/Custom/CustomTypography";
-import Heading from "@/app/Common/Heading";
-import CustomMenu from "../Custom/CustomMenu";
+// Import icons if you use them for search or filters, e.g., from lucide-react
+import { Search, ChevronDown, SlidersHorizontal } from "lucide-react"; // Importing icons for search and "More Filters"
 
-const FilterSidebar = ({
-  isCompact = false,
-  priceRange, setPriceRange,
-  ratingRange, setRatingRange,
-  minPrice, maxPrice, minRating, maxRating,
+// Assuming these are custom components you have.
+// I'll provide simplified mockups for them if you don't have them handy,
+// but for a real app, ensure your actual components are used.
+// import CustomTypography from "@/app/Custom/CustomTypography";
+// import Heading from "@/app/Common/Heading";
+// import CustomMenu from "../Custom/CustomMenu";
+
+// --- MOCK CUSTOM COMPONENTS (Replace with your actual components) ---
+const CustomTypography = ({ children, className }) => <p className={className}>{children}</p>;
+const Heading = ({ text, className }) => <h2 className={className}>{text}</h2>;
+
+// Simplified CustomMenu for the compact bar.
+// In a real app, this would be a proper dropdown/select component.
+const CustomMenu = ({ value, onChange, placeholder, options, className }) => (
+  <div className={`relative ${className}`}>
+    <select
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className="appearance-none bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded-md leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer"
+    >
+      {placeholder && <option value="">{placeholder}</option>}
+      {options.map((option) => (
+        <option key={option.value} value={option.value}>
+          {option.label}
+        </option>
+      ))}
+    </select>
+    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+      <ChevronDown size={16} />
+    </div>
+  </div>
+);
+
+// --- END MOCK CUSTOM COMPONENTS ---
+
+const FilterBar = ({ // Renamed from FilterSidebar for clarity when used as a bar
+  // These props are less relevant for the *compact bar* UI but kept for completeness
+  // if this component is also responsible for the full sidebar.
+  // priceRange, setPriceRange,
+  // ratingRange, setRatingRange,
+  // minPrice, maxPrice, minRating, maxRating,
+  // selectedCollection, setSelectedCollection,
+  // selectedBrand, setSelectedBrand,
+  // collections, brands,
+  // onClearFilters,
+
+  // Props relevant to the compact filter bar
+  sort, setSort,
+  categories,
+  selectedCategory, setSelectedCategory,
   inStock, setInStock,
   onlyDiscounted, setOnlyDiscounted,
-  selectedCategory, setSelectedCategory,
-  selectedCollection, setSelectedCollection,
-  selectedBrand, setSelectedBrand,
-  sort, setSort,
-  categories, collections, brands,
-  onClearFilters,
+  onSearch, // New prop for search functionality
+  searchQuery, setSearchQuery, // New props for search input state
+  onShowMoreFilters, // New prop for the "More Filters" button action (e.g., open a modal)
 }) => {
   const { t } = useTranslation();
 
-  return (
-    <div className={`bg-body ${isCompact ? 'flex flex-wrap gap-4 items-center' : 'border border-secondary rounded-md p-4 shadow-sm sticky top-24 w-full max-w-[300px] text-tsecondary'}`}>
-      {!isCompact && (
-        <Heading text={t("Filters")} className="text-lg mb-3 text-primary" />
-      )}
+  // State for the search input
+  // const [internalSearchQuery, setInternalSearchQuery] = useState(""); // If not controlled by parent
+  // Assuming searchQuery and setSearchQuery are passed as props
 
-      {/* Sort */}
+  const sortOptions = [
+    { value: "priceLowHigh", label: t("Price: Low to High") },
+    { value: "priceHighLow", label: t("Price: High to Low") },
+    { value: "ratingHighLow", label: t("Rating: High to Low") },
+  ];
+
+  // Map categories to CustomMenu options format
+  const categoryOptions = categories?.map(cat => ({
+    value: cat.slug,
+    label: cat.title
+  })) || [];
+
+  return (
+    <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm flex flex-wrap items-center gap-4 justify-between">
+      {/* Search Input */}
+      <div className="relative flex-grow max-w-sm"> {/* max-w-sm for the search input width */}
+        <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+        <input
+          type="text"
+          placeholder={t("Search products...")}
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          // If you need to trigger search on enter or button click
+          onKeyDown={(e) => { if (e.key === 'Enter' && onSearch) onSearch(searchQuery); }}
+          className="w-full pl-10 pr-4 py-2.5 rounded-md bg-gray-100 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-700 placeholder-gray-500"
+        />
+      </div>
+
+      {/* Sort Dropdown */}
       <CustomMenu
-        label={isCompact ? undefined : t("Sort By")}
-        className={isCompact ? "min-w-[130px]" : "w-full mb-3"}
         value={sort}
         onChange={setSort}
-        placeholder={t("Sort")}
-        options={[
-          { value: "priceLowHigh", label: t("Price: Low to High") },
-          { value: "priceHighLow", label: t("Price: High to Low") },
-          { value: "ratingHighLow", label: t("Rating: High to Low") },
-        ]}
+        placeholder={t("Sort: Price Low to High")} // Default placeholder as seen in image
+        options={sortOptions}
+        className="min-w-[180px]" // Adjust width to match image
       />
 
-      {/* Category */}
+      {/* All Categories Dropdown */}
       <CustomMenu
-        label={isCompact ? undefined : t("Category")}
-        className={isCompact ? "min-w-[130px]" : "w-full mb-3"}
         value={selectedCategory}
         onChange={setSelectedCategory}
-        placeholder={t("All")}
-        options={categories}
+        placeholder={t("All Categories")}
+        options={[{ value: "", label: t("All Categories") }, ...categoryOptions]} // Add 'All Categories' as an option
+        className="min-w-[150px]"
       />
 
-      {/* Collection */}
-      <CustomMenu
-        label={isCompact ? undefined : t("Collection")}
-        className={isCompact ? "min-w-[130px]" : "w-full mb-3"}
-        value={selectedCollection}
-        onChange={setSelectedCollection}
-        placeholder={t("All")}
-        options={collections}
-      />
+      {/* In Stock Only Button */}
+      <button
+        onClick={() => setInStock(!inStock)}
+        className={`px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200
+          ${inStock ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}
+        `}
+      >
+        {t("In Stock Only")}
+      </button>
 
-      {/* Brand */}
-      <CustomMenu
-        label={isCompact ? undefined : t("Brand")}
-        className={isCompact ? "min-w-[130px]" : "w-full mb-3"}
-        value={selectedBrand}
-        onChange={setSelectedBrand}
-        placeholder={t("All")}
-        options={brands}
-      />
+      {/* Discounted Button */}
+      <button
+        onClick={() => setOnlyDiscounted(!onlyDiscounted)}
+        className={`px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200
+          ${onlyDiscounted ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}
+        `}
+      >
+        {t("Discounted")}
+      </button>
 
-      {/* Price Range */}
-      <div className={isCompact ? "min-w-[180px]" : "w-full mb-4"}>
-        <CustomTypography fontWeight={600} fontSize="1rem" className="mb-1 text-primary">
-          {t("Price Range")} (₹{priceRange[0]})
-        </CustomTypography>
-        <input
-          type="range"
-          min={minPrice}
-          max={maxPrice}
-          value={priceRange[0]}
-          onChange={(e) => setPriceRange([parseInt(e.target.value)])}
-          className="w-full h-2 bg-secondary rounded-md appearance-none cursor-pointer"
-        />
-        {!isCompact && (
-          <div className="flex justify-between text-sm text-tsecondary mt-1">
-            <span>₹{minPrice}</span>
-            <span>₹{priceRange[0]}</span>
-            <span>₹{maxPrice}</span>
-          </div>
-        )}
-      </div>
-
-      {/* Rating */}
-      <div className={isCompact ? "min-w-[180px]" : "w-full mb-6"}>
-        <CustomTypography fontWeight={600} fontSize="1rem" className="mb-2 text-primary">
-          {t("Min Rating")} ({ratingRange[0]} {t("stars")})
-        </CustomTypography>
-        <input
-          type="range"
-          min={minRating}
-          max={maxRating}
-          step={0.5}
-          value={ratingRange[0]}
-          onChange={(e) => setRatingRange([parseFloat(e.target.value), 5])}
-          className="w-full h-2 bg-secondary rounded-md appearance-none cursor-pointer"
-        />
-      </div>
-
-      {/* Stock & Discount */}
-      <div className={`space-y-2 ${isCompact ? "" : "mb-4"}`}>
-        <label className="inline-flex items-center gap-2">
-          <input
-            type="checkbox"
-            checked={inStock}
-            onChange={(e) => setInStock(e.target.checked)}
-            className="form-checkbox rounded border-secondary text-primary"
-          />
-          <span className="text-sm">{t("Only In Stock")}</span>
-        </label>
-        <label className="inline-flex items-center gap-2">
-          <input
-            type="checkbox"
-            checked={onlyDiscounted}
-            onChange={(e) => setOnlyDiscounted(e.target.checked)}
-            className="form-checkbox rounded border-secondary text-primary"
-          />
-          <span className="text-sm">{t("Only Discounted")}</span>
-        </label>
-      </div>
-
-      {/* Clear All */}
-      {!isCompact && (
-        <button
-          onClick={onClearFilters}
-          className="mt-4 w-full text-center text-red-600 text-sm underline hover:text-red-800"
-        >
-          {t("Clear All Filters")}
-        </button>
-      )}
+      {/* More Filters Button */}
+      <button
+        onClick={onShowMoreFilters}
+        className="flex items-center gap-1 px-4 py-2 rounded-md text-sm font-medium text-blue-600 hover:bg-blue-50 transition-colors duration-200"
+      >
+        <SlidersHorizontal size={16} /> {/* Or ChevronDown if you prefer a dropdown icon */}
+        {t("More Filters")}
+      </button>
     </div>
   );
 };
 
-export default FilterSidebar;
+export default FilterBar;
