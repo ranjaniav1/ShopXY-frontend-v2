@@ -11,3 +11,16 @@ export async function GetCollectionsByCategory({ categoryId }) {
     console.log("error in category", error);
   }
 }
+
+export async function GetCollection() {
+
+  try {
+    const response = await httpAxios.get(
+      `/collection`
+    );
+    console.log("col", response.data.data);
+    return response.data.data;
+  } catch (error) {
+    console.log("error in collection", error);
+  }
+}
