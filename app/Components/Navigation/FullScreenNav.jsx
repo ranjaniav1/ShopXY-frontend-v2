@@ -88,8 +88,8 @@ const FullScreenNav = () => {
           <option value="fr">FR</option>
         </select>
 
-        <NavCartButton count={5} />
-        {user ? <NavProfileMenu /> : <NavAuthButtons />}
+       
+        {user ? <> <NavCartButton count={5} /> <NavProfileMenu /></> : <NavAuthButtons />}
       </div>
 
       
