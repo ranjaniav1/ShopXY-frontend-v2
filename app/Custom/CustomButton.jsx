@@ -20,7 +20,7 @@ const CustomButton = ({
   if (variant === "outlined")
     variantClass = "border border-secondary text-tsecondary bg-transparent hover:bg-primary hover:text-white";
   else if (variant === "text")
-    variantClass = "bg-transparent text-white hover:underline";
+    variantClass = "bg-transparent text-primary hover:underline";
 
   const combinedClasses = `
     inline-flex items-center justify-center
