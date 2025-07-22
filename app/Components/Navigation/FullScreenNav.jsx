@@ -47,8 +47,8 @@ const FullScreenNav = () => {
 
         {/* Desktop Nav Links */}
         <div className="hidden lg:flex gap-4 text-[15px] font-medium text-tprimary">
-          <ClientLink href="/category/stationary">Stationary</ClientLink>
-          <ClientLink href="/category/fashion">Fashions</ClientLink>
+          <ClientLink href="/categories">Categories</ClientLink>
+          <ClientLink href="/collections">Collections</ClientLink>
           <ClientLink href="/collection/laptop">Laptop</ClientLink>
           <ClientLink href="/collection/camara">Camera</ClientLink>
         </div>

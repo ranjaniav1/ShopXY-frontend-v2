@@ -21,7 +21,7 @@ const Pagination = ({ currentPage, totalItems, itemsPerPage, onPageChange }) => 
         Previous
       </button>
 
-      <span className="text-sm text-secondary">
+      <span className="text-sm text-primary">
         Page <span className="font-semibold">{currentPage}</span> of{" "}
         <span className="font-semibold">{totalPages}</span>
       </span>

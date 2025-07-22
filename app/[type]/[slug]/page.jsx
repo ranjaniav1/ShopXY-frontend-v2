@@ -106,7 +106,7 @@ const Page = () => {
     subtitleSuggestions[slug.toLowerCase()] || subtitleSuggestions[type] || 'Explore our hand-picked collection for you.';
 
     return (
-        <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 my-4 bg-secondary">
+        <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 my-4 ">
       <Heading title={formattedTitle} subtitle={subtitle} />
             {loading ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4">

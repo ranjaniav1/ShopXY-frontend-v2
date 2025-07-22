@@ -9,11 +9,4 @@ export async function GetBrandsByCollection({collectionId}) {
     console.log("error in category", error);
   }                              
 }
-export async function GetBrands() {
-  try {
-    const response = await httpAxios.get(`/brands`);
-    return response.data.data;
-  } catch (error) {
-    console.log("error in Brands", error);
-  }                              
-}
+
