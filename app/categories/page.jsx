@@ -6,7 +6,7 @@ import ClientLink from '../Common/ClientClick'
 import { t } from 'i18next'
 import CustomTypography from '../Custom/CustomTypography'
 
-const page = () => {
+const Page = () => {
     const [cat, setCat] = useState([])
     async function GetAllCat() {
         const res = await GetCategories();
@@ -60,4 +60,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page
