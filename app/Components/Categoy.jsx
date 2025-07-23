@@ -42,14 +42,14 @@ const Category = ({ data = [] }) => {
           </div>
 
           {/* View All Categories Button */}
-          {/* <div className="mt-10 text-center">
+          <div className="mt-10 text-center">
             <ClientLink
               href="/categories"
               className="inline-block px-6 py-2 rounded bg-primary text-white hover:bg-primary/90 transition font-medium"
             >
               {t("View All Categories")}
             </ClientLink>
-          </div> */}
+          </div>
         </>
       ) : (
         <CustomTypography textAlign="center" className="text-tsecondary mt-8">

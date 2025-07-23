@@ -59,7 +59,7 @@ const Page = () => {
 
   return (
 
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 max-w-screen-xl mx-auto">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 max-w-screen-xl mt-4 mx-auto">
       {/* Left side: Image gallery */}
       <div className="lg:col-span-5">
         <ProductGallery

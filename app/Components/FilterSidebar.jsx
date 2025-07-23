@@ -76,7 +76,7 @@ const FilterBar = ({ // Renamed from FilterSidebar for clarity when used as a ba
           onChange={(e) => setSearchQuery(e.target.value)}
           // If you need to trigger search on enter or button click
           onKeyDown={(e) => { if (e.key === 'Enter' && onSearch) onSearch(searchQuery); }}
-          className="w-full pl-10 pr-4 py-2.5 rounded-md bg-gray-100 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-700 placeholder-gray-500"
+          className="w-full pl-10 pr-4 py-1.5 rounded-md bg-gray-100 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-700 placeholder-gray-500"
         />
       </div>
 

@@ -282,7 +282,7 @@ const HomeProduct = () => {
   return (
     <div className="bg-secondary">
       <div className="py-12 max-w-screen-xl mx-auto px-4">
-        <Heading title={t("Products for You")} subtitle={t("Discover amazing products at unbeatable prices")} />
+        <Heading title={t("Products For You")} subtitle={t("Discover amazing products at unbeatable prices")} />
 
 
         {/* Horizontal Filter Bar - Assuming FilterBar component exists and handles this layout */}

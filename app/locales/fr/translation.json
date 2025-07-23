@@ -1,6 +1,5 @@
 {
-  "Our Top Collections": "Nos Meilleures Collections",
-  "Best Discount Products": "Meilleurs Produits en Réduction",
+  "Top Collections": "Meilleures collections",
   "Products For You": "Produits pour Vous",
   "Filters": "Filtres",
   "Sort By": "Trier par",
@@ -15,8 +14,8 @@
   "Price Range": "Gamme de Prix",
   "Min Rating": "Note minimale",
   "stars": "étoiles",
-  "Only In Stock": "En Stock Seulement",
-  "Only Discounted": "Uniquement en Promotion",
+  "In Stock Only": "En Stock Seulement",
+  "Discounted": "Uniquement en Promotion",
   "Clear All Filters": "Réinitialiser tous les Filtres",
   "Reset Filters": "Réinitialiser les Filtres",
   "Free Delivery": "Livraison Gratuite",
@@ -37,5 +36,7 @@
   "Shop by Category": "Acheter par Catégorie",
   "Our Top Brands": "Nos Meilleures Marques",
   "Filter By": "Filtrer Par",
-  "Rating Range": "Plage de Notes"
+  "Rating Range": "Plage de Notes",
+  "Discover Your Perfect Style": "Découvrez votre style parfait",
+  "Shop from thousands of premium products across 10+ categories. Free shipping on orders above ₹999.":"Achetez des milliers de produits premium dans plus de 10 catégories. Livraison gratuite pour les commandes supérieures à 999 ₹.","Discover our extensive range of products across all your favorite categories":"Découvrez notre vaste gamme de produits dans toutes vos catégories préférées","Curated collections for every lifestyle":"Des collections sélectionnées pour chaque style de vie","Trusted Brands":"Marques de confiance","Shop from the worlds most trusted brands":"Achetez parmi les marques les plus fiables au monde","Discover amazing products at unbeatable prices":"Découvrez des produits incroyables à des prix imbattables"
 }

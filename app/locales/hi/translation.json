@@ -1,5 +1,5 @@
 {
-  "Our Top Collections": "हमारे शीर्ष संग्रह",
+  "Top Collections": "शीर्ष संग्रह",
   "Best Discount Products": "सर्वश्रेष्ठ छूट उत्पाद",
   "Products For You": "आपके लिए उत्पाद",
   "Filters": "फिल्टर",
@@ -15,8 +15,8 @@
   "Price Range": "मूल्य सीमा",
   "Min Rating": "न्यूनतम रेटिंग",
   "stars": "सितारे",
-  "Only In Stock": "केवल स्टॉक में",
-  "Only Discounted": "केवल छूट वाले",
+  "In Stock Only": "केवल स्टॉक में",
+  "Discounted": "केवल छूट वाले",
   "Clear All Filters": "सभी फ़िल्टर साफ़ करें",
   "Reset Filters": "फ़िल्टर रीसेट करें",
   "Free Delivery": "नि: शुल्क डिलीवरी",
@@ -37,5 +37,8 @@
   "Shop by Category": "श्रेणी अनुसार खरीदें",
   "Our Top Brands": "हमारे शीर्ष ब्रांड",
   "Filter By": "फ़िल्टर करें",
-  "Rating Range": "रेटिंग सीमा"
+  "Rating Range": "रेटिंग सीमा",
+  "Discover Your Perfect Style": "अपनी संपूर्ण शैली खोजें",
+  "Shop from thousands of premium products across 10+ categories. Free shipping on orders above ₹999.": "10+ श्रेणियों में हज़ारों प्रीमियम उत्पादों की खरीदारी करें। ₹999 से ज़्यादा के ऑर्डर पर मुफ़्त शिपिंग।",
+  "Discover our extensive range of products across all your favorite categories": "अपनी सभी पसंदीदा श्रेणियों में उत्पादों की हमारी विस्तृत श्रृंखला देखें","Curated collections for every lifestyle":"हर जीवनशैली के लिए चुनिंदा संग्रह","Trusted Brands":"विश्वसनीय ब्रांड","Shop from the worlds most trusted brands":"दुनिया के सबसे भरोसेमंद ब्रांडों से खरीदारी करें","Discover amazing products at unbeatable prices":"अद्वितीय कीमतों पर अद्भुत उत्पादों की खोज करें"
 }

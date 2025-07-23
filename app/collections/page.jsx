@@ -1,31 +1,50 @@
 "use client";
-
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Heading from "../Common/Heading";
 import ClientLink from "../Common/ClientClick";
-import { useTranslation } from "react-i18next";
+import { t } from "i18next";
 import CustomTypography from "../Custom/CustomTypography";
+import { GetCollection } from "../Service/GetCollection"; // should accept page number
+import Pagination from "../Common/Paginations";
 
-const Collection = ({ data = [] }) => {
-  const { t } = useTranslation();
+const Page = () => {
+  const [collections, setCollections] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
+  const itemsPerPage = 10; // match with backend `limit`
+
+  const fetchCollections = async (page = 1) => {
+    try {
+      const res = await GetCollection(page); // 👈 pass page param
+      setCollections(res.collections);
+      setTotalItems(res.totalCollections);
+      setCurrentPage(res.page);
+    } catch (error) {
+      console.error("Failed to fetch collections:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCollections(currentPage);
+  }, [currentPage]);
 
   return (
     <div className="bg-secondary py-12">
       <div className="max-w-screen-xl mx-auto px-4">
-        {/* Heading */}
-        <Heading title={t("Top Collections")} subtitle={t("Curated collections for every lifestyle")} />
+        <Heading
+          title={t("Top Collections")}
+          subtitle={t("Curated collections for every lifestyle")}
+        />
 
-
-        {data.length > 0 ? (
+        {collections.length > 0 ? (
           <>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-              {data.slice(3, 8).map((col) => (
+              {collections.map((col) => (
                 <ClientLink
                   key={col._id}
                   href={`/collection/${col.slug}`}
                   className="group bg-body rounded-xl overflow-hidden shadow hover:shadow-md transition duration-300 flex flex-col h-64"
                 >
-                  {/* Image with fixed height and responsive scaling */}
                   <div className="w-full h-48 p-4 overflow-hidden">
                     <img
                       src={col.collection_image}
@@ -33,27 +52,25 @@ const Collection = ({ data = [] }) => {
                       className="w-full h-full object-fill group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
-
-                  {/* Content vertically centered */}
                   <div className="flex flex-col justify-center items-center px-3 py-2 text-center flex-grow">
                     <h3 className="text-base font-semibold text-tprimary">
                       {col.title}
                     </h3>
                     <p className="text-sm text-tsecondary">
-                      {col.category.title}
+                      {col.subtitle || t("Explore now")}
                     </p>
                   </div>
                 </ClientLink>
               ))}
             </div>
-            <div className="mt-10 text-center">
-              <ClientLink
-                href="/collections"
-                className="inline-block px-6 py-2 rounded bg-primary text-white hover:bg-primary/90 transition font-medium"
-              >
-                {t("View All Collections")}
-              </ClientLink>
-            </div>
+
+            {/* Pagination */}
+            <Pagination
+              currentPage={currentPage}
+              totalItems={totalItems}
+              itemsPerPage={itemsPerPage}
+              onPageChange={(page) => fetchCollections(page)}
+            />
           </>
         ) : (
           <CustomTypography textAlign="center" className="text-tsecondary mt-4">
@@ -61,8 +78,8 @@ const Collection = ({ data = [] }) => {
           </CustomTypography>
         )}
       </div>
-    </div >
+    </div>
   );
 };
 
-export default Collection;
+export default Page;

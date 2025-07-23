@@ -12,11 +12,11 @@ export async function GetCollectionsByCategory({ categoryId }) {
   }
 }
 
-export async function GetCollection() {
+export async function GetCollection(page) {
 
   try {
     const response = await httpAxios.get(
-      `/collection`
+      `/collection`, { params: { page } }
     );
     console.log("col", response.data.data);
     return response.data.data;
