@@ -40,7 +40,7 @@ const Collection = ({ data = [] }) => {
                       {col.title}
                     </h3>
                     <p className="text-sm text-tsecondary">
-                      {col.subtitle || t("Explore now")}
+                      {col.category.title}
                     </p>
                   </div>
                 </ClientLink>
