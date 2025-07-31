@@ -52,11 +52,11 @@ const Page = () => {
             try {
                 let filterParam = {};
                 if (type === "category") {
-                    filterParam = { category: slug };
+                    filterParam = { search: slug };
                 } else if (type === "brand") {
-                    filterParam = { brand: slug };
+                    filterParam = { search: slug };
                 } else if (type === "collection") {
-                    filterParam = { collection: slug };
+                    filterParam = { search: slug };
                 }
 
                 const data = await GetFilteredProduct({ type: "product", ...filterParam });

@@ -89,21 +89,21 @@ const UserNotify = ({ userId, activeTab }) => {
       )}
 
       {notifications.length > 0 && (
-        <div className="flex justify-between items-center mt-4">
+        <div className="flex justify-between items-center mt-4 text-tsecondary">
           <button
             onClick={() => setPage((p) => Math.max(p - 1, 1))}
             disabled={page <= 1}
-            className="px-3 py-1 border border-gray-300 rounded-md text-sm hover:bg-gray-100 disabled:opacity-50"
+            className="px-3 py-1 border border-gray-300 rounded-md text-sm  disabled:opacity-50"
           >
             Previous
           </button>
-          <CustomTypography variant="body2" className="text-tsecondary">
+          <CustomTypography variant="body2" >
             Page {page} of {totalPages}
           </CustomTypography>
           <button
             onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
             disabled={page >= totalPages}
-            className="px-3 py-1 border border-gray-300 rounded-md text-sm hover:bg-gray-100 disabled:opacity-50"
+            className="px-3 py-1 border border-gray-300 rounded-md text-sm  disabled:opacity-50"
           >
             Next
           </button>

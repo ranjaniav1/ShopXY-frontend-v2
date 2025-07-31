@@ -106,11 +106,11 @@ const UserOrders = ({ userId, activeTab }) => {
 
       {/* Pagination */}
       {order.length > 0 && (
-        <div className="flex justify-between items-center mt-6">
+        <div className="flex justify-between items-center mt-6 text-tsecondary">
           <button
             onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
             disabled={page <= 1}
-            className="px-4 py-2 border rounded-md text-sm bg-white hover:bg-gray-100 disabled:opacity-50"
+            className="px-4 py-2 border rounded-md text-sm  disabled:opacity-50"
           >
             Previous
           </button>
@@ -120,7 +120,7 @@ const UserOrders = ({ userId, activeTab }) => {
           <button
             onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
             disabled={page >= totalPages}
-            className="px-4 py-2 border rounded-md text-sm bg-white hover:bg-gray-100 disabled:opacity-50"
+            className="px-4 py-2 border rounded-md text-sm  disabled:opacity-50"
           >
             Next
           </button>

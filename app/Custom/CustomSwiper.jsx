@@ -46,9 +46,10 @@ const CustomSwiper = ({
         pagination={pagination ? { clickable: true } : false}
         autoplay={
           autoplay
-            ? { delay: 3000, disableOnInteraction: false }
+            ? { delay: 4000, disableOnInteraction: false }
             : false
         }
+        loop={true}
         breakpoints={breakpoints}
         className={`h-full relative swiper-custom-nav ${swiperClass}`}
       >
