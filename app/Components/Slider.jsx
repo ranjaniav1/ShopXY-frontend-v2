@@ -1,10 +1,13 @@
 "use client";
 
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import ClientLink from "../Common/ClientClick";
 import CustomSwiper from "../Custom/CustomSwiper";
 
-const Slider = ({ data }) => (
+const Slider = ({ data }) => {
+  const { t } = useTranslation();
+  return (
+
   <div className="w-full overflow-hidden shadow-xl relative">
     <CustomSwiper
       data={data}
@@ -26,7 +29,7 @@ const Slider = ({ data }) => (
                 {t("Discover Your Perfect Style")}
               </h1>
               <p className="text-white text-sm sm:text-base md:text-lg font-medium mb-4 md:mb-6 max-w-xl sm:max-w-2xl drop-shadow-md">
-               {t("Shop from thousands of premium products across 10+ categories. Free shipping on orders above ₹999.")}
+                {t("Shop from thousands of premium products across 10+ categories. Free shipping on orders above ₹999.")}
               </p>
 
             </div>
@@ -35,7 +38,8 @@ const Slider = ({ data }) => (
         </div>
       )}
     />
-  </div>
-);
+  </div>)
+}
 
-export default Slider;
+export default Slider
+
