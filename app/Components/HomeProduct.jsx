@@ -52,7 +52,6 @@ const HomeProduct = () => {
   // --- Filter Bar Callbacks ---
   const handleSearch = (query) => {
     setSearchQuery(query);
-    setPage(1); // Reset page on new search
   };
 
   const handleShowMoreFilters = () => {
@@ -324,6 +323,7 @@ const HomeProduct = () => {
                         category={product.category}
                         inStock={product.stock_qty > 0 && product.inStock === true}
                         stock_qty={product.stock_qty}
+                        
 
 
                       />
