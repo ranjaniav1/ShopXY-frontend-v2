@@ -8,7 +8,7 @@ import { UserProvider } from "./context/UserContext";
 import ClientToaster from "./Common/ClientToaster";
 import Navigation from "./Components/Navigation";
 import Footer from "./Components/Footer";
-
+import { Analytics } from "@vercel/analytics/next"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,6 +25,7 @@ export default function RootLayout({ children }) {
           <ThemeProvider>
             <LanguageProvider>
               <ClientToaster />
+              <Analytics/>
               <Navigation />
               <div className="pt-[80px]  mx-auto  pb-8 sm:pt-[73px]">
                 {children}

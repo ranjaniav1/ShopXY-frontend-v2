@@ -17,7 +17,7 @@ useEffect(() => {
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
-    Cookies.set("language", lng);
+    Cookies.set("language", lng,{path:"/"});
     setLanguage(lng);
   };
 
