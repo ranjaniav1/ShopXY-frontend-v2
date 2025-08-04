@@ -25,7 +25,6 @@ const AddressPage = ({ handleNext, handleBack }) => {
   const pathname = usePathname();
   const isCheckoutAddressRoute = pathname === "/scheckout/address";
   const { user } = useUser();
-  console.log(user)
   const userId = user?._id;
   const { t } = useTranslation();
 
