@@ -33,15 +33,16 @@ export const CreateAddress = async (
 export const getAddress = async (userId) => {
   try {
     const response = await httpAxios.get(`/user/address/${userId}`);
+    console.log(response)
     return response.data;
   } catch (error) {
-    console.log("error in create address", error);
+    console.log("error in get address", error);
   }
 };
 
-export const removeAddress = async (userId, addressId) => {
+export const removeAddress = async ( addressId) => {
   try {
-    const response = await httpAxios.delete(`/user/address/delete/${userId}/${addressId}`);
+    const response = await httpAxios.delete(`/user/address/${addressId}`);
     return response.data;
   } catch (error) {
     console.log("Error removing address:", error);

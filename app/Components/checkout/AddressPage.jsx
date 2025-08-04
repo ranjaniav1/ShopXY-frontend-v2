@@ -25,7 +25,8 @@ const AddressPage = ({ handleNext, handleBack }) => {
   const pathname = usePathname();
   const isCheckoutAddressRoute = pathname === "/scheckout/address";
   const { user } = useUser();
-  const userId = user._id;
+  console.log(user)
+  const userId = user?._id;
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -36,19 +37,21 @@ const AddressPage = ({ handleNext, handleBack }) => {
     try {
       setLoading(true);
       const res = await getAddress(userId);
-      const list = res?.data || [];
+      console.log(res)
+      const list = res.data.addresses || [];
       const hasPrimary = list.some((a) => a.isPrimary);
 
       if (!hasPrimary && list.length > 0) {
         const first = list[0];
         await updateAddress(userId, first._id, first.address, first.city, first.state, first.postalCode, first.country, first.phone, true);
-        first.isPrimary = true;
       }
 
-      const updated = (await getAddress(userId))?.data || [];
+      // fetch fresh data AFTER update
+      const updated = (await getAddress(userId))?.data.addresses || [];
       const primary = updated.find((a) => a.isPrimary);
       setAddresses(updated);
       setSelectedAddressId(primary ? primary._id : null);
+
     } catch (err) {
       console.error(err);
       toast.error("Failed to load addresses.");
@@ -73,7 +76,7 @@ const AddressPage = ({ handleNext, handleBack }) => {
 
   const handleRemoveAddress = async (id) => {
     try {
-      await removeAddress(userId, id);
+      await removeAddress(id);
       fetchAddresses();
     } catch {
       toast.error("Failed to remove address.");

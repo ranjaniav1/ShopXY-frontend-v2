@@ -6,7 +6,7 @@ import { useUser } from "../context/UserContext";
 
 const AddressDrawer = ({ onClose, isEditing, addressData, onAddressSaved = () => { } }) => {
   const { user } = useUser()
-  const userId = user._id
+  const userId = user?._id
 
   const [name, setName] = useState("");
   const [contactNumber, setContactNumber] = useState("");
