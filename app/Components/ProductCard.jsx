@@ -63,7 +63,7 @@ const ProductCard = ({
 
   return (
     <div
-      className={`relative rounded-xl overflow-hidden border border-gray-200 bg-body shadow-sm hover:shadow-lg transition-all duration-300 group`}
+      className={`relative rounded-xl overflow-hidden  bg-body shadow-sm hover:shadow-lg transition-all duration-300 group`}
 
     >
       {/* Offer Badge */}
