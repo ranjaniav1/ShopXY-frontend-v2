@@ -7,6 +7,7 @@ import Pagination from "@/app/Common/Paginations";
 import { GetFilteredProduct } from "@/app/Service/GetProduct";
 import { useParams } from "next/navigation";
 import Heading from "@/app/Common/Heading";
+import CardCollection from "@/app/Components/card/CollectionCard";
 
 const Page = () => {
     const { type } = useParams();
@@ -63,31 +64,7 @@ const Page = () => {
                     <>
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
                             {data.map((item) => (
-                                <ClientLink
-                                    key={item._id}
-                                    href={`/${type}/${item.slug}`}
-                                    className="group bg-body rounded-xl overflow-hidden shadow hover:shadow-md transition duration-300 flex flex-col h-64"
-                                >
-                                    <div className="w-full h-48 p-4 overflow-hidden">
-                                        <img
-                                            src={
-                                                item.category_icon ||
-                                                item.collection_image ||
-                                                item.brand_image
-                                            }
-                                            alt={item.title}
-                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                        />
-                                    </div>
-                                    <div className="flex flex-col justify-center items-center px-3 py-2 text-center flex-grow">
-                                        <h3 className="text-base font-semibold text-tprimary">
-                                            {item.title}
-                                        </h3>
-                                        <p className="text-sm text-tsecondary">
-                                            {item.subtitle || t("Explore now")}
-                                        </p>
-                                    </div>
-                                </ClientLink>
+                                <CardCollection key={item._id} item={item} />
                             ))}
                         </div>
 

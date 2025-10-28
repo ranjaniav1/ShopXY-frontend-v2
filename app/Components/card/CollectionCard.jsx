@@ -1,6 +1,6 @@
 "use client";
+import ClientLink from "@/app/Common/ClientClick";
 import React from "react";
-import ClientLink from "../Common/ClientClick";
 
 const CardCollection = ({ item }) => {
   return (
@@ -10,7 +10,7 @@ const CardCollection = ({ item }) => {
     >
       <div className="w-full h-48 p-4 overflow-hidden">
         <img
-          src={item.collection_image}
+          src={item.collection_image || item.category_icon}
           alt={item.title}
           className="w-full h-full object-fill group-hover:scale-105 transition-transform duration-300"
         />

@@ -1,5 +1,5 @@
 import React from "react";
-import Stepper from "../Components/Stepper";
+import Stepper from "../Components/checkout/CheckoutStepper";
 
 
 export const metadata = {

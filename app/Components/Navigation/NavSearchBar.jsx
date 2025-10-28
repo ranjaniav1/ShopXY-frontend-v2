@@ -4,7 +4,12 @@ import React from "react";
 import { Search, X } from "lucide-react";
 import CustomInput from "@/app/Custom/CustomInput";
 
-const NavSearchBar = ({ searchQuery, setSearchQuery, onSearch }) => {
+const NavSearchBar = (props) => {
+  // Support both prop naming styles (for reuse in multiple components)
+  const value = props.value ?? props.searchQuery ?? "";
+  const onChange = props.onChange ?? ((e) => props.setSearchQuery?.(e.target.value));
+  const onSearch = props.onSearch ?? (() => {});
+
   return (
     <div className="relative flex-grow mx-4">
       <CustomInput
@@ -19,22 +24,22 @@ const NavSearchBar = ({ searchQuery, setSearchQuery, onSearch }) => {
           </button>
         }
         endIcon={
-          searchQuery && (
+          value && (
             <button
               type="button"
               className="text-gray-400 hover:text-gray-600"
-              onClick={() => setSearchQuery("")}
+              onClick={() => onChange({ target: { value: "" } })}
               aria-label="Clear search"
             >
               <X className="w-4 h-4" />
             </button>
           )
         }
-        placeholder="Search for Products, Brands, and More"
-        className="bg-body text-tsecondary  px-3 rounded-md w-full border border-secondary focus:border-primary transition-all py-1 duration-200"
+        placeholder="Search Products, Brands, and More"
+        className="bg-body text-tsecondary px-3 rounded-md w-full border border-secondary focus:border-primary transition-all py-1 duration-200"
         aria-label="Search"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
+        value={value}
+        onChange={onChange}
         onKeyDown={(e) => {
           if (e.key === "Enter") onSearch();
         }}

@@ -113,7 +113,7 @@ const FullScreenNav = () => {
           </button>
 
           {langOpen && (
-            <div className="absolute right-0 mt-2 w-36 bg-white shadow-lg rounded-md z-50">
+            <div className="absolute right-0 mt-2 w-36 bg-body shadow-lg rounded-md z-50">
               {languageOptions.map((lang) => (
                 <button
                   key={lang.code}
@@ -121,8 +121,8 @@ const FullScreenNav = () => {
                     setLanguage(lang.code);
                     setLangOpen(false);
                   }}
-                  className={`w-full text-left px-3 py-2 text-sm hover:bg-gray-100 ${
-                    lang.code === language ? "text-primary font-semibold" : ""
+                  className={`w-full text-left px-3 py-2 text-sm  ${
+                    lang.code === language ? "text-t-primary font-semibold" : "text-t-secondary"
                   }`}
                 >
                   <span className="mr-2">{lang.flag}</span>
@@ -135,7 +135,7 @@ const FullScreenNav = () => {
 
         {user ? (
           <>
-            <NavCartButton count={5} />
+            <NavCartButton />
             <NavProfileMenu />
           </>
         ) : (

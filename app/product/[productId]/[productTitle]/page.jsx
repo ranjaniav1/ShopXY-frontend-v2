@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { GetSingleProduct } from '@/app/Service/GetProduct';
-import ProductGallery from '@/app/Components/ProductGallery';
-import ProductDetails from '@/app/Components/ProductDetails';
+import ProductGallery from '@/app/Components/product/ProductGallery';
+import ProductDetails from '@/app/Components/product/ProductDetails';
 import CustomTypography from '@/app/Custom/CustomTypography';
 
 const Page = () => {

@@ -5,10 +5,10 @@ import "./globals.css";
 import { LanguageProvider } from "./context/LanguageContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import { UserProvider } from "./context/UserContext";
-import Navigation from "./Components/Navigation";
-import Footer from "./Components/Footer";
 import { Analytics } from "@vercel/analytics/next"
 import { Toaster } from "react-hot-toast";
+import Navigation from "./Common/Navigation";
+import Footer from "./Common/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 

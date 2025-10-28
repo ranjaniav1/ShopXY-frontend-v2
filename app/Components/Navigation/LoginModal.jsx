@@ -108,7 +108,7 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
         onClick={handleGoogleLogin}
         startIcon={<Globe size={18} />}
         title={googleLoading ? t("Loading...") : t("Login with Google")}
-        className="bg-body text-gray-800 border border-gray-300 rounded-lg py-2  transition-all"
+        className="bg-body text-gray-800 rounded-lg  transition-all"
       />
 
 
@@ -119,7 +119,7 @@ const LoginModal = ({ open, onClose, onSwitchToRegister }) => {
           onClick={onSwitchToRegister}
           startIcon={<LogIn size={18} />}
           title={t("Not registered? Register")}
-          className="text-primary hover:underline text-sm"
+          className="text-primary text-sm"
         />
       </div>
     </CustomModal>

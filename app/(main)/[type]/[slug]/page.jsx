@@ -5,11 +5,11 @@ import { useParams, usePathname } from 'next/navigation';
 import CustomSkeleton from '@/app/Custom/CustomSkeleton';
 
 import Heading from '@/app/Common/Heading';
-import ProductCard from '@/app/Components/ProductCard';
+import ProductCard from '@/app/Components/card/ProductCard';
 import { useUser } from '@/app/context/UserContext';
 import { getWishlist } from '@/app/Service/Profile';
 import { GetFilteredProduct } from '@/app/Service/GetProduct';
-import EmptyCart from '@/app/Components/EmptyCart';
+import EmptyCart from '@/app/Components/card/EmptyCart';
 import ClientLink from '@/app/Common/ClientClick';
 
 // 🔠 Utility: format slug to readable title

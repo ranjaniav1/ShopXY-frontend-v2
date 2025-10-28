@@ -1,6 +1,6 @@
 "use client";
+import ClientLink from "@/app/Common/ClientClick";
 import React from "react";
-import ClientLink from "../Common/ClientClick";
 
 const CardBrand = ({ item }) => {
   return (

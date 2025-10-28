@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import { DeleteAccount, Logout } from "@/app/Service/User";
-import CustomBox from "@/app/Custom/CustomBox";
 import { toast } from "react-hot-toast";
 import DialogBox from "@/app/Custom/CustomDialog";
 import { useRouter } from "next/navigation";
