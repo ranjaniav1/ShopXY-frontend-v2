@@ -20,11 +20,14 @@ export async function GetSingleProduct({ slug }) {
   }
 }
 
-// based on category id 
-export async function GetFilteredProduct(params) {
+export async function GetFilteredProduct(params = {}) {
   try {
+    // Extract type (default: "product")
+    const { type = "product" } = params;
+
+    // Build query dynamically
     const query = {
-      type: "product",
+      type, // 👈 dynamic type (product, category, brand, collection)
       ...(params.category && { category: params.category }),
       ...(params.collection && { collection: params.collection }),
       ...(params.brand && { brand: params.brand }),
@@ -37,14 +40,15 @@ export async function GetFilteredProduct(params) {
       ...(params.search && { search: params.search }),
     };
 
-    const response = await httpAxios.get(`/products/filters`, {
-      params: query,
-    });
-    return response.data.data;
+
+    const response = await httpAxios.get(`/products/filters`, { params: query });
+    return response.data?.data || [];
   } catch (error) {
-    console.log("error in GetFilteredProduct", error);
+    console.error("❌ error in GetFilteredProduct:", error);
+    return [];
   }
 }
+
 
 
 

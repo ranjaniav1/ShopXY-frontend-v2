@@ -5,10 +5,10 @@ import "./globals.css";
 import { LanguageProvider } from "./context/LanguageContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import { UserProvider } from "./context/UserContext";
-import ClientToaster from "./Common/ClientToaster";
 import Navigation from "./Components/Navigation";
 import Footer from "./Components/Footer";
 import { Analytics } from "@vercel/analytics/next"
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
         <UserProvider>
           <ThemeProvider>
             <LanguageProvider>
-              <ClientToaster />
+              <Toaster position="top-center"/>
               <Analytics/>
               <Navigation />
               <div className="pt-[80px]  mx-auto  pb-8 sm:pt-[73px]">

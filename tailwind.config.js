@@ -13,11 +13,14 @@ module.exports = {
         primary: "var(--primary)",
         secondary: "var(--secondary)",
         tsecondary: "var(--t-secondary)",
-        tprimary:"var(--t-primary)",
-        tactive:"var(--t-active)"
+        tprimary: "var(--t-primary)",
+        tactive: "var(--t-active)"
+      },
+      fontFamily: {
+        sans: ['__Inter_e8ce0c, __Inter_Fallback_e8ce0c'],
       },
     },
   },
-  
+
   plugins: []
 };

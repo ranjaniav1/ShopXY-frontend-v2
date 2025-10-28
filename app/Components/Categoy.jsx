@@ -72,7 +72,7 @@ const Category = ({ data = [] }) => {
           {/* View All Button */}
           <div className="mt-10 text-center">
             <ClientLink
-              href="/categories"
+              href="/category"
               className="inline-block px-6 py-2 rounded bg-primary text-white hover:bg-primary/90 transition font-medium"
             >
               {t("View All Categories")}
@@ -81,7 +81,7 @@ const Category = ({ data = [] }) => {
         </>
       ) : (
         <CustomTypography textAlign="center" className="text-tsecondary mt-8">
-          {t("No category found")}
+          {t("No categories found")}
         </CustomTypography>
       )}
     </div>
