@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import FullScreenNav from '../Components/navigation/FullScreenNav';
+import FullScreenNav from '@/app/Components/navigation/FullScreenNav';
 
 
 const Navigation = () => {
