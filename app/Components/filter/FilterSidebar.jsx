@@ -9,6 +9,7 @@ import NavSearchBar from "../navigation/NavSearchBar";
 
 
 
+
 const FilterBar = ({ // Renamed from FilterSidebar for clarity when used as a bar
   sort, setSort,
   categories, collections, brands,
