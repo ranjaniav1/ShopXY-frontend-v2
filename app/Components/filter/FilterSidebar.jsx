@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Search, SlidersHorizontal } from "lucide-react";
 import CustomMenu from "../../Custom/CustomMenu";
-import CustomInput from "../../Custom/CustomInput";
 import CustomButton from "../../Custom/CustomButton";
 import NavSearchBar from "../navigation/NavSearchBar";
 
