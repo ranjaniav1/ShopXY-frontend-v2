@@ -54,9 +54,6 @@ const Page = () => {
     return <CustomTypography variant="h6">Loading...</CustomTypography>;
   }
 
-
-
-
   return (
 
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 max-w-screen-xl mt-4 mx-auto">
