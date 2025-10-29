@@ -2,9 +2,9 @@
 
 import React from "react";
 import { ShoppingCart } from "lucide-react";
-import ClientLink from "@/app/Common/ClientClick"; // make sure the path is correct
+import ClientLink from "@/app/Common/ClientClick"; 
 
-const NavCartButton = ({ cartCount = 0 }) => {
+const NavCartButton = () => {
   return (
     <ClientLink
       href="/scheckout/carts"
@@ -12,12 +12,6 @@ const NavCartButton = ({ cartCount = 0 }) => {
       aria-label="Cart"
     >
       <ShoppingCart className="text-primary w-6 h-6" />
-
-      {cartCount > 0 && (
-        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] px-1.5 py-[1px] rounded-full font-medium">
-          {cartCount}
-        </span>
-      )}
     </ClientLink>
   );
 };

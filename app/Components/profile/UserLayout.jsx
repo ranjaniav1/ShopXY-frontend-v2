@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import { DeleteAccount, Logout } from "@/app/Service/User";
-import CustomBox from "@/app/Custom/CustomBox";
 import { toast } from "react-hot-toast";
 import DialogBox from "@/app/Custom/CustomDialog";
 import { useRouter } from "next/navigation";
@@ -72,7 +71,7 @@ const UserLayout = () => {
 
         {/* Right Panel */}
         <div className="col-span-1 md:col-span-3">
-          <div className="p-4 rounded-md shadow-md bg-body">
+          <div className="p-4 bg-secondary rounded-md shadow-md bg-body">
             {activeTab === 0 && <UserNotify userId={userId} activeTab={activeTab} />}
             {activeTab === 1 && <WishlistItem userId={userId} activeTab={activeTab} />}
             {activeTab === 2 && <UserOrders userId={userId} activeTab={activeTab} />}
