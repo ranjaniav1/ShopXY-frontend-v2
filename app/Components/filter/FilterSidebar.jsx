@@ -5,7 +5,8 @@ import { useTranslation } from "react-i18next";
 import { Search, SlidersHorizontal } from "lucide-react";
 import CustomMenu from "../../Custom/CustomMenu";
 import CustomButton from "../../Custom/CustomButton";
-import NavSearchBar from "@/app/Components/navigation/NavSearchBar";
+import NavSearchBar from "../navigation/NavSearchBar";
+
 
 
 const FilterBar = ({ // Renamed from FilterSidebar for clarity when used as a bar
