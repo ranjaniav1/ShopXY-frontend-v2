@@ -17,8 +17,8 @@ const CustomButton = ({
   else if (size === "large") sizeClass = "text-lg px-5 py-3";
 
   let variantClass = "bg-primary  text-white hover:opacity-90";
-  if (variant === "outlined")
-    variantClass = "border border-secondary text-tsecondary bg-transparent hover:bg-primary hover:text-white";
+  if (variant === "secondary")
+    variantClass = "border border-secondary text-tsecondary bg-secondary hover:bg-primary hover:text-white";
   else if (variant === "text")
     variantClass = "bg-transparent text-primary hover:underline";
 

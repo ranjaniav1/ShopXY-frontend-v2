@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import AddressCard from "@/app/Components/AddressCard";
-import AddressDrawer from "@/app/Components/AddressDrawer";
+import AddressCard from "@/app/Components/address/AddressCard";
+import AddressDrawer from "@/app/Components/address/AddressDrawer";
 import CustomButton from "@/app/Custom/CustomButton";
 import CustomDrawer from "@/app/Custom/CustomDrawer";
 import { getAddress, removeAddress, updateAddress } from "@/app/Service/Address";

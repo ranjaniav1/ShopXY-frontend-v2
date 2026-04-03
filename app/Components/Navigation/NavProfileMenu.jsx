@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useUser } from "@/app/context/UserContext";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -9,9 +9,10 @@ const NavProfileMenu = () => {
   const { user, setUser } = useUser();
   const router = useRouter();
   const [open, setOpen] = useState(false);
-const userId=user?._id
- 
- const handleLogout = async () => {
+  const userId = user?._id
+  const menuRef=useRef(null)
+
+  const handleLogout = async () => {
     try {
       await Logout({ userId });
       setUser(null);
@@ -19,19 +20,31 @@ const userId=user?._id
       router.push("/");
     } catch (error) {
       console.error("Error during logout:", error);
-    } 
+    }
   };
+  // ✅ Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   return (
-    <div className="relative">
+    <div className="relative"ref={menuRef}>
       <img
         onClick={() => setOpen(!open)}
         src={user?.avatar}
         className="w-8 h-8 rounded-full cursor-pointer"
         alt="avatar"
       />
-      
+
       {open && (
-        <div className="absolute right-0 mt-2 w-40  shadow-md rounded-md z-50 border border-secondary">
+        <div className="absolute right-0 mt-2 w-40  shadow-md rounded-md z-50 border border-secondary bg-body">
           <button
             onClick={() => {
               setOpen(false);

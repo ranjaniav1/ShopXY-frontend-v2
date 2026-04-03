@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { deleteWishlistItem, getWishlist } from '@/app/Service/Profile';
 import { removeAllWishlists } from '@/app/helper/ProfileUtils';
 import CustomCollectionCard from '@/app/Common/CustomCollectionCard';
-import EmptyCart from '../EmptyCart';
+import EmptyCart from '../card/EmptyCart';
 import CustomTypography from '@/app/Custom/CustomTypography';
 import ClientLink from '@/app/Common/ClientClick';
 import { Trash2 } from 'lucide-react';

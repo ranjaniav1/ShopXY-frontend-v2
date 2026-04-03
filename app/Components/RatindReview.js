@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import { GetSpecificProductReview } from "../Service/GetReviews";
-import RatingReview from "./Rating";
-import ReviewItem from "./Review";
+import RatingReview from "./product/ProductRating";
+import ReviewItem from "./product/ProductReview";
 
 const ReviewComponents = ({ productId }) => {
   const [reviews, setReviews] = useState([]);

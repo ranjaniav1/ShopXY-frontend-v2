@@ -4,14 +4,14 @@ import React, { useCallback, useEffect, useState } from "react";
 
 import { ShoppingCart } from "lucide-react";
 
-import CartProductCard from "@/app/Components/CardProductCard";
+import CartProductCard from "@/app/Components/card/CartProductCard";
 import CustomDrawer from "@/app/Custom/CustomDrawer";
-import EditCart from "@/app/Components/EditCart";
+import EditCart from "@/app/Components/card/EditCart";
 import CustomButton from "@/app/Custom/CustomButton";
 import { fetchCart, handleRemoveFromCart } from "@/app/helper/cartUtils";
-import EmptyCart from "@/app/Components/EmptyCart";
+import EmptyCart from "@/app/Components/card/EmptyCart";
 import ClientLink from "@/app/Common/ClientClick";
-import PriceDetails from "@/app/Components/PriceDetail";
+import PriceDetails from "@/app/Components/product/PriceDetail";
 import { useUser } from "@/app/context/UserContext";
 
 export default function CartPageWrapper() {

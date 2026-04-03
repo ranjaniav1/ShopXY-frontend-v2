@@ -8,7 +8,7 @@ import {
   removeNotification,
 } from "@/app/helper/ProfileUtils";
 import CustomTypography from "@/app/Custom/CustomTypography";
-import EmptyCart from "../EmptyCart";
+import EmptyCart from "../card/EmptyCart";
 
 const UserNotify = ({ userId, activeTab }) => {
   const [notifications, setNotifications] = useState([]);
